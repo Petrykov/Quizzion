@@ -3,8 +3,8 @@
 ### Table of contents
 
 1. [Introduction to websockets](#introduction) <br>
-*`(note to myself: where they are used, how they are important, so on)`*
-2. [How to install](#How-to-install)
+<!-- *`(note to myself: where they are used, how they are important, so on)`* -->
+2. [Socket.io](#socket.io)
 3. [How to use](#how-to-use)
     1. [Client side](#use-client)
     2. [Server side](#use-server)
@@ -12,11 +12,45 @@
 
 ## Introduction
 
+### WebSocket
+ `WebSocket` is a computer communications protocol, which provide a point-to-point system composed of two or more connected parties (devices) communicated via a single `TCP connection`. Websocker works different than HTTP, but to intergrate with HTTP protocols, uses `HTTP Upgrade header`.
+ 
+  Websocket provides a two-way connection between a client (web browser or another application) and server (web server). The messages can be passed back and forth while keeping the connection open. What is so important: the server can sand a message to the client without being requested first by the client. It allows a client (or server) to send a message to one or multiple users.
 
-## How to install
-(Both server and client)
 
-(about `socket.io` library)
+ #### How do they work?
+ To start a WebSocket connection, the client must send a WebSocket handshake request, then the server will return the Websocket handshake response. The handshake includes `HTTP request/response`, so the Websocket can also handle HTTP connection.
+ When the connection is established, communications is proceeded via `bidirectional binary protocols`. In addition, a client sends a `Sec-WebSocket-Key` header (base64-encoded random bytes) and the server replies with a hash of the key in the `Sec-WebSocket-Accept` header. After that the data are passed without any extra features. Every time, a message is sent -it includes a small header, followed by payload. 
+ 
+ #### Security aspect
+  WebSocket connection is not as secure as HTTP connection, but to avoid Cross-Side WebSocket Hijacking -> use tokens to authenticate the WebSocker connection.
+ 
+**** optional: research about encryption, if our client required
+
+
+## Socket.io
+ Native `WebSockets` are powerfull, but sometimes they are not able to handle request (they do not support all browsers). To solve the problem, the best solution is to use `Socket.io`. It is a WebSocket framework, which contains a lot of tools and help to build a large application. The framework is supported in every browser.
+ `Socket.io` has an event-driven architecture.
+  It has two parts: a client side library, which runs in the browser (usually written in Javascript) and a server-side library for Node.js.
+
+Because the `Socket.io` is part of the `Node Package Manager`, we can use `npm` to install the framework. 
+#### Installation:
+- `npm init -y` (for package.json)
+- `npm isocket.io`
+
+#### Server side
+- create a server file (for example socket-server.js). Because the sockets should also work with HTTP, it is important to use `const { createServer} = require('http')` and of course `const socketIO = require("socket.io")`. After that we should define the method for HTTP: `const server = createServer().listen(3000)`. Thank to this method, all the browsers which do not support Websockets, will be able to use our application (via HTTP).
+At the end we have to 'add' HTTP server to the socket: `const io = socketIO(server)`.
+Now we can use the server (go to `How to use`).
+
+#### Client side
+- create a client file (for example client-server.js). 
+ We should connect the client with the server via: `const io = require("socket.io-client")` and create a new socket for a client `const socket = io("http://localhost:3000")`. The host number must be the same as for the server.
+ Now we can use the client (go to `How to use`).
+
+
+<!-- (Both server and client)
+(about `socket.io` library) -->
 
 ## How to use
 
