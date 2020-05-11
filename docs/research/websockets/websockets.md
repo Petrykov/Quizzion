@@ -14,9 +14,9 @@
 ## Introduction
 
 ### WebSocket
- `WebSocket` is a computer communications protocol, which provide a point-to-point system composed of two or more connected parties (devices) communicated via a single `TCP connection`. Websocker works different than HTTP, but to intergrate with HTTP protocols, uses `HTTP Upgrade header`.
+ `WebSocket` is a computer communications protocol, which provide a point-to-point system composed of two or more connected parties (devices) communicated via a single `TCP connection`. Websocker works different than HTTP, but to integrate with HTTP protocols, uses `HTTP Upgrade header`.
  
-  Websocket provides a two-way connection between a client (web browser or another application) and server (web server). The messages can be passed back and forth while keeping the connection open. What is so important: the server can sand a message to the client without being requested first by the client. It allows a client (or server) to send a message to one or multiple users.
+  Websocket provides a two-way connection between a client (web browser or another application) and server (web server). The messages can be passed back and forth while keeping the connection open. What is so important: the server can send a message to the client without being requested first by the client. It allows a client (or server) to send a message to one or multiple users.
 
 
  #### How do they work?
@@ -37,7 +37,7 @@
 Because the `Socket.io` is part of the `Node Package Manager`, we can use `npm` to install the framework. 
 #### Installation:
 - `npm init -y` (for package.json)
-- `npm isocket.io`
+- `npm i socket.io`
 
 #### Server side
 - create a server file (for example socket-server.js). Because the sockets should also work with HTTP, it is important to use `const { createServer} = require('http')` and of course `const socketIO = require("socket.io")`. After that we should define the method for HTTP: `const server = createServer().listen(3000)`. Thank to this method, all the browsers which do not support Websockets, will be able to use our application (via HTTP).
