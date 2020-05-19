@@ -1,6 +1,6 @@
 <template>
-    <div style="width: 100%; height: 100%">
-        <div class="split left">
+    <div>
+             <div class="split left">
                 <h3 class="text-left" > Hi Quiz Master </h3>
                 <h5 class="text-left"> Welcome back to the gamespace, we missed you! </h5>
                 <h5 class="text-left" > Quizzes </h5>
@@ -13,13 +13,13 @@
                 <q-btn class="new quiz button"
                  icon="fas fa-plus"
                  color="grey"
+                
                 ></q-btn>
 
         </div>
         <div class="split right" >
             <i class="fas fa-edit"></i>
             <h3 class="text-right">Quiz name</h3>
-           
             <p class="text-right" >  Quiz description: Lorem ipsum dolor sit amet, 
                 consectetur  adipiscing elit. Nunc rutrum auctor neque ut  </p> 
             <span style="margin-left: 5%">
@@ -40,27 +40,29 @@
               <q-btn id="start_quiz_button" unelevated rounded color="white" text-color="black" label="Start quiz" />
                
 
-        </div>
-    
+             </div>
     </div>
     
 </template>
 
 <script>
 export default {
-    
+    data (){
+        return {
+            
+        }
+    }
 }
 </script>
 
 <style>
 
 .split {
-  height: 95%;
+  height: 100%;
   width: 50%;
   position: fixed;
-  z-index: 1;
+  z-index: 1; 
   top: 0;
-  overflow-x: hidden;
   padding-top: 20px;
 }
 
