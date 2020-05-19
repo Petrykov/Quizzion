@@ -47,13 +47,13 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
+// import EssentialLink from 'components/EssentialLink'
 
 export default {
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    // EssentialLink
   },
 
   data () {
