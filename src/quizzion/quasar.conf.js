@@ -52,7 +52,8 @@ module.exports = function (/* ctx */) {
 
       components: [
         'QBtn',
-        'QBtnGroup'
+        'QBtnGroup',
+        'QInput'
       ],
       directives: [],
 
