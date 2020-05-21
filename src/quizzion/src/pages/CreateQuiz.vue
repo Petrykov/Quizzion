@@ -1,5 +1,16 @@
 <template>
   <div q-pa-md>
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Saved</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">Your work has been saved sucessfully!</q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <div class="row main-layout q-pa-md">
       <div class="col">
         <section class="column justify-center q-pl-sm">
@@ -18,9 +29,7 @@
                 icon="fas fa-plus"
                 :key="n"
               >
-                <div class="ex1">
-                  
-                </div>
+                <div class="ex1"></div>
               </q-btn>
             </div>
           </div>
@@ -35,11 +44,13 @@
                 class="col add-name"
                 dark
                 borderless
+                v-model="quizName"
                 placeholder="Add Quiz's name"
               ></q-input>
-              <i class="far fa-save fa-2x" />
+              <i @click="alert=true" class="far fa-save fa-2x" />
             </div>
             <q-input
+              v-model="quizDes"
               color="white"
               style="font-size: larger"
               dark
@@ -50,16 +61,25 @@
           <div class="col-7">
             <div class="instruction">
               <div>Be creative! Choose a theme for your quiz</div>
-              <div class="q-gutter-sm theme-bubble q-pt-md">
-                <q-btn color="teal" round v-for="n in 5" :key="`sm-${n}`" />
+              <div class="q-gutter-xl theme-bubble q-pt-md">
+                <q-btn
+                  style="border: 2px solid white"
+                  size="large"
+                  round
+                  v-for="(n,index) in colors"
+                  :key="`sm-${n}`"
+                  :color="colors[index]"
+                />
               </div>
               <div class="q-pt-lg">Or a logo from your organization?</div>
               <div class="q-pa-md theme-bubble">
-                <q-btn size="xx-large" round color="teal" icon="fas fa-upload fa-2x" />
+                <q-btn size="xx-large" round color="white">
+                  <i class="fas fa-upload fa-lg" style="color: black"></i>
+                </q-btn>
               </div>
             </div>
           </div>
-          <div class="q-pa-md theme-bubble add-btn">
+          <div class="q-pa-md theme-bubble">
             <q-btn
               color="white"
               icon-right="fas fa-arrow-right"
@@ -73,6 +93,19 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: () => {
+    return {
+      colors: ["teal", "purple", "primary", "orange", "red"],
+      quizDes: null,
+      quizName: null,
+      alert: false
+    };
+  }
+};
+</script>
 
 <style lang="sass" scoped>
 .right
@@ -93,6 +126,8 @@
   display: flex
   justify-content: center
 
+.them-bubble-item
+  border: 1px solid white
 section
   height: 100%
 
@@ -106,5 +141,4 @@ section
 
 .btn-add
   border: 2px solid black
-
 </style>

@@ -8,12 +8,12 @@
 /* eslint-env node */
 
 module.exports = function (/* ctx */) {
-    return {
+  return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
-      
+
       'axios',
     ],
 
@@ -53,9 +53,14 @@ module.exports = function (/* ctx */) {
       components: [
         'QBtn',
         'QBtnGroup',
-        'QInput'
+        'QInput',
+        'QDialog'
+
       ],
-      directives: [],
+      directives: [
+        'ClosePopup'
+
+      ],
 
       // Quasar plugins
       plugins: []
@@ -84,8 +89,8 @@ module.exports = function (/* ctx */) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
-cfg.module.rules.push({
+      extendWebpack(cfg) {
+        cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
@@ -192,7 +197,7 @@ cfg.module.rules.push({
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack (/* cfg */) {
+      extendWebpack(/* cfg */) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }
