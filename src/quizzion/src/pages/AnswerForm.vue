@@ -3,25 +3,25 @@
     <div class="bg-image row window-height items-center">
       <div class="left-half col-xs-12 col-sm-6">
         <h3 class="xs-hide">{{ currentQuestion.title}}</h3>
-        <h5 class="xs">{{ currentQuestion.title}}</h5>
-          <h5 class="xs-hide"> {{currentQuestion.description}} </h5>
-          <p class="xs"> {{currentQuestion.description}} </p>
-          <img
-            alt="Quasar logo"
-            src="~assets/quasar-logo-full.svg"
-          >
+        <h5 class="xs"><strong>{{ currentQuestion.title}}</strong></h5>
+        <h5 class="xs-hide"> {{currentQuestion.description}} </h5>
+        <p class="xs"> {{currentQuestion.description}} </p>
+        <img
+          alt="Quasar logo"
+          src="~assets/quasar-logo-full.svg"
+        >
       </div>
-        <div class="right-half col-xs-12 col-sm-6">
-          <div class="counter-container">
-            <h4 class="xs-hide counter">15</h4>
-            <h5 class="xs counter">15</h5>
-          </div>
-          <p style="margin-top: 5%">A: Quasar</p>
-          <p>B: JavaScript</p>
-          <p>C: VueJS</p>
-          <p style="margin-bottom: 16%">D: C++</p>
+      <div class="right-half col-xs-12 col-sm-6">
+        <div class="counter-container">
+          <h4 class="xs-hide counter">15</h4>
+          <h5 class="xs counter">15</h5>
         </div>
+        <p style="margin-top: 5%">A: Quasar</p>
+        <p>B: JavaScript</p>
+        <p>C: VueJS</p>
+        <p style="margin-bottom: 16%">D: C++</p>
       </div>
+    </div>
   </q-page>
 </template>
 
@@ -41,7 +41,10 @@
 </script>
 
 <style scoped>
-  * { padding: 0; margin: 0; }
+  * {
+    padding: 0;
+    margin: 0;
+  }
 
   .counter-container {
     transform: translateY(-50%);
@@ -57,7 +60,7 @@
     width: 70px
   }
 
-  .bg-image{
+  .bg-image {
     background-image: url("~assets/bg_answer_screen.png");
   }
 
