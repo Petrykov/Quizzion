@@ -39,29 +39,61 @@
           <div class="col">
             <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
-              <p class="answer" style="color:grey;">{{answer.name}}</p>
+              <q-input  class="answer" 
+                        dense
+                        style="color:grey;"   
+                        dark 
+                        v-model="answer.name">
+
+              </q-input>
             </div>
 
-            <div class="row">
+            <div class="row insert_new">
               <q-icon 
                 name = "add_circle_outline"
                 color= "green-7"
                 style = "cursor : pointer;"
                 size = "2em"
-                class="addQuestionBtn"/>
+                class="addQuestionBtn"
+                @click="addAnswer"/>
 
-                <p class="addQuestionTxt" style="color:grey;">add answer</p>
+                <q-input class="addQuestionTxt" style="color:grey;" dense label="Add new answer" v-model="newAnswer" dark></q-input>
             </div>
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
 
+        <div class="row"> 
           <q-icon 
               name = "timer"
               color= "white"
               style = "cursor : pointer;"
               size = "5em"
               class="q-mr-xs"/>
+
+              <q-input dark class="q-ml-lg" v-model="questions[selectedQuestion].time.value" label="Set a time for a question">
+
+              </q-input>
+
+              <q-btn-dropdown size="10px" style="padding-left: 0.5em; font-size: 15px;" dense class="q-ml-lg" color="primary" :label="questions[selectedQuestion].time.unit">
+                <q-list>
+                  <q-item clickable v-close-popup
+                  @click="changeUnit('Minutes')">
+                    <q-item-section>
+                      <q-item-label>Minutes</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable v-close-popup
+                  @click="changeUnit('Seconds')">
+                    <q-item-section>
+                      <q-item-label>Seconds</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                </q-list>
+              </q-btn-dropdown>
+          </div>
 
         </q-page>
       </q-page-container>
@@ -77,12 +109,19 @@
 
                 selectedQuestion: 0,
 
+                newAnswer: '',
+
                 questions: [
                     {
                         id: 1,
                         name: 'Question title 1',
                         description: 'Description for the first question',
                         active: true,
+                        time: {
+                          unit: 'minutes',
+                          value: 0
+                        },
+
                         answers: [
                             {
                                 id: 1,
@@ -105,6 +144,11 @@
                         name: 'Question title 2',
                         description: 'Description for the second question',
                         active: false,
+                        time: {
+                          unit: 'minutes',
+                          value: 0
+                        },
+                        
                         answers: [
                             {
                                 id: 1,
@@ -127,6 +171,11 @@
                         name: 'Question title 3',
                         description: 'Description for third question',
                         active: false,
+                        time: {
+                          unit: 'minutes',
+                          value: 0
+                        },
+
                         answers: [
                             {
                                 id: 1,
@@ -151,14 +200,24 @@
 
         methods: {
             onQustionClick(id) {
-
                 this.selectedQuestion = id;
-
-                // this.quesitonDetails.title = this.questionButtons[id].name;
-
-                // this.questionButtons.map(btn => btn.active = false);
-                // this.questionButtons[id].active = true;
             },
+
+            addAnswer(){
+              let q = this.questions[this.selectedQuestion].answers;
+                q.push({
+                                id: q[q.length - 1] + 1,
+                                name: this.newAnswer,
+                                isCorrect: false,
+                            });
+
+                            this.newAnswer = '';
+            },
+
+            changeUnit(type){
+                console.log('inside');
+                this.questions[this.selectedQuestion].time.unit = type;
+            }
         }
     }
 </script>
@@ -185,21 +244,31 @@
     margin-top: 2em;
   }
 
+  .editBtn{
+    margin-top: 2em;
+    margin-left: 1em;
+  }
+
+  .answer{
+    margin-left: 1em;
+    /* margin-top: 1em; */
+  }
+
   .addQuestionBtn{
     margin-top: 0.5em;
     margin-left: 0.25em;
   }
 
   .addQuestionTxt{
-    margin-left: 0.7em;
-  }
-
-  .answer {
-    margin-top: 1em;
+    margin-left: 1.2em;
   }
 
   .q-checkbox__bg {
     border-radius: 10px;
+  }
+
+  .insert_new{
+    margin-top: 1em;
   }
 
 </style>
