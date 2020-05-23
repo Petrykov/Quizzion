@@ -15,6 +15,15 @@
               {{btn.name}}
             </q-btn>
           </p>
+
+          <q-icon 
+                name = "add_circle_outline"
+                color= "green-7"
+                style = "cursor : pointer;"
+                size = "3em"
+                @click = "addNewQuestion"/>
+              
+
         </div>
       </q-page-container>
 
@@ -148,7 +157,7 @@
                           unit: 'minutes',
                           value: 0
                         },
-                        
+
                         answers: [
                             {
                                 id: 1,
@@ -217,6 +226,23 @@
             changeUnit(type){
                 console.log('inside');
                 this.questions[this.selectedQuestion].time.unit = type;
+            },
+
+            addNewQuestion(){
+              this.questions.push({
+                        id: this.questions[this.selectedQuestion].answers[this.questions[this.selectedQuestion].answers.length-1]+1,
+                        name: 'New question',
+                        description: '',
+                        active: false,
+                        time: {
+                          unit: 'seconds',
+                          value: 0
+                        },
+
+                        answers: [
+                            
+                        ]
+                    })
             }
         }
     }
