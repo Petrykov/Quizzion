@@ -37,19 +37,10 @@
           <p class="paragraph" style="color:white; font-size:2em;"> The answers?</p>
 
           <div class="col">
-            <div class="row">
-              <q-checkbox dark v-model="val" rounded/>
-              <p class="answer" style="color:grey;">Answer-1: </p>
-            </div>
 
-            <div class="row">
-              <q-checkbox dark v-model="val" rounded/>
-              <p class="answer" style="color:grey;">Answer-2: </p>
-            </div>
-
-            <div class="row">
-              <q-checkbox dark v-model="val" rounded/>
-              <p class="answer" style="color:grey;">Answer-2: </p>
+            <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
+              <q-checkbox dark v-model="answer.isCorrect" rounded/>
+              <p class="answer" style="color:grey;">{{answer.name}}</p>
             </div>
 
           </div>
