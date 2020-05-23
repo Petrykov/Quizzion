@@ -45,7 +45,7 @@
             <div class="row">
               <q-icon 
                 name = "add_circle_outline"
-                color= "white"
+                color= "green-7"
                 style = "cursor : pointer;"
                 size = "2em"
                 class="addQuestionBtn"/>
@@ -191,7 +191,7 @@
   }
 
   .addQuestionTxt{
-    margin-left: 1em;
+    margin-left: 0.7em;
   }
 
   .answer {
