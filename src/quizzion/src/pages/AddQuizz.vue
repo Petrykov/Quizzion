@@ -34,16 +34,34 @@
             color="grey"
           />
 
-          <p class="paragraph" style="color:white; font-size:2em;"> The answers?</p>
+          <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-
             <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
-              <q-checkbox dark v-model="answer.isCorrect" rounded/>
+              <q-checkbox dark v-model="answer.isCorrect"/>
               <p class="answer" style="color:grey;">{{answer.name}}</p>
             </div>
 
+            <div class="row">
+              <q-icon 
+                name = "add_circle_outline"
+                color= "white"
+                style = "cursor : pointer;"
+                size = "2em"
+                class="addQuestionBtn"/>
+
+                <p class="addQuestionTxt" style="color:grey;">add answer</p>
+            </div>
           </div>
+
+          <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
+
+          <q-icon 
+              name = "timer"
+              color= "white"
+              style = "cursor : pointer;"
+              size = "5em"
+              class="q-mr-xs"/>
 
         </q-page>
       </q-page-container>
@@ -165,6 +183,15 @@
 
   .paragraph {
     margin-top: 2em;
+  }
+
+  .addQuestionBtn{
+    margin-top: 0.5em;
+    margin-left: 0.25em;
+  }
+
+  .addQuestionTxt{
+    margin-left: 1em;
   }
 
   .answer {
