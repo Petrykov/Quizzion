@@ -54,7 +54,9 @@ module.exports = function (/* ctx */) {
         'QBtn',
         'QBtnGroup',
         'QInput',
-        'QDialog'
+        'QDialog',
+        'QUploader',
+        'QFile'
 
       ],
       directives: [

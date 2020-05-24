@@ -35,7 +35,7 @@
           </div>
         </section>
       </div>
-      <div class="col right q-pa-md">
+      <div class="col right q-pa-md" :style="{background:themeColor}">
         <section class="column justify-between">
           <div class="col">
             <div class="row">
@@ -69,18 +69,21 @@
                   v-for="(n,index) in colors"
                   :key="`sm-${n}`"
                   :color="colors[index]"
+                  @click="themeColor=colors[index]"
                 />
               </div>
               <div class="q-pt-lg">Or a logo from your organization?</div>
-              <div class="q-pa-md theme-bubble">
+              <div class="q-pa-md theme-bubble" @click="$refs.file.click()">
                 <q-btn size="xx-large" round color="white">
                   <i class="fas fa-upload fa-lg" style="color: black"></i>
                 </q-btn>
               </div>
             </div>
           </div>
+          <input type="file" ref="file" style="display: none" />
           <div class="q-pa-md theme-bubble">
             <q-btn
+              to="/AddQuestions"
               color="white"
               icon-right="fas fa-arrow-right"
               rounded
@@ -98,18 +101,24 @@
 export default {
   data: () => {
     return {
-      colors: ["teal", "purple", "primary", "orange", "red"],
+      colors: ["teal", "purple", "brand", "orange", "red"],
       quizDes: null,
       quizName: null,
-      alert: false
+      alert: false,
+      themeColor: "teal"
     };
+  },
+  method: {
+    addQuiz: ()=>{
+      console.out(this.quizName)
+      console.out(this.quizDes)
+    }
   }
 };
 </script>
 
 <style lang="sass" scoped>
 .right
-  background: #181C30
   border-radius: 17px
 
 .welcome
@@ -141,4 +150,7 @@ section
 
 .btn-add
   border: 2px solid black
+
+.bg-brand
+  background: #181C30
 </style>

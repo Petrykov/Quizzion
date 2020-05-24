@@ -4,8 +4,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/CustomizedLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/CreateQuiz.vue') }
-    ]
+      { path: '', component: () => import('pages/CreateQuiz.vue') },
+      { path: "/AddQuestions", component: () => import('pages/CreateQuiz.vue') },]
   }
 ]
 
