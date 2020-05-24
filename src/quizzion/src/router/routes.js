@@ -2,10 +2,10 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/CustomizedLayout.vue'),
+    component: () => import('layouts/DashboardLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/CreateQuiz.vue') },
-      { path: "/AddQuestions", component: () => import('pages/CreateQuiz.vue') },]
+      { path: '', component: () => import('components/DashboardRight.vue') },
+      { path: "/AddQuiz", component: () => import('components/AddQuizz.vue') },]
   }
 ]
 
