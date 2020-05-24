@@ -4,7 +4,12 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      {
+         path: '', component: () => import('components/DashboardRight.vue')
+         },
+         {
+          path: '/add', component: () => import('pages/CreateQuiz.vue')
+        }  
     ]
   }
 ]

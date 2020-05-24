@@ -1,7 +1,5 @@
-
 <template>
-    <div>
-             <div class="split left">
+   <div class="split left" >
                 <h3 class="text-left" > Hi Quiz Master </h3>
                 <h5 class="text-left"> Welcome back to the gamespace, we missed you! </h5>
                 <h5 class="text-left" > Quizzes </h5>
@@ -18,51 +16,6 @@
                 ></q-btn>
 
         </div>
-        
-        <div v-if="pos > -1"  class="split right" 
-        v-bind:style="{ backgroundColor: quizzes[pos].color}">
-
-            <i class="fas fa-edit" to="/edit" clickable ></i>
-          
-            <h3 class="text-right">{{quizzes[pos].name}}</h3>
-
-            <p class="text-right" >  {{quizzes[pos].description}}  </p> 
-
-            <span style="margin-left: 5%">
-                 <tr>
-                     <th>
-                         <p class="text-right" style="font-size: 15px, margin-left: 140px" >Questions </p>   
-                     </th>
-                     <th>
-                         <div to="/edit" clickable>
-                          <i class="fas fa-edit" style="font-size: 15px "></i>
-                         </div>
-                     </th> 
-                 </tr>
-            </span>
-
-            <hr class="text-right">
-
-                   <!-- //TODO loop for all questions in quiz -->
-
-                   <ul>
-                    <li v-for="question in quizzes" :key="question">
-                    <ul>
-                    <li v-for="q in question.questions" :key="q.id">
-                        <p class="text-right" style="padding-top: 10px">   {{ q }} </p>
-                      
-                     </li>
-                    </ul>
-                    </li>
-                </ul>
-            
-                <div >
-                     <q-btn to="/add" clickable id="start_quiz_button" unelevated rounded color="white" text-color="black" label="Start quiz"  />
-                </div>
-
-             </div>
-    </div>
-    
 </template>
 
 <script>
@@ -92,21 +45,22 @@ export default {
                     color: 'green'
                 }
             ],
-            pos: 0
+            position: 0
         }
     },
     methods: {
-        getIndex(position) {
-            console.log(position);
-            return this.pos=position;
+        getIndex(index) {
+            console.log(index);
+            return this.position=index;
         }
     } 
     
 }
 </script>
-
 <style>
-
+.page{
+    overflow: auto;
+}
 
 .split {
   height: 100%;
@@ -115,7 +69,7 @@ export default {
   z-index: 1; 
   top: 0;
   padding-top: 20px;
-  
+    
 }
 
 .right {
@@ -123,6 +77,7 @@ export default {
   margin: 1%;
   border-radius: 25px;
 }
+
 .text-left{
     text-decoration-color: black;
     margin-left: 5%;
@@ -144,7 +99,6 @@ export default {
     position: absolute;
     right: 7%; 
     margin-top: 5%;
-
 }
 
 .fa-edit{
