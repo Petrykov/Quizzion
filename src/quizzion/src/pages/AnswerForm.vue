@@ -111,5 +111,9 @@
       line-height: 50px;
       width: 50px
     }
+
+    .bg-image {
+      background-size: 750px;
+    }
   }
 </style>
