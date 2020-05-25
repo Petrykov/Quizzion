@@ -63,7 +63,7 @@
           <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-            <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
+            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
               <q-input  class="answer"
                         dense
@@ -78,7 +78,7 @@
                 class = "q-mt-md"
                 style = "cursor : pointer;"
                 size = "2em"
-                @click="deleteAnswer(answer.id)"/>
+                @click="deleteAnswer(index)"/>
 
             </div>
 
