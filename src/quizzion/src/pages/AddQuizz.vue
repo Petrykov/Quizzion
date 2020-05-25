@@ -20,6 +20,15 @@
                 @click="onQustionClick(id)">
                   {{btn.name}}
               </q-btn>
+              
+              <q-icon 
+                name = "clear"
+                color= "red-7"
+                style = "cursor : pointer;"
+                size = "3em"
+                class = "q-ml-md q-mb-xs"
+                @click = "deleteQuestion(id)"/>
+
             </p>
 
           </q-scroll-area>
@@ -36,7 +45,9 @@
         </div>
       </q-page-container>
 
-      <q-page-container class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
+      <q-page-container
+        v-if="questions.length"
+        class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
         <q-page padding>
 
           <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12" label="Question's title"
@@ -55,15 +66,23 @@
           <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-            <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
+            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
               <q-input  class="answer" 
                         dense
                         style="color:grey;"   
                         dark 
                         v-model="answer.name">
-
               </q-input>
+
+              <q-icon 
+                name = "clear"
+                color= "red-7"
+                class = "q-mt-md"
+                style = "cursor : pointer;"
+                size = "2em"
+                @click="deleteAnswer(index)"/>
+
             </div>
 
             <div class="row insert_new">
@@ -73,7 +92,7 @@
                 style = "cursor : pointer;"
                 size = "2em"
                 class="addQuestionBtn"
-                @click="addAnswer"/>
+                @click="addAnswer(id)"/>
 
                 <q-input class="addQuestionTxt" style="color:grey;" dense label="Add new answer" v-model="newAnswer" dark></q-input>
             </div>
@@ -134,7 +153,6 @@
                         id: 1,
                         name: 'Question title 1',
                         description: 'Description for the first question',
-                        active: true,
                         time: {
                           unit: 'minutes',
                           value: 0
@@ -161,7 +179,6 @@
                         id: 2,
                         name: 'Question title 2',
                         description: 'Description for the second question',
-                        active: false,
                         time: {
                           unit: 'minutes',
                           value: 0
@@ -188,7 +205,6 @@
                         id: 3,
                         name: 'Question title 3',
                         description: 'Description for third question',
-                        active: false,
                         time: {
                           unit: 'minutes',
                           value: 0
@@ -238,20 +254,36 @@
             },
 
             addNewQuestion(){
+
+              let questionId; 
+
+              if(this.questions.length === 0){
+                questionId = 0
+              }else{
+                questionId = this.questions[this.selectedQuestion].answers[this.questions[this.selectedQuestion].answers.length-1]+1
+              }
+
               this.questions.push({
-                        id: this.questions[this.selectedQuestion].answers[this.questions[this.selectedQuestion].answers.length-1]+1,
+                        id: questionId,
                         name: 'New question',
                         description: '',
-                        active: false,
                         time: {
                           unit: 'seconds',
                           value: 0
                         },
 
                         answers: [
-                            
                         ]
                     })
+            },
+
+            deleteAnswer(index){
+              this.questions[this.selectedQuestion].answers.splice(index, 1);
+            },
+
+            deleteQuestion(index){
+              // console.log('inside: ' + index);
+              this.questions.splice(index, 1);
             }
         }
     }
