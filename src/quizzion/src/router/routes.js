@@ -5,28 +5,14 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
+      { path: '/login', component: () => import('layouts/LoginLayout.vue')} ,
+      { path: '/addQuizz', component: () => import('pages/AddQuizz.vue')}
 
       //Todo: check with team if we need layout for login or not
       // { path:'login',component:()=>import('pages/Login.vue')}
     ]
-  },
-  {
-    path: '/login',
-    component: () => import('layouts/LoginLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Login.vue') }
-      {
-        path: '',
-        component: () => import('pages/Index.vue')
-      },
-
-      {
-        path: '/addQuizz',
-        component: () => import('pages/AddQuizz.vue')
-      }
-    ]
   }
-]
+];
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
