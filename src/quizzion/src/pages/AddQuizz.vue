@@ -6,21 +6,30 @@
         <p style="font-size:3em;">Quizz name</p>
         <div class="vertical-allignment" style="">
 
-          <p v-for="(btn,id) in questions"
-             :key="id">
-            <q-btn
-              :outline="id == selectedQuestion ? false : true"
-              rounded color="black"
-              @click="onQustionClick(id)">
-              {{btn.name}}
-            </q-btn>
-          </p>
+          <q-scroll-area
+                class ="scroll-area"
+                :thumb-style="thumbStyle"
+                :content-style="contentStyle"
+                :content-active-style="contentActiveStyle"
+                style="height: 200px; max-width: 300px;">
 
+            <p v-for="(btn,id) in questions" :key="id">
+              <q-btn
+                :outline="id == selectedQuestion ? false : true"
+                rounded color="black"
+                @click="onQustionClick(id)">
+                  {{btn.name}}
+              </q-btn>
+            </p>
+
+          </q-scroll-area>
+          
           <q-icon 
                 name = "add_circle_outline"
                 color= "green-7"
                 style = "cursor : pointer;"
                 size = "3em"
+                class = "q-mt-md"
                 @click = "addNewQuestion"/>
               
 
@@ -259,6 +268,13 @@
     top: 30%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+  }
+
+  .scroll-area{
+    border: 1px solid black;
+    border-radius: 5px;
+    background: #d1d1e0;
+    margin: 0 auto;
   }
 
   .questionInput {
