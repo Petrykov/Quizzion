@@ -84,21 +84,28 @@
 
             </div>
 
-              <form @submit.prevent>
+              <form>
                 <div class="row insert_new">
+                   
+                  <q-input 
+                    class="addQuestionTxt" 
+                    style="color:grey;" 
+                    label="Add new answer" 
+                    v-model="newAnswer"
+                    :rules="[val => !!val || 'Field is required']"
+                    dark/>
+
                   <q-icon 
+                    v-if = "newAnswer.length !== 0"
                     name = "add_circle_outline"
                     color= "green-7"
                     style = "cursor : pointer;"
                     size = "2em"
                     class="addQuestionBtn"
                     @click="addAnswer(id)"/>
-                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
-                </div>
-              </form>
-            
 
-                
+                  </div>
+                </form>
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
@@ -242,13 +249,14 @@
 
             addAnswer(){
               let q = this.questions[this.selectedQuestion].answers;
-                q.push({
-                                id: q[q.length - 1] + 1,
-                                name: this.newAnswer,
-                                isCorrect: false,
-                            });
 
-                            this.newAnswer = '';
+                q.push({
+                  id: q[q.length - 1] + 1,
+                  name: this.newAnswer,
+                  isCorrect: false,
+                });
+
+              this.newAnswer = '';
             },
 
             changeUnit(type){
@@ -337,7 +345,7 @@
   }
 
   .addQuestionTxt{
-    margin-left: 1.2em;
+    margin-left: 3.7em;
   }
 
   .q-checkbox__bg {
