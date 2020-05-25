@@ -1,5 +1,5 @@
 <template>
-  <q-page style="width:100%, height:100%">
+  <q-page style="width:100%; height:100%">
     <div class="split-l">
       <div class="centered">
         <LoginForm />

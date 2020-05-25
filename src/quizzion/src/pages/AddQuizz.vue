@@ -3,7 +3,7 @@
 
     <div class="row q-pa-lg" style="">
       <q-page-container class="col q-pa-lg" style="">
-        <p style="font-size:3em;">Quizz name</p>
+        <p style="font-size:3em;">Quiz name</p>
         <div class="vertical-allignment" style="">
 
           <q-scroll-area

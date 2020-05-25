@@ -27,7 +27,13 @@
 
 <script>
 export default {
-  name: "LoginForm"
+  name: "LoginForm",
+    data() {
+      return {
+          email: '',
+          password: ''
+      }
+    }
 };
 </script>
 
