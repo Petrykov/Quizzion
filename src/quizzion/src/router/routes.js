@@ -2,12 +2,13 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/LoginLayout.vue'),
+    component: () => import('layouts/DashboardLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
       { path: '/login', component: () => import('pages/Login.vue')} ,
       { path: '/addQuizQuestions', component: () => import('pages/AddQuizz.vue')}
       { path: '/answer', component: () => import('pages/AnswerForm.vue') }
+      { path: '', component: () => import('components/DashboardRight.vue') },
+      { path: "/AddQuiz", component: () => import('components/AddQuizz.vue') }
       //Todo: check with team if we need layout for login or not
       // { path:'login',component:()=>import('pages/Login.vue')}
     ]
