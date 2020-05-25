@@ -7,7 +7,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Your work has been saved sucessfully!</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
+          <q-btn flat label="OK" color="primary" v-close-popup to="/" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -21,7 +21,7 @@
           v-model="quizName"
           placeholder="Add Quiz's name"
         ></q-input>
-        <i @click="alert=true" class="far fa-save fa-2x" />
+        <i class="far fa-save fa-2x" @click="addQuiz" />
       </div>
       <q-input
         v-model="quizDes"
@@ -43,7 +43,7 @@
             v-for="(n,index) in colors"
             :key="`sm-${n}`"
             :color="colors[index]"
-            @click="themeColor=colors[index]"
+            @click="$emit('changeTheme',themeColor=colors[index])"
           />
         </div>
         <div class="q-pt-lg">Or a logo from your organization?</div>
@@ -80,44 +80,62 @@ export default {
       themeColor: "teal"
     };
   },
-  method: {
-    addQuiz: () => {
-      console.out(this.quizName);
-      console.out(this.quizDes);
+  methods: {
+    addQuiz: function() {
+      console.log(this.quizName);
+      console.log(this.quizDes);
+
+      var lastId = 0;
+      for (var q in this.quizlist) {
+        if (q > lastId) {
+          lastId = q;
+        }
+      } //this part is a bit odd, have to check again
+      console.log("last id" + lastId);
+      var newQuiz = {
+        name: this.quizName,
+        description: this.quizDes,
+        color: this.themeColor,
+        questions: [],
+        id: ++lastId
+      };
+      this.$emit("add", newQuiz);
+      this.alert = true;
     }
-  }
+  },
+  props: ["quizlist"]
 };
 </script>
 
 <style lang="sass" scoped>
 .right
-    border-radius: 17px
+  border-radius: 17px
 
 .welcome
-    font-size: larger
+  font-size: larger
 
 .add-name
-    font-size: xx-large
+  font-size: xx-large
 
 .instruction
-    font-size: large
-    color: white
+  font-size: large
+  color: white
 
 .theme-bubble
-    display: flex
-    justify-content: center
+  display: flex
+  justify-content: center
 
 .them-bubble-item
-    border: 1px solid white
+  border: 1px solid white
 section
-    height: 100%
+  height: 100%
 
 .fa-save
-    color: white
+  color: white
 
 .btn-add
-    border: 2px solid black
+  border: 2px solid black
 
 .bg-brand
-    background: #181C30
+  background: #181C30
 </style>

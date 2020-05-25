@@ -1,11 +1,11 @@
 <template>
-  <section class="column justify-between" v-if="pos > -1">
+  <section class="column justify-between">
     <div class="col">
       <div class="row">
-        <h3 style="color: white" class="col">{{quizzes[pos].name}}</h3>
+        <h3 style="color: white" class="col">{{currentQuiz.name}}</h3>
         <i @click="edit=true" class="fas fa-edit fa-2x" to="/edit" />
       </div>
-      <p style="color: white">{{quizzes[pos].description}}</p>
+      <p style="color: white">{{currentQuiz.description}}</p>
     </div>
     <div class="col-6">
       <div class="row justify-between">
@@ -14,13 +14,9 @@
           <i class="fas fa-edit fa-lg"></i>
         </div>
       </div>
-      <ul>
-        <li v-for="question in quizzes" :key="question">
-          <ul>
-            <li v-for="q in question.questions" :key="q.id">
-              <p class="text-right">{{q}}</p>
-            </li>
-          </ul>
+      <ul v-for="q in currentQuiz.questions" :key="q">
+        <li>
+          <p class="text-right">{{q}}</p>
         </li>
       </ul>
     </div>
@@ -33,32 +29,6 @@
 export default {
   data() {
     return {
-      quizzes: [
-        {
-          id: 0,
-          name: "Pub quiz 0",
-          description:
-            " Description quiz 0 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "teal"
-        },
-        {
-          id: 1,
-          name: "Pub quiz 1",
-          description:
-            "Description quiz 1 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "blue"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        }
-      ],
       pos: 0
     };
   },
@@ -67,7 +37,8 @@ export default {
       console.log(position);
       return (this.pos = position);
     }
-  }
+  },
+  props: ["currentQuiz"]
 };
 </script>
 

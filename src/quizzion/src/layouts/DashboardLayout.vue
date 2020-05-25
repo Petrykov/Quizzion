@@ -12,20 +12,18 @@
             <div class="q-pl-md q-gutter-md q-gutter-y-md">
               <q-btn
                 to="/"
-                v-for="(quiz, index) in quizzes"
+                v-for="(quiz) in quizzes"
                 :key="quiz.id"
-                :color="quizzes[index].color"
+                :color="quiz.color"
                 class="quizzes button"
-                @click="themeColor=quizzes[index].color"
+                @click="themeColor=quiz.color,index=quiz.id"
               ></q-btn>
               <q-btn
                 to="/AddQuiz"
                 class="add button"
                 padding="sm"
                 color="grey"
-                v-for="n in 1"
                 icon="fas fa-plus"
-                :key="n"
                 @click="themeColor='teal'"
               >
                 <div class="ex1"></div>
@@ -36,7 +34,7 @@
       </div>
       <div :style="{background:themeColor}" class="col right q-pa-md">
         <section>
-          <router-view/>
+          <router-view :currentQuiz="quizzes[index]" @add="addQuiz" :quizlist="quizzes" @changeTheme="changeTheme"></router-view>
         </section>
       </div>
     </div>
@@ -52,13 +50,14 @@ export default {
   data() {
     return {
       themeColor: "teal",
+      index: 0,
       quizzes: [
         {
           id: 0,
           name: "Pub quiz 0",
           description:
             " Description quiz 0 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
+          questions: ["question 1", "question 2", "question 3", "question 4"],
           color: "teal"
         },
         {
@@ -66,7 +65,7 @@ export default {
           name: "Pub quiz 1",
           description:
             "Description quiz 1 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
+          questions: ["question 1", "question 2", "question 3", "question 4"],
           color: "blue"
         },
         {
@@ -74,65 +73,23 @@ export default {
           name: "Pub quiz 2",
           description:
             "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
-          color: "green"
-        },
-        {
-          id: 2,
-          name: "Pub quiz 2",
-          description:
-            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-          questions: ["question 1"],
+          questions: ["question 1", "question 2", "question 3", "question 4"],
           color: "green"
         }
-      ],
-      pos: 0
+      ]
     };
   },
+  computed: {},
   methods: {
     getIndex(position) {
       console.log(position);
       return (this.pos = position);
+    },
+    addQuiz(quiz) {
+      this.quizzes.push(quiz);
+    },
+    changeTheme(color){
+      this.themeColor = color
     }
   }
 };
@@ -143,9 +100,9 @@ export default {
   height: 100%
   position: fixed
   width: 100%
- 
+
 .layout
-   overflow: hidden
+  overflow: hidden
 
 .button
   border-radius: 10px
