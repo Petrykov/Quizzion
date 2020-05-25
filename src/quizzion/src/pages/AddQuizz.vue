@@ -7,21 +7,19 @@
         <div class="vertical-allignment" style="">
 
           <q-scroll-area
-                class ="scroll-area"
-                :thumb-style="thumbStyle"
-                :content-style="contentStyle"
-                :content-active-style="contentActiveStyle"
-                style="height: 200px; max-width: 300px;">
+            class="scroll-area"
+            style="height: 275px; max-width: 300px;">
+
 
             <p v-for="(btn,id) in questions" :key="id">
               <q-btn
-                :outline="id == selectedQuestion ? false : true"
+                :outline="id!=selectedQuestion"
                 rounded color="black"
-                @click="onQustionClick(id)">
-                  {{btn.name}}
+                @click="onQuestionClick(id)">
+                {{btn.name}}
               </q-btn>
-              
-              <q-icon 
+
+              <q-icon
                 name = "remove_circle_outline"
                 color= "black"
                 style = "cursor : pointer;"
@@ -31,15 +29,15 @@
             </p>
 
           </q-scroll-area>
-          
-          <q-icon 
-                name = "add_circle_outline"
-                color= "green-7"
-                style = "cursor : pointer;"
-                size = "3em"
-                class = "q-mt-md"
-                @click = "addNewQuestion"/>
-              
+
+          <q-icon
+            name="add_circle_outline"
+            color="green-7"
+            style="cursor : pointer;"
+            size="3em"
+            class="q-mt-md"
+            @click="addNewQuestion"/>
+
 
         </div>
       </q-page-container>
@@ -67,14 +65,14 @@
           <div class="col">
             <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
-              <q-input  class="answer" 
+              <q-input  class="answer"
                         dense
-                        style="color:grey;"   
-                        dark 
+                        style="color:grey;"
+                        dark
                         v-model="answer.name">
               </q-input>
 
-              <q-icon 
+              <q-icon
                 name = "clear"
                 color= "red-7"
                 class = "q-mt-md"
@@ -86,6 +84,7 @@
 
               <form>
                 <div class="row insert_new">
+
                    
                   <q-input 
                     class="addQuestionTxt" 
@@ -95,51 +94,58 @@
                     :rules="[val => !!val || 'Field is required']"
                     dark/>
 
-                  <q-icon 
+            
+                  <q-icon
                     v-if = "newAnswer.length !== 0"
-                    name = "add_circle_outline"
-                    color= "green-7"
-                    style = "cursor : pointer;"
-                    size = "2em"
-                    class="addQuestionBtn"
-                    @click="addAnswer(id)"/>
+                      name = "add_circle_outline"
+                      color= "green-7"
+                      style = "cursor : pointer;"
+                      size = "2em"
+                      class="addQuestionBtn"
+                      @click="addAnswer(id)"/>
 
-                  </div>
-                </form>
+                </div>
+              </form>
+
+
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
 
-        <div class="row"> 
-          <q-icon 
-              name = "timer"
-              color= "white"
-              style = "cursor : pointer;"
-              size = "5em"
-              class="q-mr-xs"/>
+          <div class="row">
 
-              <q-input dark class="q-ml-lg" v-model="questions[selectedQuestion].time.value" label="Set a time for a question">
+            <q-icon
+              name="timer"
+              color="white"
+              size="5em"
+              class="q-mr-xs q-mt-md"/>
 
-              </q-input>
+            <div class="row col">
 
-              <q-btn-dropdown size="10px" style="padding-left: 0.5em; font-size: 15px;" dense class="q-ml-lg" color="primary" :label="questions[selectedQuestion].time.unit">
-                <q-list>
-                  <q-item clickable v-close-popup
-                  @click="changeUnit('Minutes')">
-                    <q-item-section>
-                      <q-item-label>Minutes</q-item-label>
-                    </q-item-section>
-                  </q-item>
+              <q-btn v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
+                     v-bind:key="index"
+                     rounded
+                     dark
+                     :outline="questions[selectedQuestion].time === time ? false : true"
+                     :text-color="questions[selectedQuestion].time === time ? 'black' : 'white'"
+                     :color="questions[selectedQuestion].time === time ? 'white' : 'none'"
+                     class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
+                     size="12px"
+                     @click="changeTime(time)"
+                     :label="time"/>
 
-                  <q-item clickable v-close-popup
-                  @click="changeUnit('Seconds')">
-                    <q-item-section>
-                      <q-item-label>Seconds</q-item-label>
-                    </q-item-section>
-                  </q-item>
+              <q-btn
+                     rounded
+                     dark
+                     :outline="questions[selectedQuestion].time === 'infinity' ? false : true"
+                     :text-color="questions[selectedQuestion].time === 'infinity' ? 'black' : 'white'"
+                     :color="questions[selectedQuestion].time === 'infinity' ? 'white' : 'none'"
+                     @click="changeTime('infinity')"
+                     class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
+                     size="12px"
+                     icon="all_inclusive"/>
 
-                </q-list>
-              </q-btn-dropdown>
+            </div>
           </div>
 
         </q-page>
@@ -163,11 +169,7 @@
                         id: 1,
                         name: 'Question title 1',
                         description: 'Description for the first question',
-                        time: {
-                          unit: 'minutes',
-                          value: 0
-                        },
-
+                        time: '5 sec',
                         answers: [
                             {
                                 id: 1,
@@ -189,11 +191,7 @@
                         id: 2,
                         name: 'Question title 2',
                         description: 'Description for the second question',
-                        time: {
-                          unit: 'minutes',
-                          value: 0
-                        },
-
+                        time: '',
                         answers: [
                             {
                                 id: 1,
@@ -215,11 +213,7 @@
                         id: 3,
                         name: 'Question title 3',
                         description: 'Description for third question',
-                        time: {
-                          unit: 'minutes',
-                          value: 0
-                        },
-
+                        time: '',
                         answers: [
                             {
                                 id: 1,
@@ -243,9 +237,10 @@
         },
 
         methods: {
-            onQustionClick(id) {
+            onQuestionClick(id) {
                 this.selectedQuestion = id;
             },
+
 
             addAnswer(){
               let q = this.questions[this.selectedQuestion].answers;
@@ -259,14 +254,13 @@
               this.newAnswer = '';
             },
 
-            changeUnit(type){
-                console.log('inside');
-                this.questions[this.selectedQuestion].time.unit = type;
+            changeTime(time) {
+                this.questions[this.selectedQuestion].time = time;
             },
 
             addNewQuestion(){
 
-              let questionId; 
+              let questionId;
 
               if(this.questions.length === 0){
                 questionId = 0
@@ -283,8 +277,7 @@
                           value: 0
                         },
 
-                        answers: [
-                        ]
+                        answers: []
                     })
             },
 
@@ -313,10 +306,9 @@
     transform: translateY(-50%);
   }
 
-  .scroll-area{
-    border: 1px solid black;
-    border-radius: 5px;
-    background: #d1d1e0;
+  .scroll-area {
+    border: 0.12em solid #d8d8d8;
+    border-radius: 8px;
     margin: 0 auto;
   }
 
@@ -329,20 +321,21 @@
     margin-top: 2em;
   }
 
-  .editBtn{
+  .editBtn {
     margin-top: 2em;
     margin-left: 1em;
   }
 
-  .answer{
+  .answer {
     margin-left: 1em;
     /* margin-top: 1em; */
   }
 
-  .addQuestionBtn{
+  .addQuestionBtn {
     margin-top: 0.5em;
     margin-left: 0.25em;
   }
+
 
   .addQuestionTxt{
     margin-left: 3.7em;
@@ -352,7 +345,7 @@
     border-radius: 10px;
   }
 
-  .insert_new{
+  .insert_new {
     margin-top: 1em;
   }
 
