@@ -28,7 +28,6 @@
                 size = "2em"
                 class = "q-ml-md q-mb-xs"
                 @click = "deleteQuestion(id)"/>
-
             </p>
 
           </q-scroll-area>
@@ -85,17 +84,21 @@
 
             </div>
 
-            <div class="row insert_new">
-              <q-icon 
-                name = "add_circle_outline"
-                color= "green-7"
-                style = "cursor : pointer;"
-                size = "2em"
-                class="addQuestionBtn"
-                @click="addAnswer(id)"/>
+              <form @submit.prevent>
+                <div class="row insert_new">
+                  <q-icon 
+                    name = "add_circle_outline"
+                    color= "green-7"
+                    style = "cursor : pointer;"
+                    size = "2em"
+                    class="addQuestionBtn"
+                    @click="addAnswer(id)"/>
+                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
+                </div>
+              </form>
+            
 
-                <q-input class="addQuestionTxt" style="color:grey;" dense label="Add new answer" v-model="newAnswer" dark></q-input>
-            </div>
+                
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
