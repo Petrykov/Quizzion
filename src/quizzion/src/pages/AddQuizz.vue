@@ -22,10 +22,10 @@
               </q-btn>
               
               <q-icon 
-                name = "clear"
-                color= "red-7"
+                name = "remove_circle_outline"
+                color= "black"
                 style = "cursor : pointer;"
-                size = "3em"
+                size = "2em"
                 class = "q-ml-md q-mb-xs"
                 @click = "deleteQuestion(id)"/>
 
