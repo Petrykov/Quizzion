@@ -9,9 +9,6 @@
           <q-scroll-area
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
-<!--            :thumb-style="thumbStyle"-->
-<!--            :content-style="contentStyle"-->
-<!--            :content-active-style="contentActiveStyle"-->
 
 
             <p v-for="(btn,id) in questions" :key="id">
@@ -21,6 +18,14 @@
                 @click="onQuestionClick(id)">
                 {{btn.name}}
               </q-btn>
+
+              <q-icon
+                name = "remove_circle_outline"
+                color= "black"
+                style = "cursor : pointer;"
+                size = "2em"
+                class = "q-ml-md q-mb-xs"
+                @click = "deleteQuestion(id)"/>
             </p>
 
           </q-scroll-area>
@@ -37,11 +42,12 @@
         </div>
       </q-page-container>
 
-      <q-page-container class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
+      <q-page-container
+        v-if="questions.length"
+        class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
         <q-page padding>
 
-          <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12"
-                   label="Question's title"
+          <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12" label="Question's title"
                    label-color="grey"/>
 
           <q-input
@@ -57,29 +63,40 @@
           <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-            <div class="row" v-for="answer in questions[selectedQuestion].answers" :key="answer.id">
+            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
-              <q-input class="answer"
-                       dense
-                       style="color:grey;"
-                       dark
-                       v-model="answer.name">
-
+              <q-input  class="answer"
+                        dense
+                        style="color:grey;"
+                        dark
+                        v-model="answer.name">
               </q-input>
-            </div>
 
-            <div class="row insert_new">
               <q-icon
-                name="add_circle_outline"
-                color="green-7"
-                style="cursor : pointer;"
-                size="2em"
-                class="addQuestionBtn"
-                @click="addAnswer"/>
+                name = "clear"
+                color= "red-7"
+                class = "q-mt-md"
+                style = "cursor : pointer;"
+                size = "2em"
+                @click="deleteAnswer(index)"/>
 
-              <q-input class="addQuestionTxt" style="color:grey;" dense label="Add new answer" v-model="newAnswer"
-                       dark></q-input>
             </div>
+
+              <form @submit.prevent>
+                <div class="row insert_new">
+                  <q-icon
+                    name = "add_circle_outline"
+                    color= "green-7"
+                    style = "cursor : pointer;"
+                    size = "2em"
+                    class="addQuestionBtn"
+                    @click="addAnswer(id)"/>
+                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
+                </div>
+              </form>
+
+
+
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
@@ -89,7 +106,6 @@
             <q-icon
               name="timer"
               color="white"
-              style=""
               size="5em"
               class="q-mr-xs q-mt-md"/>
 
@@ -142,7 +158,6 @@
                         id: 1,
                         name: 'Question title 1',
                         description: 'Description for the first question',
-                        active: true,
                         time: '5 sec',
                         answers: [
                             {
@@ -165,12 +180,7 @@
                         id: 2,
                         name: 'Question title 2',
                         description: 'Description for the second question',
-                        active: false,
-                        time: {
-                            unit: 'minutes',
-                            value: 0
-                        },
-
+                        time: '',
                         answers: [
                             {
                                 id: 1,
@@ -192,12 +202,7 @@
                         id: 3,
                         name: 'Question title 3',
                         description: 'Description for third question',
-                        active: false,
-                        time: {
-                            unit: 'minutes',
-                            value: 0
-                        },
-
+                        time: '',
                         answers: [
                             {
                                 id: 1,
@@ -240,24 +245,36 @@
                 this.newAnswer = '';
             },
 
-            changeUnit(type) {
-                console.log('inside');
-                this.questions[this.selectedQuestion].time.unit = type;
+            addNewQuestion(){
+
+              let questionId;
+
+              if(this.questions.length === 0){
+                questionId = 0
+              }else{
+                questionId = this.questions[this.selectedQuestion].answers[this.questions[this.selectedQuestion].answers.length-1]+1
+              }
+
+              this.questions.push({
+                        id: questionId,
+                        name: 'New question',
+                        description: '',
+                        time: {
+                          unit: 'seconds',
+                          value: 0
+                        },
+
+                        answers: []
+                    })
             },
 
-            addNewQuestion() {
-                this.questions.push({
-                    id: this.questions[this.selectedQuestion].answers[this.questions[this.selectedQuestion].answers.length - 1] + 1,
-                    name: 'New question',
-                    description: '',
-                    active: false,
-                    time: {
-                        unit: 'seconds',
-                        value: 0
-                    },
+            deleteAnswer(index){
+              this.questions[this.selectedQuestion].answers.splice(index, 1);
+            },
 
-                    answers: []
-                })
+            deleteQuestion(index){
+              // console.log('inside: ' + index);
+              this.questions.splice(index, 1);
             }
         }
     }
@@ -279,7 +296,6 @@
   .scroll-area {
     border: 0.12em solid #d8d8d8;
     border-radius: 8px;
-    /*background: #d1d1e0;*/
     margin: 0 auto;
   }
 
