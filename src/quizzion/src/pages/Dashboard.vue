@@ -3,13 +3,13 @@
     <div class="row q-pa-md main-layout">
       <div class="col">
         <section class="column justify-center q-pl-sm">
-          <div class="col">
+          <div class="col q-mt-lg" style="margin-left: auto; margin-right: auto; text-align: center;">
             <h2>Hi Quiz Master</h2>
             <span class="welcome">Welcome back to the gamespace, we missed you!</span>
           </div>
-          <div class="col-8">
+          <div class="col-8" style="margin: 0 auto; text-align: center;">
             <h6>Quizzes</h6>
-            <div class="q-pl-md q-gutter-md q-gutter-y-md">
+            <div class="q-pl-md q-gutter-md q-gutter-y-md q-mt-lg">
               <q-btn
                 to="/"
                 v-for="(quiz) in quizzes"
@@ -17,7 +17,7 @@
                 :color="quiz.color"
                 class="quizzes button"
                 @click="themeColor=quiz.color,index=quiz.id"
-              ></q-btn>
+              />
               <q-btn
                 to="/AddQuiz"
                 class="add button"
@@ -43,14 +43,10 @@
 </template>
 <script>
 
-    import SideBar from 'components/SideBar'
-
     export default {
         name: "CustomziedLayout",
 
-        components: {
-
-        },
+        components: {},
         data() {
             return {
                 themeColor: "teal",
@@ -106,27 +102,30 @@
     position: fixed
     width: 100%
 
-  .layout
-    overflow: hidden
+    .layout
+      overflow: hidden
 
-  .button
-    border-radius: 10px
-    height: 50px
-    width: 50px
-    text-align: center
-    text-decoration: none
-    display: inline-block
+    .button
+      border-radius: 10px
+      height: 50px
+      width: 50px
+      text-align: center
+      text-decoration: none
+      display: inline-block
 
-  section
-    height: 100%
+    section
+      height: 100%
 
-  .chosen
-    border: 2px solid black
+    .chosen
+      border: 2px solid black
 
-  .right
-    border-radius: 17px
+    .right
+      border-radius: 17px
+      padding: 2em
 
-  router-view
-    height: 100px
-    position: absolute
+    router-view
+      height: 100px
+      position: absolute
+
+
 </style>

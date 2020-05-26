@@ -11,6 +11,7 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
+          leftDrawerOpen = !leftDrawerOpen
         />
 
 
@@ -19,11 +20,12 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
+      overlay
       bordered
       content-class="bg-grey-1"
       :width="200"
     >
+
     <SideBar/>
 
     </q-drawer>
@@ -48,6 +50,19 @@ export default {
     return {
       leftDrawerOpen: false
     }
-  }
+  },
+
+    methods:{
+      check(){
+          console.log('cliked');
+      }
+    }
 }
 </script>
+
+<style>
+  .q-page-container {
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+  }
+</style>

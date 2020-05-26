@@ -9,14 +9,16 @@ const routes = [
         children: [
           {
             path: '',
-            component: () => import('components/DashboardRight')
+            component: () => import('components/DashboardRight.vue')
           },
-          {path: "/AddQuiz", component: () => import('components/AddQuizz.vue')}
+          {
+            path: "/AddQuiz", component: () => import('components/AddQuizz.vue')
+          }
         ]
       },
       {
         path: '/addQuizQuestions',
-        component: () => import('pages/AddQuizz')
+        component: () => import('pages/AddQuizQuestions.vue')
       }
     ]
   },
@@ -26,7 +28,7 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/Login')
+        component: () => import('pages/Login.vue')
       }
     ]
   },

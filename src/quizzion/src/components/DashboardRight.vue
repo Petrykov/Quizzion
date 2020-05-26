@@ -1,71 +1,81 @@
 <template>
   <section class="column justify-between">
     <div class="col">
+
       <div class="row">
-        <h3 style="color: white" class="col">{{currentQuiz.name}}</h3>
-        <i @click="edit=true" class="fas fa-edit fa-2x" to="/addQuizQuestions" />
+        <h3
+          style="color: black"
+          class="col">{{currentQuiz.name}}
+        </h3>
+
+        <q-icon
+          @click="edit=true"
+          name="edit"
+          size="2em"
+          style="cursor : pointer;"
+          color="white"/>
+
       </div>
+
       <p style="color: white">{{currentQuiz.description}}</p>
     </div>
+
     <div class="col-6">
+
       <div class="row justify-between">
-        <span style="color:white">Questions</span>
+        <span style="color:black; font-size: 2em;">Questions</span>
+
         <div to="/edit">
-          <i class="fas fa-edit fa-lg"></i>
+          <q-btn to="/addQuizQuestions"
+                 unelevated
+                 dark
+                 dense
+                 style="background: transparent;"
+                 text-color="white"
+                 size="16px"
+                 icon="edit"/>
         </div>
+
       </div>
-      <ul v-for="q in currentQuiz.questions" :key="q">
+
+      <ul style="list-style-type: none;" v-for="q in currentQuiz.questions" :key="q">
         <li>
-          <p class="text-right">{{q}}</p>
+          <p style="font-size: 1.5em; color:white;">{{q}}</p>
         </li>
       </ul>
+
     </div>
+
     <div class="q-pa-md theme-bubble">
-      <q-btn to="/add" unelevated rounded color="white" text-color="black" label="Start quiz"></q-btn>
+      <q-btn to="/add" unelevated rounded color="white" text-color="black" label="Start quiz"/>
     </div>
+
   </section>
 </template>
+
 <script>
-export default {
-  data() {
-    return {
-      pos: 0
+    export default {
+        data() {
+            return {
+                pos: 0
+            };
+        },
+        methods: {
+            getIndex(position) {
+                console.log(position);
+                return (this.pos = position);
+            }
+        },
+        props: ["currentQuiz"]
     };
-  },
-  methods: {
-    getIndex(position) {
-      console.log(position);
-      return (this.pos = position);
-    }
-  },
-  props: ["currentQuiz"]
-};
 </script>
 
 
-<style scoped >
-.right {
-  border-radius: 17px;
-}
-.text-left {
-  text-decoration-color: black;
-  margin-left: 5%;
-  margin-right: 5%;
-}
+<style scoped>
 
-.fa-edit {
-  color: white;
-}
+  .theme-bubble {
+    display: flex;
+    justify-content: flex-end;
+  }
 
-.text-right {
-  color: white;
-  /* margin-left: 5%;
-  margin-right: 5%;
-  text-align: left; */
-}
-
-.theme-bubble {
-  display: flex;
-  justify-content: flex-end;
-}
 </style>

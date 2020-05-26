@@ -1,9 +1,9 @@
 <template>
-  <q-layout container style="" class="fullscreen shadow-2 rounded-borders">
+  <q-page container style="" class="shadow-2 rounded-borders">
 
     <div class="row q-pa-lg" style="">
-      <q-page-container class="col q-pa-lg" style="">
-        <p style="font-size:3em;">Quiz name</p>
+      <q-page-container class="col q-pa-lg" style="text-align: center;">
+        <p class = "q-mt-md" style="font-size:3em;">Quiz name</p>
         <div class="vertical-allignment" style="">
 
           <q-scroll-area
@@ -95,8 +95,6 @@
                 </div>
               </form>
 
-
-
           </div>
 
           <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
@@ -140,7 +138,7 @@
         </q-page>
       </q-page-container>
     </div>
-  </q-layout>
+  </q-page>
 </template>
 
 <script>
@@ -273,7 +271,6 @@
             },
 
             deleteQuestion(index){
-              // console.log('inside: ' + index);
               this.questions.splice(index, 1);
             }
         }
@@ -325,10 +322,6 @@
 
   .addQuestionTxt {
     margin-left: 1.2em;
-  }
-
-  .q-checkbox__bg {
-    border-radius: 10px;
   }
 
   .insert_new {
