@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-transparent"  >
-     
+
       <q-toolbar>
         <q-btn
           flat
@@ -13,14 +13,9 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-       
+
       </q-toolbar>
     </q-header>
-      
-      
-      <Left/>
-
-         
 
     <q-drawer
       v-model="leftDrawerOpen"
@@ -30,7 +25,7 @@
       :width="200"
     >
     <SideBar/>
-      
+
     </q-drawer>
 
     <q-page-container>
@@ -41,14 +36,11 @@
 
 <script>
 
-import Left from 'components/Left'
 import SideBar from 'components/SideBar'
 export default {
   name: 'MainLayout',
 
   components: {
-    
-    Left, 
     SideBar
   },
 
