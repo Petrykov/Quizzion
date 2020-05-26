@@ -4,14 +4,18 @@ export function login ({ commit, dispatch }, credentials) {
     api.login(
         credentials,
         //handle success
-        ( response ) => commit('login', response.data), //we might want to set the default axios headers here.
+        ( response ) => {
+          commit('login', response.data);
+          // this.$router.push('/')
+        }, //we might want to set the default axios headers here.
         //handle failure
         (/* error */) => {}
     );
 
     //MOCK DATA
     console.log("Mocking store...");
-    dispatch('mockStore', null, {root: true})
+    dispatch('mockStore', null, {root: true});
+    this.$router.push('/') //redirect to home after successful login (or, mock, in this case)
 }
 
 export function logout({ dispatch }) {
