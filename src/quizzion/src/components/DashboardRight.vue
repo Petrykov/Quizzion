@@ -17,11 +17,10 @@
 
       </div>
 
-      <p style="color: white">{{currentQuiz.description}}</p>
+      <p style="color: white; font-size: 1.5em;">{{currentQuiz.description}}</p>
     </div>
 
     <div class="col-6">
-
       <div class="row justify-between">
         <span style="color:black; font-size: 2em;">Questions</span>
 

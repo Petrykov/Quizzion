@@ -10,23 +10,24 @@
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
+            <div style=""> 
+              <p style="margin-top: 2em" v-for="(btn,id) in questions" :key="id">
+                <q-btn
+                  :outline="id!=selectedQuestion"
+                  rounded color="black"
+                  @click="onQuestionClick(id)">
+                  {{btn.name}}
+                </q-btn>
 
-            <p v-for="(btn,id) in questions" :key="id">
-              <q-btn
-                :outline="id!=selectedQuestion"
-                rounded color="black"
-                @click="onQuestionClick(id)">
-                {{btn.name}}
-              </q-btn>
-
-              <q-icon
-                name = "remove_circle_outline"
-                color= "black"
-                style = "cursor : pointer;"
-                size = "2em"
-                class = "q-ml-md q-mb-xs"
-                @click = "deleteQuestion(id)"/>
-            </p>
+                <q-icon
+                  name = "remove_circle_outline"
+                  color= "black"
+                  style = "cursor : pointer;"
+                  size = "2em"
+                  class = "q-ml-md q-mb-xs"
+                  @click = "deleteQuestion(id)"/>
+              </p>
+            </div>
 
           </q-scroll-area>
 
@@ -312,7 +313,6 @@
 
   .answer {
     margin-left: 1em;
-    /* margin-top: 1em; */
   }
 
   .addQuestionBtn {

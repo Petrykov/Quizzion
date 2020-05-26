@@ -2,42 +2,57 @@
   <q-page class="layout">
     <div class="row q-pa-md main-layout">
       <div class="col">
-        <section class="column justify-center q-pl-sm">
-          <div class="col q-mt-lg" style="margin-left: auto; margin-right: auto; text-align: center;">
-            <h2>Hi Quiz Master</h2>
-            <span class="welcome">Welcome back to the gamespace, we missed you!</span>
-          </div>
-          <div class="col-8" style="margin: 0 auto; text-align: center;">
-            <h6>Quizzes</h6>
-            <div class="q-pl-md q-gutter-md q-gutter-y-md q-mt-lg">
-              <q-btn
-                to="/"
-                v-for="(quiz) in quizzes"
-                :key="quiz.id"
-                :color="quiz.color"
-                class="quizzes button"
-                @click="themeColor=quiz.color,index=quiz.id"
-              />
-              <q-btn
-                to="/AddQuiz"
-                class="add button"
-                padding="sm"
-                color="grey"
-                icon="fas fa-plus"
-                @click="themeColor='teal'"
-              >
-                <div class="ex1"></div>
-              </q-btn>
+
+        <section class="column">
+          <div  style="margin-bottom:auto; margin-top:20%;" 
+                class="q-mb-lg">
+
+            <div  class="col q-mt-lg" 
+                  style="margin-left: auto; margin-right: auto; text-align: center;">
+              <h2>Hi Quiz Master</h2>
+              <span style="font-size: 1.5em;">Welcome back to the gamespace, we missed you!</span>
+            </div>
+
+            <div class="col-8" style="margin: 0 auto; text-align: center;">
+              <h3>Quizzes</h3>
+              <div class="q-pl-md q-gutter-md q-gutter-y-md q-mt-lg">
+                
+                <q-btn
+                  to="/"
+                  v-for="(quiz) in quizzes"
+                  :key="quiz.id"
+                  :color="quiz.color"
+                  class="quizzes button"
+                  @click="themeColor=quiz.color,index=quiz.id"
+                />
+
+                <q-btn
+                  to="/AddQuiz"
+                  class="add button"
+                  padding="sm"
+                  color="grey"
+                  icon="fas fa-plus"
+                  @click="themeColor='teal'"
+                >
+                  <div class="ex1"></div>
+                </q-btn>
+
+              </div>
             </div>
           </div>
         </section>
+
       </div>
+
       <div :style="{background:themeColor}" class="col right q-pa-md">
         <section>
-          <router-view :currentQuiz="quizzes[index]" @add="addQuiz" :quizlist="quizzes"
-                       @changeTheme="changeTheme"></router-view>
+          <router-view :currentQuiz="quizzes[index]" 
+                        @add="addQuiz" 
+                        :quizlist="quizzes"
+                        @changeTheme="changeTheme"/>
         </section>
       </div>
+      
     </div>
   </q-page>
 </template>
