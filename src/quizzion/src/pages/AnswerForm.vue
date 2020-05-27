@@ -92,6 +92,12 @@
         return this.currentQuestion.time !== undefined ? this.currentQuestion.time : '?'; //TODO: what to do when there is no timer? hide element?
       }
     },
+    beforeRouteUpdate (to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
+      this.quizId = to.params.quizId;
+      this.questionId = to.params.questionId;
+      this.selectedAnswer = '';
+      next();
+    },
     methods: {
       log() {
         console.log(this.nextQuestionId);
@@ -104,8 +110,6 @@
         else {
           // this.submitAnswer();
           this.$router.push(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
-          this.questionId = this.nextQuestionId;
-          this.selectedAnswer = '';
         }
       },
       goToResults() {
