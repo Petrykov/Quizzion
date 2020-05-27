@@ -1,22 +1,20 @@
 <template>
   <q-page container style="" class="shadow-2 rounded-borders">
-
     <div class="row q-pa-lg" style="">
       <q-page-container class="col q-pa-lg" style="text-align: center;">
         <p class = "q-mt-md" style="font-size:3em;">Quiz name</p>
         <div class="vertical-allignment" style="">
-
           <q-scroll-area
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
             <div style="">
-              <p style="margin-top: 2em" v-for="(btn,id) in questions" :key="id">
+              <p style="margin-top: 2em" v-for="(btn,id) in fetchQuestions" :key="id">
                 <q-btn
                   :outline="id!=selectedQuestion"
                   rounded color="black"
-                  @click="onQuestionClick(id)">
-                  {{btn.name}}
+                  @click="onQuestionClick(btn.id)">
+                  {{ btn.title }}
                 </q-btn>
 
                 <q-icon
@@ -48,12 +46,17 @@
         class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
         <q-page padding>
 
-          <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12" label="Question's title"
-                   label-color="grey"/>
+          <q-input 
+            v-model="fetchQuestionById.title"
+            class="questionInput" 
+            dark 
+            color="grey-12" 
+            label="Question's title"
+            label-color="grey"/>
 
           <q-input
             dark
-            v-model="questions[selectedQuestion].description"
+            v-model="fetchQuestionById.description"
             filled
             autogrow
             label="Question description"
@@ -64,13 +67,13 @@
           <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
+            <div class="row" v-for="(answer, index) in getAnswerById" :key="answer.id">
               <q-checkbox dark v-model="answer.isCorrect"/>
               <q-input  class="answer"
                         dense
                         style="color:grey;"
                         dark
-                        v-model="answer.name">
+                        :v-model="answer.title">
               </q-input>
 
               <q-icon
@@ -114,9 +117,7 @@
                      v-bind:key="index"
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === time ? false : true"
-                     :text-color="questions[selectedQuestion].time === time ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === time ? 'white' : 'none'"
+                     
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
                      @click="changeTime(time)"
@@ -125,9 +126,7 @@
               <q-btn
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === 'infinity' ? false : true"
-                     :text-color="questions[selectedQuestion].time === 'infinity' ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === 'infinity' ? 'white' : 'none'"
+                     
                      @click="changeTime('infinity')"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
@@ -146,9 +145,12 @@
     export default {
         data() {
             return {
+
+                answers: [],
+
                 val: true,
 
-                selectedQuestion: 0,
+                selectedQuestion: 'dr5rty',
 
                 newAnswer: '',
 
@@ -224,9 +226,35 @@
             }
         },
 
+        mounted(){
+          this.$store.dispatch('user/login');
+          // console.log('here:');
+          // console.log(this.fetchQuestionById);
+          // this.answers = this.fetchQuestionById.answers;
+          // console.log('here:');
+          // console.log(this.answers);
+          // console.log(this.getAnswerById);
+        },
+
+        computed: {
+            
+          fetchQuestions(){
+            return this.$store.getters['quizzes/getQestions'];
+          },
+
+          fetchQuestionById(){
+            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestion);
+          },
+
+          getAnswerById(){
+              return this.$store.getters['quizzes/getAnswerById'](this.selectedQuestion);  
+          }
+        },
+
         methods: {
             onQuestionClick(id) {
                 this.selectedQuestion = id;
+                console.log('id: ' + id);
             },
 
             changeTime(time) {

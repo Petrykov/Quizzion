@@ -23,3 +23,7 @@ export function getAnswerById( state ) {
         return state.answers.find(answer => answer.id === id);
     }
 }
+
+export function getQestions( state ) {
+    return state.questions;
+}
