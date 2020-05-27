@@ -272,6 +272,7 @@
             },
 
             deleteQuestion(index){
+              console.log('index: ' + index);
               this.questions.splice(index, 1);
             }
         }
