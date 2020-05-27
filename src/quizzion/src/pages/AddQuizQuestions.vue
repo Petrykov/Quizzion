@@ -10,7 +10,7 @@
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
-            <div style=""> 
+            <div style="">
               <p style="margin-top: 2em" v-for="(btn,id) in questions" :key="id">
                 <q-btn
                   :outline="id!=selectedQuestion"
@@ -272,6 +272,9 @@
             },
 
             deleteQuestion(index){
+
+                if(index === this.selectedQuestion) this.selectedQuestion = 0;
+
               this.questions.splice(index, 1);
             }
         }
