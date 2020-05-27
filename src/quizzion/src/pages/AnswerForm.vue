@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <q-btn @click="log">LOG</q-btn>
     <div class="bg-image row window-height items-center">
       <div class="left-half col-xs-12 col-sm-6">
         <h3 class="xs-hide">{{ currentQuestion.title}}</h3>
@@ -7,19 +8,37 @@
         <h5 class="xs-hide"> {{currentQuestion.description}} </h5>
         <p class="xs"> {{currentQuestion.description}} </p>
         <img
-          alt="Quasar logo"
-          src="~assets/quasar-logo-full.svg"
+          :src="currentQuestion.image"
         >
       </div>
       <div class="right-half col-xs-12 col-sm-6">
         <div class="counter-container">
-          <h4 class="xs-hide counter">15</h4>
-          <h5 class="xs counter">15</h5>
+          <h4 class="xs-hide counter">{{ timer }}</h4>
+          <h5 class="xs counter">{{ timer }}</h5>
         </div>
-        <p style="margin-top: 5%">A: Quasar</p>
-        <p>B: JavaScript</p>
-        <p>C: VueJS</p>
-        <p style="margin-bottom: 16%">D: C++</p>
+
+        <q-btn
+          class="answer-button"
+          no-caps
+          v-for="(answerId, idx) in currentQuestion.answers"
+          :key="answerId"
+          @click="selectAnswer(answerId)"
+        >
+
+          {{ indexes[idx] }}: {{ answerLabel(answerId) }}
+
+        </q-btn>
+
+        <div style="display: flex; justify-content: flex-end">
+          <q-btn class="next-button" no-caps>
+            Next question
+            <q-icon
+              name="fas fa-arrow-right"
+              size="1.4em"
+              color="black"
+              style="margin-left: 10px"/>
+          </q-btn>
+        </div>
       </div>
     </div>
   </q-page>
@@ -31,10 +50,27 @@
 
     data() {
       return {
-        currentQuestion: {
-          title: 'What is this framework\'s name?',
-          description: 'Hint: its in the pic'
-        }
+        quizId: this.$route.params.quizId,
+        questionId: this.$route.params.questionId,
+        indexes: ["A", "B", "C", "D", "E", "F"] //TODO: Should we restrict the amount of options a question can have?
+      }
+    },
+    computed: {
+      currentQuestion () {
+        return this.$store.getters['quizzes/getQuestionById'](this.questionId);
+      },
+      answerLabel () {
+        return this.$store.getters['quizzes/getAnswerLabelById'];
+      },
+      timer () {
+        return this.currentQuestion.time !== undefined ? this.currentQuestion.time : '?'; //TODO: what to do when there is no timer? hide element?
+      }
+    },
+    methods: {
+      log(){
+        console.log(this.currentQuestion);
+        console.log(this.questionId);
+        console.log(this.$store);
       }
     }
   }
@@ -61,6 +97,7 @@
   }
 
   .bg-image {
+    /*noinspection CssUnknownTarget*/
     background-image: url("~assets/bg_answer_screen.png");
   }
 
@@ -80,12 +117,13 @@
 
   img {
     display: block;
+    max-width: 75%;
     margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
   }
 
-  .right-half p {
+  .right-half .answer-button {
     background: white;
     display: inline-block;
     border-radius: 25px;
@@ -93,18 +131,26 @@
     margin-top: 3%;
     margin-bottom: 3%;
     width: 85%;
-    line-height: 75px;
+    line-height: 65px;
     text-align: center;
     font-size: large;
   }
 
-  @media screen and (max-width: 600px) {
+  .next-button {
+    margin: 3% 7.5% 3% auto;
+    /*margin-top: 3%;*/
+    /*margin-bottom: 3%;*/
+    background: white;
+    border-radius: 25px;
+  }
+
+  @media screen and (max-width: 599px) {
     .right-half {
       border-right: 0;
     }
 
-    .right-half p {
-      line-height: 50px;
+    .right-half .next-button {
+      line-height: 40px;
     }
 
     .counter {

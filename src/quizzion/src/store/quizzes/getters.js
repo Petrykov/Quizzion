@@ -23,3 +23,9 @@ export function getAnswerById( state ) {
         return state.answers.find(answer => answer.id === id);
     }
 }
+
+export function getAnswerLabelById( state ) {
+  return function (id) {
+    return state.answers.find(answer => answer.id === id).label;
+  }
+}

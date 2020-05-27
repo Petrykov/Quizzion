@@ -54,7 +54,7 @@ export let quizzesMock = {
             title: 'What are the main colours on the flag of spain?',
             description: 'Hint: You might be able to tell from this image:',
             image: 'https://www.worldatlas.com/r/w1200-h701-c1200x701/upload/23/08/01/shutterstock-104644850.jpg',
-            time: 30,
+            time: 15,
             answers: ['dudu7t', 'jsdiu', '87ydj', 'dhi8d']
         },
         {
@@ -62,7 +62,7 @@ export let quizzesMock = {
             title: 'What is the name of this symbol?',
             description: 'It is used to indicate a new paragraph.',
             image: '',
-            time: 30,
+            time: undefined,
             answers: ['jso45h', 'ehiruh', 'hu7tuh', 'o84y4']
         }
     ],
