@@ -67,13 +67,17 @@
           <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
 
           <div class="col">
-            <div class="row" v-for="(answer, index) in getAnswerById" :key="answer.id">
-              <q-checkbox dark v-model="answer.isCorrect"/>
+            <div  class="row" 
+                  v-for="(answer, index) in answers" 
+                  :key="answer.id">
+                  
+              <q-checkbox dark v-model="answer.correct"/>
               <q-input  class="answer"
                         dense
                         style="color:grey;"
                         dark
-                        :v-model="answer.title">
+                        v-model="answer.label"
+                        >
               </q-input>
 
               <q-icon
@@ -228,8 +232,7 @@
 
         mounted(){
           this.$store.dispatch('user/login');
-          // console.log('here:');
-          // console.log(this.fetchQuestionById);
+          // console.log(this.fetchQuestionById.answers);
           // this.answers = this.fetchQuestionById.answers;
           // console.log('here:');
           // console.log(this.answers);
@@ -247,14 +250,29 @@
           },
 
           getAnswerById(){
-              return this.$store.getters['quizzes/getAnswerById'](this.selectedQuestion);  
+            return this.$store.getters['quizzes/getAnswerById'](this.fetchQuestionById.answers[0]);  
           }
         },
 
         methods: {
+
+            fetchAnswers(){
+
+              this.answers = [];
+
+              for(let i = 0; i < this.fetchQuestionById.answers.length; i ++){
+                    this.answers.push(this.getAnswerById);
+              }
+
+              console.log('answers: ');
+              console.log(this.answers);;
+            },
+
             onQuestionClick(id) {
                 this.selectedQuestion = id;
                 console.log('id: ' + id);
+
+                this.fetchAnswers();
             },
 
             changeTime(time) {
