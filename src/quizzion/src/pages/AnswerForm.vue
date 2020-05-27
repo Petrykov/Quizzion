@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-btn @click="log">LOG</q-btn>
+    <!--    <q-btn @click="log">LOG</q-btn>-->
     <div class="bg-image row window-height items-center">
       <div class="left-half col-xs-12 col-sm-6">
         <h3 class="xs-hide">{{ currentQuestion.title}}</h3>
@@ -18,19 +18,25 @@
         </div>
 
         <q-btn
-          class="answer-button"
-          no-caps
           v-for="(answerId, idx) in currentQuestion.answers"
           :key="answerId"
           @click="selectAnswer(answerId)"
-        >
+          class="answer-button"
+          :class="[ selectedAnswer === answerId ? 'selected' : '']"
+          no-caps>
 
           {{ indexes[idx] }}: {{ answerLabel(answerId) }}
 
         </q-btn>
 
         <div style="display: flex; justify-content: flex-end">
-          <q-btn class="next-button" no-caps>
+          <q-btn
+            v-if="nextQuestionId"
+            @click="goToNext"
+            class="flow-button"
+            no-caps
+            :class="[ selectedAnswer === '' ? 'disabled' : '']"
+          >
             Next question
             <q-icon
               name="fas fa-arrow-right"
@@ -38,7 +44,23 @@
               color="black"
               style="margin-left: 10px"/>
           </q-btn>
+
+          <q-btn
+            v-else
+            @click="goToResults"
+            class="flow-button"
+            no-caps
+            :class="[ selectedAnswer === '' ? 'disabled' : '']"
+          >
+            See results!
+            <q-icon
+              name="fas fa-arrow-right"
+              size="1.4em"
+              color="black"
+              style="margin-left: 10px"/>
+          </q-btn>
         </div>
+
       </div>
     </div>
   </q-page>
@@ -52,25 +74,58 @@
       return {
         quizId: this.$route.params.quizId,
         questionId: this.$route.params.questionId,
-        indexes: ["A", "B", "C", "D", "E", "F"] //TODO: Should we restrict the amount of options a question can have?
+        indexes: ["A", "B", "C", "D", "E", "F"], //TODO: Should we restrict the amount of options a question can have?
+        selectedAnswer: ''
       }
     },
     computed: {
-      currentQuestion () {
+      currentQuestion() {
         return this.$store.getters['quizzes/getQuestionById'](this.questionId);
       },
-      answerLabel () {
+      nextQuestionId() {
+        return this.$store.getters['quizzes/getNextQuestionId'](this.quizId)(this.questionId);
+      },
+      answerLabel() {
         return this.$store.getters['quizzes/getAnswerLabelById'];
       },
-      timer () {
+      timer() {
         return this.currentQuestion.time !== undefined ? this.currentQuestion.time : '?'; //TODO: what to do when there is no timer? hide element?
       }
     },
     methods: {
-      log(){
-        console.log(this.currentQuestion);
-        console.log(this.questionId);
-        console.log(this.$store);
+      log() {
+        console.log(this.nextQuestionId);
+      },
+      selectAnswer(answerId) {
+        this.selectedAnswer = answerId;
+      },
+      goToNext() {
+        if (this.selectedAnswer === '') this.triggerNotification();
+        else {
+          // this.submitAnswer();
+          this.$router.push(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
+          this.questionId = this.nextQuestionId;
+          this.selectedAnswer = '';
+        }
+      },
+      goToResults() {
+        if (this.selectedAnswer === '') this.triggerNotification();
+        else {
+          // this.submitAnswer();
+          this.$router.push(`/results`);
+        }
+      },
+      triggerNotification() {
+        this.$q.notify({
+          type: 'negative',
+          message: `Please select an answer.`,
+          actions: [
+            {
+              label: 'Dismiss', color: 'white', handler: () => { /* ... */
+              }
+            }
+          ]
+        })
       }
     }
   }
@@ -123,7 +178,7 @@
     margin-right: auto;
   }
 
-  .right-half .answer-button {
+  .answer-button {
     background: white;
     display: inline-block;
     border-radius: 25px;
@@ -136,10 +191,13 @@
     font-size: large;
   }
 
-  .next-button {
+  /* Used dynamically to show which answer is selected */
+  .selected {
+    background: grey;
+  }
+
+  .flow-button {
     margin: 3% 7.5% 3% auto;
-    /*margin-top: 3%;*/
-    /*margin-bottom: 3%;*/
     background: white;
     border-radius: 25px;
   }
@@ -149,7 +207,7 @@
       border-right: 0;
     }
 
-    .right-half .next-button {
+    .right-half .flow-button {
       line-height: 40px;
     }
 

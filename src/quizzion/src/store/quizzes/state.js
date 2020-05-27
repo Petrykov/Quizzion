@@ -61,7 +61,7 @@ export let quizzesMock = {
             id: 'ft6t',
             title: 'What is the name of this symbol?',
             description: 'It is used to indicate a new paragraph.',
-            image: '',
+            image: 'https://i.pinimg.com/236x/6d/c2/67/6dc267235633a76c5d98d4b968fdb593--self-publishing-how-to-get-rid.jpg',
             time: undefined,
             answers: ['jso45h', 'ehiruh', 'hu7tuh', 'o84y4']
         }
