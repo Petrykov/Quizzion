@@ -41,6 +41,16 @@ const routes = [
         component: () => import('pages/AnswerForm.vue')
       }
     ]
+  },
+  {
+    path: '/invite',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/Invitation.vue')
+      }
+    ]
   }
 ]
 
