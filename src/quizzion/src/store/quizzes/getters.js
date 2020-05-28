@@ -61,3 +61,9 @@ export function getAnswers( state ) {
         return listToReturn;   
     }
 }
+
+export function getQuestionTitleById( state ) {
+    return function (id) {
+      return state.questions.find(question => question.id === id).title;
+    }
+  }

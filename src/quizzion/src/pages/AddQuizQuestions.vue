@@ -9,16 +9,17 @@ l<template>
             style="height: 275px; max-width: 300px;">
 
             <div>
-              <p  
-                style="margin-top: 2em" 
-                v-for="(btn,id) in questionList" 
-                :key="id">
+
+              <p  v-for="(questionId) in currentQuiz.questions"
+                  :key="questionId"
+                
+                style="margin-top: 2em" >
                   
                   <q-btn
-                    :outline="id != selectedQuestion"
+                    :outline="questionId != selectedQuestionId"
                     rounded color="black"
-                    @click="onQuestionClick(btn.id)">
-                    {{ btn.title }}
+                    @click = "onQuestionClick(questionId)">
+                    {{ questionTitle(questionId) }}
                   </q-btn>
 
                   <q-icon
@@ -26,8 +27,7 @@ l<template>
                     color= "black"
                     style = "cursor : pointer;"
                     size = "2em"
-                    class = "q-ml-md q-mb-xs"
-                    @click = "deleteQuestion(id)"/>
+                    class = "q-ml-md q-mb-xs"/>
 
                 </p>
               </div>
@@ -38,31 +38,29 @@ l<template>
             color="green-7"
             style="cursor : pointer;"
             size="3em"
-            class="q-mt-md"
-            @click="addNewQuestion"/>
+            class="q-mt-md"/>
 
 
         </div>
       </q-page-container>
 
       <q-page-container
-        v-if="questions.length"
         class="col q-pa-lg" 
-        style="background: #181c30; border-radius: 2em;">
+        style="background: #181c30; border-radius: 2em;"
+        v-if="selectedQuestion">
 
         <q-page padding>
 
           <q-input 
-            v-model="questionById.title"
             class="questionInput" 
             dark 
             color="grey-12" 
             label="Question's title"
+            v-model="selectedQuestion.title"
             label-color="grey"/>
 
           <q-input
             dark
-            v-model="questionById.description"
             filled
             autogrow
             label="Question description"
@@ -79,32 +77,31 @@ l<template>
             class="col">
 
             <div  
-              class="row" 
-              v-for="(answer, index) in answers" 
-              :key="answer.id">
+              v-for="(answer) in answers"
+              :key="answer.id"
+              class="row">
                   
               <q-checkbox 
-                dark 
-                v-model="answer.correct"/> 
+                v-model="answer.correct"
+                dark/> 
 
               <q-input  
                 class="answer"
                 dense
                 style="color:grey;"
-                dark
-                v-model="answer.label"/>
+                v-model="answer.label"
+                dark/>
 
               <q-icon
                 name = "clear"
                 color= "red-7"
                 class = "q-mt-md"
                 style = "cursor : pointer;"
-                size = "2em"
-                @click="deleteAnswer(index)"/>
+                size = "2em"/>
 
             </div>
 
-              <form @submit.prevent>
+              <form>
                 <div class="row insert_new">
 
                   <q-icon
@@ -112,14 +109,12 @@ l<template>
                     color= "green-7"
                     style = "cursor : pointer;"
                     size = "2em"
-                    class="addQuestionBtn"
-                    @click="addAnswer(id)"/>
+                    class="addQuestionBtn"/>
 
                   <q-input 
                     class="addQuestionTxt" 
                     style="color:grey;" 
-                    label="Add new answer" 
-                    v-model="newAnswer" 
+                    label="Add new answer"
                     dark/>
 
                 </div>
@@ -173,7 +168,9 @@ l<template>
 
                 val: true,
 
-                selectedQuestion: 'dr5rty',
+                selectedQuestionId: ' ',
+
+                currentQuizId: this.$route.params.quizzId,
 
                 newAnswer: '',
 
@@ -252,27 +249,33 @@ l<template>
         mounted(){
           this.$store.dispatch('user/login');
 
+          console.log(this.$route.params.quizzId)
+          console.log('id is: ' + this.selectedQuestionId);
         },
 
         computed: {
             
-          questionList(){
-            return this.$store.getters['quizzes/getQestions'];
+          currentQuiz(){
+            return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
           },
 
-          questionById(){
-            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestion);
+          selectedQuestion(){
+            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
           },
 
           answers(){
-            return this.$store.getters['quizzes/getAnswers'](this.questionById.answers);  
+            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);  
+          },
+
+          questionTitle(){
+            return this.$store.getters['quizzes/getQuestionTitleById'];
           }
         },
 
         methods: {
 
             onQuestionClick(id) {
-                this.selectedQuestion = id;
+                this.selectedQuestionId = id;
             },
 
             changeTime(time) {
