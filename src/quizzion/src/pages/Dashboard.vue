@@ -19,11 +19,11 @@
                 
                 <q-btn
                   to="/"
-                  v-for="(quiz) in quizzes"
+                  v-for="(quiz, position) in quizzes"
                   :key="quiz.id"
                   :color="quiz.color"
                   class="quizzes button"
-                  @click="themeColor=quiz.color,index=quiz.id"
+                  @click="themeColor=quiz.color, index = position"
                 />
 
                 <q-btn
@@ -46,7 +46,7 @@
 
       <div :style="{background:themeColor}" class="col right q-pa-md">
         <section>
-          <router-view :currentQuiz="quizzes[index]" 
+          <router-view  :currentQuiz="quizzes[index]" 
                         @add="addQuiz" 
                         :quizlist="quizzes"
                         @changeTheme="changeTheme"/>
@@ -65,11 +65,11 @@
         data() {
             return {
                 themeColor: "teal",
-                index: 0,
+                index: "",
                 leftDrawerOpen: false,
                 quizzes: [
                     {
-                        id: 0,
+                        id: "g67yuhb",
                         name: "Pub quiz 0",
                         description:
                             " Description quiz 0 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
@@ -77,7 +77,7 @@
                         color: "teal"
                     },
                     {
-                        id: 1,
+                        id: "fy5ryt",
                         name: "Pub quiz 1",
                         description:
                             "Description quiz 1 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
@@ -85,7 +85,7 @@
                         color: "blue"
                     },
                     {
-                        id: 2,
+                        id: "kh8yi7y",
                         name: "Pub quiz 2",
                         description:
                             "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",

@@ -1,104 +1,131 @@
-<template>
+l<template>
   <q-page container style="" class="shadow-2 rounded-borders">
-
     <div class="row q-pa-lg" style="">
       <q-page-container class="col q-pa-lg" style="text-align: center;">
-        <p class = "q-mt-md" style="font-size:3em;">Quiz name</p>
+        <p class = "q-mt-md" style="font-size:3em;">
+          {{ currentQuiz.title }}
+          </p>
         <div class="vertical-allignment" style="">
-
           <q-scroll-area
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
-            <div style="">
-              <p style="margin-top: 2em" v-for="(btn,id) in questions" :key="id">
-                <q-btn
-                  :outline="id!=selectedQuestion"
-                  rounded color="black"
-                  @click="onQuestionClick(id)">
-                  {{btn.name}}
-                </q-btn>
+            <div>
 
-                <q-icon
-                  name = "remove_circle_outline"
-                  color= "black"
-                  style = "cursor : pointer;"
-                  size = "2em"
-                  class = "q-ml-md q-mb-xs"
-                  @click = "deleteQuestion(id)"/>
-              </p>
-            </div>
+              <p  v-for="(questionId) in currentQuiz.questions"
+                  :key="questionId"
+                
+                style="margin-top: 2em" >
+                  
+                  <q-btn
+                    :outline="questionId != selectedQuestionId"
+                    rounded color="black"
+                    @click = "onQuestionClick(questionId)">
+                    {{ questionTitle(questionId) }}
+                  </q-btn>
 
-          </q-scroll-area>
+                  <q-icon
+                    name = "remove_circle_outline"
+                    color= "black"
+                    style = "cursor : pointer;"
+                    size = "2em"
+                    class = "q-ml-md q-mb-xs"/>
+
+                </p>
+              </div>
+            </q-scroll-area>
 
           <q-icon
             name="add_circle_outline"
             color="green-7"
             style="cursor : pointer;"
             size="3em"
-            class="q-mt-md"
-            @click="addNewQuestion"/>
+            class="q-mt-md"/>
 
 
         </div>
       </q-page-container>
 
       <q-page-container
-        v-if="questions.length"
-        class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
+        class="col q-pa-lg" 
+        style="background: #181c30; border-radius: 2em;"
+        v-if="selectedQuestion">
+
         <q-page padding>
 
-          <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12" label="Question's title"
-                   label-color="grey"/>
+          <q-input 
+            class="questionInput" 
+            dark 
+            color="grey-12" 
+            label="Question's title"
+            v-model="selectedQuestion.title"
+            label-color="grey"/>
 
           <q-input
             dark
-            v-model="questions[selectedQuestion].description"
             filled
             autogrow
             label="Question description"
             class="q-mt-md"
-            color="grey"
-          />
+            color="grey"/>
 
-          <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
+          <p 
+            class="paragraph" 
+            style="color:white; font-size:2em;">
+            The answers?
+          </p>
 
-          <div class="col">
-            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
-              <q-checkbox dark v-model="answer.isCorrect"/>
-              <q-input  class="answer"
-                        dense
-                        style="color:grey;"
-                        dark
-                        v-model="answer.name">
-              </q-input>
+          <div 
+            class="col">
+
+            <div  
+              v-for="(answer) in answers"
+              :key="answer.id"
+              class="row">
+                  
+              <q-checkbox 
+                v-model="answer.correct"
+                dark/> 
+
+              <q-input  
+                class="answer"
+                dense
+                style="color:grey;"
+                v-model="answer.label"
+                dark/>
 
               <q-icon
                 name = "clear"
                 color= "red-7"
                 class = "q-mt-md"
                 style = "cursor : pointer;"
-                size = "2em"
-                @click="deleteAnswer(index)"/>
+                size = "2em"/>
 
             </div>
 
-              <form @submit.prevent>
+              <form>
                 <div class="row insert_new">
+
                   <q-icon
                     name = "add_circle_outline"
                     color= "green-7"
                     style = "cursor : pointer;"
                     size = "2em"
-                    class="addQuestionBtn"
-                    @click="addAnswer(id)"/>
-                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
+                    class="addQuestionBtn"/>
+
+                  <q-input 
+                    class="addQuestionTxt" 
+                    style="color:grey;" 
+                    label="Add new answer"
+                    dark/>
+
                 </div>
               </form>
 
           </div>
 
-          <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
+          <p  class="paragraph" 
+              style="color:white; font-size:2em;">What about timer?</p>
 
           <div class="row">
 
@@ -114,9 +141,6 @@
                      v-bind:key="index"
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === time ? false : true"
-                     :text-color="questions[selectedQuestion].time === time ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === time ? 'white' : 'none'"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
                      @click="changeTime(time)"
@@ -125,9 +149,6 @@
               <q-btn
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === 'infinity' ? false : true"
-                     :text-color="questions[selectedQuestion].time === 'infinity' ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === 'infinity' ? 'white' : 'none'"
                      @click="changeTime('infinity')"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
@@ -146,9 +167,12 @@
     export default {
         data() {
             return {
+
                 val: true,
 
-                selectedQuestion: 0,
+                selectedQuestionId: ' ',
+
+                currentQuizId: this.$route.params.quizzId,
 
                 newAnswer: '',
 
@@ -224,9 +248,36 @@
             }
         },
 
+        mounted(){
+          this.$store.dispatch('user/login');
+
+          console.log(this.$route.params.quizzId)
+          console.log('id is: ' + this.selectedQuestionId);
+        },
+
+        computed: {
+            
+          currentQuiz(){
+            return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
+          },
+
+          selectedQuestion(){
+            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
+          },
+
+          answers(){
+            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);  
+          },
+
+          questionTitle(){
+            return this.$store.getters['quizzes/getQuestionTitleById'];
+          }
+        },
+
         methods: {
+
             onQuestionClick(id) {
-                this.selectedQuestion = id;
+                this.selectedQuestionId = id;
             },
 
             changeTime(time) {
@@ -272,9 +323,7 @@
             },
 
             deleteQuestion(index){
-
-                if(index === this.selectedQuestion) this.selectedQuestion = 0;
-
+              if(index === this.selectedQuestion) this.selectedQuestion = 0;
               this.questions.splice(index, 1);
             }
         }

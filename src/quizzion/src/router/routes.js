@@ -17,7 +17,7 @@ const routes = [
         ]
       },
       {
-        path: '/addQuizQuestions',
+        path: '/questions/:quizzId',
         component: () => import('pages/AddQuizQuestions.vue')
       }
     ]
@@ -33,7 +33,7 @@ const routes = [
     ]
   },
   {
-    path: '/answer',
+    path: '/quizzes/:quizId/questions/:questionId',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       {

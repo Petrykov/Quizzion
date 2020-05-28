@@ -1,29 +1,43 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import example from './module-example'
+import answerForm from './answer-form'
+import quizzes from './quizzes'
+import user from './user'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
+const modules = {
+    answerForm,
+    quizzes,
+    user
+};
 
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      // example
+//   ----- WebStorm gives a warning ↓↓↓ about typing, I believe it's a Vuex thing (https://github.com/vuejs/vuex/issues/1689), the store works regardless
+const store = new Vuex.Store({
+    modules,
+    actions: {
+      resetAll ({ dispatch }) {
+        for (const moduleName of Object.keys(modules)) {
+          if (modules[moduleName].actions && modules[moduleName].actions.reset) {
+            dispatch(`${moduleName}/reset`);
+          }
+        }
+      },
+      //this will be removed after we connected the backend etc. (Don't forget to remove the 'mock' mutations in each module also.
+      mockStore ({ commit }) {
+        for (const moduleName of Object.keys(modules)) {
+          if (modules[moduleName].mutations && modules[moduleName].mutations.mock) {
+            commit(`${moduleName}/mock`);
+            if (moduleName === 'quizzes') commit('quizzes/results/mock')
+          }
+        }
+      }
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV
-  })
+    strict: process.env.DEV,
+});
 
-  return Store
-}
+export default store;

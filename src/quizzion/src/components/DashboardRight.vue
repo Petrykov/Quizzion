@@ -25,14 +25,15 @@
         <span style="color:black; font-size: 2em;">Questions</span>
 
         <div to="/edit">
-          <q-btn to="/addQuizQuestions"
-                 unelevated
-                 dark
-                 dense
-                 style="background: transparent;"
-                 text-color="white"
-                 size="16px"
-                 icon="edit"/>
+          <q-btn 
+            unelevated
+            dark
+            dense
+            style="background: transparent;"
+            text-color="white"
+            size="16px"
+            @click="goToEdit"
+            icon="edit"/>
         </div>
 
       </div>
@@ -56,13 +57,17 @@
     export default {
         data() {
             return {
-                pos: 0
+                pos: 0,
             };
         },
         methods: {
             getIndex(position) {
-                console.log(position);
+                console.log('index: ' + position);
                 return (this.pos = position);
+            },
+
+            goToEdit(){
+              this.$router.push(`questions/${this.currentQuiz.id}`);
             }
         },
         props: ["currentQuiz"]
