@@ -5,7 +5,7 @@
       <div class="row">
         <h3
           style="color: black"
-          class="col">{{currentQuiz.name}}
+          class="col">{{ currentQuiz.title }}
         </h3>
 
         <q-icon
@@ -17,7 +17,7 @@
 
       </div>
 
-      <p style="color: white; font-size: 1.5em;">{{currentQuiz.description}}</p>
+      <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
     </div>
 
     <div class="col-6">
@@ -25,7 +25,7 @@
         <span style="color:black; font-size: 2em;">Questions</span>
 
         <div to="/edit">
-          <q-btn 
+          <q-btn
             unelevated
             dark
             dense
@@ -38,9 +38,9 @@
 
       </div>
 
-      <ul style="list-style-type: none;" v-for="q in currentQuiz.questions" :key="q">
+      <ul style="list-style-type: none;" v-for="questionId in currentQuiz.questions" :key="questionId">
         <li>
-          <p style="font-size: 1.5em; color:white;">{{q}}</p>
+          <p style="font-size: 1.5em; color:white;">{{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}</p>
         </li>
       </ul>
 
@@ -54,24 +54,24 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                pos: 0,
-            };
-        },
-        methods: {
-            getIndex(position) {
-                console.log('index: ' + position);
-                return (this.pos = position);
-            },
-
-            goToEdit(){
-              this.$router.push(`questions/${this.currentQuiz.id}`);
-            }
-        },
-        props: ["currentQuiz"]
-    };
+  export default {
+    data() {
+      return {
+        //...
+      };
+    },
+    methods: {
+      goToEdit() {
+        this.$router.push(`questions/${this.currentQuiz.id}`);
+      }
+    },
+    props: {
+      currentQuiz: {
+        type: String,
+        required: true
+      }
+    }
+  };
 </script>
 
 
