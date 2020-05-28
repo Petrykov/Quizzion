@@ -8,14 +8,14 @@ l<template>
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
-            <div style="">
+            <div>
               <p  
                 style="margin-top: 2em" 
-                v-for="(btn,id) in fetchQuestions" 
+                v-for="(btn,id) in questionList" 
                 :key="id">
                   
                   <q-btn
-                    :outline="id!=selectedQuestion"
+                    :outline="id != selectedQuestion"
                     rounded color="black"
                     @click="onQuestionClick(btn.id)">
                     {{ btn.title }}
@@ -53,7 +53,7 @@ l<template>
         <q-page padding>
 
           <q-input 
-            v-model="fetchQuestionById.title"
+            v-model="questionById.title"
             class="questionInput" 
             dark 
             color="grey-12" 
@@ -62,7 +62,7 @@ l<template>
 
           <q-input
             dark
-            v-model="fetchQuestionById.description"
+            v-model="questionById.description"
             filled
             autogrow
             label="Question description"
@@ -80,7 +80,7 @@ l<template>
 
             <div  
               class="row" 
-              v-for="(answer, index) in fetchAnswers" 
+              v-for="(answer, index) in answers" 
               :key="answer.id">
                   
               <q-checkbox 
@@ -171,8 +171,6 @@ l<template>
         data() {
             return {
 
-                answers: [],
-
                 val: true,
 
                 selectedQuestion: 'dr5rty',
@@ -253,25 +251,21 @@ l<template>
 
         mounted(){
           this.$store.dispatch('user/login');
-          // console.log(this.fetchQuestions);
-          // console.log(this.fetchQuestionById.answers);
-          // console.log(this.fetchAnswers); 
+
         },
 
         computed: {
             
-          fetchQuestions(){
+          questionList(){
             return this.$store.getters['quizzes/getQestions'];
           },
 
-          fetchQuestionById(){
+          questionById(){
             return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestion);
           },
 
-          fetchAnswers(){
-            // console.log('-----');
-            // console.log(this.fetchQuestionById.answers);
-            return this.$store.getters['quizzes/getAnswers'](this.fetchQuestionById.answers);  
+          answers(){
+            return this.$store.getters['quizzes/getAnswers'](this.questionById.answers);  
           }
         },
 
@@ -279,17 +273,6 @@ l<template>
 
             onQuestionClick(id) {
                 this.selectedQuestion = id;
-                this.answers = [];
-
-                this.fetchAnswers;
-
-                // console.log('ID: ' + id);
-
-                // console.log('answers in fetchQuestionById: ', this.fetchQuestionById.answers);
-                // console.log(this.fetchAnswers);
-                // this.answers.push(this.fetchAnswers);
-                // console.log('answers after: ', this.answers);
-                // console.log('id: ' + id);
             },
 
             changeTime(time) {

@@ -29,40 +29,18 @@ export function getQestions( state ) {
 }
 
 export function getAnswers( state ) {
+
     return function (idList){
         let listToReturn = [];
+        
         for(let i = 0; i < state.answers.length; i++){
             for(let j = 0; j < idList.length; j++){
                 if(state.answers[i].id === idList[j]){
                     listToReturn.push(state.answers[i]);
+                }
             }
-        }
-            // console.log(state.answers[i].id + ' | ' + idList[i]);
-
-            // if(state.answers[i].id === idList[i]){
-                
-                // console.log('inside [ ' + idList[i] + ' ]');
-                // listToReturn.push(state.answers[i]);
-            // }
         }
 
         return listToReturn;   
     }
 }
-
-// export function getAnswers( state ) {
-//     return function (idList){
-//         let listToReturn = [];
-//         for(let i = 0; i < state.answers.length; i++){
-
-//             console.log(state.answers[i].id + ' | ' + idList[i]);
-
-//             if(state.answers[i].id === idList[i]){
-//                 // console.log('inside [ ' + idList[i] + ' ]');
-//                 listToReturn.push(state.answers[i]);
-//             }
-//         }
-
-//         return listToReturn;   
-//     }
-// }
