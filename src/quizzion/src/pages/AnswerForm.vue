@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <!--    <q-btn @click="log">LOG</q-btn>-->
     <div class="bg-image row window-height items-center">
       <div class="left-half col-xs-12 col-sm-6">
         <h3 class="xs-hide">{{ currentQuestion.title}}</h3>
@@ -92,10 +91,10 @@
         return this.currentQuestion.time !== undefined ? this.currentQuestion.time : '?'; //TODO: what to do when there is no timer? hide element?
       }
     },
-    beforeRouteUpdate (to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
+    beforeRouteUpdate(to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
       this.quizId = to.params.quizId;
       this.questionId = to.params.questionId;
-      this.selectedAnswer = '';
+      this.selectedAnswer = ''; //TODO: retrieve answer if user came back
       next();
     },
     methods: {
