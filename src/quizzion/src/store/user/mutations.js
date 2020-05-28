@@ -17,6 +17,10 @@ export function participate( state, user) {
     state.displayName = user.displayName;
 }
 
+export function createQuiz( state, newQuizId ) {
+    state.quizzes.push(newQuizId);
+}
+
 export function reset( state ) {
     Object.assign(state, initialState());
 }
