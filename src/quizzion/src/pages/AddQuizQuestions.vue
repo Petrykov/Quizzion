@@ -1,4 +1,4 @@
-<template>
+l<template>
   <q-page container style="" class="shadow-2 rounded-borders">
     <div class="row q-pa-lg" style="">
       <q-page-container class="col q-pa-lg" style="text-align: center;">
@@ -9,25 +9,29 @@
             style="height: 275px; max-width: 300px;">
 
             <div style="">
-              <p style="margin-top: 2em" v-for="(btn,id) in fetchQuestions" :key="id">
-                <q-btn
-                  :outline="id!=selectedQuestion"
-                  rounded color="black"
-                  @click="onQuestionClick(btn.id)">
-                  {{ btn.title }}
-                </q-btn>
+              <p  
+                style="margin-top: 2em" 
+                v-for="(btn,id) in fetchQuestions" 
+                :key="id">
+                  
+                  <q-btn
+                    :outline="id!=selectedQuestion"
+                    rounded color="black"
+                    @click="onQuestionClick(btn.id)">
+                    {{ btn.title }}
+                  </q-btn>
 
-                <q-icon
-                  name = "remove_circle_outline"
-                  color= "black"
-                  style = "cursor : pointer;"
-                  size = "2em"
-                  class = "q-ml-md q-mb-xs"
-                  @click = "deleteQuestion(id)"/>
-              </p>
-            </div>
+                  <q-icon
+                    name = "remove_circle_outline"
+                    color= "black"
+                    style = "cursor : pointer;"
+                    size = "2em"
+                    class = "q-ml-md q-mb-xs"
+                    @click = "deleteQuestion(id)"/>
 
-          </q-scroll-area>
+                </p>
+              </div>
+            </q-scroll-area>
 
           <q-icon
             name="add_circle_outline"
@@ -43,7 +47,9 @@
 
       <q-page-container
         v-if="questions.length"
-        class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
+        class="col q-pa-lg" 
+        style="background: #181c30; border-radius: 2em;">
+
         <q-page padding>
 
           <q-input 
@@ -61,24 +67,32 @@
             autogrow
             label="Question description"
             class="q-mt-md"
-            color="grey"
-          />
+            color="grey"/>
 
-          <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
+          <p 
+            class="paragraph" 
+            style="color:white; font-size:2em;">
+            The answers?
+          </p>
 
-          <div class="col">
-            <div  class="row" 
-                  v-for="(answer, index) in answers" 
-                  :key="answer.id">
+          <div 
+            class="col">
+
+            <div  
+              class="row" 
+              v-for="(answer, index) in fetchAnswers" 
+              :key="answer.id">
                   
-              <q-checkbox dark v-model="answer.correct"/>
-              <q-input  class="answer"
-                        dense
-                        style="color:grey;"
-                        dark
-                        v-model="answer.label"
-                        >
-              </q-input>
+              <q-checkbox 
+                dark 
+                v-model="answer.correct"/> 
+
+              <q-input  
+                class="answer"
+                dense
+                style="color:grey;"
+                dark
+                v-model="answer.label"/>
 
               <q-icon
                 name = "clear"
@@ -92,6 +106,7 @@
 
               <form @submit.prevent>
                 <div class="row insert_new">
+
                   <q-icon
                     name = "add_circle_outline"
                     color= "green-7"
@@ -99,13 +114,21 @@
                     size = "2em"
                     class="addQuestionBtn"
                     @click="addAnswer(id)"/>
-                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
+
+                  <q-input 
+                    class="addQuestionTxt" 
+                    style="color:grey;" 
+                    label="Add new answer" 
+                    v-model="newAnswer" 
+                    dark/>
+
                 </div>
               </form>
 
           </div>
 
-          <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
+          <p  class="paragraph" 
+              style="color:white; font-size:2em;">What about timer?</p>
 
           <div class="row">
 
@@ -121,7 +144,6 @@
                      v-bind:key="index"
                      rounded
                      dark
-                     
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
                      @click="changeTime(time)"
@@ -130,7 +152,6 @@
               <q-btn
                      rounded
                      dark
-                     
                      @click="changeTime('infinity')"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
@@ -232,11 +253,9 @@
 
         mounted(){
           this.$store.dispatch('user/login');
+          // console.log(this.fetchQuestions);
           // console.log(this.fetchQuestionById.answers);
-          // this.answers = this.fetchQuestionById.answers;
-          // console.log('here:');
-          // console.log(this.answers);
-          // console.log(this.getAnswerById);
+          // console.log(this.fetchAnswers); 
         },
 
         computed: {
@@ -249,30 +268,28 @@
             return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestion);
           },
 
-          getAnswerById(){
-            return this.$store.getters['quizzes/getAnswerById'](this.fetchQuestionById.answers[0]);  
+          fetchAnswers(){
+            // console.log('-----');
+            // console.log(this.fetchQuestionById.answers);
+            return this.$store.getters['quizzes/getAnswers'](this.fetchQuestionById.answers);  
           }
         },
 
         methods: {
 
-            fetchAnswers(){
-
-              this.answers = [];
-
-              for(let i = 0; i < this.fetchQuestionById.answers.length; i ++){
-                    this.answers.push(this.getAnswerById);
-              }
-
-              console.log('answers: ');
-              console.log(this.answers);;
-            },
-
             onQuestionClick(id) {
                 this.selectedQuestion = id;
-                console.log('id: ' + id);
+                this.answers = [];
 
-                this.fetchAnswers();
+                this.fetchAnswers;
+
+                // console.log('ID: ' + id);
+
+                // console.log('answers in fetchQuestionById: ', this.fetchQuestionById.answers);
+                // console.log(this.fetchAnswers);
+                // this.answers.push(this.fetchAnswers);
+                // console.log('answers after: ', this.answers);
+                // console.log('id: ' + id);
             },
 
             changeTime(time) {
