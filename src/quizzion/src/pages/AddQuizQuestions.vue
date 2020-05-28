@@ -6,6 +6,7 @@
     <div class="row q-pa-lg" >
 
       <q-page-container 
+        v-if="currentQuiz"
         class="col q-pa-xl" 
         style="text-align: center;">
 
@@ -14,7 +15,7 @@
           style="font-size:3em;">{{ currentQuiz.title }}</p>
 
         <div class="q-mt-xl vertical-allignment">
-          
+
           <q-scroll-area
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
@@ -165,10 +166,31 @@
                 rounded
                 dark
                 class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
+                style = "border: 1px solid white;"
+                color = "wheat"
                 size="12px"
                 icon="all_inclusive"/>
 
             </div>
+          </div>
+
+          <div 
+            class="q-mt-md"
+            style="width: 100%; text-align: center;">
+            <q-icon 
+              name="delete"
+              color="red-6"
+              style="cursor : pointer;"
+              class="q-mr-md"
+              size="4em"/>
+
+            <q-icon 
+              name="save"
+              color="orange-6"
+              class="q-ml-md"
+              style="cursor : pointer;"
+              size="4em"
+              />
           </div>
 
         </q-page>
@@ -182,91 +204,16 @@
         data() {
             return {
 
-                val: true,
-
                 selectedQuestionId: ' ',
 
                 currentQuizId: this.$route.params.quizzId,
 
                 newAnswer: '',
-
-                questions: [
-                    {
-                        id: 1,
-                        name: 'Question title 1',
-                        description: 'Description for the first question',
-                        time: '5 sec',
-                        answers: [
-                            {
-                                id: 1,
-                                name: "Answer 1",
-                                isCorrect: false,
-                            },
-                            {
-                                id: 2,
-                                name: "Answer 2",
-                                isCorrect: true,
-                            },
-                            {
-                                id: 3,
-                                name: "Answer 3",
-                                isCorrect: false,
-                            }
-                        ]
-                    }, {
-                        id: 2,
-                        name: 'Question title 2',
-                        description: 'Description for the second question',
-                        time: '',
-                        answers: [
-                            {
-                                id: 1,
-                                name: "Answer 1-2",
-                                isCorrect: false,
-                            },
-                            {
-                                id: 2,
-                                name: "Answer 2-2",
-                                isCorrect: false,
-                            },
-                            {
-                                id: 3,
-                                name: "Answer 3-2",
-                                isCorrect: true,
-                            }
-                        ]
-                    }, {
-                        id: 3,
-                        name: 'Question title 3',
-                        description: 'Description for third question',
-                        time: '',
-                        answers: [
-                            {
-                                id: 1,
-                                name: "Answer 1-3",
-                                isCorrect: true,
-                            },
-                            {
-                                id: 2,
-                                name: "Answer 2-3",
-                                isCorrect: false,
-                            },
-                            {
-                                id: 3,
-                                name: "Answer 3-3",
-                                isCorrect: false,
-                            }
-                        ]
-                    }
-                ]
             }
         },
 
         mounted(){
           this.$store.dispatch('user/login');
-
-          console.log('selected question: ');
-          console.log(selectedQuestion);
         },
 
         computed: {
