@@ -1,35 +1,37 @@
-<template>
+l<template>
   <q-page container style="" class="shadow-2 rounded-borders">
-
     <div class="row q-pa-lg" style="">
       <q-page-container class="col q-pa-lg" style="text-align: center;">
         <p class = "q-mt-md" style="font-size:3em;">Quiz name</p>
         <div class="vertical-allignment" style="">
-
           <q-scroll-area
             class="scroll-area"
             style="height: 275px; max-width: 300px;">
 
-            <div style=""> 
-              <p style="margin-top: 2em" v-for="(btn,id) in questions" :key="id">
-                <q-btn
-                  :outline="id!=selectedQuestion"
-                  rounded color="black"
-                  @click="onQuestionClick(id)">
-                  {{btn.name}}
-                </q-btn>
+            <div>
+              <p  
+                style="margin-top: 2em" 
+                v-for="(btn,id) in questionList" 
+                :key="id">
+                  
+                  <q-btn
+                    :outline="id != selectedQuestion"
+                    rounded color="black"
+                    @click="onQuestionClick(btn.id)">
+                    {{ btn.title }}
+                  </q-btn>
 
-                <q-icon
-                  name = "remove_circle_outline"
-                  color= "black"
-                  style = "cursor : pointer;"
-                  size = "2em"
-                  class = "q-ml-md q-mb-xs"
-                  @click = "deleteQuestion(id)"/>
-              </p>
-            </div>
+                  <q-icon
+                    name = "remove_circle_outline"
+                    color= "black"
+                    style = "cursor : pointer;"
+                    size = "2em"
+                    class = "q-ml-md q-mb-xs"
+                    @click = "deleteQuestion(id)"/>
 
-          </q-scroll-area>
+                </p>
+              </div>
+            </q-scroll-area>
 
           <q-icon
             name="add_circle_outline"
@@ -45,33 +47,52 @@
 
       <q-page-container
         v-if="questions.length"
-        class="col q-pa-lg" style="background: #181c30; border-radius: 2em;">
+        class="col q-pa-lg" 
+        style="background: #181c30; border-radius: 2em;">
+
         <q-page padding>
 
-          <q-input class="questionInput" dark v-model="questions[selectedQuestion].name" color="grey-12" label="Question's title"
-                   label-color="grey"/>
+          <q-input 
+            v-model="questionById.title"
+            class="questionInput" 
+            dark 
+            color="grey-12" 
+            label="Question's title"
+            label-color="grey"/>
 
           <q-input
             dark
-            v-model="questions[selectedQuestion].description"
+            v-model="questionById.description"
             filled
             autogrow
             label="Question description"
             class="q-mt-md"
-            color="grey"
-          />
+            color="grey"/>
 
-          <p class="paragraph" style="color:white; font-size:2em;">The answers?</p>
+          <p 
+            class="paragraph" 
+            style="color:white; font-size:2em;">
+            The answers?
+          </p>
 
-          <div class="col">
-            <div class="row" v-for="(answer, index) in questions[selectedQuestion].answers" :key="answer.id">
-              <q-checkbox dark v-model="answer.isCorrect"/>
-              <q-input  class="answer"
-                        dense
-                        style="color:grey;"
-                        dark
-                        v-model="answer.name">
-              </q-input>
+          <div 
+            class="col">
+
+            <div  
+              class="row" 
+              v-for="(answer, index) in answers" 
+              :key="answer.id">
+                  
+              <q-checkbox 
+                dark 
+                v-model="answer.correct"/> 
+
+              <q-input  
+                class="answer"
+                dense
+                style="color:grey;"
+                dark
+                v-model="answer.label"/>
 
               <q-icon
                 name = "clear"
@@ -85,6 +106,7 @@
 
               <form @submit.prevent>
                 <div class="row insert_new">
+
                   <q-icon
                     name = "add_circle_outline"
                     color= "green-7"
@@ -92,13 +114,21 @@
                     size = "2em"
                     class="addQuestionBtn"
                     @click="addAnswer(id)"/>
-                    <q-input class="addQuestionTxt" style="color:grey;" label="Add new answer" v-model="newAnswer" dark></q-input>
+
+                  <q-input 
+                    class="addQuestionTxt" 
+                    style="color:grey;" 
+                    label="Add new answer" 
+                    v-model="newAnswer" 
+                    dark/>
+
                 </div>
               </form>
 
           </div>
 
-          <p class="paragraph" style="color:white; font-size:2em;">What about timer?</p>
+          <p  class="paragraph" 
+              style="color:white; font-size:2em;">What about timer?</p>
 
           <div class="row">
 
@@ -114,9 +144,6 @@
                      v-bind:key="index"
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === time ? false : true"
-                     :text-color="questions[selectedQuestion].time === time ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === time ? 'white' : 'none'"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
                      @click="changeTime(time)"
@@ -125,9 +152,6 @@
               <q-btn
                      rounded
                      dark
-                     :outline="questions[selectedQuestion].time === 'infinity' ? false : true"
-                     :text-color="questions[selectedQuestion].time === 'infinity' ? 'black' : 'white'"
-                     :color="questions[selectedQuestion].time === 'infinity' ? 'white' : 'none'"
                      @click="changeTime('infinity')"
                      class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
                      size="12px"
@@ -146,9 +170,10 @@
     export default {
         data() {
             return {
+
                 val: true,
 
-                selectedQuestion: 0,
+                selectedQuestion: 'dr5rty',
 
                 newAnswer: '',
 
@@ -224,7 +249,28 @@
             }
         },
 
+        mounted(){
+          this.$store.dispatch('user/login');
+
+        },
+
+        computed: {
+            
+          questionList(){
+            return this.$store.getters['quizzes/getQestions'];
+          },
+
+          questionById(){
+            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestion);
+          },
+
+          answers(){
+            return this.$store.getters['quizzes/getAnswers'](this.questionById.answers);  
+          }
+        },
+
         methods: {
+
             onQuestionClick(id) {
                 this.selectedQuestion = id;
             },
@@ -272,6 +318,7 @@
             },
 
             deleteQuestion(index){
+              if(index === this.selectedQuestion) this.selectedQuestion = 0;
               this.questions.splice(index, 1);
             }
         }

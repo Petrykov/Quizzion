@@ -31,6 +31,7 @@ export function fetchQuizzes(cb, errorCb) {
 }
 
 export function fetchQuestions(cb, errorCb) {
+    console.log(cb);
     // axios.get(`${apiUrl}/questions`).then(cb).catch(errorCb);
 }
 

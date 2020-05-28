@@ -40,3 +40,24 @@ export function getNextQuestionId( state, getters ) {
     }
   }
 }
+
+export function getQestions( state ) {
+    return state.questions;
+}
+
+export function getAnswers( state ) {
+
+    return function (idList){
+        let listToReturn = [];
+        
+        for(let i = 0; i < state.answers.length; i++){
+            for(let j = 0; j < idList.length; j++){
+                if(state.answers[i].id === idList[j]){
+                    listToReturn.push(state.answers[i]);
+                }
+            }
+        }
+
+        return listToReturn;   
+    }
+}
