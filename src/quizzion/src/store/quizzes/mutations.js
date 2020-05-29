@@ -49,34 +49,53 @@ export function deleteQuiz( state, deletedId ) {
     state.quizzes.filter(quiz => quiz.id !== deletedId);
 }
 
-/*
+/* -
 * payload should contain the newly created question in proper format, as well as the target quiz id
 *
 * */
-export function createQuestion( state, {newQuestion, quizzId}) {
+export function createQuestion( state, {newQuestion, quizId}) {
     //add the id of the question to the target quiz
-    let quiz = state.quizzes.find(quiz => quiz.id === quizzId);
+    let quiz = state.quizzes.find(quiz => quiz.id === quizId);
     quiz.questions.push(newQuestion.id);
     //add the whole question to the questions array
     state.questions.push(newQuestion);
 }
 
-/*
+/* -
 * payload should contain the
 *
 * */
-export function updateQuestion( state, payload ) {
-    let index = state.questions.findIndex(question => question.id === payload.updatedQuestion.id);
-    quiz.questions[index] = payload.updatedQuestion;
+export function updateQuestion( state, {updatedQuestion, questionId, quizId} ) {
+
+    let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+
+    // console.log(quiz);
+    // let index = state.questions.findIndex(question => question.id === updatedQuestion.id);
+    state.questions.map((question, index)=>{
+        if(question.id === questionId){
+            console.log(state.questions[index]);
+            state.questions[index] = updatedQuestion;
+            console.log(state.questions[index]);
+            // quiz.questions[index] = updatedQuestion;        
+        }
+    })
 }
 
-/*
+/* -
 * payload should contain the full object that was edited, in proper format, as well as the id of the target quiz
-*
+* 
 * */
-export function deleteQuestion( state, payload ) {
-    let quiz = state.quizzes.find(quiz => quiz.id === payload.quizId);
-    quiz.questions.filter(question => question.id !== payload.deletedQuestionId);
+export function deleteQuestion( state, {quizId, questionId} ) {
+    
+    let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+    
+    console.log(quiz);
+
+    quiz.questions.map((question, index) => {
+        if(question === questionId){
+            quiz.questions.splice(index,1);
+        }
+    });
 }
 
 export function reset( state ) {

@@ -1,9 +1,8 @@
 <template>
   <q-page 
-    container 
-    class="shadow-2 rounded-borders">
+     class="shadow-2 rounded-borders">
 
-    <div class="row q-pa-lg" >
+    <div class="row q-pa-lg logo" >
 
       <q-page-container 
         v-if="currentQuiz"
@@ -131,10 +130,8 @@
                     style = "cursor : pointer;"
                     size = "2em"/>
                   
-
                 </div>
               </form>
-
           </div>
 
           <p  
@@ -157,17 +154,19 @@
                 v-bind:key="index"
                 rounded
                 dark
-                style = "border: 1px solid white;"
+                style = "border: 1px solid wheat;"
+                :class="{'selected' : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time) }"
                 color = "wheat"
-                class = "col q-ml-md q-mr-md q-mt-lg q-mb-lg"
+                class = "col q-ml-md q-mr-md q-mt-md q-mb-sm timer"
                 size = "12px"
-                :label="time"/>
+                :label="time"
+                @click="onTimeClick(time, index)"/>
 
               <q-btn
                 rounded
                 dark
                 class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
-                style = "border: 1px solid white;"
+                style = "border: 1px solid wheat;"
                 color = "wheat"
                 size="12px"
                 icon="all_inclusive"/>
@@ -183,7 +182,8 @@
               color="red-6"
               style="cursor : pointer;"
               class="q-mr-md"
-              size="4em"/>
+              size="4em"
+              @click="deleteQuestion"/>
 
             <q-icon 
               name="save"
@@ -191,7 +191,7 @@
               class="q-ml-md"
               style="cursor : pointer;"
               size="4em"
-              />
+              @click="updateQuestion"/>
           </div>
 
         </q-page>
@@ -213,6 +213,8 @@
                 currentQuizId: this.$route.params.quizzId,
 
                 newAnswer: '',
+
+                quizTime: 0
             }
         },
 
@@ -246,9 +248,9 @@
 
             addQuestion(){
 
-              let quizzId, questionId, newQuestion;
+              let quizId, questionId, newQuestion;
 
-              quizzId = this.currentQuizId;
+              quizId = this.currentQuizId;
 
               questionId = uuidv4();
 
@@ -261,7 +263,74 @@
                 answers: ['ihy6', '65ry5', 'k98nn']
               }
 
-              this.$store.commit('quizzes/createQuestion', {newQuestion, quizzId});
+              this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
+            },
+
+            deleteQuestion(){
+
+                let quizId, questionId;
+                
+                quizId = this.currentQuizId;
+                questionId = this.selectedQuestionId;
+
+                this.$store.commit('quizzes/deleteQuestion', {quizId, questionId});
+            },
+
+            updateQuestion(){
+                let quizId, questionId, updatedQuestion;
+
+                quizId = this.currentQuizId;
+                questionId = this.selectedQuestionId;
+
+                updatedQuestion = {
+                  id: questionId,
+                  title: this.selectedQuestion.title,
+                  description: this.selectedQuestion.description,
+                  image: '',
+                  time: this.quizTime[0],
+                  answers: ['k98nn']
+                }
+
+                this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
+            },
+
+             onTimeClick(time, index){
+
+
+              // console.log(parseInt(time.split(' ')[0], 10) +" | "+ this.selectedQuestion.time)
+
+              // if(parseInt(time.split(' ')[0], 10) === this.selectedQuestion.time){
+              //   console.log(true)
+              // }else{
+              //   console.log(false)
+              // }
+
+              let timerIcons;
+
+              // console.log('time: ' + this.selectedQuestion.time)
+
+              this.quizTime = time.split(' ');
+              timerIcons = document.getElementsByClassName('timer');
+              
+              // console.log(parseInt(this.quizTime[0],10) + " | " + this.selectedQuestion.time);
+
+              // if(this.selectedQuestion.time !== 0){
+              //   if(parseInt(this.quizTime[0], 10) === this.selectedQuestion.time){
+              //       console.log('yaya')
+              //       timerIcons[index].setAttribute('style','background: grey; border: 1px solid wheat;');
+              //   }else{
+              //     console.log('yaya2')
+              //   }
+              // }
+
+              for(let i = 0; i < timerIcons.length; i++){    
+   
+                if(timerIcons[i] === timerIcons[index]){
+                  // timerIcons[index].setAttribute('style','background: grey; border: 1px solid wheat;');
+                }else{
+                  timerIcons[i].setAttribute('style','background: none; border: 1px solid wheat; font-size:12px;');
+                }
+              }
             }
         }
     }
@@ -282,5 +351,24 @@
     border-radius: 8px;
     margin: 0 auto;
   }
+
+  .logo{
+    /* position: fixed; */
+    display: flex;
+    background-image: url("~assets/bg_answer_screen.png");
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+  }
+
+  .rounded-borders{
+    display: contents;
+  }
+
+  .selected{
+    background: white !important;
+    border: 1px solid red;
+  }
+
 
 </style>
