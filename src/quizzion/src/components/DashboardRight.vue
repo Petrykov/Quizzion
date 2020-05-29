@@ -6,11 +6,10 @@
 
         <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white" />
       </div>
-
       <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
     </div>
 
-    <div class="col-6">
+    <div class="col-5">
       <div class="row justify-between">
         <span style="color:black; font-size: 2em;">Questions</span>
 
@@ -42,7 +41,35 @@
     </div>
 
     <div class="q-pa-md theme-bubble">
-      <q-btn to="/add" unelevated rounded color="white" text-color="black" label="Start quiz" />
+      <q-btn
+        v-if="!startQuiz"
+        unelevated
+        rounded
+        color="white"
+        text-color="black"
+        label="Get link"
+        @click="startQuiz=true"
+      />
+    </div>
+    <div class="q-pa-md theme-bubble" v-if="startQuiz">
+      <q-btn
+        unelevated
+        rounded
+        color="white"
+        text-color="black"
+        :label="getQuizLink"
+        @click="copyLink"
+      />
+    </div>
+    <div class="q-pa-md theme-bubble">
+      <q-btn
+        v-if="startQuiz"
+        unelevated
+        rounded
+        color="white"
+        text-color="black"
+        label="Start quiz"
+      />
     </div>
   </section>
 </template>
@@ -51,7 +78,8 @@
 export default {
   data() {
     return {
-      //...
+      quizLink: "Get link",
+      startQuiz: false
     };
   },
   methods: {
@@ -60,11 +88,23 @@ export default {
     },
     editQuiz() {
       this.$router.push(`quizzes/${this.currentQuiz.id}`);
+    },
+    copyLink() {
+
     }
   },
+  beforeCreate() {
+    startQuiz = false;
+  },
+  computed: {
+    getQuizLink() {
+      return `http://localhost:8080/${this.currentQuiz.id}/answer`;
+    }
+  },
+
   props: {
     currentQuiz: {
-      type: String,
+      type: Object,
       required: true
     }
   }
