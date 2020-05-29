@@ -53,12 +53,12 @@ export function deleteQuiz( state, deletedId ) {
 * payload should contain the newly created question in proper format, as well as the target quiz id
 *
 * */
-export function createQuestion( state, payload ) {
+export function createQuestion( state, {newQuestion, quizzId}) {
     //add the id of the question to the target quiz
-    let quiz = state.quizzes.find(quiz => quiz.id === payload.quizId);
-    quiz.questions.push(payload.newQuestion.id);
+    let quiz = state.quizzes.find(quiz => quiz.id === quizzId);
+    quiz.questions.push(newQuestion.id);
     //add the whole question to the questions array
-    state.questions.push(payload.newQuestion);
+    state.questions.push(newQuestion);
 }
 
 /*

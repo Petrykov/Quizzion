@@ -45,7 +45,8 @@
             color="green-7"
             style="cursor : pointer;"
             size="3em"
-            class="q-mt-md"/>
+            class="q-mt-md"
+            @click="addQuestion"/>
 
 
         </div>
@@ -200,6 +201,9 @@
 </template>
 
 <script>
+
+  import { v4 as uuidv4 } from 'uuid';
+
     export default {
         data() {
             return {
@@ -238,6 +242,26 @@
         methods: {
             onQuestionClick(id) {
                 this.selectedQuestionId = id;
+            },
+
+            addQuestion(){
+
+              let quizzId, questionId, newQuestion;
+
+              quizzId = this.currentQuizId;
+
+              questionId = uuidv4();
+
+              newQuestion = {
+                id: questionId,
+                title: 'new question',
+                description: 'sample description',
+                image: '',
+                time: 50,
+                answers: ['ihy6', '65ry5', 'k98nn']
+              }
+
+              this.$store.commit('quizzes/createQuestion', {newQuestion, quizzId});
             }
         }
     }
