@@ -154,23 +154,12 @@
                 v-bind:key="index"
                 rounded
                 dark
-                style = "border: 1px solid wheat;"
-                :class="{'selected' : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time) }"
+                :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
                 color = "wheat"
-                class = "col q-ml-md q-mr-md q-mt-md q-mb-sm timer"
+                class = "timer"
                 size = "12px"
                 :label="time"
                 @click="onTimeClick(time, index)"/>
-
-              <q-btn
-                rounded
-                dark
-                class="col q-ml-md q-mr-md q-mt-lg q-mb-lg"
-                style = "border: 1px solid wheat;"
-                color = "wheat"
-                size="12px"
-                icon="all_inclusive"/>
-
             </div>
           </div>
 
@@ -260,7 +249,7 @@
                 description: 'sample description',
                 image: '',
                 time: 50,
-                answers: ['ihy6', '65ry5', 'k98nn']
+                answers: []
               }
 
               this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
@@ -295,40 +284,22 @@
             },
 
              onTimeClick(time, index){
-
-
-              // console.log(parseInt(time.split(' ')[0], 10) +" | "+ this.selectedQuestion.time)
-
-              // if(parseInt(time.split(' ')[0], 10) === this.selectedQuestion.time){
-              //   console.log(true)
-              // }else{
-              //   console.log(false)
-              // }
-
+               
               let timerIcons;
-
-              // console.log('time: ' + this.selectedQuestion.time)
 
               this.quizTime = time.split(' ');
               timerIcons = document.getElementsByClassName('timer');
-              
-              // console.log(parseInt(this.quizTime[0],10) + " | " + this.selectedQuestion.time);
 
-              // if(this.selectedQuestion.time !== 0){
-              //   if(parseInt(this.quizTime[0], 10) === this.selectedQuestion.time){
-              //       console.log('yaya')
-              //       timerIcons[index].setAttribute('style','background: grey; border: 1px solid wheat;');
-              //   }else{
-              //     console.log('yaya2')
-              //   }
-              // }
-
+              console.log('clicked on: ' + index);
+            
               for(let i = 0; i < timerIcons.length; i++){    
    
                 if(timerIcons[i] === timerIcons[index]){
-                  // timerIcons[index].setAttribute('style','background: grey; border: 1px solid wheat;');
+                  timerIcons[index].setAttribute('style','border: 1px solid red; border-radius: 50%;');
+                  // timerIcons[i].className('selected !important');
                 }else{
-                  timerIcons[i].setAttribute('style','background: none; border: 1px solid wheat; font-size:12px;');
+                  timerIcons[i].setAttribute('style','border: 1px solid orange; border-radius: 50%;');
+                  // timerIcons[i].className('timer');
                 }
               }
             }
@@ -353,7 +324,6 @@
   }
 
   .logo{
-    /* position: fixed; */
     display: flex;
     background-image: url("~assets/bg_answer_screen.png");
     border: 1px solid black;
@@ -365,9 +335,18 @@
     display: contents;
   }
 
+  .timer{
+    border: 1px solid orange;
+    border-radius: 50%;
+    font-size: 1em !important;
+    margin: 1em auto;
+  }
+
   .selected{
-    background: white !important;
-    border: 1px solid red;
+    border: 1px solid red; 
+    border-radius: 50%;
+    font-size: 1em !important;
+    margin: 1em auto;
   }
 
 
