@@ -158,10 +158,31 @@
                 color = "wheat"
                 class = "timer"
                 size = "12px"
-                :label="time"
-                @click="onTimeClick(time, index)"/>
+                :label="time"/>
             </div>
           </div>
+
+         <div class="q-pa-md">
+          <q-btn-dropdown
+            split
+            color="teal"
+            rounded
+            label="Select quizz time"
+          >
+            <q-list>
+              <q-item 
+                v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
+                v-bind:key="index"
+                clickable v-close-popup>
+                  <q-item-section>
+                    <q-item-label
+                    @click="onTimeClick(time, index)">{{ time }}
+                    </q-item-label>
+                  </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
 
           <div 
             class="q-mt-md"
@@ -196,6 +217,10 @@
     export default {
         data() {
             return {
+
+                quizTimeString: [
+                  {time: '5 sec'},{time: '10 sec'},{time: '15 sec'}
+                  ],
 
                 selectedQuestionId: ' ',
 
@@ -275,9 +300,9 @@
                   id: questionId,
                   title: this.selectedQuestion.title,
                   description: this.selectedQuestion.description,
-                  image: '',
-                  time: this.quizTime[0],
-                  answers: ['k98nn']
+                  image: this.selectedQuestion.image,
+                  time: this.quizTime,
+                  answers: this.selectedQuestion.answers
                 }
 
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
@@ -285,23 +310,8 @@
 
              onTimeClick(time, index){
                
-              let timerIcons;
-
-              this.quizTime = time.split(' ');
-              timerIcons = document.getElementsByClassName('timer');
-
-              console.log('clicked on: ' + index);
-            
-              for(let i = 0; i < timerIcons.length; i++){    
-   
-                if(timerIcons[i] === timerIcons[index]){
-                  timerIcons[index].setAttribute('style','border: 1px solid red; border-radius: 50%;');
-                  // timerIcons[i].className('selected !important');
-                }else{
-                  timerIcons[i].setAttribute('style','border: 1px solid orange; border-radius: 50%;');
-                  // timerIcons[i].className('timer');
-                }
-              }
+               this.quizTime = parseInt(time.split(' '), 10);
+               console.log('time: ' + this.quizTime);
             }
         }
     }
