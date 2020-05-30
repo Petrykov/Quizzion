@@ -19,8 +19,7 @@
           dark
           type="textarea"
           borderless
-          v-model="quizName"
-          :placeholder="selectedQuiz.title"
+          v-model="selectedQuiz.title"
         ></q-input>
         <i class="far fa-trash-alt fa-2x" @click="onDelete" />
       </div>
@@ -30,8 +29,7 @@
         style="font-size: larger"
         dark
         borderless
-        v-model="quizDes"
-        :placeholder="selectedQuiz.description"
+        v-model="selectedQuiz.description"
       ></q-input>
     </div>
     <div class="col-7">
@@ -69,8 +67,6 @@ export default {
   data: () => {
     return {
       colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
-      quizDes: null,
-      quizName: null,
       alert: false,
       themeColor: "#008080"
     };
@@ -84,12 +80,12 @@ export default {
         id: this.currentQuiz.id,
         updatedQuiz: {
           id: this.selectedQuiz.id,
-          title: this.quizName,
-          description: this.quizDes,
+          title: this.currentQuiz.title,
+          description: this.currentQuiz.description,
           color: this.themeColor,
           questions: this.currentQuiz.questions,
           logo: "",
-          active: false
+          active: this.currentQuiz.active
         }
       });
       // this.$emit("edit", updateQuiz);
@@ -108,7 +104,8 @@ export default {
     currentQuiz: {
       type: Object,
       required: true
-    }
+    },
+
   }
 };
 </script>

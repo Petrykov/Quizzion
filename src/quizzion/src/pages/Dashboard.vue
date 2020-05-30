@@ -68,8 +68,8 @@
       return {
         themeColor: '',
         selectedQuizId: '',
-        leftDrawerOpen: false
-
+        leftDrawerOpen: false,
+        copyLinkOpen: false
       };
     },
     computed: {

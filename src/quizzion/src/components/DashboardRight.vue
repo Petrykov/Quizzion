@@ -6,7 +6,7 @@
           <div class="text-h6">Let's play</div>
         </q-card-section>
         <q-card-section class="q-pt-none">Scan our QR-code</q-card-section>
-        <Qrcode :link="link" ></Qrcode>
+        <Qrcode :link="link"></Qrcode>
       </q-card>
     </q-dialog>
 
@@ -58,7 +58,7 @@
         color="white"
         text-color="black"
         label="Get link"
-        @click="currentQuiz.active = !currentQuiz.active"
+        @click="currentQuiz.active = true"
       />
     </div>
     <div class="q-pa-md theme-bubble" v-if="currentQuiz.active">
@@ -72,14 +72,7 @@
       ></q-btn>
     </div>
     <div v-if="currentQuiz.active" class="q-pa-md theme-bubble">
-      <q-btn
-        unelevated
-        rounded
-        color="white"
-        text-color="black"
-        label="Start quiz"
-        @click="activeQuiz"
-      />
+      <q-btn unelevated rounded color="white" text-color="black" label="Start quiz" />
     </div>
   </section>
 </template>
@@ -117,6 +110,10 @@ export default {
       type: Object,
       required: true
     }
+  },
+  linkBtn: {
+    type: Boolean,
+    required: true
   }
 };
 </script>
