@@ -49,9 +49,10 @@
         text-color="black"
         label="Get link"
         @click="startQuiz=true"
+
       />
     </div>
-    <div class="q-pa-md theme-bubble" v-if="startQuiz">
+    <div class="q-pa-md theme-bubble" v-if="startQuiz && currentQuiz.active">
       <q-btn
         unelevated
         rounded
@@ -69,6 +70,7 @@
         color="white"
         text-color="black"
         label="Start quiz"
+        @click="currentQuiz.active = true"
       />
     </div>
   </section>
@@ -79,7 +81,9 @@ export default {
   data() {
     return {
       quizLink: "Get link",
-      startQuiz: false
+      startQuiz: false,
+      showLink: false
+
     };
   },
   methods: {

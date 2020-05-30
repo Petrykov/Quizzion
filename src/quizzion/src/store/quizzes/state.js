@@ -21,7 +21,8 @@ export let quizzesMock = {
             description: 'mock quiz for demo',
             color: 'orange',
             logo: '',
-            questions: ['dr5rty', 'dt6r', 'ft6t']
+            questions: ['dr5rty', 'dt6r', 'ft6t'],
+            active: false
         },
         {
             id: 'fy5ryt',
@@ -29,7 +30,8 @@ export let quizzesMock = {
             description: 'another mock quiz for demo',
             color: 'purple',
             logo: '',
-            questions: ['dr5rty', 'dt6r', 'ft6t']
+            questions: ['dr5rty', 'dt6r', 'ft6t'],
+            active: true
         },
         {
             id: 'kh8yi7y',
@@ -37,7 +39,8 @@ export let quizzesMock = {
             description: 'Random things you should know!',
             color: 'teal',
             logo: '',
-            questions: ['dr5rty', 'dt6r', 'ft6t']
+            questions: ['dr5rty', 'dt6r', 'ft6t'],
+            active: false
         }
     ],
     questions: [

@@ -69,6 +69,7 @@
         themeColor: '',
         selectedQuizId: '',
         leftDrawerOpen: false
+
       };
     },
     computed: {

@@ -14,7 +14,7 @@
     <div class="col">
       <div class="row">
         <q-input
-          color="white"
+          style="background-color: transparent"
           class="col add-name"
           dark
           borderless
@@ -24,9 +24,10 @@
         <i class="far fa-save fa-2x" @click="addQuiz" />
       </div>
       <q-input
+
         v-model="quizDes"
         color="white"
-        style="font-size: larger"
+        style="font-size: larger; background-color: transparent"
         dark
         borderless
         placeholder="add quiz's description"
