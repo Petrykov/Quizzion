@@ -46,6 +46,7 @@ export function updateQuiz( state, {id,updatedQuiz} ) {
 *
 * */
 export function deleteQuiz( state, deletedId ) {
+    console.log("delete quiz works")
     state.quizzes.filter(quiz => quiz.id !== deletedId);
 }
 
