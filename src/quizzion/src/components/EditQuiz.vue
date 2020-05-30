@@ -80,14 +80,16 @@ export default {
       this.alert = true;
     },
     saveQuiz: function() {
-      this.$store.dispatch("quizzes/updateQuiz", {
-        id: this.selectedQuiz.quizId,
+      this.$store.commit("quizzes/updateQuiz", {
+        id: this.currentQuiz.id,
         updatedQuiz: {
           id: this.selectedQuiz.id,
           title: this.quizName,
           description: this.quizDes,
           color: this.themeColor,
-          questions: [],
+          questions: this.currentQuiz.questions,
+          logo: "",
+          active: false
         }
       });
       // this.$emit("edit", updateQuiz);

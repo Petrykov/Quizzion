@@ -1,6 +1,6 @@
 <template>
   <div>
-    <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
+    <qrcode-vue :value="link" :size="size" level="H"></qrcode-vue>
   </div>
 </template>
 <script>
@@ -9,7 +9,6 @@
   export default {
     data() {
       return {
-        value: this.link,
         size: 300,
       }
     },

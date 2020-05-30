@@ -1,13 +1,12 @@
 <template>
   <section class="column justify-between">
-
     <q-dialog v-model="showQrcode">
       <q-card>
         <q-card-section>
           <div class="text-h6">Let's play</div>
         </q-card-section>
         <q-card-section class="q-pt-none">Scan our QR-code</q-card-section>
-          <Qrcode :link="getQuizLink"></Qrcode>
+        <Qrcode :link="link" ></Qrcode>
       </q-card>
     </q-dialog>
 
@@ -18,8 +17,6 @@
         <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white" />
       </div>
       <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
-
-
     </div>
 
     <div class="col-5">
@@ -55,56 +52,47 @@
 
     <div class="q-pa-md theme-bubble">
       <q-btn
-        v-if="!startQuiz"
+        v-if="!currentQuiz.active"
         unelevated
         rounded
         color="white"
         text-color="black"
         label="Get link"
-        @click="startQuiz=true"
-
+        @click="currentQuiz.active = !currentQuiz.active"
       />
     </div>
-    <div class="q-pa-md theme-bubble" v-if="startQuiz && currentQuiz.active">
+    <div class="q-pa-md theme-bubble" v-if="currentQuiz.active">
       <q-btn
         unelevated
         rounded
         color="white"
         text-color="black"
         :label="getQuizLink"
-        @click="copyLink">
-
-      </q-btn>
-
-
-
-
+        @click="copyLink"
+      ></q-btn>
     </div>
-    <div class="q-pa-md theme-bubble">
+    <div v-if="currentQuiz.active" class="q-pa-md theme-bubble">
       <q-btn
-        v-if="startQuiz"
         unelevated
         rounded
         color="white"
         text-color="black"
         label="Start quiz"
-        @click="currentQuiz.active = true"
+        @click="activeQuiz"
       />
     </div>
-
   </section>
 </template>
 
 <script>
-  import Qrcode from 'components/Qrcode'
+import Qrcode from "./Qrcode";
 export default {
-  components: {Qrcode},
+  components: { Qrcode },
   data() {
     return {
-      quizLink: "Get link",
       startQuiz: false,
-      showQrcode: false
-
+      showQrcode: false,
+      link: "none"
     };
   },
   methods: {
@@ -115,7 +103,7 @@ export default {
       this.$router.push(`quizzes/${this.currentQuiz.id}`);
     },
     copyLink() {
-      this.showQrcode=true;
+      this.showQrcode = true;
     }
   },
 
@@ -124,7 +112,6 @@ export default {
       return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/questions/${this.currentQuiz.questions[0]}`;
     }
   },
-
   props: {
     currentQuiz: {
       type: Object,

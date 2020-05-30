@@ -36,8 +36,8 @@ export function createQuiz( state, newQuiz ) {
 * payload should contain the full object that was edited, in proper format
 *
 * */
-export function updateQuiz( state, updatedQuiz ) {
-    let index = state.quizzes.findIndex(quiz => quiz.id === updatedQuiz.id);
+export function updateQuiz( state, {id,updatedQuiz} ) {
+    let index = state.quizzes.findIndex(quiz => quiz.id === id);
     state.quizzes[index] = updatedQuiz;
 }
 

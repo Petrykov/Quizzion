@@ -15,12 +15,12 @@ const routes = [
             path: "/AddQuiz", component: () => import('components/AddQuizz.vue')
           },
           {
-            path: "/quizzes/:quizzId", component: () => import('components/EditQuiz.vue')
+            path: "/quizzes/:quizId", component: () => import('components/EditQuiz.vue')
           }
         ]
       },
       {
-        path: '/questions/:quizzId',
+        path: '/questions/:quizId',
         component: () => import('pages/AddQuizQuestions.vue')
       }
     ]

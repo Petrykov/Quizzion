@@ -31,7 +31,7 @@ export let quizzesMock = {
             color: 'purple',
             logo: '',
             questions: ['dr5rty', 'dt6r', 'ft6t'],
-            active: true
+            active: false
         },
         {
             id: 'kh8yi7y',
