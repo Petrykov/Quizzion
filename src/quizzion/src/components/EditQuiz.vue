@@ -7,7 +7,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Are you sure you want to delete this quiz?</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
+          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" to="/" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -22,7 +22,7 @@
           v-model="quizName"
           :placeholder="selectedQuiz.title"
         ></q-input>
-        <i class="far fa-trash-alt fa-2x" @click="deleteQuiz" />
+        <i class="far fa-trash-alt fa-2x" @click="onDelete" />
       </div>
       <q-input
         color="white"
@@ -76,7 +76,7 @@ export default {
     };
   },
   methods: {
-    deleteQuiz: function() {
+    onDelete: function() {
       this.alert = true;
     },
     saveQuiz: function() {
@@ -93,6 +93,10 @@ export default {
         }
       });
       // this.$emit("edit", updateQuiz);
+    },
+    deleteQuiz: function() {
+      this.$store.commit("quizzes/deleteQuiz", 'kh8yi7y');
+      console.log("is deleted")
     }
   },
   computed: {
