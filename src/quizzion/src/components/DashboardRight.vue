@@ -1,5 +1,16 @@
 <template>
   <section class="column justify-between">
+
+    <q-dialog v-model="showQrcode">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Let's play</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">Scan our QR-code</q-card-section>
+          <Qrcode :link="getQuizLink"></Qrcode>
+      </q-card>
+    </q-dialog>
+
     <div class="col">
       <div class="row">
         <h3 style="color: black" class="col">{{ currentQuiz.title }}</h3>
@@ -7,6 +18,8 @@
         <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white" />
       </div>
       <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
+
+
     </div>
 
     <div class="col-5">
@@ -59,8 +72,13 @@
         color="white"
         text-color="black"
         :label="getQuizLink"
-        @click="copyLink"
-      />
+        @click="copyLink">
+
+      </q-btn>
+
+
+
+
     </div>
     <div class="q-pa-md theme-bubble">
       <q-btn
@@ -73,16 +91,19 @@
         @click="currentQuiz.active = true"
       />
     </div>
+
   </section>
 </template>
 
 <script>
+  import Qrcode from 'components/Qrcode'
 export default {
+  components: {Qrcode},
   data() {
     return {
       quizLink: "Get link",
       startQuiz: false,
-      showLink: false
+      showQrcode: false
 
     };
   },
@@ -94,7 +115,7 @@ export default {
       this.$router.push(`quizzes/${this.currentQuiz.id}`);
     },
     copyLink() {
-
+      this.showQrcode=true;
     }
   },
 
