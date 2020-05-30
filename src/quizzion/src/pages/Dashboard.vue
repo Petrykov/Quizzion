@@ -22,7 +22,7 @@
                   to="/"
                   v-for="(quizId) in currentUser.quizzes"
                   :key="quizId"
-                  :color="quizObject(quizId).color"
+                  :style="{'background-color':quizObject(quizId).color}"
                   class="quizzes button"
                   @click="themeColor=quizObject(quizId).color, selectedQuizId = quizId, quizObject(quizId).active = false"
                 />

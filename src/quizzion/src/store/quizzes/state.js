@@ -19,7 +19,7 @@ export let quizzesMock = {
             id: 'g67yuhb',
             title: 'test quiz',
             description: 'mock quiz for demo',
-            color: 'orange',
+            color: '#ffa500',
             logo: '',
             questions: ['dr5rty', 'dt6r', 'ft6t'],
             active: false
@@ -28,7 +28,7 @@ export let quizzesMock = {
             id: 'fy5ryt',
             title: 'Pubquiz - Quarantine edition',
             description: 'another mock quiz for demo',
-            color: 'purple',
+            color: '#800080',
             logo: '',
             questions: ['dr5rty', 'dt6r', 'ft6t'],
             active: false
@@ -37,7 +37,7 @@ export let quizzesMock = {
             id: 'kh8yi7y',
             title: 'General knowledge',
             description: 'Random things you should know!',
-            color: 'teal',
+            color: '#008080',
             logo: '',
             questions: ['dr5rty', 'dt6r', 'ft6t'],
             active: false

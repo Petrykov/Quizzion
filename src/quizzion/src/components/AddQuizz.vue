@@ -42,7 +42,7 @@
             round
             v-for="(n,index) in colors"
             :key="`sm-${n}`"
-            :color="colors[index]"
+            :style="{'background-color':colors[index]}"
             @click="$emit('changeTheme',themeColor=colors[index])"
           />
         </div>
@@ -73,7 +73,7 @@
 export default {
   data: () => {
     return {
-      colors: ["teal", "purple", "brand", "orange", "red"],
+      colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
       quizDes: "",
       quizName: null,
       alert: false,
