@@ -1,30 +1,33 @@
 <template>
   <q-page class="layout">
+    <!--    <q-btn @click="log">LOG</q-btn>-->
     <div class="row q-pa-md main-layout">
       <div class="col">
 
         <section class="column">
-          <div  style="margin-bottom:auto; margin-top:20%;" 
-                class="q-mb-lg">
+          <div style="margin-bottom:auto; margin-top:20%;"
+               class="q-mb-lg">
 
-            <div  class="col q-mt-lg" 
-                  style="margin-left: auto; margin-right: auto; text-align: center;">
-              <h2>Hi Quiz Master</h2>
+            <div class="col q-mt-lg"
+                 style="margin-left: auto; margin-right: auto; text-align: center;">
+              <h2>Hi {{ currentUser.name }}</h2>
               <span style="font-size: 1.5em;">Welcome back to the gamespace, we missed you!</span>
             </div>
 
             <div class="col-8" style="margin: 0 auto; text-align: center;">
               <h3>Quizzes</h3>
               <div class="q-pl-md q-gutter-md q-gutter-y-md q-mt-lg">
-                
+
                 <q-btn
                   to="/"
-                  v-for="(quiz) in quizzes"
-                  :key="quiz.id"
-                  :color="quiz.color"
+                  v-for="(quizId) in currentUser.quizzes"
+                  :key="quizId"
+                  :color="quizObject(quizId).color"
                   class="quizzes button"
-                  @click="themeColor=quiz.color,index=quiz.id"
+                  @click="themeColor=quizObject(quizId).color, selectedQuizId = quizId"
                 />
+                <!--                  @click="selectedQuizId = quizId"-->
+                <!--                />-->
 
                 <q-btn
                   to="/AddQuiz"
@@ -46,69 +49,48 @@
 
       <div :style="{background:themeColor}" class="col right q-pa-md">
         <section>
-          <router-view :currentQuiz="quizzes[index]" 
-                        @add="addQuiz" 
-                        :quizlist="quizzes"
-                        @changeTheme="changeTheme"/>
+          <router-view :currentQuiz="quizObject(selectedQuizId)"
+                       @add="addQuiz"
+                       @changeTheme="changeTheme"/>
         </section>
       </div>
-      
+
     </div>
   </q-page>
 </template>
 <script>
 
-    export default {
-        name: "CustomziedLayout",
+  export default {
+    name: "Dashboard",
 
-        components: {},
-        data() {
-            return {
-                themeColor: "teal",
-                index: 0,
-                leftDrawerOpen: false,
-                quizzes: [
-                    {
-                        id: 0,
-                        name: "Pub quiz 0",
-                        description:
-                            " Description quiz 0 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-                        questions: ["question 1", "question 2", "question 3", "question 4"],
-                        color: "teal"
-                    },
-                    {
-                        id: 1,
-                        name: "Pub quiz 1",
-                        description:
-                            "Description quiz 1 Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-                        questions: ["question 1", "question 2", "question 3", "question 4"],
-                        color: "blue"
-                    },
-                    {
-                        id: 2,
-                        name: "Pub quiz 2",
-                        description:
-                            "Description quiz 2 zzzzz Lorem ipsum dolor sit amet, consectetur  adipiscing elit. Nunc rutrum auctor neque ut",
-                        questions: ["question 1", "question 2", "question 3", "question 4"],
-                        color: "green"
-                    }
-                ]
-            };
-        },
-        computed: {},
-        methods: {
-            getIndex(position) {
-                console.log(position);
-                return (this.pos = position);
-            },
-            addQuiz(quiz) {
-                this.quizzes.push(quiz);
-            },
-            changeTheme(color) {
-                this.themeColor = color
-            }
-        }
-    };
+    components: {},
+    data() {
+      return {
+        themeColor: '',
+        selectedQuizId: '',
+        leftDrawerOpen: false
+      };
+    },
+    computed: {
+      currentUser() {
+        return this.$store.state.user;
+      },
+      quizObject() {
+        return this.$store.getters['quizzes/getQuizById'];
+      }
+    },
+    methods: {
+      log() {
+        console.log(this.$store)
+      },
+      addQuiz(quiz) {
+        this.quizzes.push(quiz);
+      },
+      changeTheme(color) {
+        this.themeColor = color
+      }
+    }
+  };
 </script>
 
 <style lang="sass" scoped>

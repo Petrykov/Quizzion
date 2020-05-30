@@ -2,7 +2,6 @@
   <div class="q-pa-md">
 
     <q-drawer
-      v-model="drawer"
       show-if-above
       :width="200"
       :breakpoint="400"
@@ -67,8 +66,7 @@
             <img src="https://cdn.quasar.dev/img/boy-avatar.png">
           </q-avatar>
 
-          <!-- // TODO get the username -->
-          <div class="text-weight-bold">{{user.name}}</div>
+          <div class="text-weight-bold">{{ $store.state.user.displayName }}</div>
 
         </div>
       </div>
@@ -82,13 +80,12 @@
 <script>
 
   export default {
-      data() {
-          return {
-              user: {
-                  name: 'Quiz Masterrrr'
-              }
-          }
+    name: 'SideBar',
+    data() {
+      return {
+        //...
       }
+    }
   }
 
 </script>
