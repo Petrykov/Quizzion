@@ -97,12 +97,10 @@ export default {
 
     }
   },
-  beforeCreate() {
-    startQuiz = false;
-  },
+
   computed: {
     getQuizLink() {
-      return `http://localhost:8080/${this.currentQuiz.id}/answer`;
+      return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/questions/${this.currentQuiz.questions[0]}`;
     }
   },
 

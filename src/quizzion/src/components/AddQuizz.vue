@@ -24,7 +24,6 @@
         <i class="far fa-save fa-2x" @click="addQuiz" />
       </div>
       <q-input
-
         v-model="quizDes"
         color="white"
         style="font-size: larger; background-color: transparent"
@@ -75,7 +74,7 @@ export default {
   data: () => {
     return {
       colors: ["teal", "purple", "brand", "orange", "red"],
-      quizDes: null,
+      quizDes: "",
       quizName: null,
       alert: false,
       themeColor: "teal"

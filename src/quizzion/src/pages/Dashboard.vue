@@ -89,7 +89,8 @@
       },
       changeTheme(color) {
         this.themeColor = color
-      }
+      },
+
     }
   };
 </script>

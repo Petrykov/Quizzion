@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="q-pa-md theme-bubble">
-      <q-btn to="/" color="white" rounded text-color="black" label="Save" @click="saveQuiz"></q-btn>
+      <q-btn color="white" rounded text-color="black" label="Save" @click="saveQuiz" to="/"></q-btn>
     </div>
   </section>
 </template>
@@ -80,15 +80,17 @@ export default {
       this.alert = true;
     },
     saveQuiz: function() {
-      var quizId = this.currentQuiz.id;
-      var updateQuiz = {
-        name: this.quizName,
-        description: this.quizDes,
-        color: this.themeColor,
-        questions: [],
-        id: quizId
-      };
-      this.$emit("edit", updateQuiz);
+      this.$store.dispatch("quizzes/updateQuiz", {
+        id: this.selectedQuiz.quizId,
+        updatedQuiz: {
+          id: this.selectedQuiz.id,
+          title: this.quizName,
+          description: this.quizDes,
+          color: this.themeColor,
+          questions: [],
+        }
+      });
+      // this.$emit("edit", updateQuiz);
     }
   },
   computed: {
