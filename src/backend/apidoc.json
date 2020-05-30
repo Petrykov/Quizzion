@@ -1,0 +1,6 @@
+{
+  "name": "Quizzion backend",
+  "version": "1.0.0",
+  "description": "API documentation created for Quizzion backend implementation",
+  "url" : "http://localhost:3000/api"
+}
