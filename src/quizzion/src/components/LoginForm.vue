@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .space {
   height: 30px;
 }

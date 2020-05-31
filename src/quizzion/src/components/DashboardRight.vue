@@ -1,26 +1,25 @@
 <template>
-  <section class="column justify-between">
+  <section v-if="currentQuiz" class="column justify-between" :style="{background:currentQuiz.color}">
+    <q-dialog v-model="showQrcode">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Let's play</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">Scan our QR-code</q-card-section>
+        <Qrcode :link="getQuizLink"></Qrcode>
+      </q-card>
+    </q-dialog>
+
     <div class="col">
-
       <div class="row">
-        <h3
-          style="color: black"
-          class="col">{{ currentQuiz.title }}
-        </h3>
+        <h3 style="color: black" class="col">{{ currentQuiz.title }}</h3>
 
-        <q-icon
-          @click="edit=true"
-          name="edit"
-          size="2em"
-          style="cursor : pointer;"
-          color="white"/>
-
+        <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white" />
       </div>
-
       <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
     </div>
 
-    <div class="col-6">
+    <div class="col-5">
       <div class="row justify-between">
         <span style="color:black; font-size: 2em;">Questions</span>
 
@@ -33,53 +32,92 @@
             text-color="white"
             size="16px"
             @click="goToEdit"
-            icon="edit"/>
+            icon="edit"
+          />
         </div>
-
       </div>
 
-      <ul style="list-style-type: none;" v-for="questionId in currentQuiz.questions" :key="questionId">
+      <ul
+        style="list-style-type: none;"
+        v-for="questionId in currentQuiz.questions"
+        :key="questionId"
+      >
         <li>
-          <p style="font-size: 1.5em; color:white;">{{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}</p>
+          <p
+            style="font-size: 1.5em; color:white;"
+          >{{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}</p>
         </li>
       </ul>
-
     </div>
 
     <div class="q-pa-md theme-bubble">
-      <q-btn to="/add" unelevated rounded color="white" text-color="black" label="Start quiz"/>
+      <q-btn
+        v-if="!currentQuiz.active"
+        unelevated
+        rounded
+        color="white"
+        text-color="black"
+        label="Get link"
+        @click="$store.commit('quizzes/activateQuiz', currentQuiz.id)"
+      />
     </div>
-
+    <div class="q-pa-md theme-bubble" v-if="currentQuiz.active">
+      <q-btn
+        unelevated
+        rounded
+        color="white"
+        text-color="black"
+        :label="getQuizLink"
+        @click="copyLink"
+      ></q-btn>
+    </div>
+    <div v-if="currentQuiz.active" class="q-pa-md theme-bubble">
+      <q-btn unelevated rounded color="white" text-color="black" label="Start quiz" />
+    </div>
   </section>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        //...
-      };
+import Qrcode from "./Qrcode";
+export default {
+  components: { Qrcode },
+  data() {
+    return {
+      startQuiz: false,
+      showQrcode: false,
+    };
+  },
+  methods: {
+    goToEdit() {
+      this.$router.push(`questions/${this.currentQuiz.id}`);
     },
-    methods: {
-      goToEdit() {
-        this.$router.push(`questions/${this.currentQuiz.id}`);
-      }
+    editQuiz() {
+      this.$router.push(`quizzes/${this.currentQuiz.id}`);
     },
-    props: {
-      currentQuiz: {
-        type: String,
-        required: true
-      }
+    copyLink() {
+      this.link = this.getQuizLink;
+      this.showQrcode = true;
     }
-  };
+  },
+
+  computed: {
+    getQuizLink() {
+      return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/invite`;
+    }
+  },
+  props: {
+    currentQuiz: {
+      type: Object,
+      required : false
+    }
+  }
+};
 </script>
 
 
 <style scoped>
-
-  .theme-bubble {
-    display: flex;
-    justify-content: flex-end;
-  }
-
+.theme-bubble {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

@@ -25,6 +25,21 @@ export function reset( state ) {
     Object.assign(state, initialState());
 }
 
+export function deleteQuizFromUser( state, deletedId ) {
+
+    console.log(stateMockModerator.displayName+"name")
+    stateMockModerator.quizzes.map((quiz, index) => {
+        if(quiz === deletedId){
+            console.log("from user state "+ quiz+" "+ deletedId)
+            state.quizzes.splice(index,1);
+        }
+    });
+
+}
+export function createQuiz(state, newQuiz){
+    stateMockModerator.quizzes.push(newQuiz)
+}
+
 //mock only for dev
 import { stateMockModerator } from "./state";
 

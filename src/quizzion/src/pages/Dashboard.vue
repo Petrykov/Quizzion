@@ -24,10 +24,8 @@
                   :key="quizId"
                   :color="quizObject(quizId).color"
                   class="quizzes button"
-                  @click="themeColor=quizObject(quizId).color, selectedQuizId = quizId"
+                  @click="selectedQuizId = quizId"
                 />
-                <!--                  @click="selectedQuizId = quizId"-->
-                <!--                />-->
 
                 <q-btn
                   to="/AddQuiz"
@@ -47,10 +45,10 @@
 
       </div>
 
-      <div :style="{background:themeColor}" class="col right q-pa-md">
+       <div class="col">
         <section>
-          <router-view :currentQuiz="quizObject(selectedQuizId)"
-                       @changeTheme="changeTheme"/>
+          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"
+                       @add="addQuiz"/>
         </section>
       </div>
 
@@ -67,7 +65,8 @@
       return {
         themeColor: '',
         selectedQuizId: '',
-        leftDrawerOpen: false
+        leftDrawerOpen: false,
+        copyLinkOpen: false
       };
     },
     computed: {
@@ -78,6 +77,9 @@
         return this.$store.getters['quizzes/getQuizById'];
       }
     },
+    beforeMount() {
+      this.selectedQuizId = this.$store.state.user.quizzes[0];
+    },
     methods: {
       log() {
         console.log(this.$store)
@@ -85,9 +87,6 @@
       addQuiz(quiz) {
         this.quizzes.push(quiz);
       },
-      changeTheme(color) {
-        this.themeColor = color
-      }
     }
   };
 </script>

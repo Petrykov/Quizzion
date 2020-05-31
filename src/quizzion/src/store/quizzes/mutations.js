@@ -36,8 +36,8 @@ export function createQuiz( state, newQuiz ) {
 * payload should contain the full object that was edited, in proper format
 *
 * */
-export function updateQuiz( state, updatedQuiz ) {
-    let index = state.quizzes.findIndex(quiz => quiz.id === updatedQuiz.id);
+export function updateQuiz( state, {id,updatedQuiz} ) {
+    let index = state.quizzes.findIndex(quiz => quiz.id === id);
     state.quizzes[index] = updatedQuiz;
 }
 
@@ -46,7 +46,15 @@ export function updateQuiz( state, updatedQuiz ) {
 *
 * */
 export function deleteQuiz( state, deletedId ) {
-    state.quizzes.filter(quiz => quiz.id !== deletedId);
+    // console.log("delete quiz works")
+    // state.quizzes.filter(quiz => quiz.id !== deletedId);
+    // let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+    state.quizzes.map((quiz, index) => {
+        if(quiz.id === deletedId){
+            state.quizzes.splice(index,1);
+        }
+    });
+
 }
 
 /* +
@@ -124,6 +132,11 @@ export function deleteAnswer( state, {questionId, answerId} ){
             question.answers.splice(index, 1);
         }
     });
+}
+
+export function activateQuiz( state, activatedId) {
+  let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
+  quiz.active = true;
 }
 
 export function reset( state ) {
