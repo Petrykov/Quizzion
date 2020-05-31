@@ -20,7 +20,7 @@ const routes = [
         ]
       },
       {
-        path: '/questions/:quizId',
+        path: '/quizzes/:quizId/questions',
         component: () => import('pages/AddQuizQuestions.vue')
       }
     ]

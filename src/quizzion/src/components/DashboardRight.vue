@@ -89,13 +89,12 @@ export default {
   },
   methods: {
     goToEdit() {
-      this.$router.push(`questions/${this.currentQuiz.id}`);
+      this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
     },
     editQuiz() {
       this.$router.push(`quizzes/${this.currentQuiz.id}`);
     },
     copyLink() {
-      this.link = this.getQuizLink;
       this.showQrcode = true;
     }
   },

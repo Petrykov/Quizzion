@@ -15,7 +15,7 @@ export function login ({ commit, dispatch }, credentials) {
     //MOCK DATA
     console.log("Mocking store...");
     dispatch('mockStore', null, {root: true});
-    // this.$router.push('/') //redirect to home after successful login (or, mock, in this case)
+    this.$router.push('/') //redirect to home after successful login (or, mock, in this case)
 }
 
 export function logout({ dispatch }) {

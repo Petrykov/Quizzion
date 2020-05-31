@@ -22,7 +22,7 @@
                   to="/"
                   v-for="(quizId) in currentUser.quizzes"
                   :key="quizId"
-                  :color="quizObject(quizId).color"
+                  :style="{'background-color':quizObject(quizId).color}"
                   class="quizzes button"
                   @click="selectedQuizId = quizId"
                 />
@@ -47,8 +47,7 @@
 
        <div class="col">
         <section>
-          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"
-                       @add="addQuiz"/>
+          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
         </section>
       </div>
 
@@ -83,10 +82,7 @@
     methods: {
       log() {
         console.log(this.$store)
-      },
-      addQuiz(quiz) {
-        this.quizzes.push(quiz);
-      },
+      }
     }
   };
 </script>

@@ -1,16 +1,16 @@
 <template>
-  <q-page 
+  <q-page
      class="shadow-2 rounded-borders">
 
     <div class="row q-pa-lg logo window-height">
 
-      <q-page-container 
+      <q-page-container
         v-if="currentQuiz"
-        class="col q-pa-xl" 
+        class="col q-pa-xl"
         style="text-align: center;">
 
-        <p 
-          class="q-mt-lg" 
+        <p
+          class="q-mt-lg"
           style="font-size:3em;">{{ currentQuiz.title }}</p>
 
         <div class="q-mt-xl vertical-allignment">
@@ -21,15 +21,15 @@
 
             <div>
 
-              <p  
+              <p
                 v-for="(questionId) in currentQuiz.questions"
                 :key="questionId">
-                  
+
                   <q-btn
                     class="q-mt-lg"
                     style="width:90%;"
                     :outline="questionId != selectedQuestionId"
-                    rounded 
+                    rounded
                     color="black"
                     @click = "onQuestionClick(questionId)">
                     {{ questionTitle(questionId) }}
@@ -52,18 +52,18 @@
       </q-page-container>
 
       <q-page-container
-        class="col q-pa-lg" 
+        class="col q-pa-lg"
         :style="{background: currentQuiz.color}"
         style="border-radius: 2em;"
         v-if="selectedQuestion">
 
         <q-page padding>
 
-          <q-input 
+          <q-input
             style="font-size: 1.8em;"
-            class="questionInput" 
-            dark 
-            color="grey-12" 
+            class="questionInput"
+            dark
+            color="grey-12"
             label="Question's title"
             v-model="selectedQuestion.title"
             label-color="grey"/>
@@ -77,8 +77,8 @@
             class="q-mt-md"
             color="grey"/>
 
-          <p 
-            class="paragraph q-mt-lg q-ml-md" 
+          <p
+            class="paragraph q-mt-lg q-ml-md"
             style="color:white; font-size:2em;">
             The answers?
           </p>
@@ -87,20 +87,20 @@
             class="scroll-area scrollarea"
             style="height: 275px; max-width: 300px;">
 
-              <div 
+              <div
                 class="col q-mt-sm">
 
-                <div  
+                <div
                   v-for="(answer) in answers"
                   :key="answer.id"
                   class="row q-mt-xs">
-                      
-                  <q-checkbox 
+
+                  <q-checkbox
                     class="q-mt-sm q-mr-xs"
                     v-model="answer.correct"
-                    dark/> 
+                    dark/>
 
-                  <q-input  
+                  <q-input
                     dense
                     style="color : grey;"
                     v-model="answer.label"
@@ -117,18 +117,18 @@
                 </div>
 
                   <form>
-                    <div 
-                      class="row q-mt-md q-ml-md"> 
+                    <div
+                      class="row q-mt-md q-ml-md">
 
-                      <q-input 
-                        class="q-ml-lg" 
-                        style="color:grey;" 
-                        label="Add new answer" 
+                      <q-input
+                        class="q-ml-lg"
+                        style="color:grey;"
+                        label="Add new answer"
                         v-model="newAnswer"
                         :rules="[val => !!val || 'Field is required']"
                         dark/>
 
-                      <q-icon 
+                      <q-icon
                         v-if = "newAnswer.length !== 0"
                         name = "add_circle_outline"
                         color = "green-7"
@@ -136,18 +136,18 @@
                         style = "cursor : pointer;"
                         size = "2em"
                         @click="addAnswer"/>
-                      
+
                     </div>
                   </form>
               </div>
 
            </q-scroll-area>
 
-          <p  
-            class="q-mt-md" 
+          <p
+            class="q-mt-md"
             style="color:white; font-size:2em;">What about timer?</p>
 
-          <div 
+          <div
             class="row">
 
             <q-icon
@@ -158,7 +158,7 @@
 
             <div class="row col">
 
-              <q-btn 
+              <q-btn
                 v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
                 v-bind:key="index"
                 rounded
@@ -179,7 +179,7 @@
             label="Select quizz time"
           >
             <q-list>
-              <q-item 
+              <q-item
                 v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
                 v-bind:key="index"
                 clickable v-close-popup>
@@ -193,10 +193,10 @@
           </q-btn-dropdown>
         </div>
 
-          <div 
+          <div
             class="q-mt-md"
             style="width: 100%; text-align: center;">
-            <q-icon 
+            <q-icon
               name="delete"
               color="red-6"
               style="cursor : pointer;"
@@ -204,7 +204,7 @@
               size="4em"
               @click="deleteQuestion"/>
 
-            <q-icon 
+            <q-icon
               name="save"
               color="orange-6"
               class="q-ml-md"
@@ -229,20 +229,15 @@
 
                 selectedQuestionId: ' ',
 
-                currentQuizId: this.$route.params.quizzId,
+                currentQuizId: this.$route.params.quizId,
 
                 newAnswer: '',
 
                 quizTime: 0
             }
         },
-
-        mounted(){
-          this.$store.dispatch('user/login');
-        },
-
         computed: {
-            
+
           currentQuiz(){
             return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
           },
@@ -252,7 +247,7 @@
           },
 
           answers(){
-            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);  
+            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
           },
 
           questionTitle(){
@@ -288,7 +283,7 @@
             deleteQuestion(){
 
                 let quizId, questionId;
-                
+
                 quizId = this.currentQuizId;
                 questionId = this.selectedQuestionId;
 
@@ -318,7 +313,7 @@
             },
 
             addAnswer(){
-                
+
                 let questionId;
                 questionId = this.selectedQuestionId;
 
@@ -337,7 +332,7 @@
 
               let questionId;
               questionId = this.selectedQuestionId;
-          
+
               this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
             }
         }
@@ -380,7 +375,7 @@
   }
 
   .selected{
-    border: 1px solid red; 
+    border: 1px solid red;
     border-radius: 50%;
     font-size: 1em !important;
     margin: 1em auto;
