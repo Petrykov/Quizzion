@@ -17,6 +17,7 @@ export let quizzesMock = {
     quizzes: [
         {
             id: 'g67yuhb',
+            owner: 'WandaE', //might want to make this the id
             title: 'test quiz',
             description: 'mock quiz for demo',
             color: '#ffa500',
@@ -26,6 +27,7 @@ export let quizzesMock = {
         },
         {
             id: 'fy5ryt',
+            owner: 'WandaE',
             title: 'Pubquiz - Quarantine edition',
             description: 'another mock quiz for demo',
             color: '#800080',
@@ -35,6 +37,7 @@ export let quizzesMock = {
         },
         {
             id: 'kh8yi7y',
+            owner: 'WandaE',
             title: 'General knowledge',
             description: 'Random things you should know!',
             color: '#008080',

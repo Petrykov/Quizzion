@@ -86,6 +86,7 @@ export default {
       let assignedId = uuidv4();
       let newQuiz = {
         title: this.quizTitle,
+        owner: this.$store.state.user.displayName,
         description: this.quizDes,
         color: this.themeColor,
         questions: [],
