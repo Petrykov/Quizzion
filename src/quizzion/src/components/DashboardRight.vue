@@ -58,7 +58,7 @@
         color="white"
         text-color="black"
         label="Get link"
-        @click="currentQuiz.active = true"
+        @click="$store.commit('quizzes/activateQuiz', currentQuiz.id)"
       />
     </div>
     <div class="q-pa-md theme-bubble" v-if="currentQuiz.active">
@@ -85,7 +85,7 @@ export default {
     return {
       startQuiz: false,
       showQrcode: false,
-      link: "none"
+      link: ''
     };
   },
   methods: {
@@ -96,13 +96,14 @@ export default {
       this.$router.push(`quizzes/${this.currentQuiz.id}`);
     },
     copyLink() {
+      this.link = this.getQuizLink;
       this.showQrcode = true;
     }
   },
 
   computed: {
     getQuizLink() {
-      return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/questions/${this.currentQuiz.questions[0]}`;
+      return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/invite`;
     }
   },
   props: {

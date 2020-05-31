@@ -87,6 +87,11 @@ export function deleteQuestion( state, payload ) {
     quiz.questions.filter(question => question.id !== payload.deletedQuestionId);
 }
 
+export function activateQuiz( state, activatedId) {
+  let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
+  quiz.active = true;
+}
+
 export function reset( state ) {
     Object.assign(state, initialState());
 }

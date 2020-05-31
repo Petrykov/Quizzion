@@ -24,7 +24,7 @@
                   :key="quizId"
                   :style="{'background-color':quizObject(quizId).color}"
                   class="quizzes button"
-                  @click="themeColor=quizObject(quizId).color, selectedQuizId = quizId, quizObject(quizId).active = false"
+                  @click="themeColor=quizObject(quizId).color, selectedQuizId = quizId"
                 />
                 <!--                  @click="selectedQuizId = quizId"-->
                 <!--                />-->
@@ -79,6 +79,10 @@
       quizObject() {
         return this.$store.getters['quizzes/getQuizById'];
       }
+    },
+    beforeMount() {
+      this.selectedQuizId = this.$store.state.user.quizzes[0];
+      this.themeColor = this.$store.getters['quizzes/getQuizById'](this.selectedQuizId).color;
     },
     methods: {
       log() {
