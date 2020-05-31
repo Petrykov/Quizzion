@@ -2,32 +2,30 @@
   <q-page class="bg-image">
     <div class="bg-image row window-height items-center">
       <div class="left-side col-xs-12 col-sm-6">
-        <h2 style="color: white"> 
+        <h2 style="color: white">
             Welcome to
             Quizzion!
         </h2>
       </div>
       <div class="right-side col-xs-12 col-sm-6">
-       
+
         <div>
             <i class="far fa-paper-plane fa-5x" style="margin-top: 3%; margin-bottom: 3%"></i>
             <h5 class="text">You're invited to join </h5>
-            <!-- //TODO get the name of the quiz -->
-            <h5 class="text" ><strong> Quiz 1</strong></h5>
-            <h5 class="text">by organizer </h5>
-            <!-- //TODO get username -->
-            <h5 class="text"><strong>Quiz Master</strong></h5>
+            <h5 class="text" ><strong>{{ invitedQuiz.title }}</strong></h5>
+            <h5 class="text">By organizer </h5>
+            <h5 class="text"><strong>{{ invitedQuiz.owner }}</strong></h5>
 
             <h5 class="enter-text">Enter your</h5>
-             <q-input 
-             label="Name" 
+             <q-input
+             label="Name"
              v-model="playerName"
              class="input-name" />
-           
-            <q-btn round color="black" 
-            icon="forward" 
-            to="/answer"
-            class="enter-button" />
+
+            <q-btn round color="black"
+            icon="forward"
+            class="enter-button"
+            @click="toFirstQuestion"/>
 
         </div>
       </div>
@@ -41,12 +39,22 @@
     return {
      playerName: ''
     };
-  }
+  },
+    computed: {
+      invitedQuiz (){
+        return this.$store.getters['quizzes/getQuizById'](this.$route.params.quizId);
+      }
+    },
+    methods: {
+      toFirstQuestion (){
+        this.$router.push(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+      }
+    }
   }
 </script>
 
 <style scoped>
- 
+
   .bg-image {
     background-image: url("~assets/bg_enter.png");
     background-position: center;
@@ -81,7 +89,7 @@
   .input-name{
     margin-left: 20%;
     margin-right: 20%;
-    
+
   }
 
   .text{

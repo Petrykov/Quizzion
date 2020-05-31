@@ -43,7 +43,7 @@ const routes = [
     ]
   },
   {
-    path: '/invite',
+    path: '/quizzes/:quizId/invite',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       {
