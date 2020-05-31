@@ -94,6 +94,9 @@ export function deleteQuestion( state, {quizId, questionId} ) {
     });
 }
 
+/* +
+* 
+*/
 export function addAnswer( state, {questionId, answer} ){
 
     let question = state.questions.find(question => question.id === questionId);
@@ -101,6 +104,26 @@ export function addAnswer( state, {questionId, answer} ){
     state.answers.push(answer);
 
     question.answers.push(answer.id);
+}
+
+/* +
+* 
+*/
+export function deleteAnswer( state, {questionId, answerId} ){
+
+    let question = state.questions.find(question => question.id === questionId);
+
+    state.answers.map((answer, index) => {
+        if(answer.id === answerId){
+            state.answers.splice(index,1);
+        }
+    });
+
+    question.answers.map((answer, index) => {
+        if(answer === answerId){
+            question.answers.splice(index, 1);
+        }
+    });
 }
 
 export function reset( state ) {

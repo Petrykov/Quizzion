@@ -106,7 +106,8 @@
                 color= "red-7"
                 class = "q-mt-md q-ml-sm"
                 style = "cursor : pointer;"
-                size = "2em"/>
+                size = "2em"
+                @click="deleteAnswer(answer.id)"/>
 
             </div>
 
@@ -312,18 +313,25 @@
             addAnswer(){
                 
                 let questionId;
-
                 questionId = this.selectedQuestionId;
 
                 let answer = {
                   id: uuidv4(),
                   label: this.newAnswer,
-                  correct: true
+                  correct: false
                 }
 
                 this.$store.commit('quizzes/addAnswer', {questionId, answer});
 
                 this.newAnswer = '';
+            },
+
+            deleteAnswer(answerId){
+
+              let questionId;
+              questionId = this.selectedQuestionId;
+          
+              this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
             }
         }
     }
