@@ -50,7 +50,6 @@
       <div :style="{background:themeColor}" class="col right q-pa-md">
         <section>
           <router-view :currentQuiz="quizObject(selectedQuizId)"
-                       @add="addQuiz"
                        @changeTheme="changeTheme"/>
         </section>
       </div>

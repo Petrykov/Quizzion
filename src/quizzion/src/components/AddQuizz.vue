@@ -7,25 +7,25 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Your work has been saved successfully!</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup to="/" />
+          <q-btn flat label="OK" color="primary" v-close-popup to="/"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
     <div class="col">
       <div class="row">
         <q-input
-          color="white"
+
           class="col add-name"
           dark
           borderless
-          v-model="quizName"
+          v-model="quizTitle"
           placeholder="Add Quiz's name"
         ></q-input>
-        <i class="far fa-save fa-2x" @click="addQuiz" />
+        <i class="far fa-save fa-2x" @click="addQuiz"/>
       </div>
       <q-input
         v-model="quizDes"
-        color="white"
+
         style="font-size: larger"
         dark
         borderless
@@ -50,7 +50,7 @@
         <div class="q-pa-md theme-bubble">
           <q-btn size="xx-large" round color="white" @click="$refs.file.click()">
             <i class="fas fa-upload fa-lg" style="color: black">
-              <input type="file" ref="file" style="display: none" />
+              <input type="file" ref="file" style="display: none"/>
             </i>
           </q-btn>
         </div>
@@ -70,72 +70,65 @@
 </template>
 
 <script>
-export default {
-  data: () => {
-    return {
-      colors: ["teal", "purple", "brand", "orange", "red"],
-      quizDes: null,
-      quizName: null,
-      alert: false,
-      themeColor: "teal"
-    };
-  },
-  methods: {
-    addQuiz: function() {
-      console.log(this.quizName);
-      console.log(this.quizDes);
-
-      var lastId = 0;
-      for (var q in this.quizlist) {
-        if (q > lastId) {
-          lastId = q;
-        }
-      } //this part is a bit odd, have to check again
-      console.log("last id" + lastId);
-      var newQuiz = {
-        name: this.quizName,
-        description: this.quizDes,
-        color: this.themeColor,
-        questions: [],
-        id: ++lastId
+  export default {
+    data: () => {
+      return {
+        colors: ["teal", "purple", "brand", "orange", "red"],
+        quizDes: null,
+        quizTitle: null,
+        alert: false,
+        themeColor: "teal"
       };
-      this.$emit("add", newQuiz);
-      this.alert = true;
+    },
+    methods: {
+      addQuiz: function () {
+        let newQuiz = {
+          title: this.quizTitle,
+          description: this.quizDes,
+          color: this.themeColor,
+          questions: [],
+          logo: '',
+          id: 'someid'
+        };
+        // this.$emit("add", newQuiz);
+        this.$store.commit('quizzes/createQuiz', newQuiz);
+        this.$store.commit('user/createQuiz', newQuiz.id);
+        this.alert = true;
+      }
     }
-  },
-  props: ["quizlist"]
-};
+  };
 </script>
 
 <style lang="sass" scoped>
-.right
-  border-radius: 17px
+  .right
+    border-radius: 17px
 
-.welcome
-  font-size: larger
+    .welcome
+      font-size: larger
 
-.add-name
-  font-size: xx-large
+    .add-name
+      font-size: xx-large
 
-.instruction
-  font-size: large
-  color: white
+    .instruction
+      font-size: large
+      color: white
 
-.theme-bubble
-  display: flex
-  justify-content: center
+    .theme-bubble
+      display: flex
+      justify-content: center
 
-.them-bubble-item
-  border: 1px solid white
-section
-  height: 100%
+    .them-bubble-item
+      border: 1px solid white
 
-.fa-save
-  color: white
+    section
+      height: 100%
 
-.btn-add
-  border: 2px solid black
+    .fa-save
+      color: white
 
-.bg-brand
-  background: #181C30
+    .btn-add
+      border: 2px solid black
+
+    .bg-brand
+      background: #181C30
 </style>
