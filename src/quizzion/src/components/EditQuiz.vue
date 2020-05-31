@@ -1,7 +1,7 @@
 <template>
   <section
     class="column justify-between"
-    :style="{'background':themeColor?themecolor!=null:currentQuiz.color}"
+    :style="{'background':themeColor?themecolor!=null:updatedQuiz.color}"
   >
     <q-dialog v-model="alert">
       <q-card>
@@ -22,7 +22,7 @@
           dark
           type="textarea"
           borderless
-          v-model="selectedQuiz.title"
+          v-model="updatedQuiz.title"
         ></q-input>
         <i class="far fa-trash-alt fa-2x" @click="onDelete" />
       </div>
@@ -32,7 +32,7 @@
         style="font-size: larger"
         dark
         borderless
-        v-model="selectedQuiz.description"
+        v-model="updatedQuiz.description"
       ></q-input>
     </div>
     <div class="col-7">
@@ -46,7 +46,7 @@
             v-for="n in colors"
             :key="`sm-${n}`"
             :style="{'background-color':n}"
-            @click="currentQuiz.color=n"
+            @click="updatedQuiz.color=n"
           />
         </div>
         <div class="q-pt-lg">Or a logo from your organization?</div>
@@ -71,7 +71,8 @@ export default {
     return {
       colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
       alert: false,
-      themeColor: null
+      themeColor: null,
+      updatedQuiz: undefined
     };
   },
   methods: {
@@ -81,15 +82,7 @@ export default {
     saveQuiz: function() {
       this.$store.commit("quizzes/updateQuiz", {
         id: this.currentQuiz.id,
-        updatedQuiz: {
-          id: this.selectedQuiz.id,
-          title: this.currentQuiz.title,
-          description: this.currentQuiz.description,
-          color: this.currentQuiz.color,
-          questions: this.currentQuiz.questions,
-          logo: "",
-          active: this.currentQuiz.active
-        }
+        updatedQuiz: this.updatedQuiz
       });
       // this.$emit("edit", updateQuiz);
     },
@@ -117,6 +110,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  beforeMount() {
+    this.updatedQuiz = {...this.currentQuiz};
   }
 };
 </script>

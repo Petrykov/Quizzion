@@ -1,5 +1,5 @@
 <template>
-  <section class="column justify-between" :style="{background:currentQuiz.color}">
+  <section v-if="currentQuiz" class="column justify-between" :style="{background:currentQuiz.color}">
     <q-dialog v-model="showQrcode">
       <q-card>
         <q-card-section>
@@ -108,12 +108,8 @@ export default {
   props: {
     currentQuiz: {
       type: Object,
-      required: true
+      required : false
     }
-  },
-  linkBtn: {
-    type: Boolean,
-    required: true
   }
 };
 </script>
