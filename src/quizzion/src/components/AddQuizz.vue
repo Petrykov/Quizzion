@@ -21,7 +21,7 @@
           v-model="quizName"
           placeholder="Add Quiz's name"
         ></q-input>
-        <i class="far fa-save fa-2x" @click="addQuiz" />
+        <i class="far fa-save fa-2x" @click="addQuiz(true)" />
       </div>
       <q-input
         v-model="quizDes"
@@ -58,7 +58,6 @@
     </div>
     <div class="q-pa-md theme-bubble">
       <q-btn
-        to="/addQuiz"
         color="white"
         icon-right="fas fa-arrow-right"
         rounded
@@ -83,10 +82,9 @@ export default {
     };
   },
   methods: {
-    addQuiz: function() {
-      let assignedId = uuidv4()
-      console.log(assignedId);
-      var newQuiz = {
+    addQuiz: function(showAlert) {
+      let assignedId = uuidv4();
+      let newQuiz = {
         title: this.quizName,
         description: this.quizDes,
         color: this.themeColor,
@@ -97,11 +95,12 @@ export default {
       };
       this.$store.commit("quizzes/createQuiz", newQuiz);
       this.$store.commit("user/createQuiz", assignedId);
-      this.alert = true
+      this.alert = showAlert;
+      return assignedId;
     },
     toAddQuestions() {
-      this.addQuiz();
-      // this.$router.push(`quizzes/${assignedId}/questions`);
+      let newQuizId = this.addQuiz(false);
+      this.$router.push(`quizzes/${newQuizId}/questions`);
     },
   },
 
