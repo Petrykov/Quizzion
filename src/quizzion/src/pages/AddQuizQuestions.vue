@@ -2,7 +2,7 @@
   <q-page 
      class="shadow-2 rounded-borders">
 
-    <div class="row q-pa-lg logo" >
+    <div class="row q-pa-lg logo window-height">
 
       <q-page-container 
         v-if="currentQuiz"
@@ -83,59 +83,65 @@
             The answers?
           </p>
 
-          <div 
-            class="col q-mt-sm">
+           <q-scroll-area
+            class="scroll-area scrollarea"
+            style="height: 275px; max-width: 300px;">
 
-            <div  
-              v-for="(answer) in answers"
-              :key="answer.id"
-              class="row q-mt-xs">
-                  
-              <q-checkbox 
-                class="q-mt-sm q-mr-xs"
-                v-model="answer.correct"
-                dark/> 
+              <div 
+                class="col q-mt-sm">
 
-              <q-input  
-                dense
-                style="color : grey;"
-                v-model="answer.label"
-                dark/>
+                <div  
+                  v-for="(answer) in answers"
+                  :key="answer.id"
+                  class="row q-mt-xs">
+                      
+                  <q-checkbox 
+                    class="q-mt-sm q-mr-xs"
+                    v-model="answer.correct"
+                    dark/> 
 
-              <q-icon
-                name = "clear"
-                color= "red-7"
-                class = "q-mt-md q-ml-sm"
-                style = "cursor : pointer;"
-                size = "2em"
-                @click="deleteAnswer(answer.id)"/>
-
-            </div>
-
-              <form>
-                <div 
-                  class="row q-mt-md q-ml-md"> 
-
-                  <q-input 
-                    class="q-ml-lg" 
-                    style="color:grey;" 
-                    label="Add new answer" 
-                    v-model="newAnswer"
-                    :rules="[val => !!val || 'Field is required']"
+                  <q-input  
+                    dense
+                    style="color : grey;"
+                    v-model="answer.label"
                     dark/>
 
-                  <q-icon 
-                    v-if = "newAnswer.length !== 0"
-                    name = "add_circle_outline"
-                    color = "green-7"
-                    class = "q-mt-md q-ml-xs"
+                  <q-icon
+                    name = "clear"
+                    color= "red-7"
+                    class = "q-mt-md q-ml-sm"
                     style = "cursor : pointer;"
                     size = "2em"
-                    @click="addAnswer"/>
-                  
+                    @click="deleteAnswer(answer.id)"/>
+
                 </div>
-              </form>
-          </div>
+
+                  <form>
+                    <div 
+                      class="row q-mt-md q-ml-md"> 
+
+                      <q-input 
+                        class="q-ml-lg" 
+                        style="color:grey;" 
+                        label="Add new answer" 
+                        v-model="newAnswer"
+                        :rules="[val => !!val || 'Field is required']"
+                        dark/>
+
+                      <q-icon 
+                        v-if = "newAnswer.length !== 0"
+                        name = "add_circle_outline"
+                        color = "green-7"
+                        class = "q-mt-md q-ml-xs"
+                        style = "cursor : pointer;"
+                        size = "2em"
+                        @click="addAnswer"/>
+                      
+                    </div>
+                  </form>
+              </div>
+
+           </q-scroll-area>
 
           <p  
             class="q-mt-md" 
@@ -380,5 +386,10 @@
     margin: 1em auto;
   }
 
+  .scrollarea{
+    border: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
 </style>
