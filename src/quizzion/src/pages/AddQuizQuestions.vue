@@ -128,7 +128,8 @@
                     color = "green-7"
                     class = "q-mt-md q-ml-xs"
                     style = "cursor : pointer;"
-                    size = "2em"/>
+                    size = "2em"
+                    @click="addAnswer"/>
                   
                 </div>
               </form>
@@ -218,10 +219,6 @@
         data() {
             return {
 
-                quizTimeString: [
-                  {time: '5 sec'},{time: '10 sec'},{time: '15 sec'}
-                  ],
-
                 selectedQuestionId: ' ',
 
                 currentQuizId: this.$route.params.quizzId,
@@ -308,10 +305,25 @@
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
             },
 
-             onTimeClick(time, index){
-               
+            onTimeClick(time, index){
                this.quizTime = parseInt(time.split(' '), 10);
-               console.log('time: ' + this.quizTime);
+            },
+
+            addAnswer(){
+                
+                let questionId;
+
+                questionId = this.selectedQuestionId;
+
+                let answer = {
+                  id: uuidv4(),
+                  label: this.newAnswer,
+                  correct: true
+                }
+
+                this.$store.commit('quizzes/addAnswer', {questionId, answer});
+
+                this.newAnswer = '';
             }
         }
     }
