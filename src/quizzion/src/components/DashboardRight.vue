@@ -6,7 +6,7 @@
           <div class="text-h6">Let's play</div>
         </q-card-section>
         <q-card-section class="q-pt-none">Scan our QR-code</q-card-section>
-        <Qrcode :link="link"></Qrcode>
+        <Qrcode :link="getQuizLink"></Qrcode>
       </q-card>
     </q-dialog>
 
@@ -85,7 +85,6 @@ export default {
     return {
       startQuiz: false,
       showQrcode: false,
-      link: "none"
     };
   },
   methods: {
