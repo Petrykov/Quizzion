@@ -1,5 +1,5 @@
 <template>
-  <section class="column justify-between">
+  <section class="column justify-between" :style="{'background':themeColor}">
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -43,7 +43,7 @@
             v-for="(n,index) in colors"
             :key="`sm-${n}`"
             :style="{'background-color':colors[index]}"
-            @click="$emit('changeTheme',themeColor=colors[index])"
+            @click="themeColor=colors[index]"
           />
         </div>
         <div class="q-pt-lg">Or a logo from your organization?</div>
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
 export default {
   data: () => {
     return {
@@ -82,28 +83,23 @@ export default {
   },
   methods: {
     addQuiz: function() {
-      console.log(this.quizName);
-      console.log(this.quizDes);
+      let assignedId = uuidv4();
+      console.log(assignedId);
 
-      var lastId = 0;
-      for (var q in this.quizlist) {
-        if (q > lastId) {
-          lastId = q;
-        }
-      } //this part is a bit odd, have to check again
-      console.log("last id" + lastId);
       var newQuiz = {
-        name: this.quizName,
+        title: this.quizName,
         description: this.quizDes,
         color: this.themeColor,
         questions: [],
-        id: ++lastId
+        id: assignedId,
+        logo: "",
+        active: false
       };
-      this.$emit("add", newQuiz);
+      this.$store.commit("quizzes/createQuiz", newQuiz);
+      this.$store.commit("user/createQuiz", assignedId);
       this.alert = true;
     }
-  },
-  props: ["quizlist"]
+  }
 };
 </script>
 

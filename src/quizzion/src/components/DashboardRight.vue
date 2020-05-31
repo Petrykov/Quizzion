@@ -1,5 +1,5 @@
 <template>
-  <section class="column justify-between">
+  <section class="column justify-between" :style="{background:currentQuiz.color}">
     <q-dialog v-model="showQrcode">
       <q-card>
         <q-card-section>

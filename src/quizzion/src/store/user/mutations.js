@@ -32,6 +32,9 @@ export function deleteQuizFromUser( state, deletedId ) {
     });
 
 }
+export function createQuiz(state, newQuiz){
+    stateMockModerator.quizzes.push(newQuiz)
+}
 
 //mock only for dev
 import { stateMockModerator } from "./state";
