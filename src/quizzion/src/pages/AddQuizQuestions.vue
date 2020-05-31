@@ -53,7 +53,8 @@
 
       <q-page-container
         class="col q-pa-lg" 
-        style="background: #181c30; border-radius: 2em;"
+        :style="{background: currentQuiz.color}"
+        style="border-radius: 2em;"
         v-if="selectedQuestion">
 
         <q-page padding>
@@ -255,7 +256,7 @@
 
         methods: {
             onQuestionClick(id) {
-                this.selectedQuestionId = id;
+              this.selectedQuestionId = id;
             },
 
             addQuestion(){
