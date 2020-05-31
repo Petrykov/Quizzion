@@ -22,11 +22,7 @@ export function createQuiz( state, newQuizId ) {
 }
 
 export function deleteQuizFromUser( state, deletedId ) {
-  state.quizzes.map((quiz, index) => {
-    if(quiz === deletedId){
-      state.quizzes.splice(index,1);
-    }
-  });
+  state.quizzes = state.quizzes.filter(quiz => quiz !== deletedId);
 }
 
 export function reset( state ) {

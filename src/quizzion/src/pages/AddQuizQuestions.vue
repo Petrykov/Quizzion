@@ -275,19 +275,19 @@
                 image: '',
                 time: 50,
                 answers: []
-              }
+              };
 
               this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
             },
 
             deleteQuestion(){
 
-                let quizId, questionId;
+                let quizId, deletedQuestionId;
 
                 quizId = this.currentQuizId;
-                questionId = this.selectedQuestionId;
+                deletedQuestionId = this.selectedQuestionId;
 
-                this.$store.commit('quizzes/deleteQuestion', {quizId, questionId});
+                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
             },
 
             updateQuestion(){
@@ -321,7 +321,7 @@
                   id: uuidv4(),
                   label: this.newAnswer,
                   correct: false
-                }
+                };
 
                 this.$store.commit('quizzes/addAnswer', {questionId, answer});
 

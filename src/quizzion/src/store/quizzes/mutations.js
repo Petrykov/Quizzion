@@ -46,15 +46,7 @@ export function updateQuiz( state, {id,updatedQuiz} ) {
 *
 * */
 export function deleteQuiz( state, deletedId ) {
-    // console.log("delete quiz works")
-    // state.quizzes.filter(quiz => quiz.id !== deletedId);
-    // let quiz = state.quizzes.find(quiz => quiz.id === quizId);
-    state.quizzes.map((quiz, index) => {
-        if(quiz.id === deletedId){
-            state.quizzes.splice(index,1);
-        }
-    });
-
+    state.quizzes = state.quizzes.filter(quiz => quiz.id !== deletedId);
 }
 
 /* +
@@ -62,7 +54,7 @@ export function deleteQuiz( state, deletedId ) {
 *
 * */
 export function createQuestion( state, {newQuestion, quizId}) {
-    
+
     let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
     quiz.questions.push(newQuestion.id);
@@ -75,63 +67,42 @@ export function createQuestion( state, {newQuestion, quizId}) {
 * */
 export function updateQuestion( state, {updatedQuestion, questionId, quizId} ) {
 
-    console.log(updatedQuestion.answers);
-
-    let quiz = state.quizzes.find(quiz => quiz.id === quizId);
-
-    quiz.questions.map((question, index)=>{
-        if(question === questionId){
-            state.questions[index] = updatedQuestion;     
+    state.questions.map((question, index)=>{
+        if(question.id === questionId){
+            state.questions[index] = updatedQuestion;
         }
     })
 }
 
 /* +
 * payload should contain the full object that was edited, in proper format, as well as the id of the target quiz
-* 
+*
 * */
-export function deleteQuestion( state, {quizId, questionId} ) {
-  
+export function deleteQuestion( state, {quizId, deletedQuestionId} ) {
     let quiz = state.quizzes.find(quiz => quiz.id === quizId);
-    
-    quiz.questions.map((question, index) => {
-        if(question === questionId){
-            quiz.questions.splice(index,1);
-            state.questions.splice(index,1);
-        }
-    });
+    quiz.questions = quiz.questions.filter(questionId => questionId !== deletedQuestionId);
+
+    state.questions = state.questions.filter(question => question.id !== deletedQuestionId);
 }
 
 /* +
-* 
+*
 */
 export function addAnswer( state, {questionId, answer} ){
-
     let question = state.questions.find(question => question.id === questionId);
+    question.answers.push(answer.id);
 
     state.answers.push(answer);
-
-    question.answers.push(answer.id);
 }
 
 /* +
-* 
+*
 */
 export function deleteAnswer( state, {questionId, answerId} ){
-
     let question = state.questions.find(question => question.id === questionId);
+    question.answers.filter(answer => answer !== answerId);
 
-    state.answers.map((answer, index) => {
-        if(answer.id === answerId){
-            state.answers.splice(index,1);
-        }
-    });
-
-    question.answers.map((answer, index) => {
-        if(answer === answerId){
-            question.answers.splice(index, 1);
-        }
-    });
+    state.answers = state.answers.filter(answer => answer.id !== answerId);
 }
 
 export function activateQuiz( state, activatedId) {
