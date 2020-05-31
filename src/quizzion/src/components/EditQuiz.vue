@@ -1,5 +1,8 @@
 <template>
-  <section class="column justify-between">
+  <section
+    class="column justify-between"
+    :style="{'background':themeColor?themecolor!=null:currentQuiz.color}"
+  >
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -40,10 +43,10 @@
             style="border: 2px solid white"
             size="large"
             round
-            v-for="(n,index) in colors"
+            v-for="n in colors"
             :key="`sm-${n}`"
-            :style="{'background-color':colors[index]}"
-            @click="$emit('changeTheme',themeColor=colors[index])"
+            :style="{'background-color':n}"
+            @click="currentQuiz.color=n"
           />
         </div>
         <div class="q-pt-lg">Or a logo from your organization?</div>
@@ -68,7 +71,7 @@ export default {
     return {
       colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
       alert: false,
-      themeColor: "#008080"
+      themeColor: null
     };
   },
   methods: {
@@ -82,7 +85,7 @@ export default {
           id: this.selectedQuiz.id,
           title: this.currentQuiz.title,
           description: this.currentQuiz.description,
-          color: this.themeColor,
+          color: this.currentQuiz.color,
           questions: this.currentQuiz.questions,
           logo: "",
           active: this.currentQuiz.active
@@ -93,13 +96,20 @@ export default {
     deleteQuiz: function() {
       this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
       this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
-      console.log(this.currentQuiz.id+" is deleted");
+      console.log(this.currentQuiz.id + " is deleted");
       // emit: change current quiz to the id near by
     }
   },
   computed: {
     selectedQuiz() {
       return this.currentQuiz;
+    },
+    selectedColor() {
+      if (themeColor == null) {
+        return this.currentQuiz.color;
+      } else {
+        return themeColor;
+      }
     }
   },
   props: {
