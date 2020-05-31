@@ -10,12 +10,13 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev":"quasar dev"
+    "dev": "quasar dev"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "quasar": "^1.11.3",
+    "uuid": "^8.1.0",
     "vue": "^2.6.11",
     "vue-carousel": "^0.18.0"
   },
