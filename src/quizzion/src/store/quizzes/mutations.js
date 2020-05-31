@@ -46,8 +46,15 @@ export function updateQuiz( state, {id,updatedQuiz} ) {
 *
 * */
 export function deleteQuiz( state, deletedId ) {
-    console.log("delete quiz works")
-    state.quizzes.filter(quiz => quiz.id !== deletedId);
+    // console.log("delete quiz works")
+    // state.quizzes.filter(quiz => quiz.id !== deletedId);
+    // let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+    state.quizzes.map((quiz, index) => {
+        if(quiz.id === deletedId){
+            state.quizzes.splice(index,1);
+        }
+    });
+
 }
 
 /*

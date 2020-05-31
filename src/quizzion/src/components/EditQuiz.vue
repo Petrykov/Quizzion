@@ -91,8 +91,10 @@ export default {
       // this.$emit("edit", updateQuiz);
     },
     deleteQuiz: function() {
-      this.$store.commit("quizzes/deleteQuiz", 'kh8yi7y');
-      console.log("is deleted")
+      this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
+      this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
+      console.log(this.currentQuiz.id+" is deleted");
+      // emit: change current quiz to the id near by
     }
   },
   computed: {
@@ -104,8 +106,7 @@ export default {
     currentQuiz: {
       type: Object,
       required: true
-    },
-
+    }
   }
 };
 </script>
