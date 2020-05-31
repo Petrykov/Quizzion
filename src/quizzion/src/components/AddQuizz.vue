@@ -58,12 +58,13 @@
     </div>
     <div class="q-pa-md theme-bubble">
       <q-btn
-        to="/AddQuestions"
+        to="/addQuiz"
         color="white"
         icon-right="fas fa-arrow-right"
         rounded
         text-color="black"
         label="Let's add some questions!"
+        @click="toAddQuestions"
       ></q-btn>
     </div>
   </section>
@@ -83,9 +84,8 @@ export default {
   },
   methods: {
     addQuiz: function() {
-      let assignedId = uuidv4();
+      let assignedId = uuidv4()
       console.log(assignedId);
-
       var newQuiz = {
         title: this.quizName,
         description: this.quizDes,
@@ -97,9 +97,14 @@ export default {
       };
       this.$store.commit("quizzes/createQuiz", newQuiz);
       this.$store.commit("user/createQuiz", assignedId);
-      this.alert = true;
-    }
-  }
+      this.alert = true
+    },
+    toAddQuestions() {
+      this.addQuiz();
+      // this.$router.push(`quizzes/${assignedId}/questions`);
+    },
+  },
+
 };
 </script>
 
