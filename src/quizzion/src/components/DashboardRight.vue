@@ -79,6 +79,9 @@
 
 <script>
 import Qrcode from "./Qrcode";
+
+var baseUrl = "http://mark-developer.com:555/#"
+
 export default {
   components: { Qrcode },
   data() {
@@ -101,7 +104,7 @@ export default {
 
   computed: {
     getQuizLink() {
-      return `http://localhost:8080/#/quizzes/${this.currentQuiz.id}/invite`;
+      return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
     }
   },
   props: {
