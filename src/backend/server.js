@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Start accepting requests
-const listener = app.listen(process.env.PORT || 3000, function () {
+const listener = app.listen(process.env.PORT || 3500, function () {
     console.log('Quizzion backend listening on port ' + listener.address().port);
 });
 
