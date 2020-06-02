@@ -79,7 +79,7 @@
 
           <p
             class="paragraph q-mt-lg q-ml-md"
-            style="color:white; font-size:2em;">
+            style="color:white; font-sizfe:2em;">
             The answers?
           </p>
 
@@ -161,45 +161,18 @@
                 <q-btn
                   v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
                   v-bind:key="index"
+                  :id="selectedQuestion.id + '=' + index"
                   round
                   style = "border: 1px solid black; padding: 1em;"
-                  color = "wheat"
+                  color = "white"
                   text-color="black"
+                  class = "timer"
                   :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
-                  :label="time"/>
-
-                  <!-- .timer{
-                    border: 1px solid black; padding: 1em;
-                  } -->
-
-                  <!-- <q-btn round color="primary" icon="shopping_cart" /> -->
-                  
-                  
+                  :label="time"
+                  @click="onTimeClick(time, index)" />
               </div>      
             </div>
           </div>
-
-         <div class="q-pa-md">
-          <q-btn-dropdown
-            split
-            color="teal"
-            rounded
-            label="Select quizz time"
-          >
-            <q-list>
-              <q-item
-                v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
-                v-bind:key="index"
-                clickable v-close-popup>
-                  <q-item-section>
-                    <q-item-label
-                    @click="onTimeClick(time, index)">{{ time }}
-                    </q-item-label>
-                  </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-        </div>
 
           <div
             class="q-mt-md"
@@ -322,7 +295,20 @@
             },
 
             onTimeClick(time, index){
-               this.quizTime = parseInt(time.split(' '), 10);
+              this.quizTime = parseInt(time.split(' '), 10);
+
+              let timers = document.getElementsByClassName('timer');
+
+               for(let i = 0; i < timers.length; i ++){
+                 let val1  = timers[i].getElementsByClassName('block')[0].innerHTML;
+                 let val2 = parseInt(val1.split(' ',10));
+
+                 if(val2 === this.quizTime){
+                   timers[i].setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
+                 }else{
+                   timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
+                 }
+               }
             },
 
             addAnswer(){
@@ -387,9 +373,9 @@
   }
 
   .selected{
-    background: black;
-    border: 1px solid white !important;
-    color:white !important;
+    background: orange !important;
+    border: 1px solid black !important;
+    color:black !important;
   }
 
 </style>
