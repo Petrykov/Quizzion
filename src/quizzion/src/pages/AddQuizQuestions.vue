@@ -55,17 +55,16 @@
         class="col q-pa-lg"
         :style="{background: currentQuiz.color}"
         style="border-radius: 2em;"
-        v-if="selectedQuestion">
+        v-if="question !== ' '">
 
         <q-page padding>
 
           <q-input
             style="font-size: 1.8em;"
-            class="questionInput"
             dark
             color="grey-12"
             label="Question's title"
-            v-model="selectedQuestion.title"
+            v-model="question.title"
             label-color="grey"/>
 
           <q-input
@@ -73,7 +72,7 @@
             filled
             autogrow
             label="Question description"
-            v-model="selectedQuestion.description"
+            v-model="question.description"
             class="q-mt-md"
             color="grey"/>
 
@@ -81,7 +80,7 @@
             class="paragraph q-mt-lg q-ml-md"
             style="color:white; font-sizfe:2em;">
             The answers?
-          </p>
+          </p> 
 
            <q-scroll-area
             class="scroll-area scrollarea"
@@ -167,13 +166,13 @@
                   color = "white"
                   text-color="black"
                   class = "timer"
-                  :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
+                  :class="{selected : (parseInt(time.split(' ')[0], 10) === question.time)}"
                   :label="time"
                   @click="onTimeClick(time, index)" />
               </div>      
               
             </div>
-          </div>
+          </div> 
 
           <div
             class="q-mt-md"
@@ -215,7 +214,9 @@
 
                 newAnswer: '',
 
-                quizTime: 0
+                quizTime: 0,
+
+                question: ' '
             }
         },
 
@@ -245,8 +246,10 @@
         methods: {
             onQuestionClick(id) {
               this.selectedQuestionId = id;
-              console.log(this.selectedQuestion.time);
-              this.quizTime = this.selectedQuestion.time;
+              
+              this.question = {...this.selectedQuestion};
+
+              console.log(this.question);
             },
 
             addQuestion(){
@@ -276,7 +279,8 @@
                 quizId = this.currentQuizId;
                 deletedQuestionId = this.selectedQuestionId;
 
-                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+                this.question = ' ';
+                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});                
             },
 
             updateQuestion(){
@@ -285,35 +289,42 @@
                 quizId = this.currentQuizId;
                 questionId = this.selectedQuestionId;
 
-                updatedQuestion = {
-                  id: questionId,
-                  title: this.selectedQuestion.title,
-                  description: this.selectedQuestion.description,
-                  image: this.selectedQuestion.image,
-                  time: this.quizTime,
-                  answers: this.selectedQuestion.answers
-                }
+                updatedQuestion = this.question;
+
+                // {
+                //   id: questionId,
+                //   title: this.selectedQuestion.title,
+                //   description: this.selectedQuestion.description,
+                //   image: this.selectedQuestion.image,
+                //   time: this.quizTime,
+                //   answers: this.selectedQuestion.answers
+                // }
 
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
             },
 
             onTimeClick(time, index){
-              this.quizTime = parseInt(time.split(' '), 10);
 
-              let timers = document.getElementsByClassName('timer');
+              this.question.time = parseInt(time.split(' '), 10);
 
-              let selectedTime = document.getElementById(this.selectedQuestion.id + '=' + index);
+              console.log(this.question.time);
 
-              selectedTime.setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
+              // this.quizTime = parseInt(time.split(' '), 10);
 
-               for(let i = 0; i < timers.length; i ++){
-                 let val1  = timers[i].getElementsByClassName('block')[0].innerHTML;
-                 let val2 = parseInt(val1.split(' ',10));
+              // let timers = document.getElementsByClassName('timer');
 
-                 if(val2 !== this.quizTime){
-                  timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
-                 }
-               }
+              // let selectedTime = document.getElementById(this.selectedQuestion.id + '=' + index);
+
+              // selectedTime.setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
+
+              //  for(let i = 0; i < timers.length; i ++){
+              //    let val1  = timers[i].getElementsByClassName('block')[0].innerHTML;
+              //    let val2 = parseInt(val1.split(' ',10));
+
+              //    if(val2 !== this.quizTime){
+              //     timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
+              //    }
+              //  }
             },
 
             addAnswer(){
