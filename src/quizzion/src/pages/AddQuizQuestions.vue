@@ -171,6 +171,7 @@
                   :label="time"
                   @click="onTimeClick(time, index)" />
               </div>      
+              
             </div>
           </div>
 
@@ -244,6 +245,8 @@
         methods: {
             onQuestionClick(id) {
               this.selectedQuestionId = id;
+              console.log(this.selectedQuestion.time);
+              this.quizTime = this.selectedQuestion.time;
             },
 
             addQuestion(){
@@ -299,14 +302,16 @@
 
               let timers = document.getElementsByClassName('timer');
 
+              let selectedTime = document.getElementById(this.selectedQuestion.id + '=' + index);
+
+              selectedTime.setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
+
                for(let i = 0; i < timers.length; i ++){
                  let val1  = timers[i].getElementsByClassName('block')[0].innerHTML;
                  let val2 = parseInt(val1.split(' ',10));
 
-                 if(val2 === this.quizTime){
-                   timers[i].setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
-                 }else{
-                   timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
+                 if(val2 !== this.quizTime){
+                  timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
                  }
                }
             },
