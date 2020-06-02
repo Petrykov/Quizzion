@@ -1,12 +1,8 @@
 // const fs = require("fs");
 // const jwt = require("jsonwebtoken");
 let router = module.exports = require('express').Router();
-const md5 = require('md5');
 const axios = require('axios');
-var authenticateUser;
-var token;
-var uid;
-const baseUrl="https://lab.dev.easion.nl/backend/api/v5"
+const baseUrl = "https://lab.dev.easion.nl/backend/api/v5"
 
 /**
  * @api {post} /user/login Login access for customer
@@ -19,29 +15,36 @@ const baseUrl="https://lab.dev.easion.nl/backend/api/v5"
  */
 
 router.post('/login', (req, rsp) => {
+    var authenticateUser;
+    var token;
+    var uid;
 
-    if (req.body.username == undefined) { rsp.status(500).json({ error: "Missing username" }) };
-    if (req.body.password == undefined) { rsp.status(500).json({ error: "Missing password" }) };
+    if (req.body.username == undefined) { rsp.status(400).json({ error: "Missing username" }) };
+    if (req.body.password == undefined) { rsp.status(400).json({ error: "Missing password" }) };
 
-    var hashPassword = md5(req.body.password)
     axios.post(`${baseUrl}/account/access`, {
         username: req.body.username,
-        password: hashPassword
+        password: req.body.password
     })
         .then(function (res) {
             token = res.data.token
             uid = res.data.authenticate.uid
-            axios.defaults.headers.common['X-CSRFToken'] = token;
-            axios.defaults.headers.common['X-Database'] = 'lab';
-            axios.get(`${baseUrl}/user/${uid}`)
-                .then( function(res){
-                    authenticateUser = res.data.user
+
+            axios.get(`${baseUrl}/user/${uid}`, {
+                headers: {
+                    'X-CSRFToken': token,
+                    'X-Database': 'lab'
+                }
+            })
+                .then(function (res) {
+                    authenticateUser = res.data.user[0]
                     rsp.status(200).send(authenticateUser)
                 })
-                .catch(error => rsp.status(500).send(error))
+                .catch(error => rsp.status(400).send(error))
         })
-        .catch(error => rsp.status(500).send(error));
+        .catch(error => rsp.status(400).send(error)); //wrong credential
 });
+
 /**
  * @api {delete} /user/logout Logout access for customer
  * @apiName Logout
@@ -52,11 +55,18 @@ router.post('/login', (req, rsp) => {
  */
 
 router.delete('/logout', (req, rsp) => {
-    if(authenticateUser==null){
+
+    //need to verify the token if it's a correct one
+
+    if (req == null) {
         rsp.status(400).send("no user logged in")
     }
-    axios.defaults.headers.common['X-CSRFToken'] = token;
-    axios.delete(`${baseUrl}/account/access`)
-    .then(res => rsp.status(200).send(res.data.messages))
-    .catch(error => rsp.status(500).send(error))
+    axios.delete(`${baseUrl}/account/access`, {
+        headers: {
+            'X-CSRFToken': req.token
+        }
+    })
+        .then(res => rsp.status(200).send(res.data.messages))
+        .catch(error => rsp.send(error))
+
 })
