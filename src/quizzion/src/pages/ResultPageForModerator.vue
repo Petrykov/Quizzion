@@ -16,7 +16,7 @@
           <th style="width:90%;">Player</th>
           <th style="width:20%">Score</th>
         </tr></table>
-      <q-scroll-area style="height: 500px;">
+      <q-scroll-area style="height: 700px;">
                   <q-list style="width:100%">
                     <table width="100%">
                       <tr v-for="user in quiz.users" v-bind:key="user.number">
@@ -58,6 +58,12 @@
   export default {
     name: "ResultPageForModerator",
     methods: {
+      isCorrectIcon:function(isCorrect){
+        if(!isCorrect){
+          return ""
+        }
+        return "check_circle"
+      },
       isCorrectIconColor: function (isCorrect) {
         if (!isCorrect) {
           return "red"
@@ -322,167 +328,7 @@
                 }
               ]
             },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
-            {
-              number: 2,
-              username: "Vlad",
-              result: [
-                {
-                  question_number: 1,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 2,
-                  isCorrect: false,
-                  score: 0
-                },
-                {
-                  question_number: 3,
-                  isCorrect: true,
-                  score: 10
-                },
-                {
-                  question_number: 4,
-                  isCorrect: true,
-                  score: 10
-                }
-              ]
-            },
           ]
         },
       }}}
 </script>
-
-<style scoped>
-
-</style>
