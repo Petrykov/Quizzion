@@ -157,17 +157,25 @@
               class="q-mr-xs q-mt-md"/>
 
             <div class="row col">
+              <div class="q-pa-md q-gutter-sm">
+                <q-btn
+                  v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
+                  v-bind:key="index"
+                  round
+                  style = "border: 1px solid black; padding: 1em;"
+                  color = "wheat"
+                  text-color="black"
+                  :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
+                  :label="time"/>
 
-              <q-btn
-                v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
-                v-bind:key="index"
-                rounded
-                dark
-                :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
-                color = "wheat"
-                class = "timer"
-                size = "12px"
-                :label="time"/>
+                  <!-- .timer{
+                    border: 1px solid black; padding: 1em;
+                  } -->
+
+                  <!-- <q-btn round color="primary" icon="shopping_cart" /> -->
+                  
+                  
+              </div>      
             </div>
           </div>
 
@@ -236,6 +244,11 @@
                 quizTime: 0
             }
         },
+
+        mounted(){
+            this.$store.dispatch('user/login');
+        },
+
         computed: {
 
           currentQuiz(){
@@ -367,24 +380,16 @@
     display: contents;
   }
 
-  .timer{
-    border: 1px solid orange;
-    border-radius: 50%;
-    font-size: 1em !important;
-    margin: 1em auto;
-  }
-
-  .selected{
-    border: 1px solid red;
-    border-radius: 50%;
-    font-size: 1em !important;
-    margin: 1em auto;
-  }
-
   .scrollarea{
     border: none;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .selected{
+    background: black;
+    border: 1px solid white !important;
+    color:white !important;
   }
 
 </style>
