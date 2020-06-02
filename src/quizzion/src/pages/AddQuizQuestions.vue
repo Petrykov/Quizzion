@@ -90,8 +90,8 @@
                 class="col q-mt-sm">
 
                 <div
-                  v-for="(answer) in answers"
-                  :key="answer.id"
+                  v-for="(answer, index) in answersList"
+                  :key="index"
                   class="row q-mt-xs">
 
                   <q-checkbox
@@ -207,16 +207,16 @@
     export default {
         data() {
             return {
-
-                selectedQuestionId: ' ',
-
+                
                 currentQuizId: this.$route.params.quizId,
 
+                selectedQuestionId: ' ',
+                
                 newAnswer: '',
 
-                quizTime: 0,
+                question: ' ',
 
-                question: ' '
+                answersList: ' '
             }
         },
 
@@ -234,8 +234,8 @@
             return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
           },
 
-          answers(){
-            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
+          getAnswers(){
+            return this.$store.getters['quizzes/getAnswers'](this.question.answers);
           },
 
           questionTitle(){
@@ -249,7 +249,9 @@
               
               this.question = {...this.selectedQuestion};
 
-              console.log(this.question);
+              this.answersList = {...this.getAnswers};
+
+              console.log(this.answersList);
             },
 
             addQuestion(){
@@ -291,40 +293,11 @@
 
                 updatedQuestion = this.question;
 
-                // {
-                //   id: questionId,
-                //   title: this.selectedQuestion.title,
-                //   description: this.selectedQuestion.description,
-                //   image: this.selectedQuestion.image,
-                //   time: this.quizTime,
-                //   answers: this.selectedQuestion.answers
-                // }
-
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
             },
 
             onTimeClick(time, index){
-
               this.question.time = parseInt(time.split(' '), 10);
-
-              console.log(this.question.time);
-
-              // this.quizTime = parseInt(time.split(' '), 10);
-
-              // let timers = document.getElementsByClassName('timer');
-
-              // let selectedTime = document.getElementById(this.selectedQuestion.id + '=' + index);
-
-              // selectedTime.setAttribute('style','background: orange !important; border: 1px solid black !important; padding: 1em;');
-
-              //  for(let i = 0; i < timers.length; i ++){
-              //    let val1  = timers[i].getElementsByClassName('block')[0].innerHTML;
-              //    let val2 = parseInt(val1.split(' ',10));
-
-              //    if(val2 !== this.quizTime){
-              //     timers[i].setAttribute('style','background: white !important; border: 1px solid black !important; color:black !important; padding: 1em;');
-              //    }
-              //  }
             },
 
             addAnswer(){
