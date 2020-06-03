@@ -71,7 +71,7 @@
                   v-model="question.title"
                   label-color="grey"/>
             </div>
-          
+
             <div>
               <q-icon
                 name="delete"
@@ -81,9 +81,9 @@
                 size="3em"
                 @click="deleteQuestion"/>
             </div>
-             
+
           </div>
-         
+
 
           <q-input
             dark
@@ -98,7 +98,7 @@
             class="paragraph q-mt-lg q-ml-md"
             style="color:white; font-size:2em;">
             The answers?
-          </p> 
+          </p>
 
            <q-scroll-area
             class="scroll-area scrollarea"
@@ -187,15 +187,15 @@
                   :class="{selected : (parseInt(time.split(' ')[0], 10) === question.time)}"
                   :label="time"
                   @click="onTimeClick(time, index)" />
-              </div>      
-              
+              </div>
+
             </div>
-          </div> 
+          </div>
 
           <div
             class="q-mt-md"
             style="width: 100%; text-align: center;">
-        
+
             <q-btn
               label="save"
               color="white"
@@ -219,19 +219,15 @@
     export default {
         data() {
             return {
-                
+
                 currentQuizId: this.$route.params.quizId,
 
                 selectedQuestionId: ' ',
-                
+
                 newAnswer: '',
 
                 question: ' '
             }
-        },
-
-        mounted(){
-            this.$store.dispatch('user/login');
         },
 
         computed: {
@@ -256,18 +252,18 @@
         methods: {
             onQuestionClick(id) {
               this.selectedQuestionId = id;
-              
+
               this.question = {...this.selectedQuestion};
 
               this.question.answers = this.deepCopyFunction([...this.getAnswers]);
-            },   
+            },
 
             deepCopyFunction(inObject) {
 
               let outObject, value, key;
 
               if (typeof inObject !== "object" || inObject === null) {
-                return inObject 
+                return inObject
               }
 
               outObject = Array.isArray(inObject) ? [] : {}
@@ -279,7 +275,7 @@
 
               return outObject
             },
-           
+
             addQuestion(){
 
               let quizId, questionId, newQuestion;
@@ -296,7 +292,7 @@
                 time: 50,
                 answers: []
               };
-            
+
 
               this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
             },
@@ -309,7 +305,7 @@
                 deletedQuestionId = this.selectedQuestionId;
 
                 this.question = ' ';
-                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});                
+                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
             },
 
             updateQuestion(){
@@ -325,10 +321,10 @@
                 for(let i =0; i < answers.length; i++){
 
                   let changedAnswer = answers[i];
-                  let answerId = changedAnswer.id; 
+                  let answerId = changedAnswer.id;
 
                   updatedQuestion.answers[i] = this.question.answers[i].id;
-        
+
                   this.$store.commit('quizzes/updateAnswer',{answerId, changedAnswer})
                 }
 
