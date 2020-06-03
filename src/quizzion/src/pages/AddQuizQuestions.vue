@@ -108,7 +108,7 @@
                 class="col q-mt-sm">
 
                 <div
-                  v-for="(answer, index) in answersList"
+                  v-for="(answer, index) in question.answers"
                   :key="index"
                   class="row q-mt-xs">
 
@@ -226,9 +226,7 @@
                 
                 newAnswer: '',
 
-                question: ' ',
-
-                answersList: ' '
+                question: ' '
             }
         },
 
@@ -261,10 +259,27 @@
               
               this.question = {...this.selectedQuestion};
 
-              this.answersList = {...this.getAnswers};
+              this.question.answers = this.deepCopyFunction([...this.getAnswers]);
+            },   
 
-              console.log(this.answersList);
+            deepCopyFunction(inObject) {
+
+              let outObject, value, key;
+
+              if (typeof inObject !== "object" || inObject === null) {
+                return inObject 
+              }
+
+              outObject = Array.isArray(inObject) ? [] : {}
+
+                for (key in inObject) {
+                  value = inObject[key]
+                  outObject[key] = this.deepCopyFunction(value);
+                }
+
+              return outObject
             },
+           
 
             addQuestion(){
 
@@ -382,7 +397,7 @@
   }
 
   .selected{
-    background: orange !important;
+    background: #5dbcd2 !important;
     border: 1px solid black !important;
     color:black !important;
   }
