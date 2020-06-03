@@ -59,13 +59,31 @@
 
         <q-page padding>
 
-          <q-input
-            style="font-size: 1.8em;"
-            dark
-            color="grey-12"
-            label="Question's title"
-            v-model="question.title"
-            label-color="grey"/>
+          <div style="display:flex;">
+
+            <div
+              style="width: 100%;">
+                <q-input
+                  style="font-size: 1.8em;"
+                  dark
+                  color="grey-12"
+                  label="Question's title"
+                  v-model="question.title"
+                  label-color="grey"/>
+            </div>
+          
+            <div>
+              <q-icon
+                name="delete"
+                color="white"
+                style="cursor : pointer; position: absolute; right: 0;"
+                class="q-mr-md"
+                size="3em"
+                @click="deleteQuestion"/>
+            </div>
+             
+          </div>
+         
 
           <q-input
             dark
@@ -78,7 +96,7 @@
 
           <p
             class="paragraph q-mt-lg q-ml-md"
-            style="color:white; font-sizfe:2em;">
+            style="color:white; font-size:2em;">
             The answers?
           </p> 
 
@@ -107,7 +125,7 @@
 
                   <q-icon
                     name = "clear"
-                    color= "red-7"
+                    color= "white"
                     class = "q-mt-md q-ml-sm"
                     style = "cursor : pointer;"
                     size = "2em"
@@ -130,7 +148,7 @@
                       <q-icon
                         v-if = "newAnswer.length !== 0"
                         name = "add_circle_outline"
-                        color = "green-7"
+                        color = "white"
                         class = "q-mt-md q-ml-xs"
                         style = "cursor : pointer;"
                         size = "2em"
@@ -177,20 +195,14 @@
           <div
             class="q-mt-md"
             style="width: 100%; text-align: center;">
-            <q-icon
-              name="delete"
-              color="red-6"
-              style="cursor : pointer;"
-              class="q-mr-md"
-              size="4em"
-              @click="deleteQuestion"/>
-
-            <q-icon
-              name="save"
-              color="orange-6"
+        
+            <q-btn
+              label="save"
+              color="white"
+              text-color="black"
               class="q-ml-md"
-              style="cursor : pointer;"
-              size="4em"
+              style="cursor : pointer; padding: 0.2em 0.4em; border-radius: 2em;"
+              size="1.2em"
               @click="updateQuestion"/>
           </div>
 
@@ -311,7 +323,9 @@
                   correct: false
                 };
 
-                this.$store.commit('quizzes/addAnswer', {questionId, answer});
+                this.question.answers.push(answer);
+
+                // this.$store.commit('quizzes/addAnswer', {questionId, answer});
 
                 this.newAnswer = '';
             },
@@ -321,8 +335,14 @@
               let questionId;
               questionId = this.selectedQuestionId;
 
-              this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
+              for(let i = 0; i <this.question.answers.length; i++){
+                if(this.question.answers[i] ===  answerId){
+                    this.question.answers.splice(i, 1);
+                }
+
             }
+            // this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
+          }
         }
     }
 </script>
