@@ -313,18 +313,24 @@
             },
 
             updateQuestion(){
-                let quizId, questionId, updatedQuestion;
+                let quizId, questionId, updatedQuestion, answers;
 
                 quizId = this.currentQuizId;
                 questionId = this.selectedQuestionId;
 
                 updatedQuestion = this.question;
 
-                for(let i =0; i < this.question.answers.length; i++){
-                  updatedQuestion.answers[i] = this.question.answers[i].id;
-                }
+                answers = this.question.answers;
 
-                console.log(updatedQuestion);
+                for(let i =0; i < answers.length; i++){
+
+                  let changedAnswer = answers[i];
+                  let answerId = changedAnswer.id; 
+
+                  updatedQuestion.answers[i] = this.question.answers[i].id;
+        
+                  this.$store.commit('quizzes/updateAnswer',{answerId, changedAnswer})
+                }
 
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
             },
