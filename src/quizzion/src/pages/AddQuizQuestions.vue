@@ -280,7 +280,6 @@
               return outObject
             },
            
-
             addQuestion(){
 
               let quizId, questionId, newQuestion;
@@ -297,6 +296,7 @@
                 time: 50,
                 answers: []
               };
+            
 
               this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
             },
@@ -320,6 +320,12 @@
 
                 updatedQuestion = this.question;
 
+                for(let i =0; i < this.question.answers.length; i++){
+                  updatedQuestion.answers[i] = this.question.answers[i].id;
+                }
+
+                console.log(updatedQuestion);
+
                 this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
             },
 
@@ -340,7 +346,7 @@
 
                 this.question.answers.push(answer);
 
-                // this.$store.commit('quizzes/addAnswer', {questionId, answer});
+                this.$store.commit('quizzes/addAnswer', {questionId, answer});
 
                 this.newAnswer = '';
             },
@@ -351,12 +357,13 @@
               questionId = this.selectedQuestionId;
 
               for(let i = 0; i <this.question.answers.length; i++){
-                if(this.question.answers[i] ===  answerId){
+                if(this.question.answers[i].id ===  answerId){
                     this.question.answers.splice(i, 1);
                 }
 
             }
-            // this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
+
+            this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
           }
         }
     }
