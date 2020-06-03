@@ -23,9 +23,11 @@ export default {
   }
 
   h4{
-    
+
   }
 
-  
+  .q-pa-md{
+    padding: 0em !important;
+  }
 
 </style>

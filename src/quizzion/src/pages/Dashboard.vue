@@ -1,16 +1,24 @@
 <template>
   <q-page class="layout">
     <div class="row q-pa-md main-layout">
-      <div class="col">
+      <div class="col logo">
 
         <section class="column">
-          <div style="margin-bottom:auto; margin-top:20%;"
-               class="q-mb-lg">
+
+          <div
+            style="margin-bottom:auto; margin-top:20%;"
+            class="q-mb-lg">
 
             <div class="col q-mt-lg"
                  style="margin-left: auto; margin-right: auto; text-align: center;">
-              <h2>Hi {{ currentUser.name }}</h2>
-              <span style="font-size: 1.5em;">Welcome back to the gamespace, we missed you!</span>
+
+              <h2>
+                Hi {{ currentUser.name }}
+              </h2>
+
+              <span style="font-size: 1.5em;">
+                Welcome back to the gamespace, we missed you!
+              </span>
             </div>
 
             <div class="col-8" style="margin: 0 auto; text-align: center;">
@@ -34,7 +42,7 @@
                   icon="fas fa-plus"
                   @click="themeColor='teal'"
                 >
-                  <div class="ex1"></div>
+                  <div class="ex1"/>
                 </q-btn>
 
               </div>
@@ -44,7 +52,7 @@
 
       </div>
 
-       <div class="col">
+      <div class="col" style="padding: 2em !important;">
         <section>
           <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
         </section>
@@ -105,12 +113,15 @@
       border: 2px solid black
 
     .right
-      border-radius: 17px
+      border-radius: 2em
       padding: 2em
 
     router-view
       height: 100px
       position: absolute
+
+    .logo
+      background-image: url("~assets/bg_answer_screen.png");
 
 
 </style>

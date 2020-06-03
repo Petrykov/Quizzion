@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currentQuiz" class="column justify-between" :style="{background:currentQuiz.color}">
+  <section v-if="currentQuiz" class="column justify-between" :style="{background:currentQuiz.color} ">
     <q-dialog v-model="showQrcode">
       <q-card>
         <q-card-section>
@@ -10,10 +10,9 @@
       </q-card>
     </q-dialog>
 
-    <div class="col">
+    <div  style="height: fit-content;">
       <div class="row">
         <h3 style="color: black" class="col">{{ currentQuiz.title }}</h3>
-
         <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white" />
       </div>
       <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
@@ -21,7 +20,7 @@
 
     <div class="col-5">
       <div class="row justify-between">
-        <span style="color:black; font-size: 2em;">Questions</span>
+        <p style="color:black; font-size: 2em;">Questions</p>
 
         <div>
           <q-btn
@@ -37,20 +36,25 @@
         </div>
       </div>
 
-      <ul
-        style="list-style-type: none;"
-        v-for="questionId in currentQuiz.questions"
-        :key="questionId"
-      >
-        <li>
-          <p
-            style="font-size: 1.5em; color:white;"
-          >{{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}</p>
-        </li>
-      </ul>
+      <div
+        style="border: 2px solid black; border-radius: 2.5em; margin-top: 1em;">
+        <q-scroll-area
+          style="width: 100%; height: 400px;">
+            <ul style="list-style-type: none;">
+              <li class="list-item">
+                <p
+                  v-for="questionId in currentQuiz.questions"
+                  :key="questionId"
+                  style="font-size: 1.5em; color:white; margin-bottom: 1em;">
+                    {{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
+                </p>
+              </li>
+            </ul>
+        </q-scroll-area>
+      </div>
     </div>
 
-    <div class="q-pa-md theme-bubble">
+    <div class="theme-bubble q-mr-lg q-mb-md">
       <q-btn
         v-if="!currentQuiz.active"
         unelevated
@@ -61,6 +65,7 @@
         @click="$store.commit('quizzes/activateQuiz', currentQuiz.id)"
       />
     </div>
+
     <div class="row items-center q-pa-md theme-bubble" v-if="currentQuiz.active">
       <q-btn
         class="col"
@@ -138,8 +143,18 @@ export default {
 
 
 <style scoped>
-.theme-bubble {
-  display: flex;
-  justify-content: flex-end;
-}
+
+  .theme-bubble {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .q-pa-md{
+    padding: 2em !important;
+  }
+
+  .full-width{
+    margin-top: 5em !important;
+  }
+
 </style>
