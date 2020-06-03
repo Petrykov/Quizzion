@@ -1,6 +1,6 @@
 let router = module.exports = require('express').Router();
 const axios = require('axios').default;
-axios.defaults.headers.common['X-CSRFToken'] = '5e6543f41c254f996a5e0beead5b858f810167f1ed4aea2bcde172d1947e26e953fa66ca7370630b7dd43d64541e13bf7b3ec63fee229ba46e27aa8a04f8f389';
+axios.defaults.headers.common['X-CSRFToken'] = '0c35663c9570daf03d0ef3b1eaecf1adbd409f518778e07e06179fbd43bdaabe213692b147e0d4a5dfd1e516b730cfac4d3b00966dee45937b5c492d4f9e9fd9';
 axios.defaults.headers.common['X-Database'] = 'lab';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 var baseURL = 'https://lab.dev.easion.nl/backend/api/v5';
@@ -8,6 +8,14 @@ var tn;
 
 
 router.post('/quizzes', (req, rsp) => {
+
+    req.body.id = "1";
+    req.body.color= 'kkk';
+    req.body.logo = 'gggg';
+    req.body.title = 'hhh';
+    req.body.description='hh';
+
+
     const templateContent = {
         type: 'quiz'
     };
@@ -39,11 +47,43 @@ router.post('/quizzes', (req, rsp) => {
     });
 });
 
-
-//get all quizzes
+//get quizzes
 router.get('/quizzes', (req, rsp) => {
     axios.get(baseURL + '/template').then((response) =>{
-        let quizzes = response.data.message;
+
+        let responseData = response.data.template;
+        let quizzes=[];
+
+
+        for (let i = 0; i <responseData.length ; i++) {
+            var colorNew, logoNew, activeNew;
+
+
+            axios.get(baseURL + '/template/' + responseData[i].tn + '/content').then((response) =>{
+                console.log(response.data.content.content);
+
+                colorNew = response.data.content.content.color;
+                logoNew = response.data.content.content.logo;
+                activeNew = response.data.content.content.active;
+
+
+
+                rsp.status(200).json(quiz);
+            }).catch((error) =>{
+                rsp.status(400).json(error);
+            });
+            let quiz = {
+                title: responseData[i].label,
+                description: responseData[i].description,
+                color: colorNew,
+                logo: logoNew,
+                active: activeNew
+
+            }
+
+            quizzes.push(quiz);
+        }
+
         rsp.status(200).json(quizzes);
     }).catch((error) =>{
         rsp.status(400).json(error);
@@ -51,8 +91,29 @@ router.get('/quizzes', (req, rsp) => {
 
 });
 
+
+
+//get one  particular quiz
+// router.get('/quizzes/:quiz_id', (req, rsp) => {
+//     axios.get(baseURL + '/template/${tn}/content').then((response) =>{
+//
+//         console.log(quizzes);
+//         rsp.status(200).json(quizzes);
+//     }).catch((error) =>{
+//         rsp.status(400).json(error);
+//     })
+//
+// });
+
 //post new quiz
 router.post('/quizzes', (req, rsp) => {
+
+    req.body.id = "1";
+    req.body.color= 'kkk';
+    req.body.logo = 'gggg';
+    req.body.title = 'hhh';
+    req.body.description='hh';
+
 
     const templateContent = {
       type: 'quiz',
@@ -60,14 +121,15 @@ router.post('/quizzes', (req, rsp) => {
         id: req.body.id,
         color: req.body.color,
         logo: req.body.logo,
-        //questions?
-
+        title: req.body.title,
+        description: req.body.description
       }
     };
     axios.post(baseURL + '/template', {
         type: 'form_json',
         module: 'survey',
         status: 'active',
+        templateContent: 'JSON',
         label: req.body.title,
         description: req.body.description,
         content: templateContent
