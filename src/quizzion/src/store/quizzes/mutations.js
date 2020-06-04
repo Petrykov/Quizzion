@@ -105,6 +105,19 @@ export function deleteAnswer( state, {questionId, answerId} ){
     state.answers = state.answers.filter(answer => answer.id !== answerId);
 }
 
+/* +
+* payload should contain the
+*
+* */
+export function updateAnswer( state, {answerId, changedAnswer} ) {
+
+    state.answers.map((answer, index)=>{
+        if(answer.id === answerId){
+            state.answers[index] = changedAnswer;
+        }
+    })
+}
+
 export function activateQuiz( state, activatedId) {
   let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
   quiz.active = true;

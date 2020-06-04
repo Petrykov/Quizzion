@@ -23,7 +23,7 @@
       <div class="row justify-between">
         <span style="color:black; font-size: 2em;">Questions</span>
 
-        <div to="/edit">
+        <div>
           <q-btn
             unelevated
             dark
@@ -61,8 +61,9 @@
         @click="$store.commit('quizzes/activateQuiz', currentQuiz.id)"
       />
     </div>
-    <div class="q-pa-md theme-bubble" v-if="currentQuiz.active">
+    <div class="row items-center q-pa-md theme-bubble" v-if="currentQuiz.active">
       <q-btn
+        class="col"
         unelevated
         rounded
         color="white"
@@ -70,6 +71,7 @@
         :label="getQuizLink"
         @click="copyLink"
       ></q-btn>
+      <q-icon class="col-1" @click="copyUrl" name="far fa-copy" size="2em" style="cursor : pointer;" color="white" />
     </div>
     <div v-if="currentQuiz.active" class="q-pa-md theme-bubble">
       <q-btn unelevated rounded color="white" text-color="black" label="Start quiz" />
@@ -79,8 +81,10 @@
 
 <script>
 import Qrcode from "./Qrcode";
+import {copyToClipboard} from 'quasar';
 
-var baseUrl = "http://mark-developer.com:555/#"
+// var baseUrl = "http://mark-developer.com:555/#"
+var baseUrl = "http://localhost:8080/#";
 
 export default {
   components: { Qrcode },
@@ -99,6 +103,22 @@ export default {
     },
     copyLink() {
       this.showQrcode = true;
+    },
+    copyUrl() {
+      copyToClipboard(this.getQuizLink);
+      this.triggerNotification();
+    },
+    triggerNotification() {
+      this.$q.notify({
+        type: 'positive',
+        message: `Copied link!`,
+        actions: [
+          {
+            label: 'Dismiss', color: 'white', handler: () => { /* ... */
+            }
+          }
+        ]
+      })
     }
   },
 

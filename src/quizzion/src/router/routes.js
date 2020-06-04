@@ -31,6 +31,7 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'Login',
         component: () => import('pages/Login.vue')
       }
     ]
@@ -51,11 +52,12 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'Participate',
         component: () => import('pages/Invitation.vue')
       }
     ]
   }
-]
+];
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {

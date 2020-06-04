@@ -28,7 +28,7 @@
 </template>
 
 <script >
-import LoginForm from "components/LoginForm";
+import LoginForm from "../components/LoginForm";
 import { Carousel, Slide } from "vue-carousel";
 
 export default {

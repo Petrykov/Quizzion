@@ -1,4 +1,7 @@
-// import axios or use this.$axios?
+import axios from 'axios'
+import md5 from 'md5'
+
+const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
 
 /*
 *
@@ -19,7 +22,10 @@
 
 
 export function login(credentials, cb, errorCb) {
-    // axios.post(`${apiUrl}/user/login`, { credentials }).then(cb).catch(errorCb);
+    axios.post(`${apiUrl}/user/login`, {
+      username: credentials.username,
+      password: md5(credentials.password)
+    }).then(cb).catch(errorCb);
 }
 
 export function participate(displayName, cb, errorCb) {
@@ -31,7 +37,6 @@ export function fetchQuizzes(cb, errorCb) {
 }
 
 export function fetchQuestions(cb, errorCb) {
-    console.log(cb);
     // axios.get(`${apiUrl}/questions`).then(cb).catch(errorCb);
 }
 

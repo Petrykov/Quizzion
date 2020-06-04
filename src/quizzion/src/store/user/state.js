@@ -2,7 +2,7 @@ export default function () {
   return {
     role: '', //maybe enum or sth for mod or respondent
     displayName: '', //display name, for mods that is registered in db
-    // token: '', //token to access Parantion backend
+    token: '', //token to access Parantion backend
 
     //rest solely for role === mod
     userId: '', //unique user id (database pk)
@@ -25,14 +25,14 @@ import {Roles} from '../enums'
 export let stateMockRespondent = {
   role: Roles.RESPONDENT,
   displayName: 'JohnD',
-  //token: 'hisaccesstoken'
+  token: 'hisaccesstoken'
 };
 
 //moderator
 export let stateMockModerator = {
   role: Roles.MODERATOR,
   displayName: 'WandaE',
-  //token: 'heraccesstoken'
+  token: 'heraccesstoken',
 
   userId: 'ghu76t', //unique user id (database pk)
   quizzes: ['kh8yi7y', 'fy5ryt', 'g67yuhb'], //array of quiz ID's

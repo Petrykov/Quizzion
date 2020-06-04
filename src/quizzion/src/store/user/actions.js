@@ -5,11 +5,11 @@ export function login ({ commit, dispatch }, credentials) {
         credentials,
         //handle success
         ( response ) => {
-          commit('login', response.data);
+          commit('login', response.data[0]);
           // this.$router.push('/')
         }, //we might want to set the default axios headers here.
         //handle failure
-        (/* error */) => {}
+        ( error ) => { console.log(error) }
     );
 
     //MOCK DATA
@@ -23,14 +23,17 @@ export function logout({ dispatch }) {
     dispatch('resetAll', null, { root: true });
 }
 
-export function participate({ commit }, displayName) {
+export function participate({ commit, dispatch }, displayName) {
     api.participate(
         displayName,
         //handle success
         ( response ) => commit('participate', response.data),
         //handle failure
         () => {}
-    )
+    );
+
+  console.log("Mocking store...");
+  dispatch('mockStore', null, {root: true});
 }
 
 export function reset({ commit }) {
