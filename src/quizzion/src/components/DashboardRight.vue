@@ -1,5 +1,8 @@
 <template>
-  <section v-if="currentQuiz" class="column justify-between" :style="{background:currentQuiz.color} ">
+  <section v-if="currentQuiz"
+           class="column justify-between"
+           style="box-shadow: 10px 10px 10px rgba(0, 0.5, 0.5, 0.5);"
+           :style="{background:currentQuiz.color}">
     <q-dialog v-model="showQrcode">
       <q-card>
         <q-card-section>
@@ -12,15 +15,15 @@
 
     <div style="height: fit-content;">
       <div class="row">
-        <h3 style="color: black" class="col">{{ currentQuiz.title }}</h3>
+        <h3 style="color: white; border-bottom: 1px solid black; width: fit-content;" class="col">{{ currentQuiz.title }}</h3>
         <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white"/>
       </div>
-      <p style="color: white; font-size: 1.5em;">{{ currentQuiz.description }}</p>
+      <p style="color: black; font-size: 1.5em; border-bottom: 1px solid white; width: fit-content;">{{ currentQuiz.description }}</p>
     </div>
 
     <div class="col-5">
       <div class="row justify-between">
-        <p style="color:black; font-size: 2em;">Questions</p>
+        <p style="color:white; font-size: 2em;">Questions</p>
 
         <div>
           <q-btn
@@ -45,7 +48,7 @@
               <p
                 v-for="questionId in currentQuiz.questions"
                 :key="questionId"
-                style="font-size: 1.5em; color:white; margin-bottom: 1em;">
+                style="font-size: 1.5em; color:black; margin-bottom: 1em;">
                 {{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
               </p>
             </li>
@@ -69,7 +72,7 @@
       />
     </div>
 
-    <div class="" v-if="currentQuiz.active" style="display:flex;">
+    <div class="q-mt-lg" v-if="currentQuiz.active" style="display:flex;">
 
       <div style="display:inline-grid; width: 100%;">
         <q-btn
