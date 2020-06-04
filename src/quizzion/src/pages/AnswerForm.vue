@@ -130,13 +130,13 @@
       goToResults() {
         if (this.timeRemaining === 0) {
           clearInterval(this.timer);
-          this.$router.push(`/results`);
+          this.$router.replace(`/results`);
         } else {
           if (this.selectedAnswer === '') this.triggerNotification();
           else {
             this.submitAnswer();
             clearInterval(this.timer);
-            this.$router.push(`/results`);
+            this.$router.replace(`/results`);
           }
         }
       },
