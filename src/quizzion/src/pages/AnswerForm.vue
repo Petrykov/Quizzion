@@ -12,8 +12,8 @@
       </div>
       <div class="right-half col-xs-12 col-sm-6" :style="{background:currentQuiz.color}">
         <div class="counter-container">
-          <h4 class="xs-hide counter">{{ timer }}</h4>
-          <h5 class="xs counter">{{ timer }}</h5>
+          <h4 class="xs-hide counter">{{ timeRemaining }}</h4>
+          <h5 class="xs counter">{{ timeRemaining }}</h5>
         </div>
 
         <q-btn
@@ -31,7 +31,7 @@
         <div style="display: flex; justify-content: flex-end">
           <q-btn
             v-if="nextQuestionId"
-            @click="goToNext"
+            @click="goToNextPage"
             class="flow-button"
             no-caps
             :class="[ selectedAnswer === '' ? 'disabled' : '']"
@@ -46,7 +46,7 @@
 
           <q-btn
             v-else
-            @click="goToResults"
+            @click="goToNextPage"
             class="flow-button"
             no-caps
             :class="[ selectedAnswer === '' ? 'disabled' : '']"
@@ -66,8 +66,9 @@
 </template>
 
 <script>
-  import { colors } from 'quasar'
-  const { lighten } = colors;
+  import {colors} from 'quasar'
+
+  const {lighten} = colors;
 
   export default {
     name: "AnswerForm",
@@ -77,7 +78,16 @@
         quizId: this.$route.params.quizId,
         questionId: this.$route.params.questionId,
         indexes: ["A", "B", "C", "D", "E", "F"], //TODO: Should we restrict the amount of options a question can have?
-        selectedAnswer: ''
+        selectedAnswer: '',
+        timeRemaining: 0,
+        timer: setInterval(() => {
+          if (this.timeRemaining > 0) {
+            this.timeRemaining -= 1;
+          } else {
+
+            this.goToNextPage();
+          }
+        }, 1000)
       }
     },
     computed: {
@@ -92,34 +102,52 @@
       },
       answerLabel() {
         return this.$store.getters['quizzes/getAnswerLabelById'];
-      },
-      timer() {
-        return this.currentQuestion.time !== undefined ? this.currentQuestion.time : '?'; //TODO: what to do when there is no timer? hide element?
       }
     },
     beforeRouteUpdate(to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
       this.quizId = to.params.quizId;
       this.questionId = to.params.questionId;
-      this.selectedAnswer = ''; //TODO: retrieve answer if user came back
+      this.selectedAnswer = '';
+      this.timeRemaining = this.currentQuestion.time;
       next();
+    },
+    mounted() {
+      this.startTimer(this.currentQuestion.time);
     },
     methods: {
       lighten,
       selectAnswer(answerId) {
         this.selectedAnswer = answerId;
       },
-      goToNext() {
-        if (this.selectedAnswer === '') this.triggerNotification();
-        else {
-          // this.submitAnswer();
-          this.$router.push(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
+      goToNextPage() {
+        if (this.nextQuestionId){
+          this.goToNextQuestion()
+        } else {
+          this.goToResults()
         }
       },
-      goToResults() {
-        if (this.selectedAnswer === '') this.triggerNotification();
-        else {
-          // this.submitAnswer();
+      goToNextQuestion(){
+        if (this.timeRemaining === 0) {
+          this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
+        } else {
+          if (this.selectedAnswer === '') this.triggerNotification();
+          else {
+            // this.submitAnswer();
+            this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
+          }
+        }
+      },
+      goToResults(){
+        if (this.timeRemaining === 0) {
+          clearInterval(this.timer);
           this.$router.push(`/results`);
+        } else {
+          if (this.selectedAnswer === '') this.triggerNotification();
+          else {
+            // this.submitAnswer();
+            clearInterval(this.timer);
+            this.$router.push(`/results`);
+          }
         }
       },
       triggerNotification() {
@@ -133,6 +161,10 @@
             }
           ]
         })
+      },
+      startTimer(maxTime) {
+        this.timeRemaining = maxTime;
+        this.timer()
       }
     }
   }
