@@ -38,6 +38,7 @@ router.post('/login', (req, rsp) => {
             })
                 .then(function (res) {
                     authenticateUser = res.data.user[0]
+                    authenticateUser.token = token
                     rsp.status(200).send(authenticateUser)
                 })
                 .catch(error => rsp.status(400).send(error))
@@ -63,10 +64,10 @@ router.delete('/logout', (req, rsp) => {
     }
     axios.delete(`${baseUrl}/account/access`, {
         headers: {
-            'X-CSRFToken': req.token
+            'X-CSRFToken': req.body.token
         }
     })
-        .then(res => rsp.status(200).send(res.data.messages))
+        .then(res => rsp.status(200).send("log out successfully!"))
         .catch(error => rsp.send(error))
 
 })
