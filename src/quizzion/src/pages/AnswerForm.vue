@@ -10,7 +10,7 @@
           :src="currentQuestion.image"
         >
       </div>
-      <div class="right-half col-xs-12 col-sm-6">
+      <div class="right-half col-xs-12 col-sm-6" :style="{background:currentQuiz.color}">
         <div class="counter-container">
           <h4 class="xs-hide counter">{{ timer }}</h4>
           <h5 class="xs counter">{{ timer }}</h5>
@@ -21,7 +21,7 @@
           :key="answerId"
           @click="selectAnswer(answerId)"
           class="answer-button"
-          :class="[ selectedAnswer === answerId ? 'selected' : '']"
+          :style="[ selectedAnswer === answerId ? {background:lighten(currentQuiz.color, 40)} : '']"
           no-caps>
 
           {{ indexes[idx] }}: {{ answerLabel(answerId) }}
@@ -66,6 +66,9 @@
 </template>
 
 <script>
+  import { colors } from 'quasar'
+  const { lighten } = colors;
+
   export default {
     name: "AnswerForm",
 
@@ -78,6 +81,9 @@
       }
     },
     computed: {
+      currentQuiz() {
+        return this.$store.getters['quizzes/getQuizById'](this.quizId);
+      },
       currentQuestion() {
         return this.$store.getters['quizzes/getQuestionById'](this.questionId);
       },
@@ -98,9 +104,7 @@
       next();
     },
     methods: {
-      log() {
-        console.log(this.nextQuestionId);
-      },
+      lighten,
       selectAnswer(answerId) {
         this.selectedAnswer = answerId;
       },
@@ -167,7 +171,6 @@
   }
 
   .right-half {
-    background: #522785;
     border-radius: 25px;
     border-right: 5px solid white;
     text-align: center;
@@ -192,11 +195,6 @@
     line-height: 65px;
     text-align: center;
     font-size: large;
-  }
-
-  /* Used dynamically to show which answer is selected */
-  .selected {
-    background: grey;
   }
 
   .flow-button {
