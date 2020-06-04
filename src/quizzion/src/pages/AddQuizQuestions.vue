@@ -17,10 +17,9 @@
 
           <q-scroll-area
             class="scroll-area"
-            style="height: 275px; max-width: 300px;">
+            style="height: 200px; max-width: 300px;">
 
             <div>
-
               <p
                 v-for="(questionId) in currentQuiz.questions"
                 :key="questionId">
@@ -51,8 +50,8 @@
         </div>
       </q-page-container>
 
-      <q-page-container
-        class="col q-pa-lg"
+      <div
+        class="col"
         :style="{background: currentQuiz.color}"
         style="border-radius: 2em;"
         v-if="question !== ' '">
@@ -207,7 +206,7 @@
           </div>
 
         </q-page>
-      </q-page-container>
+      </div>
     </div>
   </q-page>
 </template>
