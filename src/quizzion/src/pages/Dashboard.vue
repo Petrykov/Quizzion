@@ -121,7 +121,6 @@
       position: absolute
 
     .logo
-      background-image: url("~assets/bg_answer_screen.png");
-
+      background-image: url("~assets/bg_answer_screen.png")
 
 </style>
