@@ -6,7 +6,7 @@
 
 ### Log In (Quiz master)
 
-> /user/login
+> /user/login [POST]
 
 ### Headers
 
@@ -35,7 +35,7 @@ Request
 
 ### Log out (Quiz master)
 
-> /user/logout
+> /user/logout [DELETE]
 
 ### Headers
 
