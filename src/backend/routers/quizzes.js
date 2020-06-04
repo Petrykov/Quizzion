@@ -1,89 +1,37 @@
 let router = module.exports = require('express').Router();
 const axios = require('axios').default;
-axios.defaults.headers.common['X-CSRFToken'] = '0c35663c9570daf03d0ef3b1eaecf1adbd409f518778e07e06179fbd43bdaabe213692b147e0d4a5dfd1e516b730cfac4d3b00966dee45937b5c492d4f9e9fd9';
+const token = '6b1fb098df45c37f5e8178654f5065b2f30ea0da5642deb685067a30f04fd557010f7b2c95cce110035ff4f3011838072d3bd0719bf21c786dfb75c43b36e24f'
+axios.defaults.headers.common['X-CSRFToken'] = '6b1fb098df45c37f5e8178654f5065b2f30ea0da5642deb685067a30f04fd557010f7b2c95cce110035ff4f3011838072d3bd0719bf21c786dfb75c43b36e24f';
 axios.defaults.headers.common['X-Database'] = 'lab';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-var baseURL = 'https://lab.dev.easion.nl/backend/api/v5';
-var tn;
+const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
 
 
-router.post('/quizzes', (req, rsp) => {
 
-    req.body.id = "1";
-    req.body.color= 'kkk';
-    req.body.logo = 'gggg';
-    req.body.title = 'hhh';
-    req.body.description='hh';
-
-
-    const templateContent = {
-        type: 'quiz'
-    };
-    axios.post(baseURL + '/template', {
-        type: 'form_json',
-        module: 'survey',
-        status: 'active',
-        label: req.body.title,
-        description: req.body.description,
-        content: templateContent
-    }).then((response) => {
-        tn = response.data.tn;
-            axios.post(baseURL + '/form',{
-                frm_label: req.body.title,
-                type: 'survey',
-                tn: tn,
-                field: {
-                    id: req.body.id,
-                    color: req.body.color,
-                    logo: req.body.logo,
-                    //questions?
-                }
-            }).catch((error) => {
-                rsp.status(400).json(error)
-            })
-    }).catch((err) => {
-        rsp.status(400).json(err);
-
-    });
-});
-
-//get quizzes
-router.get('/quizzes', (req, rsp) => {
-    axios.get(baseURL + '/template').then((response) =>{
+//get all quizzes -> id, color and title
+router.get('/', (req, rsp) => {
+    axios.get(baseUrl + '/template',{
+        headers: {
+            'X-CSRFToken': token,
+            'X-Database': 'lab',
+            'Content-Type': 'application/json'
+        }
+    }).then((response) =>{
 
         let responseData = response.data.template;
         let quizzes=[];
 
-
         for (let i = 0; i <responseData.length ; i++) {
-            var colorNew, logoNew, activeNew;
-
-
-            axios.get(baseURL + '/template/' + responseData[i].tn + '/content').then((response) =>{
-                console.log(response.data.content.content);
-
-                colorNew = response.data.content.content.color;
-                logoNew = response.data.content.content.logo;
-                activeNew = response.data.content.content.active;
-
-
-
-                rsp.status(200).json(quiz);
-            }).catch((error) =>{
-                rsp.status(400).json(error);
-            });
             let quiz = {
+                id: responseData[i].tn,
                 title: responseData[i].label,
                 description: responseData[i].description,
-                color: colorNew,
-                logo: logoNew,
-                active: activeNew
 
-            }
 
+            };
             quizzes.push(quiz);
-        }
 
+        }
         rsp.status(200).json(quizzes);
     }).catch((error) =>{
         rsp.status(400).json(error);
@@ -91,52 +39,76 @@ router.get('/quizzes', (req, rsp) => {
 
 });
 
+//get the rest information about particular quiz
+router.get('/:quizId/content', (req, rsp) => {
+
+    axios.get(`${baseUrl}/template/${req.params.quizId}/content`, {
+        headers: {
+            'X-CSRFToken': token,
+            'X-Database': 'lab',
+            'Content-Type': 'application/json'
+        }
+
+    }).then(function (response) {
+
+        rsp.send(response.data.content.content)
+
+    }).catch(error => rsp.send(error))
+
+})
+
+//delete quiz by Id
+router.delete('/:quizId', (req, rsp) => {
+    axios.delete(`${baseUrl}/template/${req.params.quizId}`, {
+        headers: {
+            'X-CSRFToken': token,
+            'X-Database': 'lab',
+            'Content-Type': 'application/json'
+        }
+
+    }).then(function (response) {
+        rsp.status(200).json(response.data)
+    }).catch((error) =>{
+        rsp.status(400).json(error)
+    })
+});
 
 
-//get one  particular quiz
-// router.get('/quizzes/:quiz_id', (req, rsp) => {
-//     axios.get(baseURL + '/template/${tn}/content').then((response) =>{
-//
-//         console.log(quizzes);
-//         rsp.status(200).json(quizzes);
-//     }).catch((error) =>{
-//         rsp.status(400).json(error);
-//     })
-//
-// });
+
+
+
 
 //post new quiz
-router.post('/quizzes', (req, rsp) => {
-
-    req.body.id = "1";
-    req.body.color= 'kkk';
-    req.body.logo = 'gggg';
-    req.body.title = 'hhh';
-    req.body.description='hh';
+router.post('/', (req, rsp) => {
 
 
-    const templateContent = {
-      type: 'quiz',
-      properties: {
-        id: req.body.id,
-        color: req.body.color,
-        logo: req.body.logo,
-        title: req.body.title,
-        description: req.body.description
-      }
-    };
-    axios.post(baseURL + '/template', {
+    // to get from user input
+
+    req.body.active = true;
+    req.body.color= 'blue';
+    req.body.logo = 'http';
+    req.body.title = 'What do you know';
+    req.body.description = 'here is the description';
+
+    axios.post(`${baseUrl}/template/`, {
+
+
+        label: req.body.color,
+        description: req.body.description,      
         type: 'form_json',
         module: 'survey',
         status: 'active',
-        templateContent: 'JSON',
-        label: req.body.title,
-        description: req.body.description,
-        content: templateContent
+        contenttype: 'JSON',
+        content: {
+            logo : req.body.logo,
+            active : req.body.active,
+            title: req.body.title
+        }
+
     }).then((response) => {
         rsp.status(201).json(response.data);
     }).catch((err) => {
-        rsp.status(400).json(err);
+        rsp.status(404).json(err);
 
     });
 });
@@ -144,24 +116,33 @@ router.post('/quizzes', (req, rsp) => {
 
 
 //edit quiz
-router.put('/quizzes/{quiz.id}', (req, rsp) => {
-    axios.put(baseURL + '/template/{tn}',{
+router.put('/:quiz.id', (req, rsp) => {
+
+   let active = req.body.active;
+   let color = req.body.color;
+   let logo = req.body.logo;
+   let title = req.body.title;
+   let description = req.body.description;
+
+    axios.put(`${baseUrl}/template/${req.params.quizId}`,{
+
+            label: color,
+            description: description,
+            status: "active",
+            content: {
+                logo: logo,
+                active: active,
+                title: title
+            }
 
     }).then((response) => {
-        rsp.status(200).json(response.data)
+        rsp.status(200).json(response)
     }).catch((error) =>{
         rsp.status(400).json(error)
     })
 
 });
 
-//delete quiz
-router.delete('/quizzes/{quiz.id}', (req, rsp) => {
-    axios.delete(baseURL + '/template/{tn}',{
 
-    }).then((response) => {
-        rsp.status(200).json(response.data)
-    }).catch((error) =>{
-        rsp.status(400).json(error)
-    })
-});
+
+
