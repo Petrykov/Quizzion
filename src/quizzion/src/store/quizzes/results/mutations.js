@@ -17,3 +17,4 @@ export function mock(state) {
   state.results = resultsMock.results;
   state.guesses = resultsMock.guesses;
 }
+

@@ -49,6 +49,7 @@ export let quizzesMock = {
     questions: [
         {
             id: 'dr5rty',
+            number:1,
             title: 'How many rings are on the Olympic flag?',
             description: '',
             image: 'https://media.newyorker.com/photos/5e791a514f53b7000832d44f/master/pass/Thomas-Olympics.jpg',
@@ -57,6 +58,7 @@ export let quizzesMock = {
         },
         {
             id: 'dt6r',
+            number:2,
             title: 'What are the main colours on the flag of spain?',
             description: 'Hint: You might be able to tell from this image:',
             image: 'https://www.worldatlas.com/r/w1200-h701-c1200x701/upload/23/08/01/shutterstock-104644850.jpg',
@@ -65,6 +67,7 @@ export let quizzesMock = {
         },
         {
             id: 'ft6t',
+            number:3,
             title: 'What is the name of this symbol?',
             description: 'It is used to indicate a new paragraph.',
             image: 'https://i.pinimg.com/236x/6d/c2/67/6dc267235633a76c5d98d4b968fdb593--self-publishing-how-to-get-rid.jpg',

@@ -24,7 +24,7 @@ const routes = [
         component: () => import('pages/AddQuizQuestions.vue')
       },
       {
-        path: '/result',
+        path: '/result/moderator/:quizId',
         component: () => import('pages/ResultPageForModerator.vue'),
       }
     ]
