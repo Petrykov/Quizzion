@@ -67,7 +67,7 @@
       <div
         class="col"
         :style="{background: currentQuiz.color}"
-        style="border-radius: 2em;"
+        style="border-radius: 2em; box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
         v-if="question !== ' '">
 
         <q-page padding>
@@ -88,10 +88,10 @@
             <div>
               <q-icon
                 name="delete"
-                              color="white"
+                color="white"
                 style="cursor : pointer; position: absolute; right: 0;"
                 class="q-mr-md"
-                              size="3em"
+                size="3em"
                 @click="promptToDelete"/>
             </div>
 
@@ -350,6 +350,10 @@
           }
 
           this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
+
+
+          // this.question = {...this.selectedQuestion};
+          console.log(this.selectedQuestion);
 
           this.showNotification("Question was saved", "blue");
         }

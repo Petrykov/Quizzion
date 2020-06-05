@@ -1,7 +1,7 @@
 <template>
   <section v-if="currentQuiz"
            class="column justify-between"
-           style="box-shadow: 10px 10px 10px rgba(0, 0.5, 0.5, 0.5);"
+           style="box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
            :style="{background:currentQuiz.color}">
     <q-dialog v-model="showQrcode">
       <q-card>
@@ -13,12 +13,28 @@
       </q-card>
     </q-dialog>
 
-    <div style="height: fit-content;">
-      <div class="row">
-        <h3 style="color: white; width: fit-content;" class="col reduce">{{ currentQuiz.title }}</h3>
-        <q-icon @click="editQuiz" name="edit" size="2em" style="cursor : pointer;" color="white"/>
+    <div
+      style="height: fit-content;">
+
+      <div
+        class="row">
+
+        <h3 style="color: white; width: fit-content;"
+            class="col reduce">{{ currentQuiz.title }}
+        </h3>
+
+        <q-icon
+          @click="editQuiz"
+          name="edit"
+          size="2em"
+          style="cursor : pointer;"
+          color="white"/>
       </div>
-      <p style="color: black; font-size: 1.5em; width: fit-content;">{{currentQuiz.description }}</p>
+
+      <p
+        style="color: black; font-size: 1.5em; width: fit-content;">
+        {{currentQuiz.description }}
+      </p>
     </div>
 
     <div style="display: inline-block">
@@ -144,7 +160,7 @@
     },
     methods: {
       goToEdit() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+        this.$router.push(`quiz/${this.currentQuiz.id}`);
       },
 
       editQuiz() {
@@ -169,11 +185,11 @@
         })
       }
     },
-
     computed: {
       getQuizLink() {
         return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
-      }
+      },
+
     },
     props: {
       currentQuiz: {

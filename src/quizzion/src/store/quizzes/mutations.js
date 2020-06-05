@@ -98,20 +98,14 @@ export function addAnswer(state, {questionId, answer}) {
 *
 */
 export function deleteAnswer(state, {questionId, answerId}) {
-  // console.log("Question id: " + questionId);
+
   let question = state.questions.find(question => question.id === questionId);
 
-  console.log(question.answers);
-
   for (let i = 0; i < question.answers.length; i++) {
-    console.log(question.answers +" | " + answerId);
       if(question.answers[i] === answerId){
-        console.log('inside');
         question.answers.splice(i,1);
       }
   }
-
-  console.log(question.answers);
 }
 
 /* +

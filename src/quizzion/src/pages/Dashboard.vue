@@ -31,7 +31,7 @@
                   :key="quizId"
                   :style="{'background-color':quizObject(quizId).color}"
                   class="quizzes button"
-                  @click="selectedQuizId = quizId"
+                  @click="selectQuiz(quizId)"
                 />
 
                 <q-btn
@@ -54,7 +54,7 @@
 
       <div class="col" style="padding: 2em !important;">
         <section>
-          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
+<!--          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>-->
         </section>
       </div>
 
@@ -83,6 +83,15 @@
         return this.$store.getters['quizzes/getQuizById'];
       }
     },
+
+    methods: {
+      selectQuiz(quizId) {
+        // `quiz/${this.currentQuiz.id}`
+        this.$router.push(`/quiz/${this.selectedQuizId}`);
+        this.selectedQuizId = quizId;
+      }
+    },
+
     beforeMount() {
       this.selectedQuizId = this.$store.state.user.quizzes[0];
     }

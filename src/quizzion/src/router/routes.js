@@ -8,6 +8,11 @@ const routes = [
         component: () => import('pages/Dashboard.vue'),
         children: [
           {
+            path: '/quiz/:quizId',
+            component: () => import('pages/Dashboard.vue'),
+          },
+
+          {
             path: '',
             component: () => import('components/DashboardRight.vue')
           },
@@ -19,6 +24,7 @@ const routes = [
           }
         ]
       },
+
       {
         path: '/quizzes/:quizId/questions',
         component: () => import('pages/AddQuizQuestions.vue')
