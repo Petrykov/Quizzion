@@ -1,53 +1,70 @@
 let router = module.exports = require('express').Router();
+
 const axios = require('axios').default;
 
-axios.defaults.headers.common['X-CSRFToken'] = 'f2a219ca242cfe271f394fccc59382291bc5a0c581024f5d8d0af5973df969927839af7c9498ee1a72f7ee69a66788fea0fd9ee97e41a8ccd00f6e30a4de5b9c';
+axios.defaults.headers.common['X-CSRFToken'] = '72f32fe15b96d81d6e276f35185c3c7325d3bb4e3efc49c232d430121b368ca719dafb91c579020e25038faedfd75e292c0763db71b014801241534a96ada767';
 axios.defaults.headers.common['X-Database'] = 'lab';
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-
 
 router.get('/quizzes/:quiz_id/question', (req, rsp) => {
 
-    axios.get(getBaseURL() + '/v5/varoption').then((response) => {
-        let allQuestions = response.data.varoptiongroup;
+    axios.get(getBaseURL() + '/v5/var').then((response) => {
+        let allQuestions = response.data.var;
         let questions = [];
         for (let i = 0; i < allQuestions.length; i++) {
-            if (allQuestions[i].label === req.params.quiz_id) {
-                questions.push(allQuestions[i]);
+            try {
+
+                // the line below produces an error if the label does not have a json wrapped in it
+                let question = JSON.parse(allQuestions[i].label);
+
+                if (question.quiz_id === req.params.quiz_id) {
+                    questions.push({
+                        id: allQuestions[i].vh,
+                        title: question.title,
+                        description: question.description,
+                        image: question.image,
+                        time: question.time
+                        //may be also the todo ANSWERS
+                    });
+                }
+            } catch (e) {
             }
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
         console.log("Error");
+        console.log(error);
         rsp.status(400).json(error);
     });
-
-
 });
 
 router.post('/quizzes/:quiz_id/question', (req, rsp) => {
+    //dummy data
+    // req.body.title = 'title sample 2';
+    // req.body.description = 'description 2 ';
+    // req.body.image = 'some image here is definitely probably';
+    // req.body.time = 230;
 
-    //in body of request are:
-    // * question name
-    // * quiz ID
+    let payload = {
+        quiz_id: req.params.quiz_id,
+        title: req.body.title,
+        description: req.body.description,
+        image: req.body.image,
+        time: req.body.time
+    };
 
-    if (req.body.name === undefined) {
-        rsp.status(400).json({error: 'The name of question was not provided'});
-    }
+    //if some of field are undefined
 
-    console.log("To be sent to server: " + JSON.stringify({
-        name: req.body.name,
-        label: req.params.quiz_id
-    }));
+    let payloadString = JSON.stringify(payload);
 
-    axios.post(getBaseURL() + '/v5/varoption', {
-        name: req.body.name,
-        label: req.params.quiz_id
+    axios.post(getBaseURL() + '/v5/var', {
+        label: payloadString,
+        vartype: 'item',
+        datatype: 'text'
     }).then((response) => {
-        rsp.status(201).json(response.data);
+        rsp.status(201).json(response);
     }).catch((err) => {
-        console.log("error");
-        rsp.status(400).json(err);
+        console.log("Error");
+        rsp.json(err);
     });
 });
 
@@ -69,15 +86,14 @@ router.put('/quizzes/:quiz_id/question/:question_id', (req, rsp) => {
         console.log("Error with PUT of question");
         rsp.status(500).json(err);
     });
-
 });
 
 router.delete('/quizzes/:quiz_id/question/:question_id', (req, rsp) => {
-    axios.delete(getBaseURL() + '/v5/varoption/' + req.params.question_id)
+    axios.delete(getBaseURL() + '/v5/var/' + req.params.question_id)
         .then((response) => {
-            rsp.status(200).json(response);
+            rsp.status(200).json({message: "deleted"});
         }).catch((err) => {
-            rsp.status(200).json(err);
+        rsp.json(err);
     });
 });
 
