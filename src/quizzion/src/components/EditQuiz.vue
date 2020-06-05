@@ -14,6 +14,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
     <div class="col">
       <div class="row">
         <q-input
