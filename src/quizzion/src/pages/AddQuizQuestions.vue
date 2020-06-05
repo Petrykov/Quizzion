@@ -120,7 +120,7 @@
               class="col q-mt-sm">
 
               <div
-                v-for="(answer, index) in question.answers"
+                v-for="(answer, index) in answersList"
                 :key="index"
                 class="row q-mt-xs">
 
@@ -239,7 +239,9 @@
 
         question: ' ',
 
-        alert: false
+        alert: false,
+
+        answersList: ' '
       }
     },
 
@@ -264,11 +266,12 @@
 
     methods: {
       onQuestionClick(id) {
+
         this.selectedQuestionId = id;
 
         this.question = {...this.selectedQuestion};
 
-        this.question.answers = this.deepCopyFunction([...this.getAnswers]);
+        this.answersList = this.deepCopyFunction([...this.getAnswers]);
       },
 
       deepCopyFunction(inObject) {
@@ -323,34 +326,33 @@
 
       updateQuestion() {
 
-        // if(this.timeCheck() === false){
-        //   this.showNotification("Please select the time of the quiz","red");
-        // }
-
         let quizId, questionId, updatedQuestion, answers;
 
-        quizId = this.currentQuizId;
-        questionId = this.selectedQuestionId;
+        if (this.timeCheck() === false) {
+          this.showNotification("Please select the time of the quiz", "red");
+        } else {
 
-        updatedQuestion = this.question;
+          quizId = this.currentQuizId;
+          questionId = this.selectedQuestionId;
 
-        answers = this.question.answers;
+          updatedQuestion = this.question;
 
-        for (let i = 0; i < answers.length; i++) {
+          answers = this.answersList;
 
-          let changedAnswer = answers[i];
-          let answerId = changedAnswer.id;
+          for (let i = 0; i < answers.length; i++) {
 
-          updatedQuestion.answers[i] = this.question.answers[i].id;
+            let changedAnswer = answers[i];
+            let answerId = changedAnswer.id;
 
-          this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
+            updatedQuestion.answers[i] = this.answersList[i].id;
+
+            this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
+          }
+
+          this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
+
+          this.showNotification("Question was saved", "blue");
         }
-
-
-        console.log(this.question);
-        this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
-
-        this.showNotification("Question was saved","blue");
       },
 
       timeCheck() {
@@ -377,7 +379,7 @@
           correct: false
         };
 
-        this.question.answers.push(answer);
+        this.answersList.push(answer);
 
         this.$store.commit('quizzes/addAnswer', {questionId, answer});
 
@@ -389,9 +391,9 @@
         let questionId;
         questionId = this.selectedQuestionId;
 
-        for (let i = 0; i < this.question.answers.length; i++) {
-          if (this.question.answers[i].id === answerId) {
-            this.question.answers.splice(i, 1);
+        for (let i = 0; i < this.answersList.length; i++) {
+          if (this.answersList[i].id === answerId) {
+            this.answersList.splice(i, 1);
           }
 
         }
