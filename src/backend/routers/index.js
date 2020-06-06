@@ -4,3 +4,4 @@ let router = module.exports = require('express').Router();
 
 router.use('/user', require('./users'));
 router.use('/', require('./questions'));
+router.use('/', require('./answers'));
