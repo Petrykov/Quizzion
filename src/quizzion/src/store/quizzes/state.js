@@ -22,7 +22,7 @@ export let quizzesMock = {
             description: 'mock quiz for demo',
             color: '#ffa500',
             logo: '',
-            questions: ['dr5rty', 'dt6r', 'ft6t'],
+            questions: ['dr5rty'],
             active: false
         },
         {
@@ -32,7 +32,7 @@ export let quizzesMock = {
             description: 'another mock quiz for demo',
             color: '#800080',
             logo: '',
-            questions: ['dt6r', 'dr5rty', 'ft6t'],
+            questions: ['ft6t'],
             active: false
         },
         {
@@ -42,7 +42,7 @@ export let quizzesMock = {
             description: 'Random things you should know!',
             color: '#008080',
             logo: '',
-            questions: ['dr5rty', 'ft6t', 'dt6r'],
+            questions: ['dt6r'],
             active: false
         }
     ],

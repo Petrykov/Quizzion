@@ -6,6 +6,9 @@
         <section class="column">
 
           <div
+
+            data-aos="fade-up"
+            data-aos-duration="3000"
             style="margin-bottom:auto; margin-top:20%;"
             class="q-mb-lg">
 
@@ -63,6 +66,9 @@
 </template>
 <script>
 
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
   export default {
     name: "Dashboard",
 
@@ -75,6 +81,9 @@
         copyLinkOpen: false
       };
     },
+
+
+
     computed: {
       currentUser() {
         return this.$store.state.user;
@@ -91,6 +100,7 @@
     },
 
     beforeMount() {
+      AOS.init();
       this.selectedQuizId = this.$store.state.user.quizzes[0];
     }
   };

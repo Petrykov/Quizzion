@@ -64,7 +64,7 @@ export function getAnswers(state) {
 
 export function getQuestionTitleById(state) {
   return function (id) {
-    console.log("[ " + id + " ]");
+    console.log(state.questions.find(question => question.id === id).title);
     return state.questions.find(question => question.id === id).title;
   }
 }

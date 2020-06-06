@@ -1,5 +1,7 @@
 <template>
   <section v-if="currentQuiz"
+           data-aos="fade-zoom-in"
+           data-aos-duration="3000"
            class="column justify-between"
            style="box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
            :style="{background:currentQuiz.color}">
@@ -32,7 +34,7 @@
       </div>
 
       <p
-        style="color: black; font-size: 1.5em; width: fit-content;">
+        style="color: black; font-size: 1.8em; width: fit-content;">
         {{currentQuiz.description }}
       </p>
     </div>
@@ -60,7 +62,7 @@
                   v-for="(questionId, index) in currentQuiz.questions"
                   :key="questionId"
                   style="font-size: 1.5em; color:black; margin-bottom: 1em;">
-                  {{ index }}
+                  {{(index+1) +") "+ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
                 </p>
               </li>
             </ul>
@@ -113,7 +115,7 @@
 
           </div>
 
-          <div>
+          <div >
             <q-icon
               class="q-mr-lg"
               name="fas fa-trophy"
