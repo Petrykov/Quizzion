@@ -54,7 +54,7 @@
 
       <div class="col" style="padding: 2em !important;">
         <section>
-<!--          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>-->
+          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
         </section>
       </div>
 
@@ -86,8 +86,6 @@
 
     methods: {
       selectQuiz(quizId) {
-        // `quiz/${this.currentQuiz.id}`
-        this.$router.push(`/quiz/${this.selectedQuizId}`);
         this.selectedQuizId = quizId;
       }
     },

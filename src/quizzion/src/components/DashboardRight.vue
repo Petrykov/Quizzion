@@ -57,10 +57,10 @@
             <ul style="list-style-type: none;">
               <li class="list-item">
                 <p
-                  v-for="questionId in currentQuiz.questions"
+                  v-for="(questionId, index) in currentQuiz.questions"
                   :key="questionId"
                   style="font-size: 1.5em; color:black; margin-bottom: 1em;">
-                  {{ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
+                  {{ index }}
                 </p>
               </li>
             </ul>
@@ -158,14 +158,15 @@
         showQrcode: false,
       };
     },
+
     methods: {
       goToEdit() {
-        this.$router.push(`quiz/${this.currentQuiz.id}`);
+        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
       },
-
       editQuiz() {
         this.$router.push(`quizzes/${this.currentQuiz.id}`);
       },
+
 
       copyUrl() {
         copyToClipboard(this.getQuizLink);
@@ -185,18 +186,14 @@
         })
       }
     },
+
     computed: {
       getQuizLink() {
         return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
       },
 
     },
-    props: {
-      currentQuiz: {
-        type: Object,
-        required: false
-      }
-    }
+    props: ['currentQuiz']
   };
 </script>
 

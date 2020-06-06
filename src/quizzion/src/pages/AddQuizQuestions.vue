@@ -351,8 +351,6 @@
 
           this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
 
-
-          // this.question = {...this.selectedQuestion};
           console.log(this.selectedQuestion);
 
           this.showNotification("Question was saved", "blue");
