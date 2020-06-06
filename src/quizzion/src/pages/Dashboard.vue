@@ -6,7 +6,6 @@
         <section class="column">
 
           <div
-
             data-aos="fade-up"
             data-aos-duration="3000"
             style="margin-bottom:auto; margin-top:20%;"

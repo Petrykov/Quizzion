@@ -219,7 +219,6 @@
               </div>
             </div>
 
-
             <div
               class="q-mt-md"
               style="width: 100%; text-align: center;">
@@ -332,7 +331,7 @@
           title: 'new question',
           description: 'sample description',
           image: '',
-          time: 50,
+          time: undefined,
           answers: []
         };
 
@@ -389,6 +388,8 @@
         let selectedTime;
 
         selectedTime = this.question.time !== undefined;
+
+        console.log("Time: " + selectedTime);
 
         return selectedTime;
       },

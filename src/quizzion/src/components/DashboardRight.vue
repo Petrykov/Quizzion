@@ -5,7 +5,7 @@
            class="column justify-between"
            style="box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
            :style="{background:currentQuiz.color}">
-    <q-dialog v-model="showQrcode">
+    <q-dialog v-model="showQRcode">
       <q-card>
         <q-card-section>
           <div class="text-h6">Let's play</div>
@@ -87,7 +87,7 @@
 
           <div>
             <q-icon
-              @click="showQrcode=true"
+              @click="showQRcode=true"
               name="fas fa-qrcode"
               size="2.5em"
               style="cursor : pointer;"
@@ -157,7 +157,7 @@
     data() {
       return {
         startQuiz: false,
-        showQrcode: false,
+        showQRcode: false,
       };
     },
 
@@ -195,6 +195,7 @@
       },
 
     },
+
     props: ['currentQuiz']
   };
 </script>
