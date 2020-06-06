@@ -2,7 +2,7 @@ let router = module.exports = require('express').Router();
 
 const axios = require('axios').default;
 
-axios.defaults.headers.common['X-CSRFToken'] = '72f32fe15b96d81d6e276f35185c3c7325d3bb4e3efc49c232d430121b368ca719dafb91c579020e25038faedfd75e292c0763db71b014801241534a96ada767';
+axios.defaults.headers.common['X-CSRFToken'] = 'c6c598ed0016430830344f897f6cb2e9990185dea32ca85a5e88cbf12574c5fa1560f748c53fbbf01e46d6ede2cbe205567ad67ba5ce57d2fe99985910f7b280';
 axios.defaults.headers.common['X-Database'] = 'lab';
 
 router.get('/quizzes/:quiz_id/question', (req, rsp) => {
@@ -12,7 +12,6 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
         let questions = [];
         for (let i = 0; i < allQuestions.length; i++) {
             try {
-
                 // the line below produces an error if the label does not have a json wrapped in it
                 let question = JSON.parse(allQuestions[i].label);
 
@@ -26,16 +25,35 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         //may be also the todo ANSWERS
                     });
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
-        console.log("Error");
-        console.log(error);
         rsp.status(400).json(error);
     });
 });
+
+router.get('/quizzes/:quiz_id/question/:question_id', (req, rsp) => {
+    axios.get(getBaseURL() + '/v5/var/' + req.params.question_id)
+        .then((response) => {
+
+            try {
+                let result = JSON.parse(response.data.var[0].label);
+
+                let res = {
+                    id: req.params.question_id,
+                    title: result.title,
+                    description: result.description,
+                    image: result.image,
+                    time: result.time
+                };
+
+                rsp.status(200).json(res);
+            } catch (e) {}
+        }).catch((err) => {
+            rsp.json(err);
+    });
+})
 
 router.post('/quizzes/:quiz_id/question', (req, rsp) => {
     //dummy data
@@ -61,31 +79,63 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.status(201).json(response);
+        rsp.json(response);
     }).catch((err) => {
-        console.log("Error");
         rsp.json(err);
     });
 });
 
 router.put('/quizzes/:quiz_id/question/:question_id', (req, rsp) => {
 
-    let name = req.body.name;
+    let changes = {};
 
-    if (name === undefined) {
-        rsp.status(400).json({error: 'The name in body was not included'});
-        return;
+    //shortcut
+    let b = req.body;
+
+    if (b.title !== undefined) changes.title = b.title;
+    if (b.description !== undefined) changes.description = b.description;
+    if (b.image !== undefined) changes.image = b.image;
+    if (b.time !== undefined) changes.time = b.time;
+
+    console.log("Changes");
+    console.log(changes);
+
+    async function contin() {
+
+        let response = await axios.get(getBaseURL() + '/v5/var/' + req.params.question_id);
+
+        let label = response.data.var[0].label;
+
+        try {
+            label = JSON.parse(label);
+
+            console.log('response');
+            console.log(label);
+
+            if (changes.title !== undefined) label.title = changes.title;
+            if (changes.description !== undefined) label.description = changes.description;
+            if (changes.image !== undefined) label.image = changes.image;
+            if (changes.time !== undefined) label.time = changes.time;
+
+            console.log("changed: ");
+            console.log(label);
+        } catch (e) {
+        }
+
+        console.log('Sending PUT');
+
+        label = JSON.stringify(label);
+
+        axios.put(getBaseURL() + '/v5/var/' + req.params.question_id, {
+            label: label
+        }).then((response) => {
+            rsp.json(response);
+        }).catch((err) => {
+            rsp.json(err);
+        });
     }
 
-    axios.put(getBaseURL() + "/v5/varoption/" + req.params.question_id, {
-        name: name,
-        label: "something"
-    }).then((response) => {
-        rsp.status(200).json(response);
-    }).catch((err) => {
-        console.log("Error with PUT of question");
-        rsp.status(500).json(err);
-    });
+    contin();
 });
 
 router.delete('/quizzes/:quiz_id/question/:question_id', (req, rsp) => {
