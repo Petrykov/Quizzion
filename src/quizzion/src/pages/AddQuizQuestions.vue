@@ -17,10 +17,13 @@
         </q-card>
       </q-dialog>
 
-      <div class="row q-pa-lg  window-height wrapper">
+      <div
+        class="row q-pa-lg  window-height wrapper">
 
         <div
           v-if="currentQuiz"
+          data-aos="fade-down-right"
+          data-aos-duration="2000"
           class="col q-pa-xl"
           style="text-align: center;justify-content: center; align-items: center; display: flex;">
 
@@ -69,6 +72,8 @@
         </div>
 
         <div
+          data-aos="fade-down-left"
+          data-aos-duration="2000"
           class="col question-card-wrapper"
           :style="{background: currentQuiz.color}"
           style="border-radius: 2em; box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
@@ -239,10 +244,14 @@
 
 <script>
 
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
   import {v4 as uuidv4} from 'uuid';
 
   export default {
     data() {
+
       return {
 
         currentQuizId: this.$route.params.quizId,
@@ -257,6 +266,10 @@
 
         answersList: ' '
       }
+    },
+
+    beforeMount() {
+      AOS.init();
     },
 
     computed: {
