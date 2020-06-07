@@ -229,8 +229,6 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
         try {
             let question = JSON.parse(element.label);
 
-            // console.log(question);
-
             if (question.answers === undefined) {
                 rsp.status(400).json({error: "Answers for question " + req.params.question_id + " does not exist"});
                 return;
@@ -238,16 +236,12 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
 
             let removed = false;
 
-            console.log(question.answers);
-
             for (let i = 0; i < question.answers.length; i++) {
                 if (req.params.answer_id === question.answers[i]) {
                     //removing an element from array
                     question.answers.splice(i,1);
                 }
             }
-
-            console.log(question.answers);
 
             axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
                 label: JSON.stringify(question)

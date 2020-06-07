@@ -79,14 +79,12 @@ router.post('/answer', (req, rsp) => {
         correct: req.body.correct
     };
 
-    console.log(payload);
-
     axios.post(config.baseURL + '/v5/var', {
         label: JSON.stringify(payload),
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.json({id: response.data.vh});
+        rsp.status(201).json({id: response.data.vh});
     }).catch((err) => {
         rsp.json(err.data);
     })
@@ -110,17 +108,12 @@ router.put('/answer/:answer_id', (req, rsp) => {
 
         let answer = response.data.var[0];
         let details = answer.label;
-        console.log("Changes: ");
-        console.log(changes)
         try {
             details = JSON.parse(answer.label);
 
             if (changes.label !== undefined) details.label = changes.label;
             if (changes.correct !== undefined) details.correct = changes.correct;
         } catch (e) {}
-
-        console.log('To PUT');
-        console.log(details);
 
         axios.put(config.baseURL + '/v5/var/' + req.params.answer_id, {
             label: JSON.stringify(details)
@@ -135,10 +128,15 @@ router.put('/answer/:answer_id', (req, rsp) => {
 });
 
 router.delete('/answer/:answer_id', (req, rsp) => {
+
+    let isSuccessful = false;
+
     axios.delete(config.baseURL + '/v5/var/' + req.params.answer_id)
         .then( (response) => {
-            rsp.json(response);
+            isSuccessful = true;
+            rsp.status(200).json(response);
         }).catch( (err) => {
-            rsp.status(400).json(err);
+            if (isSuccessful) rsp.status(200).send();
+            else rsp.status(400).json(err);
     })
 });
