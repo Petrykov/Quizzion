@@ -8,40 +8,11 @@ const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
 
 
 
-// //get all data about one quiz dbdta86ds
-router.get('/:quizId', (req, rsp) => {
 
-    let   quizOwner,
-        quizTitle,
-        quizLogo,
-        quizQuestions,
-        quizActive;
+//get quizzes, with all the possible information (can take a while)
+router.get('/all', (req, rsp) => {
 
-
-    async function getDetails(){
-        let response = await axios.get(`${baseUrl}/template/${req.params.quizId}/content`,{
-            headers: {
-                'X-CSRFToken': token,
-                'X-Database': 'lab',
-                'Content-Type': 'application/json'
-            },
-        });
-
-        let content = response.data.content.content;
-        try{
-            content = JSON.parse(content);
-            quizOwner=content.owner;
-            quizTitle=content.title;
-            quizLogo=content.logo;
-            quizQuestions=content.questions;
-            quizActive=content.active;
-
-        } catch (e) {
-
-        }
-    }
-
-    axios.get(`${baseUrl}/template/${req.params.quizId}`,{
+    axios.get(`${baseUrl}/template`,{
         headers: {
             'X-CSRFToken': token,
             'X-Database': 'lab',
@@ -50,58 +21,132 @@ router.get('/:quizId', (req, rsp) => {
 
     }).then((response) =>{
 
-        let responseData = response.data.template;
+        async function f() {
+            let responseData = response.data.template;
+            let quizzes = [];
+            for (let i = 0; i < responseData.length; i++) {
+                id = responseData[i].tn;
 
-        let quiz = {
-            id: responseData.tn,
-            color: responseData.label,
-            description : responseData.description,
+                let response = await axios.get(`${baseUrl}/template/`+id+`/content`,{
 
-            owner: quizOwner,
-            title: quizTitle,
-            logo: quizLogo,
-            questions: quizQuestions,
-            active: quizActive
+                    headers: {
+                        'X-CSRFToken': token,
+                        'X-Database': 'lab',
+                        'Content-Type': 'application/json'
+                    },
+                });
 
-        };
+                let content = JSON.parse(response.data.content.content);
 
-        rsp.status(200).json(quiz);
+                let quiz = {
+                    id: id,
+                    color: responseData[i].label,
+                    description: responseData[i].description,
+                    owner: content.owner,
+                    title: content.title,
+                    logo: content.logo,
+                    questions: content.questions,
+                    active: content.active
+
+                };
+                quizzes.push(quiz);
+            }
+            rsp.status(200).json(quizzes);
+        }
+
+        f();
 
     }).catch((error) =>{
         rsp.status(400).json(error);
     })
-    getDetails();
+});
+
+//get all data about one quiz - by id
+router.get('/:quizId', (req, rsp) => {
+
+    let firstReady = false;
+    let secondReady = false;
+
+    let quiz = {};
+
+    axios.get(baseUrl + '/template' + '/' + req.params.quizId, {
+        headers: {
+            'X-CSRFToken': token,
+            'X-Database': 'lab',
+            'Content-Type': 'application/json'
+        },
+    })
+        .then((res1) => {
+            let responseData = res1.data.template;
+            quiz.id = responseData.tn;
+            quiz.color = responseData.label;
+            quiz.description = responseData.description;
+
+            firstReady = true;
+
+            if (secondReady) {
+                rsp.status(200).json(quiz);
+            }
+        });
+
+    axios.get(`${baseUrl}/template/${req.params.quizId}/content`,{
+        headers: {
+            'X-CSRFToken': token,
+            'X-Database': 'lab',
+            'Content-Type': 'application/json'
+        },
+    } )
+        .then((res2) => {
+            let content = res2.data.content.content;
+            try {
+                content = JSON.parse(content);
+
+                quiz.owner = content.owner;
+                quiz.title = content.title;
+                quiz.logo = content.logo;
+                quiz.questions = content.questions;
+                quiz.active = content.active;
+
+            } catch (e) {
+
+            }
+
+            if (firstReady) {
+                rsp.status(200).json(quiz);
+            } else {
+                secondReady = true;
+            }
+        });
+
+    return;
 });
 
 //get all quizzes -> id, color for the left side of the dashboard page
 router.get('/', (req, rsp) => {
-    axios.get(baseUrl + '/template',{
+    axios.get(baseUrl + '/template', {
         headers: {
             'X-CSRFToken': token,
             'X-Database': 'lab',
             'Content-Type': 'application/json'
         }
-    }).then((response) =>{
+    }).then((response) => {
 
-            let responseData = response.data.template;
+        let responseData = response.data.template;
 
-            let quizzes = [];
+        let quizzes = [];
 
-            for (let i = 0; i < responseData.length; i++) {
-                    let quiz = {
-                        id: responseData[i].tn,
-                        color: responseData[i].label,
-                        description : responseData[i].description
-                    };
-                    quizzes.push(quiz);
+        for (let i = 0; i < responseData.length; i++) {
+            let quiz = {
+                id: responseData[i].tn,
+                color: responseData[i].label,
+                description: responseData[i].description
+            };
+            quizzes.push(quiz);
+        }
 
-            }
+        rsp.status(200).json(quizzes);
 
-
-
-            rsp.status(200).json(quizzes);
-
-    }).catch((error) =>{
+    }).catch((error) => {
         rsp.status(400).json(error);
     })
 
@@ -120,7 +165,7 @@ router.get('/', (req, rsp) => {
     // ]
 });
 
-//get the rest information about particular quiz
+//get the rest of information about particular quiz - by id
 router.get('/:quizId/content', (req, rsp) => {
 
     axios.get(`${baseUrl}/template/${req.params.quizId}/content`, {
@@ -161,7 +206,7 @@ router.delete('/:quizId', (req, rsp) => {
 
     }).then(function (response) {
         rsp.status(200).json(response.data)
-    }).catch((error) =>{
+    }).catch((error) => {
         rsp.status(400).json(error)
     })
 
@@ -195,9 +240,9 @@ router.post('/', (req, rsp) => {
         content: JSON.stringify({
             "owner": owner,
             "title": title,
-            "logo" : logo,
-            "questions" : questions,
-            "active" : active
+            "logo": logo,
+            "questions": questions,
+            "active": active
 
         })
 
@@ -233,7 +278,6 @@ router.post('/', (req, rsp) => {
 });
 
 
-
 //edit quiz details
 router.put('/:quizId/content', (req, rsp) => {
 
@@ -243,21 +287,21 @@ router.put('/:quizId/content', (req, rsp) => {
     let owner = req.body.owner;
     let questions = req.body.questions;
 
-    axios.put(`${baseUrl}/template/${req.params.quizId}/content`,{
+    axios.put(`${baseUrl}/template/${req.params.quizId}/content`, {
 
         tn: req.params.quizId,
         contenttype: 'JSON',
         content: {
             "owner": owner,
-             "title": title,
-             "logo": logo,
-             "questions": questions,
-             "active": active
+            "title": title,
+            "logo": logo,
+            "questions": questions,
+            "active": active
         }
 
     }).then((response) => {
         rsp.status(200).json(response)
-    }).catch((error) =>{
+    }).catch((error) => {
         rsp.status(400).json(error)
     })
 
@@ -266,25 +310,20 @@ router.put('/:quizId/content', (req, rsp) => {
 
 // update a quiz color and description
 router.put('/:quizId/', (req, rsp) => {
-    axios.put(`${baseUrl}/template/${req.params.quizId}`,{
+    axios.put(`${baseUrl}/template/${req.params.quizId}`, {
 
-        label : req.body.label, //color
+        label: req.body.label, //color
         description: req.body.description,
         status: 'active'
 
 
     }).then((response) => {
         rsp.status(200).json(response)
-    }).catch((error) =>{
+    }).catch((error) => {
         rsp.status(400).json(error)
     })
 
 });
-
-
-
-
-
 
 
 // create new form
@@ -296,7 +335,7 @@ router.post('/start', (req, rsp) => {
         tn: req.body.tn,
 
         field: JSON.stringify({
-            "frm_date_start" : new Date().getFullYear
+            "frm_date_start": new Date().getFullYear
         })
     }).then((response) => {
         rsp.status(201).json(response.data);
@@ -309,7 +348,7 @@ router.post('/start', (req, rsp) => {
 // get existing form
 router.get('/start', (req, rsp) => {
 
-    axios.get(baseUrl+`/form`, {
+    axios.get(baseUrl + `/form`, {
         headers: {
             'X-CSRFToken': token,
             'X-Database': 'lab',
