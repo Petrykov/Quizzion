@@ -1,7 +1,7 @@
 let router = module.exports = require('express').Router();
 const axios = require('axios').default;
-const token = 'ec876434fd97e327784f9f59b408a403ee2993ac6f9c1d95858d0059058000bb182aecc26d3af714ec80f9811d25332b9e4da589de61a41b501e05d299397fd8'
-axios.defaults.headers.common['X-CSRFToken'] = 'ec876434fd97e327784f9f59b408a403ee2993ac6f9c1d95858d0059058000bb182aecc26d3af714ec80f9811d25332b9e4da589de61a41b501e05d299397fd8';
+const token = 'e41b57950165809b97b3bfe42cbb08b7cb9dc318e2367d29f11c5af02c8215d298eb6c199ed0f992688b45092b5414310ad163bfdfdc89884628eb24672e3f49'
+axios.defaults.headers.common['X-CSRFToken'] = 'e41b57950165809b97b3bfe42cbb08b7cb9dc318e2367d29f11c5af02c8215d298eb6c199ed0f992688b45092b5414310ad163bfdfdc89884628eb24672e3f49';
 axios.defaults.headers.common['X-Database'] = 'lab';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";

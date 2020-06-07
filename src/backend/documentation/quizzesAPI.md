@@ -293,10 +293,19 @@ quizId as params
 #### Response
 
 ```sh
-  
-    {
-        "message": [],
-    }
+   {
+              "fh": "2ea7708e7229e8ddb2e179882388d13c",
+              "frm_label": "Mark form label",
+              "parent": "2f112dbfb07e0820d2dfd602fa6085dc",
+              "uh": "b42050a333bd7ad0befd7dfbb9dc4879",
+              "tn": "",
+              "vgn": "",
+              "type": "survey",
+              "frm_status": 1,
+              "gn": "",
+              "tih": "",
+              "update": 1
+          },
 ```
 2. Get particular form by id
 
@@ -315,12 +324,31 @@ quizId as params
 `formId` as params
 
 #### Response
-
 ```sh
-  
-    {
-        "message": [],
-    }
+{
+    "message": [],
+    "form": [
+        {
+            "fh": "2ea7708e7229e8ddb2e179882388d13c",
+            "frm_label": "Mark form label",
+            "parent": "2f112dbfb07e0820d2dfd602fa6085dc",
+            "uh": "b42050a333bd7ad0befd7dfbb9dc4879",
+            "tn": "",
+            "vgn": "",
+            "type": "survey",
+            "frm_status": 1,
+            "gn": "",
+            "tih": "",
+            "update": 1,
+            "field": {
+                "frm_date_created": "2020-05-30T16:12:03+0200",
+                "frm_label": "Mark form label",
+                "frm_status": 1,
+                "frm_nonamed_users_used": 124
+            }
+        }
+    ]
+}
 ```
 ## POST request
 
