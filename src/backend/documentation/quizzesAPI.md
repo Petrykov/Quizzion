@@ -367,8 +367,8 @@ quizId as params
 
 ```sh
 {
-     "uh": "", 
-     "tn": "",
+     "uh": "", // user hash
+     "tn": "", //template id
        
 }
 ```
@@ -378,6 +378,9 @@ quizId as params
 ```sh
     {
         "message": [],
+        "form": [
+            "ed34d05d83bb394c6cd1c6e2c7a23fef"
+        ]
     }
 ```
 
