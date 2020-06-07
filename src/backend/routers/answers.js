@@ -1,8 +1,9 @@
 let router = module.exports = require('express').Router();
 
-const config = require('./../config');
-
 const axios = require('axios').default;
+const BodyCheck = require('./helper/bodychecker');
+
+const config = require('./../config');
 
 // todo REMOVE AFTER DEMO
 axios.defaults.headers.common['X-CSRFToken'] = config.token;
@@ -10,7 +11,7 @@ axios.defaults.headers.common['X-Database'] = 'lab';
 
 router.get('/answer', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var')
-        .then( (response) => {
+        .then((response) => {
             const elements = response.data.var;
 
             let answers = [];
@@ -28,22 +29,49 @@ router.get('/answer', (req, rsp) => {
                         })
                     }
 
-                } catch (e) {}
+                } catch (e) {
+                }
 
             }
 
             rsp.status(200).json(answers);
 
-        }).catch( (err) => {
-            rsp.json(err);
+        }).catch((err) => {
+        rsp.json(err);
     })
+});
+
+router.get('/answer/:answer_id', (req, rsp) => {
+    axios.get(config.baseURL + '/v5/var/' + req.params.answer_id)
+        .then((response) => {
+            let element = response.data.var[0];
+
+            try {
+                let answer = JSON.parse(element.label);
+
+                rsp.status(200).json({
+                    id: element.vh,
+                    label: answer.label,
+                    correct: answer.correct
+                });
+
+            } catch (e) {
+                rsp.status(400).send();
+            }
+        }).catch( (err) => {
+            rsp.status(400).json(err);
+    });
 });
 
 router.post('/answer', (req, rsp) => {
 
-    // for answer
-    // * name
-    // * isCorrect
+    //checking if body of request has all arguments needed
+    let bodyCheck = new BodyCheck();
+    let result = bodyCheck.checkPOSTanswer(req.body);
+    if (result.length !== 0) {
+        rsp.status(400).json({error: result});
+        return;
+    }
 
     let payload = {
         type: config.answer,
@@ -57,9 +85,60 @@ router.post('/answer', (req, rsp) => {
         label: JSON.stringify(payload),
         vartype: 'item',
         datatype: 'text'
-    }).then( (response) => {
+    }).then((response) => {
         rsp.json({id: response.data.vh});
-    }).catch( (err) => {
+    }).catch((err) => {
         rsp.json(err.data);
+    })
+});
+
+router.put('/answer/:answer_id', (req, rsp) => {
+
+    let changes = {};
+
+    if (req.body.label !== undefined) changes.label = req.body.label;
+    if (req.body.correct !== undefined) changes.correct = req.body.correct;
+
+    async function continu() {
+        let works = true;
+        const response = await axios.get(config.baseURL + '/v5/var/' + req.params.answer_id).catch((err) => {
+            rsp.json(err);
+            works = false;
+        });
+
+        if (! works) return;
+
+        let answer = response.data.var[0];
+        let details = answer.label;
+        console.log("Changes: ");
+        console.log(changes)
+        try {
+            details = JSON.parse(answer.label);
+
+            if (changes.label !== undefined) details.label = changes.label;
+            if (changes.correct !== undefined) details.correct = changes.correct;
+        } catch (e) {}
+
+        console.log('To PUT');
+        console.log(details);
+
+        axios.put(config.baseURL + '/v5/var/' + req.params.answer_id, {
+            label: JSON.stringify(details)
+        }).then( (resp) => {
+            rsp.json(resp)
+        }).catch ( (err) => {
+            rsp.json(err);
+        });
+    }
+
+    continu();
+});
+
+router.delete('/answer/:answer_id', (req, rsp) => {
+    axios.delete(config.baseURL + '/v5/var/' + req.params.answer_id)
+        .then( (response) => {
+            rsp.json(response);
+        }).catch( (err) => {
+            rsp.status(400).json(err);
     })
 });
