@@ -18,7 +18,7 @@
       </q-dialog>
 
       <div
-        class="row q-pa-lg  window-height wrapper">
+        class="row q-pa-lg window-height wrapper">
 
         <div
           v-if="currentQuiz"
@@ -335,7 +335,6 @@
           answers: []
         };
 
-
         this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
       },
 
@@ -351,7 +350,6 @@
       },
 
       updateQuestion() {
-
         let quizId, questionId, updatedQuestion, answers;
 
         if (this.timeCheck() === false) {
@@ -388,8 +386,6 @@
         let selectedTime;
 
         selectedTime = this.question.time !== undefined;
-
-        console.log("Time: " + selectedTime);
 
         return selectedTime;
       },
@@ -447,14 +443,6 @@
 
 <style scoped>
 
-  .vertical-allignment {
-    text-align: center;
-    position: relative;
-    top: 30%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-
   .scroll-area {
     border: 0.12em solid #d8d8d8;
     border-radius: 8px;
@@ -462,7 +450,6 @@
   }
 
   .logo {
-    /*display: flex;*/
     background-image: url("~assets/bg_answer_screen.png");
     border: 1px solid black;
     height: 100%;

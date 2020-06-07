@@ -1,19 +1,19 @@
 <template>
-  <q-page class="layout">
+  <q-page class="layout ">
     <div class="row q-pa-md main-layout">
-      <div class="col logo">
+      <div class="col">
 
-        <section class="column">
+        <section class="column"
+                 style="text-align: center; justify-content: center;align-items: center;display: flex;">
 
           <div
             data-aos="fade-up"
             data-aos-duration="3000"
-            style="margin-bottom:auto; margin-top:20%;"
+            style="display: inline-block;"
             class="q-mb-lg">
 
             <div class="col q-mt-lg"
-                 style="margin-left: auto; margin-right: auto; text-align: center;">
-
+                 style="text-align: center;">
               <h2>
                 Hi {{ currentUser.name }}
               </h2>
@@ -54,7 +54,7 @@
 
       </div>
 
-      <div class="col" style="padding: 2em !important;">
+      <div class="col">
         <section>
           <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
         </section>
@@ -72,6 +72,7 @@
     name: "Dashboard",
 
     components: {},
+
     data() {
       return {
         themeColor: '',
@@ -80,8 +81,6 @@
         copyLinkOpen: false
       };
     },
-
-
 
     computed: {
       currentUser() {
@@ -95,48 +94,76 @@
     methods: {
       selectQuiz(quizId) {
         this.selectedQuizId = quizId;
+
+        // this.$router.push(`/dashboard/${this.selectedQuizId}`);
+
+        // this.$router.push(`/test`);
+
+        // this.$router.push(`/dashboard/${this.selectedQuizId}`).catch((err) => {
+        //   throw new Error(`Problem handling something: ${err}.`);
+        // });
+
+        // this.$router.push({path: `/dashboard/${this.quizId}`});
+
+        // this.$route.params.quizId = quizId;
+        // this.$router.push({ name: "dashboard", params: {quizId: this.selectedQuizId}});
+        // this.$router.push(`/dashboard`);
+
+        // this.$router.replace(`/test`);
       }
     },
 
     beforeMount() {
       AOS.init();
       this.selectedQuizId = this.$store.state.user.quizzes[0];
+      // this.$router.push(`/dashboard`);
     }
   };
 </script>
 
-<style lang="sass" scoped>
-  .main-layout
-    height: 100%
-    position: fixed
-    width: 100%
+<style lang="css" scoped>
 
-    .layout
-      overflow: hidden
+  .main-layout {
+    padding: 2em !important;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    background-image: url("~assets/bg_answer_screen.png");
+  }
 
-    .button
-      border-radius: 10px
-      height: 50px
-      width: 50px
-      text-align: center
-      text-decoration: none
-      display: inline-block
+  .layout {
+    overflow: hidden;
+  }
 
-    section
-      height: 100%
+  .button {
+    border-radius: 10px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
 
-    .chosen
-      border: 2px solid black
+  section {
+    height: 100%;
+  }
 
-    .right
-      border-radius: 2em
-      padding: 2em
+  .right {
+    border-radius: 2em;
+    padding: 2em;
+  }
 
-    router-view
-      height: 100px
-      position: absolute
+  router-view {
+    height: 100px;
+    position: absolute;
+  }
 
-    .logo
-      background-image: url("~assets/bg_answer_screen.png")
+
+  @media screen and (max-width: 1200px) {
+    .main-layout {
+      display: block;
+      position: inherit;
+    }
+  }
 
 </style>

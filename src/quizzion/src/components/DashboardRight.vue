@@ -1,10 +1,11 @@
 <template>
   <section v-if="currentQuiz"
-           data-aos="fade-zoom-in"
+           data-aos="zoom-in"
            data-aos-duration="3000"
-           class="column justify-between"
+           class="column justify-between question-section"
            style="box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
            :style="{background:currentQuiz.color}">
+
     <q-dialog v-model="showQRcode">
       <q-card>
         <q-card-section>
@@ -34,12 +35,14 @@
       </div>
 
       <p
+        class="question-description"
         style="color: black; font-size: 1.8em; width: fit-content;">
         {{currentQuiz.description }}
       </p>
     </div>
 
-    <div style="display: inline-block">
+    <div style="display: inline-block;"
+         class="questions-section">
       <div class="col-5">
         <div class="row justify-between">
           <p style="color:white; font-size: 2em;">Questions</p>
@@ -55,8 +58,8 @@
         <div
           style="margin-top: 1em;">
           <q-scroll-area
-            style="width: 100%; height: 400px;">
-            <ul style="list-style-type: none;">
+            class="questions-scroll-area">
+            <ul class="questions-ul" style="list-style-type: none;">
               <li class="list-item">
                 <p
                   v-for="(questionId, index) in currentQuiz.questions"
@@ -92,11 +95,11 @@
               size="2.5em"
               style="cursor : pointer;"
               color="white">
-                <q-tooltip
-                  content-class="bg-white"
-                  content-style="font-size: 1em; color: black; ">
-                  show QR
-                </q-tooltip>
+              <q-tooltip
+                content-class="bg-white"
+                content-style="font-size: 1em; color: black; ">
+                show QR
+              </q-tooltip>
             </q-icon>
 
             <q-icon
@@ -106,16 +109,16 @@
               size="2.5em"
               style="cursor : pointer;"
               color="white">
-                <q-tooltip
-                  content-class="bg-white"
-                  content-style="font-size: 1em; color: black; ">
-                  Copy link
-                </q-tooltip>
+              <q-tooltip
+                content-class="bg-white"
+                content-style="font-size: 1em; color: black; ">
+                Copy link
+              </q-tooltip>
             </q-icon>
 
           </div>
 
-          <div >
+          <div>
             <q-icon
               class="q-mr-lg"
               name="fas fa-trophy"
@@ -210,6 +213,45 @@
 
   .reduce {
     margin-bottom: 0.5em !important;
+  }
+
+  .questions-scroll-area {
+    width: 100%;
+    height: 400px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .question-section {
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .reduce {
+      font-size: 3em;
+    }
+
+    .question-description {
+      font-size: 1.5em;
+    }
+
+    .questions-section {
+      margin-top: 3em;
+    }
+
+    .questions-ul {
+      padding-left: 20px !important;
+    }
+
+  }
+
+  @media screen and (max-width: 600px) {
+    .question-section {
+      width: 100%;
+    }
+
+    .questions-scroll-area {
+      height: 200px;
+    }
   }
 
 </style>

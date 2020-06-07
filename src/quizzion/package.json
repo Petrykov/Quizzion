@@ -21,7 +21,8 @@
     "quasar": "^1.11.3",
     "uuid": "^8.1.0",
     "vue": "^2.6.11",
-    "vue-carousel": "^0.18.0"
+    "vue-carousel": "^0.18.0",
+    "vue-router": "^3.3.2"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
