@@ -54,43 +54,8 @@ const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
 // })
 
 
-// //get all data
+ //get all data
 router.get('/', (req, rsp) => {
-
-
-    let   quizOwner,
-        quizTitle,
-        quizLogo,
-        quizQuestions,
-        quizActive;
-
-    let id;
-
-    async function getDetails(){
-
-        let response = await axios.get(`${baseUrl}/template/`+id+`/content`,{
-
-            headers: {
-                'X-CSRFToken': token,
-                'X-Database': 'lab',
-                'Content-Type': 'application/json'
-            },
-        });
-        let content = response.data.content.content;
-        try{
-            content = JSON.parse(content);
-            quizOwner=content.owner;
-            quizTitle=content.title;
-            quizLogo=content.logo;
-            quizQuestions=content.questions;
-            quizActive=content.active;
-
-        } catch (e) {
-
-        }
-    }
-
-
 
     axios.get(`${baseUrl}/template`,{
         headers: {
@@ -101,30 +66,48 @@ router.get('/', (req, rsp) => {
 
     }).then((response) =>{
 
-        let responseData = response.data.template;
-        let quizzes = [];
-        for (let i = 0; i < responseData.length; i++) {
-            id = responseData[i].tn;
-          let quiz = {
-                id: id,
-                color: responseData[i].label,
-                description : responseData[i].description,
-                owner: quizOwner,
-                title: quizTitle,
-                logo: quizLogo,
-                questions: quizQuestions,
-                active: quizActive
+        async function f() {
+            let responseData = response.data.template;
+            let quizzes = [];
+            for (let i = 0; i < responseData.length; i++) {
+                id = responseData[i].tn;
 
-            };
-              quizzes.push(quiz);
+                let response = await axios.get(`${baseUrl}/template/`+id+`/content`,{
+
+                    headers: {
+                        'X-CSRFToken': token,
+                        'X-Database': 'lab',
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                console.log(response.data);
+                let content = JSON.parse(response.data.content.content);
+
+                let quiz = {
+                    id: id,
+                    color: responseData[i].label,
+                    description: responseData[i].description,
+                    owner: content.owner,
+                    title: content.title,
+                    logo: content.logo,
+                    questions: content.questions,
+                    active: content.active
+
+                };
+                console.log(i);
+                quizzes.push(quiz);
+            }
+            console.log("to send")
+            rsp.status(200).json(quizzes);
         }
-        rsp.status(200).json(quizzes);
+
+        f();
 
     }).catch((error) =>{
         rsp.status(400).json(error);
     })
 
-    getDetails();
 
 
 });

@@ -150,19 +150,6 @@ router.get('/', (req, rsp) => {
         rsp.status(400).json(error);
     })
 
-    //output - list of quizzes
-    //[
-    //     {
-    //         "id": "6f6732v7g",
-    //         "color": "#800080"
-    //          "description":"gggg"
-    //     },
-    //     {
-    //         "id": "evxzmj4mm",
-    //         "color": "#008080"
-    //           "description":"gggg"
-    //     }
-    // ]
 });
 
 //get the rest of information about particular quiz - by id
@@ -182,17 +169,6 @@ router.get('/:quizId/content', (req, rsp) => {
 
     }).catch(error => rsp.send(error))
 
-    //input - query params
-    // quizId = "8dcesqfth'
-
-    //output
-    //{"owner": "WandaE",
-    // "title": "Pubquiz - Quarantine edition",
-    // "logo": "logo address",
-    // "questions": "dt6r",
-    // "active": "false"
-    // }
-
 })
 
 //delete quiz by Id
@@ -210,13 +186,6 @@ router.delete('/:quizId', (req, rsp) => {
         rsp.status(400).json(error)
     })
 
-
-    //Query params:
-    // quizId
-    // output
-    //{
-    //     "message": []
-    // }
 });
 
 
@@ -252,29 +221,7 @@ router.post('/', (req, rsp) => {
         rsp.status(400).json(err);
 
     });
-    //input
-    //{
-    //     "label": "#008080",
-    //     "description": "Random things you should know!",
-    //     "type":"form_json",
-    //     "status":"active",
-    //     "contenttype": "JSON",
-    //     "content" : {
-    //             "owner": "WandaE",
-    //             "title": "General knowledge",
-    //             "logo": "logo address",
-    //             "questions": "dr5rty",
-    //             "active": "false"
-    //
-    //     }
-    //
-    // }
-
-    //output
-    //{
-    //     "message": [],
-    //     "tn": "evxzmj4mm"
-    // }
+  
 });
 
 
@@ -325,7 +272,6 @@ router.put('/:quizId/', (req, rsp) => {
 
 });
 
-
 // create new form
 router.post('/start', (req, rsp) => {
     axios.post(`${baseUrl}/form`, {
@@ -341,6 +287,7 @@ router.post('/start', (req, rsp) => {
         rsp.status(201).json(response.data);
     }).catch((err) => {
         rsp.status(400).json(err);
+    
     });
 });
 

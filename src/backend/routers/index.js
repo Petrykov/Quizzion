@@ -4,4 +4,5 @@ let router = module.exports = require('express').Router();
 
 
 router.use('/user', require('./users'));
-router.use('/quizzes', require('./quizzes'))
+router.use('/quizzes', require('./quizzes'));
+router.use('/test', require('./test'));
