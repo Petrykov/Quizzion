@@ -1,10 +1,6 @@
 const request = require('supertest');
 const app = require('../server.js');
 
-/**
- * Make sure that the list is empty in the beginning of the application
- */
-
 describe('GET /api/answer', function () {
     it('returns list of all answers', function (done) {
         request(app)

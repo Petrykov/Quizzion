@@ -128,9 +128,10 @@ router.put('/answer/:answer_id', (req, rsp) => {
 });
 
 router.delete('/answer/:answer_id', (req, rsp) => {
-
     let isSuccessful = false;
 
+    //really weird is happening there
+    //if request is good, it goes to 'then' and 'catch' causes
     axios.delete(config.baseURL + '/v5/var/' + req.params.answer_id)
         .then( (response) => {
             isSuccessful = true;

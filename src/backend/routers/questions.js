@@ -94,7 +94,6 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
 });
 
 router.post('/quizzes/:quiz_id/question', (req, rsp) => {
-
     //check if all field are present in body
 
     let bodyChecker = new BodyChecker();
@@ -123,7 +122,7 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.json(response);
+        rsp.json({id: response.data.vh});
     }).catch((err) => {
         rsp.json(err);
     });
