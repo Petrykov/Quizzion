@@ -80,14 +80,7 @@
         indexes: ["A", "B", "C", "D", "E", "F"], //TODO: Should we restrict the amount of options a question can have?
         selectedAnswer: '',
         timeRemaining: 0,
-        timer: setInterval(() => {
-          if (this.timeRemaining > 0) {
-            this.timeRemaining -= 1;
-          } else {
-
-            this.goToNextPage();
-          }
-        }, 1000)
+        timer: ''
       }
     },
     computed: {
@@ -120,33 +113,30 @@
         this.selectedAnswer = answerId;
       },
       goToNextPage() {
-        if (this.nextQuestionId){
-          this.goToNextQuestion()
-        } else {
-          this.goToResults()
-        }
+        if (this.nextQuestionId) this.goToNextQuestion();
+        else this.goToResults();
       },
-      goToNextQuestion(){
+      goToNextQuestion() {
         if (this.timeRemaining === 0) {
           this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
         } else {
           if (this.selectedAnswer === '') this.triggerNotification();
           else {
-            // this.submitAnswer();
+            this.submitAnswer();
             this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
           }
         }
       },
-      goToResults(){
+      goToResults() {
         if (this.timeRemaining === 0) {
           clearInterval(this.timer);
-          this.$router.push(`/results`);
+          this.$router.replace(`/results`);
         } else {
           if (this.selectedAnswer === '') this.triggerNotification();
           else {
-            // this.submitAnswer();
+            this.submitAnswer();
             clearInterval(this.timer);
-            this.$router.push(`/results`);
+            this.$router.replace(`/results`);
           }
         }
       },
@@ -164,7 +154,15 @@
       },
       startTimer(maxTime) {
         this.timeRemaining = maxTime;
-        this.timer()
+
+        this.timer = setInterval(() => {
+          if (this.timeRemaining > 0) this.timeRemaining -= 1;
+          else this.goToNextPage();
+        }, 1000)
+
+      },
+      submitAnswer() {
+        console.log("submit answer was called")
       }
     }
   }
