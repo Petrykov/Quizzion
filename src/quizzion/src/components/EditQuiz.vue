@@ -1,8 +1,9 @@
 <template>
   <section
-    class="column justify-between"
-    :style="{'background':themeColor?themecolor!=null:updatedQuiz.color}"
-  >
+    data-aos="flip-right"
+    data-aos-duration="500"
+    class="column justify-between edit-card"
+    :style="{'background':themeColor?themecolor!=null:updatedQuiz.color}">
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -10,37 +11,39 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Are you sure you want to delete this quiz?</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" to="/" />
+          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" to="/"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <div class="col">
+
+    <div>
       <div class="row">
         <q-input
           color="white"
-          class="col add-name"
+          class="col"
+          style="text-decoration:underline white; font-size: 2.5em;"
           dark
-          type="textarea"
           borderless
           v-model="updatedQuiz.title"
-        ></q-input>
-        <i class="far fa-trash-alt fa-2x" @click="onDelete" />
+        />
+        <i class="far fa-trash-alt fa-2x" @click="onDelete"/>
       </div>
+
       <q-input
         color="white"
-        type="textarea"
-        style="font-size: larger"
+        style="text-decoration:underline white; font-size: 1.8em; margin-top: 1em;"
         dark
         borderless
         v-model="updatedQuiz.description"
-      ></q-input>
+      />
     </div>
+
     <div class="col-7">
       <div class="instruction">
-        <div>Be creative! Choose a theme for your quiz</div>
-        <div class="q-gutter-xl theme-bubble q-pt-md">
+        <div class="be-creative" style="color: black; font-size: 1.3em;">Be creative! Choose a theme for your quiz</div>
+        <div class="colors">
           <q-btn
-            style="border: 2px solid white"
+            style="border: 2px solid white; margin: 0 auto;"
             size="large"
             round
             v-for="n in colors"
@@ -49,103 +52,132 @@
             @click="updatedQuiz.color=n"
           />
         </div>
-        <div class="q-pt-lg">Or a logo from your organization?</div>
-        <div class="q-pa-md theme-bubble">
+        <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
+
+        <div class="q-pa-md theme-bubble upload-img">
           <q-btn size="xx-large" round color="white" @click="$refs.file.click()">
             <i class="fas fa-upload fa-lg" style="color: black">
-              <input type="file" ref="file" style="display: none" />
+              <input type="file" ref="file" style="display: none"/>
             </i>
           </q-btn>
         </div>
       </div>
     </div>
-    <div class="q-pa-md theme-bubble">
+    <div class="q-pa-md theme-bubble save-btn">
       <q-btn color="white" rounded text-color="black" label="Save" @click="saveQuiz" to="/"></q-btn>
     </div>
   </section>
 </template>
 
 <script>
-export default {
-  data: () => {
-    return {
-      colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
-      alert: false,
-      themeColor: null,
-      updatedQuiz: undefined
-    };
-  },
-  methods: {
-    onDelete: function() {
-      this.alert = true;
+
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
+  export default {
+    data: () => {
+      return {
+        colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
+        alert: false,
+        themeColor: null,
+        updatedQuiz: undefined
+      };
     },
-    saveQuiz: function() {
-      this.$store.commit("quizzes/updateQuiz", {
-        id: this.currentQuiz.id,
-        updatedQuiz: this.updatedQuiz
-      });
-      // this.$emit("edit", updateQuiz);
-    },
-    deleteQuiz: function() {
-      this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
-      this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
-      console.log(this.currentQuiz.id + " is deleted");
-      // emit: change current quiz to the id near by
-    }
-  },
-  computed: {
-    selectedQuiz() {
-      return this.currentQuiz;
-    },
-    selectedColor() {
-      if (themeColor == null) {
-        return this.currentQuiz.color;
-      } else {
-        return themeColor;
+
+    methods: {
+      onDelete: function () {
+        this.alert = true;
+      },
+      saveQuiz: function () {
+        this.$store.commit("quizzes/updateQuiz", {
+          id: this.currentQuiz.id,
+          updatedQuiz: this.updatedQuiz
+        });
+        // this.$emit("edit", updateQuiz);
+      },
+      deleteQuiz: function () {
+        this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
+        this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
+        console.log(this.currentQuiz.id + " is deleted");
+        // emit: change current quiz to the id near by
       }
+    },
+    computed: {
+      selectedQuiz() {
+        return this.currentQuiz;
+      },
+      selectedColor() {
+        if (themeColor == null) {
+          return this.currentQuiz.color;
+        } else {
+          return themeColor;
+        }
+      }
+    },
+    props: {
+      currentQuiz: {
+        type: Object,
+        required: true
+      }
+    },
+    beforeMount() {
+      AOS.init();
+      this.updatedQuiz = {...this.currentQuiz};
     }
-  },
-  props: {
-    currentQuiz: {
-      type: Object,
-      required: true
-    }
-  },
-  beforeMount() {
-    this.updatedQuiz = {...this.currentQuiz};
-  }
-};
+  };
 </script>
 
-<style lang="sass" scoped>
-.right
-  border-radius: 17px
+<style lang="css" scoped>
 
-.welcome
-  font-size: larger
+  .instruction {
+    font-size: large;
+    color: white;
+  }
 
-.add-name
-  font-size: xx-large
+  .theme-bubble {
+    display: flex;
+    justify-content: center;
+  }
 
-.instruction
-  font-size: large
-  color: white
+  section {
+    height: 100%;
+  }
 
-.theme-bubble
-  display: flex
-  justify-content: center
+  .fa-trash-alt {
+    color: white;
+  }
 
-.them-bubble-item
-  border: 1px solid white
-section
-  height: 100%
+  .upload-img{
+    margin-top: 2em;
+  }
 
-.fa-trash-alt
-  color: white
+  .colors{
+    display: flex;
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
 
-.btn-add
-  border: 2px solid black
+  @media screen and (max-width: 1200px) {
+    .edit-card {
+      width: 80% !important;
+      margin: 0 auto;
+    }
 
-.bg-brand
-  background: #181C30
+    .save-btn {
+      margin-top: 2em;
+    }
+
+    .be-creative{
+      margin-top: 2em;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .colors{
+      width: 100%;
+    }
+  }
+
 </style>
