@@ -33,14 +33,17 @@ export function logout({dispatch}) {
 }
 
 export function participate({commit, dispatch}, displayName) {
-  api.participate(
-    displayName,
-    //handle success
-    (response) => commit('participate', response.data),
-    //handle failure
-    () => {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.participate(displayName);
+      commit('participate', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
     }
-  );
+  });
 
   console.log("Mocking store...");
   dispatch('mockStore', null, {root: true});

@@ -36,8 +36,9 @@
     },
     methods: {
       login() {
-        this.$store.dispatch('user/login', {username: this.email, password: this.password}).then(() => {
-        }).catch(e => {
+        this.$store.dispatch('user/login', {username: this.email, password: this.password})
+          .then(() => {
+          }).catch(e => {
           console.log(e)
         }) //on error we probably want a msg saying incorrect creds.
       }

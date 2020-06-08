@@ -96,14 +96,17 @@ export function createQuiz({commit}, newQuiz) {
 *
 * */
 export function updateQuiz({commit}, updatedQuiz) {
-  api.updateQuiz(
-    updatedQuiz,
-    //handle success
-    (/* response */) => commit('updateQuiz', updatedQuiz),
-    //handle failure
-    (/* error */) => {
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.updateQuiz(updatedQuiz);
+      commit('updateQuiz', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 
@@ -112,14 +115,17 @@ export function updateQuiz({commit}, updatedQuiz) {
 *
 * */
 export function deleteQuiz({commit}, deletedId) {
-  api.deleteQuiz(
-    deletedId,
-    //handle success
-    (/* response */) => commit('deleteQuiz', deletedId),
-    //handle failure
-    (/* error */) => {
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.deleteQuiz(deletedId);
+      commit('deleteQuiz', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -127,15 +133,17 @@ export function deleteQuiz({commit}, deletedId) {
 *
 * */
 export function createQuestion({commit}, payload) {
-  api.createQuestion(
-    payload.quizId,
-    payload.newQuestion,
-    //handle success
-    (/* response */) => commit('createQuestion', payload),
-    //handle failure
-    (/* error */) => {
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.createQuestion(payload.quizId, payload.newQuestion);
+      commit('createQuestion', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -143,15 +151,17 @@ export function createQuestion({commit}, payload) {
 *
 * */
 export function updateQuestion({commit}, payload) {
-  api.updateQuestion(
-    payload.quizId,
-    payload.updatedQuestion,
-    //handle success
-    (/* response */) => commit('updateQuestion', payload),
-    //handle failure
-    (/* error */) => {
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.updateQuestion(payload.quizId, payload.updatedQuestion);
+      commit('updateQuestion', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -159,15 +169,17 @@ export function updateQuestion({commit}, payload) {
 *
 * */
 export function deleteQuestion({commit}, payload) {
-  api.deleteQuestion(
-    payload.quizId,
-    payload.deletedQuestionId,
-    //handle success
-    (/* response */) => commit('deleteQuestion', payload),
-    //handle failure
-    (/* error */) => {
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.deleteQuestion(payload.quizId, payload.deletedQuestionId);
+      commit('deleteQuestion', response.data);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
