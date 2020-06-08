@@ -122,6 +122,7 @@
             <q-icon
               class="q-mr-lg"
               name="fas fa-trophy"
+              @click="$router.push(`result/moderator/${currentQuiz.id}`)"
               size="2.5em"
               style="cursor : pointer;"
               color="white">
