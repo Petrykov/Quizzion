@@ -1,7 +1,7 @@
 <template>
   <section v-if="currentQuiz"
            data-aos="zoom-in"
-           data-aos-duration="3000"
+           data-aos-duration="1500"
            class="column justify-between question-section"
            style="box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
            :style="{background:currentQuiz.color}">

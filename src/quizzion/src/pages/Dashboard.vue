@@ -8,7 +8,7 @@
 
           <div
             data-aos="fade-up"
-            data-aos-duration="3000"
+            data-aos-duration="2000"
             style="display: inline-block;"
             class="q-mb-lg">
 
@@ -94,29 +94,12 @@
     methods: {
       selectQuiz(quizId) {
         this.selectedQuizId = quizId;
-
-        // this.$router.push(`/dashboard/${this.selectedQuizId}`);
-
-        // this.$router.push(`/test`);
-
-        // this.$router.push(`/dashboard/${this.selectedQuizId}`).catch((err) => {
-        //   throw new Error(`Problem handling something: ${err}.`);
-        // });
-
-        // this.$router.push({path: `/dashboard/${this.quizId}`});
-
-        // this.$route.params.quizId = quizId;
-        // this.$router.push({ name: "dashboard", params: {quizId: this.selectedQuizId}});
-        // this.$router.push(`/dashboard`);
-
-        // this.$router.replace(`/test`);
       }
     },
 
     beforeMount() {
       AOS.init();
       this.selectedQuizId = this.$store.state.user.quizzes[0];
-      // this.$router.push(`/dashboard`);
     }
   };
 </script>

@@ -8,12 +8,6 @@ const routes = [
         component: () => import('pages/Dashboard.vue'),
         children: [
 
-          // {
-          //   path: '/dashboard/:quizId',
-          //   name: 'dashboard',
-          //   component: () => import('src/components/DashboardRight.vue')
-          // },
-
           {
             path: '/',
             name: 'dashboard',

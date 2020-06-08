@@ -1,7 +1,7 @@
 <template>
   <section
     data-aos="flip-right"
-    data-aos-duration="2000"
+    data-aos-duration="500"
     class="column justify-between edit-card"
     :style="{'background':themeColor?themecolor!=null:updatedQuiz.color}">
     <q-dialog v-model="alert">

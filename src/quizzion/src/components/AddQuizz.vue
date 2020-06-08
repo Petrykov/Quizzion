@@ -1,7 +1,7 @@
 <template>
   <section
     data-aos="flip-left"
-    data-aos-duration="2000"
+    data-aos-duration="500"
     class="column justify-between add-card-section"
     :style="{'background':themeColor}">
 
