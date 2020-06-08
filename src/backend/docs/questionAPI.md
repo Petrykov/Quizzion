@@ -1,9 +1,5 @@
 # Question API calls
 
-## Table of contents
-
-
-
 ### GET `/api/question`
 
 Get a list of all questions related to quizmaster user
@@ -108,12 +104,12 @@ Example:
 </pre>
 
 ##### Result codes:
-* 200 success
+* 201 created
 * 400 error (details included)
 
 ##### Example output
 
-`{id: "id_of_created_question"}` and status code **200** when OK 
+`{id: "id_of_created_question"}` and status code **201 Created**
 
 ### PUT `/api/question/:id`
 
@@ -165,7 +161,7 @@ A request to delete the question item
 
 ##### Example output 
 
-`{}` and status code 200 OK
+`{ "message" : "deleted"}` and status code **200 OK**
 
 ### PUT `/api/question/:id/add/:id2`
 
@@ -184,7 +180,7 @@ Is handy, just pass new id of answer to add, and API will do it.
 
 `{}` and status code 200 OK
 
-### DELETE `/api/question/:id/add/:id2`
+### DELETE `/api/question/:id/remove/:id2`
 
 A request to remove an answer from a question through separate API call.
 
@@ -199,3 +195,7 @@ A request to remove an answer from a question through separate API call.
 ##### Example output 
 
 `{}` and status code 200 OK
+
+##
+### Made by Mark Kravchuk
+#### Contact me if you get problems while using my API calls

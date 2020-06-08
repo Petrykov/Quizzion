@@ -122,7 +122,7 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.json({id: response.data.vh});
+        rsp.status(201).json({id: response.data.vh});
     }).catch((err) => {
         rsp.json(err);
     });
@@ -154,7 +154,7 @@ router.put('/question/:question_id', (req, rsp) => {
             if (changes.description !== undefined) label.description = changes.description;
             if (changes.image !== undefined) label.image = changes.image;
             if (changes.time !== undefined) label.time = changes.time;
-
+            if (changes.answers !== undefined) label.answers = changes.answers;
         } catch (e) {
         }
 
@@ -265,4 +265,3 @@ router.delete('/question/:question_id', (req, rsp) => {
         rsp.json(err);
     });
 });
-
