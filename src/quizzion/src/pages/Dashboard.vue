@@ -1,17 +1,26 @@
 <template>
-  <q-page class="layout">
-    <!--    <q-btn @click="log">LOG</q-btn>-->
+  <q-page class="layout ">
     <div class="row q-pa-md main-layout">
       <div class="col">
 
-        <section class="column">
-          <div style="margin-bottom:auto; margin-top:20%;"
-               class="q-mb-lg">
+        <section class="column"
+                 style="text-align: center; justify-content: center;align-items: center;display: flex;">
+
+          <div
+            data-aos="fade-up"
+            data-aos-duration="2000"
+            style="display: inline-block;"
+            class="q-mb-lg">
 
             <div class="col q-mt-lg"
-                 style="margin-left: auto; margin-right: auto; text-align: center;">
-              <h2>Hi {{ currentUser.name }}</h2>
-              <span style="font-size: 1.5em;">Welcome back to the gamespace, we missed you!</span>
+                 style="text-align: center;">
+              <h2>
+                Hi {{ currentUser.name }}
+              </h2>
+
+              <span style="font-size: 1.5em;">
+                Welcome back to the gamespace, we missed you!
+              </span>
             </div>
 
             <div class="col-8" style="margin: 0 auto; text-align: center;">
@@ -24,7 +33,7 @@
                   :key="quizId"
                   :style="{'background-color':quizObject(quizId).color}"
                   class="quizzes button"
-                  @click="selectedQuizId = quizId"
+                  @click="selectQuiz(quizId)"
                 />
 
                 <q-btn
@@ -35,7 +44,7 @@
                   icon="fas fa-plus"
                   @click="themeColor='teal'"
                 >
-                  <div class="ex1"></div>
+                  <div class="ex1"/>
                 </q-btn>
 
               </div>
@@ -45,7 +54,7 @@
 
       </div>
 
-       <div class="col">
+      <div class="col">
         <section>
           <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
         </section>
@@ -56,10 +65,14 @@
 </template>
 <script>
 
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
   export default {
     name: "Dashboard",
 
     components: {},
+
     data() {
       return {
         themeColor: '',
@@ -68,6 +81,7 @@
         copyLinkOpen: false
       };
     },
+
     computed: {
       currentUser() {
         return this.$store.state.user;
@@ -76,47 +90,63 @@
         return this.$store.getters['quizzes/getQuizById'];
       }
     },
-    beforeMount() {
-      this.selectedQuizId = this.$store.state.user.quizzes[0];
-    },
+
     methods: {
-      log() {
-        console.log(this.$store)
+      selectQuiz(quizId) {
+        this.selectedQuizId = quizId;
       }
+    },
+
+    beforeMount() {
+      AOS.init();
+      this.selectedQuizId = this.$store.state.user.quizzes[0];
     }
   };
 </script>
 
-<style lang="sass" scoped>
-  .main-layout
-    height: 100%
-    position: fixed
-    width: 100%
+<style lang="css" scoped>
 
-    .layout
-      overflow: hidden
+  .main-layout {
+    padding: 2em !important;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    background-image: url("~assets/bg_answer_screen.png");
+  }
 
-    .button
-      border-radius: 10px
-      height: 50px
-      width: 50px
-      text-align: center
-      text-decoration: none
-      display: inline-block
+  .layout {
+    overflow: hidden;
+  }
 
-    section
-      height: 100%
+  .button {
+    border-radius: 10px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
 
-    .chosen
-      border: 2px solid black
+  section {
+    height: 100%;
+  }
 
-    .right
-      border-radius: 17px
-      padding: 2em
+  .right {
+    border-radius: 2em;
+    padding: 2em;
+  }
 
-    router-view
-      height: 100px
-      position: absolute
+  router-view {
+    height: 100px;
+    position: absolute;
+  }
 
+
+  @media screen and (max-width: 1200px) {
+    .main-layout {
+      display: block;
+      position: inherit;
+    }
+  }
 
 </style>

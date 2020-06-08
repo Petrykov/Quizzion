@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout :view="view">
     <q-header class="bg-transparent"  >
 
       <q-toolbar>
@@ -38,7 +38,7 @@
 
 <script>
 
-import SideBar from 'components/SideBar'
+import SideBar from '../components/SideBar'
 export default {
   name: 'MainLayout',
 
@@ -51,12 +51,11 @@ export default {
       leftDrawerOpen: false
     }
   },
-
-    methods:{
-      check(){
-          console.log('cliked');
-      }
+  computed: {
+    view (){
+      return this.leftDrawerOpen ? 'lHh Lpr lFf' : 'hHh Lpr lFf';
     }
+  }
 }
 </script>
 

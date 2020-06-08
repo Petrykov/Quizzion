@@ -3,29 +3,29 @@
     <div class="bg-image row window-height items-center">
       <div class="left-side col-xs-12 col-sm-6">
         <h2 style="color: white">
-            Welcome to
-            Quizzion!
+          Welcome to
+          Quizzion!
         </h2>
       </div>
       <div class="right-side col-xs-12 col-sm-6">
 
         <div>
-            <i class="far fa-paper-plane fa-5x" style="margin-top: 3%; margin-bottom: 3%"></i>
-            <h5 class="text">You're invited to join </h5>
-            <h5 class="text" ><strong>{{ invitedQuiz.title }}</strong></h5>
-            <h5 class="text">By organizer </h5>
-            <h5 class="text"><strong>{{ invitedQuiz.owner }}</strong></h5>
+          <i class="far fa-paper-plane fa-5x" style="margin-top: 3%; margin-bottom: 3%"></i>
+          <h5 class="text">You're invited to join </h5>
+          <h5 class="text"><strong>{{ invitedQuiz.title }}</strong></h5>
+          <h5 class="text">By organizer </h5>
+          <h5 class="text"><strong>{{ invitedQuiz.owner }}</strong></h5>
 
-            <h5 class="enter-text">Enter your</h5>
-             <q-input
-             label="Name"
-             v-model="playerName"
-             class="input-name" />
+          <h5 class="enter-text">Enter your</h5>
+          <q-input
+            label="Name"
+            v-model="playerName"
+            class="input-name"/>
 
-            <q-btn round color="black"
-            icon="forward"
-            class="enter-button"
-            @click="toFirstQuestion"/>
+          <q-btn round color="black"
+                 icon="forward"
+                 class="enter-button"
+                 @click="toFirstQuestion"/>
 
         </div>
       </div>
@@ -36,18 +36,21 @@
 <script>
   export default {
     data: () => {
-    return {
-     playerName: ''
-    };
-  },
+      return {
+        playerName: ''
+      };
+    },
     computed: {
-      invitedQuiz (){
+      invitedQuiz() {
         return this.$store.getters['quizzes/getQuizById'](this.$route.params.quizId);
       }
     },
+    beforeMount() {
+      this.$store.dispatch('user/participate');
+    },
     methods: {
-      toFirstQuestion (){
-        this.$router.push(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+      toFirstQuestion() {
+        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
       }
     }
   }
@@ -61,7 +64,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    border-bottom: 15px solid #181C30 ;
+    border-bottom: 15px solid #181C30;
   }
 
   .left-side {
@@ -71,7 +74,7 @@
   }
 
   .right-side {
-    background: white;;
+    background: white;
     border-radius: 25px;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -86,25 +89,25 @@
     margin-right: auto;
   }
 
-  .input-name{
+  .input-name {
     margin-left: 20%;
     margin-right: 20%;
 
   }
 
-  .text{
+  .text {
     margin: 2%;
     text-decoration-color: #181C30;
   }
 
-  .enter-text{
+  .enter-text {
     margin-left: 20%;
     text-decoration-color: #181C30;
     text-align: left;
     margin-bottom: 2%;
   }
 
-  .enter-button{
+  .enter-button {
     margin-top: 10%;
     margin-bottom: 2%;
   }

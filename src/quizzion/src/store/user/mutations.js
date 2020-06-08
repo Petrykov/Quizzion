@@ -3,12 +3,10 @@ import initialState from './state'
 
 export function login( state, user ) {
     state.role = Roles.MODERATOR;
-    state.displayName = user.displayName;
-    // state.token = user.token;
-    state.quizzes = user.quizzes;
-    state.name = user.name;
+    state.displayName = user.username;
+    state.token = user.uh;
+    state.name = user.firstname +' '+ user.lastname;
     state.email = user.email;
-    state.language = user.language;
 }
 
 export function participate( state, user) {
@@ -35,7 +33,7 @@ import { stateMockModerator } from "./state";
 export function mock(state) {
   state.role = Roles.MODERATOR;
   state.displayName = stateMockModerator.displayName;
-  // state.token = user.token;
+  state.token = stateMockModerator.token;
   state.quizzes = stateMockModerator.quizzes;
   state.name = stateMockModerator.name;
   state.email = stateMockModerator.email;

@@ -19,7 +19,7 @@
           <a href>forgot password?</a>
         </div>
         <div class="space"></div>
-        <q-btn @click="$store.dispatch('user/login')" class="login" label="Login" text-color="white" no-caps />
+        <q-btn @click="$store.dispatch('user/login', {username: email, password})" class="login" label="Login" text-color="white" no-caps />
       </q-form>
     </div>
   </div>

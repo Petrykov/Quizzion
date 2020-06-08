@@ -1,353 +1,447 @@
 <template>
   <q-page
-     class="shadow-2 rounded-borders">
+    class="shadow-2 rounded-borders">
 
-    <div class="row q-pa-lg logo window-height">
+    <div class="logo">
+      <q-dialog v-model="alert">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Delete?</div>
+          </q-card-section>
 
-      <q-page-container
-        v-if="currentQuiz"
-        class="col q-pa-xl"
-        style="text-align: center;">
+          <q-card-section class="q-pt-none">Are you sure you want to delete this question?</q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuestion"/>
+          </q-card-actions>
 
-        <p
-          class="q-mt-lg"
-          style="font-size:3em;">{{ currentQuiz.title }}</p>
+        </q-card>
+      </q-dialog>
 
-        <div class="q-mt-xl vertical-allignment">
+      <div
+        class="row q-pa-lg window-height wrapper">
 
-          <q-scroll-area
-            class="scroll-area"
-            style="height: 275px; max-width: 300px;">
+        <div
+          v-if="currentQuiz"
+          data-aos="fade-down-right"
+          data-aos-duration="2000"
+          class="col q-pa-xl"
+          style="text-align: center;justify-content: center; align-items: center; display: flex;">
 
-            <div>
+          <div class="question-list-wrapper">
+            <p
+              class="q-mt-lg"
+              style="font-size:3em;">{{ currentQuiz.title }}</p>
 
-              <p
-                v-for="(questionId) in currentQuiz.questions"
-                :key="questionId">
+            <div class="q-mt-xl">
 
-                  <q-btn
-                    class="q-mt-lg"
-                    style="width:90%;"
-                    :outline="questionId != selectedQuestionId"
-                    rounded
-                    color="black"
-                    @click = "onQuestionClick(questionId)">
-                    {{ questionTitle(questionId) }}
-                  </q-btn>
+              <q-scroll-area
+                class="scroll-area"
+                style="height: 200px; max-width: 300px;">
 
-                </p>
-              </div>
-            </q-scroll-area>
+                <div>
+                  <p
+                    v-for="(questionId) in currentQuiz.questions"
+                    :key="questionId">
 
-          <q-icon
-            name="add_circle_outline"
-            color="green-7"
-            style="cursor : pointer;"
-            size="3em"
-            class="q-mt-md"
-            @click="addQuestion"/>
+                    <q-btn
+                      class="q-mt-lg"
+                      style="width:90%;"
+                      :outline="questionId !== selectedQuestionId"
+                      rounded
+                      color="black"
+                      @click="onQuestionClick(questionId)">
+                      {{ questionTitle(questionId) }}
+                    </q-btn>
 
-
-        </div>
-      </q-page-container>
-
-      <q-page-container
-        class="col q-pa-lg"
-        :style="{background: currentQuiz.color}"
-        style="border-radius: 2em;"
-        v-if="selectedQuestion">
-
-        <q-page padding>
-
-          <q-input
-            style="font-size: 1.8em;"
-            class="questionInput"
-            dark
-            color="grey-12"
-            label="Question's title"
-            v-model="selectedQuestion.title"
-            label-color="grey"/>
-
-          <q-input
-            dark
-            filled
-            autogrow
-            label="Question description"
-            v-model="selectedQuestion.description"
-            class="q-mt-md"
-            color="grey"/>
-
-          <p
-            class="paragraph q-mt-lg q-ml-md"
-            style="color:white; font-size:2em;">
-            The answers?
-          </p>
-
-           <q-scroll-area
-            class="scroll-area scrollarea"
-            style="height: 275px; max-width: 300px;">
-
-              <div
-                class="col q-mt-sm">
-
-                <div
-                  v-for="(answer) in answers"
-                  :key="answer.id"
-                  class="row q-mt-xs">
-
-                  <q-checkbox
-                    class="q-mt-sm q-mr-xs"
-                    v-model="answer.correct"
-                    dark/>
-
-                  <q-input
-                    dense
-                    style="color : grey;"
-                    v-model="answer.label"
-                    dark/>
-
-                  <q-icon
-                    name = "clear"
-                    color= "red-7"
-                    class = "q-mt-md q-ml-sm"
-                    style = "cursor : pointer;"
-                    size = "2em"
-                    @click="deleteAnswer(answer.id)"/>
-
+                  </p>
                 </div>
+              </q-scroll-area>
 
-                  <form>
-                    <div
-                      class="row q-mt-md q-ml-md">
+              <q-icon
+                name="add_circle_outline"
+                color="green-7"
+                style="cursor : pointer;"
+                size="3em"
+                class="q-mt-md"
+                @click="addQuestion"/>
 
-                      <q-input
-                        class="q-ml-lg"
-                        style="color:grey;"
-                        label="Add new answer"
-                        v-model="newAnswer"
-                        :rules="[val => !!val || 'Field is required']"
-                        dark/>
 
-                      <q-icon
-                        v-if = "newAnswer.length !== 0"
-                        name = "add_circle_outline"
-                        color = "green-7"
-                        class = "q-mt-md q-ml-xs"
-                        style = "cursor : pointer;"
-                        size = "2em"
-                        @click="addAnswer"/>
-
-                    </div>
-                  </form>
-              </div>
-
-           </q-scroll-area>
-
-          <p
-            class="q-mt-md"
-            style="color:white; font-size:2em;">What about timer?</p>
-
-          <div
-            class="row">
-
-            <q-icon
-              name="timer"
-              color="white"
-              size="5em"
-              class="q-mr-xs q-mt-md"/>
-
-            <div class="row col">
-
-              <q-btn
-                v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
-                v-bind:key="index"
-                rounded
-                dark
-                :class="{selected : (parseInt(time.split(' ')[0], 10) === selectedQuestion.time)}"
-                color = "wheat"
-                class = "timer"
-                size = "12px"
-                :label="time"/>
             </div>
           </div>
 
-         <div class="q-pa-md">
-          <q-btn-dropdown
-            split
-            color="teal"
-            rounded
-            label="Select quizz time"
-          >
-            <q-list>
-              <q-item
-                v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
-                v-bind:key="index"
-                clickable v-close-popup>
-                  <q-item-section>
-                    <q-item-label
-                    @click="onTimeClick(time, index)">{{ time }}
-                    </q-item-label>
-                  </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
         </div>
 
-          <div
-            class="q-mt-md"
-            style="width: 100%; text-align: center;">
-            <q-icon
-              name="delete"
-              color="red-6"
-              style="cursor : pointer;"
-              class="q-mr-md"
-              size="4em"
-              @click="deleteQuestion"/>
+        <div
+          data-aos="fade-down-left"
+          data-aos-duration="2000"
+          class="col question-card-wrapper"
+          :style="{background: currentQuiz.color}"
+          style="border-radius: 2em; box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
+          v-if="question !== ' '">
 
-            <q-icon
-              name="save"
-              color="orange-6"
-              class="q-ml-md"
-              style="cursor : pointer;"
-              size="4em"
-              @click="updateQuestion"/>
-          </div>
+          <q-page padding>
 
-        </q-page>
-      </q-page-container>
+            <div style="display:flex;">
+
+              <div
+                style="width: 100%;">
+                <q-input
+                  style="font-size: 1.8em;"
+                  dark
+                  color="grey-12"
+                  label="Question's title"
+                  v-model="question.title"
+                  label-color="grey"/>
+              </div>
+
+              <div>
+                <q-icon
+                  name="delete"
+                  color="white"
+                  style="cursor : pointer; position: absolute; right: 0;"
+                  class="q-mr-md"
+                  size="3em"
+                  @click="promptToDelete"/>
+              </div>
+
+            </div>
+
+            <q-input
+              dark
+              filled
+              autogrow
+              label="Question description"
+              v-model="question.description"
+              class="q-mt-md"
+              color="grey"/>
+
+            <div class="answers-div-wrapper">
+              <p
+                class="paragraph q-mt-lg q-ml-md"
+                style="color:white; font-size:2em;">
+                The answers?
+              </p>
+
+              <div>
+                <q-scroll-area
+                  class="scroll-area scrollarea answers-wrapper"
+                  style="height: 275px; max-width: 300px;">
+
+                  <div
+                    class="col q-mt-sm">
+
+                    <div
+                      v-for="(answer, index) in answersList"
+                      :key="index"
+                      class="row q-mt-xs">
+
+                      <q-checkbox
+                        class="q-mt-sm q-mr-xs"
+                        v-model="answer.correct"
+                        dark/>
+
+                      <q-input
+                        dense
+                        style="color : grey;"
+                        v-model="answer.label"
+                        dark/>
+
+                      <q-icon
+                        name="clear"
+                        color="white"
+                        class="q-mt-md q-ml-sm"
+                        style="cursor : pointer;"
+                        size="2em"
+                        @click="deleteAnswer(answer.id)"/>
+
+                    </div>
+
+                    <form>
+                      <div
+                        class="row q-mt-md q-ml-md">
+
+                        <q-input
+                          class="q-ml-lg"
+                          style="color:grey;"
+                          label="Add new answer"
+                          v-model="newAnswer"
+                          :rules="[val => !!val || 'Field is required']"
+                          dark/>
+
+                        <q-icon
+                          v-if="newAnswer.length !== 0"
+                          name="add_circle_outline"
+                          color="white"
+                          class="q-mt-md q-ml-xs"
+                          style="cursor : pointer;"
+                          size="2em"
+                          @click="addAnswer"/>
+
+                      </div>
+                    </form>
+                  </div>
+
+                </q-scroll-area>
+              </div>
+
+            </div>
+
+            <div class="timer-wrapper">
+              <p
+                class="q-mt-md"
+                style="color:white; font-size:2em;">What about timer?</p>
+
+              <q-icon
+                name="timer"
+                color="white"
+                size="5em"
+                class="q-mr-xs q-mt-md time-icon"/>
+
+              <div
+                class="timer">
+
+                <div class="row col">
+                  <div class="q-pa-md q-gutter-sm time-section">
+                    <q-btn
+                      v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
+                      v-bind:key="index"
+                      :id="selectedQuestion.id + '=' + index"
+                      round
+                      style="border: 1px solid black; padding: 1em;"
+                      color="white"
+                      text-color="black"
+                      class="time-button"
+                      :class="{selected : (parseInt(time.split(' ')[0], 10) === question.time)}"
+                      :label="time"
+                      @click="onTimeClick(time, index)"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="q-mt-md"
+              style="width: 100%; text-align: center;">
+
+              <q-btn
+                label="save"
+                color="white"
+                text-color="black"
+                class="q-ml-md"
+                style="cursor : pointer; padding: 0.2em 0.4em; border-radius: 2em;"
+                size="1.2em"
+                @click="updateQuestion"/>
+            </div>
+
+          </q-page>
+        </div>
+
+      </div>
     </div>
   </q-page>
 </template>
 
 <script>
 
-  import { v4 as uuidv4 } from 'uuid';
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
 
-    export default {
-        data() {
-            return {
+  import {v4 as uuidv4} from 'uuid';
 
-                selectedQuestionId: ' ',
+  export default {
+    data() {
 
-                currentQuizId: this.$route.params.quizId,
+      return {
 
-                newAnswer: '',
+        currentQuizId: this.$route.params.quizId,
 
-                quizTime: 0
-            }
-        },
-        computed: {
+        selectedQuestionId: ' ',
 
-          currentQuiz(){
-            return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
-          },
+        newAnswer: '',
 
-          selectedQuestion(){
-            return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
-          },
+        question: ' ',
 
-          answers(){
-            return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
-          },
+        alert: false,
 
-          questionTitle(){
-            return this.$store.getters['quizzes/getQuestionTitleById'];
-          }
-        },
+        answersList: ' '
+      }
+    },
 
-        methods: {
-            onQuestionClick(id) {
-              this.selectedQuestionId = id;
-            },
+    beforeMount() {
+      AOS.init();
+    },
 
-            addQuestion(){
+    computed: {
 
-              let quizId, questionId, newQuestion;
+      currentQuiz() {
+        return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
+      },
 
-              quizId = this.currentQuizId;
+      selectedQuestion() {
+        return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
+      },
 
-              questionId = uuidv4();
+      getAnswers() {
+        return this.$store.getters['quizzes/getAnswers'](this.question.answers);
+      },
 
-              newQuestion = {
-                id: questionId,
-                title: 'new question',
-                description: 'sample description',
-                image: '',
-                time: 50,
-                answers: []
-              };
+      questionTitle() {
+        return this.$store.getters['quizzes/getQuestionTitleById'];
+      }
+    },
 
-              this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
-            },
+    methods: {
+      onQuestionClick(id) {
 
-            deleteQuestion(){
+        this.selectedQuestionId = id;
 
-                let quizId, deletedQuestionId;
+        this.question = {...this.selectedQuestion};
 
-                quizId = this.currentQuizId;
-                deletedQuestionId = this.selectedQuestionId;
+        this.answersList = this.deepCopyFunction([...this.getAnswers]);
+      },
 
-                this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
-            },
+      deepCopyFunction(inObject) {
 
-            updateQuestion(){
-                let quizId, questionId, updatedQuestion;
+        let outObject, value, key;
 
-                quizId = this.currentQuizId;
-                questionId = this.selectedQuestionId;
-
-                updatedQuestion = {
-                  id: questionId,
-                  title: this.selectedQuestion.title,
-                  description: this.selectedQuestion.description,
-                  image: this.selectedQuestion.image,
-                  time: this.quizTime,
-                  answers: this.selectedQuestion.answers
-                }
-
-                this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
-            },
-
-            onTimeClick(time, index){
-               this.quizTime = parseInt(time.split(' '), 10);
-            },
-
-            addAnswer(){
-
-                let questionId;
-                questionId = this.selectedQuestionId;
-
-                let answer = {
-                  id: uuidv4(),
-                  label: this.newAnswer,
-                  correct: false
-                };
-
-                this.$store.commit('quizzes/addAnswer', {questionId, answer});
-
-                this.newAnswer = '';
-            },
-
-            deleteAnswer(answerId){
-
-              let questionId;
-              questionId = this.selectedQuestionId;
-
-              this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
-            }
+        if (typeof inObject !== "object" || inObject === null) {
+          return inObject
         }
+
+        outObject = Array.isArray(inObject) ? [] : {}
+
+        for (key in inObject) {
+          value = inObject[key]
+          outObject[key] = this.deepCopyFunction(value);
+        }
+
+        return outObject
+      },
+
+      addQuestion() {
+
+        let quizId, questionId, newQuestion;
+
+        quizId = this.currentQuizId;
+
+        questionId = uuidv4();
+
+        newQuestion = {
+          id: questionId,
+          title: 'new question',
+          description: 'sample description',
+          image: '',
+          time: undefined,
+          answers: []
+        };
+
+        this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
+      },
+
+      deleteQuestion() {
+
+        let quizId, deletedQuestionId;
+
+        quizId = this.currentQuizId;
+        deletedQuestionId = this.selectedQuestionId;
+
+        this.question = ' ';
+        this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+      },
+
+      updateQuestion() {
+        let quizId, questionId, updatedQuestion, answers;
+
+        if (this.timeCheck() === false) {
+          this.showNotification("Please select the time of the quiz", "red");
+        } else {
+
+          quizId = this.currentQuizId;
+          questionId = this.selectedQuestionId;
+
+          updatedQuestion = this.question;
+
+          answers = this.answersList;
+
+          for (let i = 0; i < answers.length; i++) {
+
+            let changedAnswer = answers[i];
+            let answerId = changedAnswer.id;
+
+            updatedQuestion.answers[i] = this.answersList[i].id;
+
+            this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
+          }
+
+          this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
+
+          console.log(this.selectedQuestion);
+
+          this.showNotification("Question was saved", "blue");
+        }
+      },
+
+      timeCheck() {
+
+        let selectedTime;
+
+        selectedTime = this.question.time !== undefined;
+
+        return selectedTime;
+      },
+
+      onTimeClick(time) {
+        this.question.time = parseInt(time.split(' '), 10);
+      },
+
+      addAnswer() {
+
+        let questionId;
+        questionId = this.selectedQuestionId;
+
+        let answer = {
+          id: uuidv4(),
+          label: this.newAnswer,
+          correct: false
+        };
+
+        this.answersList.push(answer);
+
+        this.$store.commit('quizzes/addAnswer', {questionId, answer});
+
+        this.newAnswer = '';
+      },
+
+      deleteAnswer(answerId) {
+
+        let questionId;
+        questionId = this.selectedQuestionId;
+
+        for (let i = 0; i < this.answersList.length; i++) {
+          if (this.answersList[i].id === answerId) {
+            this.answersList.splice(i, 1);
+          }
+
+        }
+
+        this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
+      },
+
+      promptToDelete() {
+        this.alert = true;
+      },
+
+      showNotification(message, color) {
+        this.$q.notify({
+          message: message,
+          color: color
+        })
+      }
     }
+  }
 </script>
 
 <style scoped>
-
-  .vertical-allignment {
-    text-align: center;
-    position: relative;
-    top: 30%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
 
   .scroll-area {
     border: 0.12em solid #d8d8d8;
@@ -355,36 +449,97 @@
     margin: 0 auto;
   }
 
-  .logo{
-    display: flex;
+  .logo {
     background-image: url("~assets/bg_answer_screen.png");
     border: 1px solid black;
     height: 100%;
     width: 100%;
   }
 
-  .rounded-borders{
+  .rounded-borders {
     display: contents;
   }
 
-  .timer{
-    border: 1px solid orange;
-    border-radius: 50%;
-    font-size: 1em !important;
-    margin: 1em auto;
-  }
-
-  .selected{
-    border: 1px solid red;
-    border-radius: 50%;
-    font-size: 1em !important;
-    margin: 1em auto;
-  }
-
-  .scrollarea{
+  .scrollarea {
     border: none;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .selected {
+    background: #5dbcd2 !important;
+    border: 1px solid black !important;
+    color: black !important;
+  }
+
+  .timer {
+    display: flex;
+  }
+
+  .time-section {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  .question-list-wrapper {
+    display: inline-block;
+  }
+
+  .timer-wrapper {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1200px) {
+
+    .timer {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .time-section {
+      margin: 0 auto;
+    }
+
+    .wrapper {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .question-card-wrapper {
+      width: 70%;
+      margin: 0 auto;
+    }
+
+    .timer-wrapper {
+      text-align: center;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .question-card-wrapper {
+      width: 90%;
+    }
+
+    .timer-wrapper {
+      display: grid;
+      text-align: center;
+    }
+
+    .timer{
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .time-icon{
+      margin: 0 auto;
+    }
+
+    .wrapper{
+      height: 50%;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
   }
 
 </style>
