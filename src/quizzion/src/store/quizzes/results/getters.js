@@ -10,9 +10,9 @@ export function getResultsOfQuiz( state ) {
     }
 }
 
-export function getTotalParticipantsOfQuiz( state, getters ) {
+export function getTotalParticipantsOfQuiz( state ) {
     return function ( quizId ) {
-        return getters.getResultsOfQuiz.length;
+      return state.results.filter(result => result.quizId === quizId).length;
     }
 }
 
@@ -30,3 +30,15 @@ export function isGuessCorrect( state, getters, rootState, rootGetters ) {
 }
 
 //TODO: There's probably more things we want to show as results
+export function getTotalScore(state,getters){
+  return function (resultId) {
+    let totalScore = 0;
+
+    getters.getResultById(resultId).guessesIds.forEach( guessId => {
+      if (getters.isGuessCorrect(guessId)) totalScore += 10;
+    });
+
+    return totalScore;
+    return total
+  }
+}
