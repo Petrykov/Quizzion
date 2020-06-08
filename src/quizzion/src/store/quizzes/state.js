@@ -15,36 +15,7 @@ export default function () {
 
 export let quizzesMock = {
     quizzes: [
-        {
-            id: 'g67yuhb',
-            owner: 'WandaE', //might want to make this the id
-            title: 'test quiz',
-            description: 'mock quiz for demo',
-            color: '#ffa500',
-            logo: '',
-            questions: ['dr5rty'],
-            active: false
-        },
-        {
-            id: 'fy5ryt',
-            owner: 'WandaE',
-            title: 'Pubquiz - Quarantine edition',
-            description: 'another mock quiz for demo',
-            color: '#800080',
-            logo: '',
-            questions: ['ft6t'],
-            active: false
-        },
-        {
-            id: 'kh8yi7y',
-            owner: 'WandaE',
-            title: 'General knowledge',
-            description: 'Random things you should know!',
-            color: '#008080',
-            logo: '',
-            questions: ['dt6r'],
-            active: false
-        }
+
     ],
     questions: [
         {

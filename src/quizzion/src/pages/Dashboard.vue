@@ -100,7 +100,7 @@
     beforeMount() {
       AOS.init();
       this.selectedQuizId = this.$store.state.user.quizzes[0];
-    }
+    },
   };
 </script>
 
