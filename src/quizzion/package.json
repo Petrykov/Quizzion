@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "aos": "^2.3.4",
     "axios": "^0.18.1",
     "md5": "^2.2.1",
     "qrcode.vue": "^1.7.0",
     "quasar": "^1.11.3",
     "uuid": "^8.1.0",
     "vue": "^2.6.11",
-    "vue-carousel": "^0.18.0"
+    "vue-carousel": "^0.18.0",
+    "vue-router": "^3.3.2"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",

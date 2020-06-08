@@ -22,7 +22,7 @@ export let quizzesMock = {
             description: 'mock quiz for demo',
             color: '#ffa500',
             logo: '',
-            questions: ['dr5rty', 'dt6r', 'ft6t'],
+            questions: ['dr5rty'],
             active: false
         },
         {
@@ -32,7 +32,7 @@ export let quizzesMock = {
             description: 'another mock quiz for demo',
             color: '#800080',
             logo: '',
-            questions: ['dt6r', 'dr5rty', 'ft6t'],
+            questions: ['ft6t'],
             active: false
         },
         {
@@ -42,7 +42,7 @@ export let quizzesMock = {
             description: 'Random things you should know!',
             color: '#008080',
             logo: '',
-            questions: ['dr5rty', 'ft6t', 'dt6r'],
+            questions: ['dt6r'],
             active: false
         }
     ],
@@ -71,7 +71,7 @@ export let quizzesMock = {
             title: 'What is the name of this symbol?',
             description: 'It is used to indicate a new paragraph.',
             image: 'https://i.pinimg.com/236x/6d/c2/67/6dc267235633a76c5d98d4b968fdb593--self-publishing-how-to-get-rid.jpg',
-            time: undefined,
+            time: 15,
             answers: ['jso45h', 'ehiruh', 'hu7tuh', 'o84y4']
         }
     ],

@@ -1,5 +1,10 @@
 <template>
-  <section class="column justify-between" :style="{'background':themeColor}">
+  <section
+    data-aos="flip-left"
+    data-aos-duration="500"
+    class="column justify-between add-card-section"
+    :style="{'background':themeColor}">
+
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
@@ -11,6 +16,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
     <div class="col">
       <div class="row">
         <q-input
@@ -20,7 +26,7 @@
           borderless
           v-model="quizTitle"
           placeholder="Add Quiz's name"
-        ></q-input>
+        />
         <i class="far fa-save fa-2x" @click="addQuiz(true)"/>
       </div>
       <q-input
@@ -30,15 +36,19 @@
         dark
         borderless
         placeholder="add quiz's description"
-      ></q-input>
+      />
     </div>
+
     <div class="col-7">
       <div class="instruction">
-        <div>Be creative! Choose a theme for your quiz</div>
-        <div class="q-gutter-xl theme-bubble q-pt-md">
+        <div style="color: black; font-size: 1.3em;">Be creative! Choose a theme for your quiz</div>
+        <div
+          class="theme-bubble colors"
+          style="margin-top: 1em;">
           <q-btn
-            style="border: 2px solid white"
+            style="border: 2px solid white; margin: 0 auto;"
             size="large"
+            class="color-btn"
             round
             v-for="(n,index) in colors"
             :key="`sm-${n}`"
@@ -46,97 +56,148 @@
             @click="themeColor=colors[index]"
           />
         </div>
-        <div class="q-pt-lg">Or a logo from your organization?</div>
-        <div class="q-pa-md theme-bubble">
-          <q-btn size="xx-large" round color="white" @click="$refs.file.click()">
+
+        <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
+
+        <div class="theme-bubble">
+          <q-btn
+            style="margin-top: 1em;"
+            size="xx-large"
+            round
+            color="white"
+            @click="$refs.file.click()">
             <i class="fas fa-upload fa-lg" style="color: black">
               <input type="file" ref="file" style="display: none"/>
             </i>
           </q-btn>
         </div>
+
       </div>
     </div>
-    <div class="q-pa-md theme-bubble">
+
+    <div class="q-pa-md theme-bubble add-question">
       <q-btn
         color="white"
         icon-right="fas fa-arrow-right"
         rounded
         text-color="black"
         label="Let's add some questions!"
-        @click="toAddQuestions"
-      ></q-btn>
+        @click="toAddQuestions"/>
     </div>
   </section>
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
-export default {
-  data: () => {
-    return {
-      colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
-      quizDes: "",
-      quizTitle: null,
-      alert: false,
-      themeColor: "teal"
-    };
-  },
-  methods: {
-    addQuiz: function(showAlert) {
-      let assignedId = uuidv4();
-      let newQuiz = {
-        title: this.quizTitle,
-        owner: this.$store.state.user.displayName,
-        description: this.quizDes,
-        color: this.themeColor,
-        questions: [],
-        id: assignedId,
-        logo: "",
-        active: false
-      };
-      this.$store.commit("quizzes/createQuiz", newQuiz);
-      this.$store.commit("user/createQuiz", assignedId);
-      this.alert = showAlert;
-      return assignedId;
-    },
-    toAddQuestions() {
-      let newQuizId = this.addQuiz(false);
-      this.$router.push(`quizzes/${newQuizId}/questions`);
-    },
-  },
+  import {v4 as uuidv4} from "uuid";
 
-};
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
+  export default {
+    data: () => {
+      return {
+        colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
+        quizDes: "",
+        quizTitle: null,
+        alert: false,
+        themeColor: "teal"
+      };
+    },
+
+    methods: {
+      addQuiz: function (showAlert) {
+        let assignedId = uuidv4();
+        let newQuiz = {
+          title: this.quizTitle,
+          owner: this.$store.state.user.displayName,
+          description: this.quizDes,
+          color: this.themeColor,
+          questions: [],
+          id: assignedId,
+          logo: "",
+          active: false
+        };
+        this.$store.commit("quizzes/createQuiz", newQuiz);
+        this.$store.commit("user/createQuiz", assignedId);
+        this.alert = showAlert;
+        return assignedId;
+      },
+      toAddQuestions() {
+        let newQuizId = this.addQuiz(false);
+        this.$router.push(`quizzes/${newQuizId}/questions`);
+      },
+    },
+
+    beforeMount() {
+      AOS.init();
+    }
+
+  };
 </script>
 
-<style lang="sass" scoped>
-.right
-  border-radius: 17px
+<style lang="css" scoped>
 
-.welcome
-  font-size: larger
+  .add-name {
+    font-size: xx-large;
+  }
 
-.add-name
-  font-size: xx-large
+  .instruction {
+    font-size: large;
+    color: white;
+  }
 
-.instruction
-  font-size: large
-  color: white
+  .theme-bubble {
+    display: flex;
+    justify-content: center;
+  }
 
-.theme-bubble
-  display: flex
-  justify-content: center
+  section {
+    height: 100%;
+  }
 
-.them-bubble-item
-  border: 1px solid white
-section
-  height: 100%
+  .fa-save {
+    color: white;
+  }
 
-.fa-save
-  color: white
 
-.btn-add
-  border: 2px solid black
+  @media screen and (max-width: 1200px) {
 
-.bg-brand
-  background: #181C30
+    .add-card-section {
+      width: 80% !important;
+      margin: 0 auto;
+    }
+
+    .add-question{
+      margin-top: 3em;
+    }
+
+    .colors{
+      width: 85%;
+      margin: 0 auto;
+    }
+
+  }
+
+  @media screen and (max-width: 600px){
+
+    .add-card-section{
+      /*width: 100%;*/
+      /*border: 1px solid orange;*/
+    }
+
+    col{
+      padding: 0 !important;
+    }
+
+    .colors{
+      width: 100%;
+    }
+
+    .color-btn{
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+
 </style>
