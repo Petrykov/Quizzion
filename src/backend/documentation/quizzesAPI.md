@@ -28,7 +28,7 @@
         "owner": "WandaE",
         "title": "Pubquiz - Quarantine edition",
         "logo": "looogo",
-        "questions": "dt6r",
+        "questions": ["dt6r"],
         "active": "false"
     },
     {
@@ -38,7 +38,7 @@
         "owner": "WandaE",
         "title": "General knowledge",
         "logo": "looogo",
-        "questions": "dr5rty",
+        "questions":[ "dr5rty"],
         "active": "false"
     }, ...
 ```
@@ -67,7 +67,7 @@
         "owner": "WandaE",
         "title": "Pubquiz - Quarantine edition",
         "logo": "looogo",
-        "questions": "dt6r",
+        "questions": ["dt6r"],
         "active": "false"
     },
 ```
@@ -123,7 +123,7 @@
   {"owner":"WandaE",
   "title":"Pubquiz - Quarantine edition",
   "logo":"looogo",
-  "questions":"dt6r",
+  "questions":["dt6r"],
   "active":"false"}
 ```
 
@@ -175,7 +175,7 @@ Create a new quiz
      "owner": "WandaE",
      "title": "Pubquiz - Quarantine edition",
      "logo": "looogo",
-     "questions": "dt6r",
+     "questions": ["dt6r"],
      "active": "false"  
     
 }
@@ -254,7 +254,7 @@ quizId as params
      "owner": "WandaE",
      "title": "Pubquiz - Quarantine edition",
      "logo": "looogo",
-     "questions": "dt6r",
+     "questions": ["dt6r"],
      "active": "false"  
     
 }
