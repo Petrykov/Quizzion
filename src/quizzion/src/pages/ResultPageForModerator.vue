@@ -21,9 +21,9 @@
       <q-scroll-area style="height: 700px;">
         <q-list style="width:100%">
           <table width="100%">
-            <tr v-for="result in getResults" v-bind:key="result.id">
+            <tr v-for="(result,index) in getResults" v-bind:key="result.id">
               <td style="width:5%">
-                <div class=" flex flex-center">{{result.respondentNumber}}</div>
+                <div class=" flex flex-center">{{index+1}}</div>
               </td>
               <td style="width:90%">
                 <q-expansion-item switch-toggle-side
@@ -34,14 +34,14 @@
                       Questions
 
                     </div>
-                    <ul class="text-center" v-for="guess in result.guessesIds" v-bind:key="guess">
+                    <ul class="text-center" v-for="(response,index) in result.responses" v-bind:key="response">
                       <div class="col-1" style="width:20px;">
                         <div class="flex flex-center">
-                          <a class="text-weight-20" style="size: 30px">{{getQuestionById(getGuess(guess).questionId).number}}</a>
+                          <a class="text-weight-20" style="size: 30px">{{index+1}}</a>
                         </div>
-                         <q-icon :name="isCorrectIcon(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)" class="flex flex-center"
-                                :color="isCorrectIconColor(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)" size="20px"/>
-                        <div class="flex flex-center" >{{addScore(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)}}</div>
+                         <q-icon :name="isCorrectIcon(getResponse(response).correct)" class="flex flex-center"
+                                :color="isCorrectIconColor(getResponse(response).correct)" size="20px"/>
+                        <div class="flex flex-center" >{{addScore(getResponse(response).correct)}}</div>
                       </div>
                     </ul>
                   </div>
@@ -84,7 +84,7 @@
     },
     data() {
       return {
-
+        quizId:this.$route.params.quizId
       }
     },
 
@@ -93,21 +93,13 @@
         return this.$store.getters['quizzes/results/getResultsOfQuiz']("kh8yi7y")
       },
       getQuizById(){
-        //TODO: get quiz by id
-        let id="kh8yi7y"
-        return this.$store.getters['quizzes/getQuizById'](id)
+        return this.$store.getters['quizzes/getQuizById'](this.quizId)
       },
       getTotalPlayer(){
         let id="kh8yi7y"
         return this.$store.getters['quizzes/results/getTotalParticipantsOfQuiz'](id)
       },
-      getGuess(){
-        return this.$store.getters['quizzes/results/getGuessById']
-      },
-      getQuestionById(){
-        return this.$store.getters['quizzes/getQuestionById']
-      },
-      getCorrectAnswerOfQuestion(){
+      getResponse(){
         return this.$store.getters['quizzes/getAnswerById']
       },
       getTotal(){

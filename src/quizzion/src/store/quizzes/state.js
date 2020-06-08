@@ -79,61 +79,74 @@ export let quizzesMock = {
         {
             id: '65ry5',
             label: 'None',
-            correct: false
+            questionId:'dr5rty',
+            correct: false,
+
         },
         {
             id: 'ihy6',
             label: '4',
+          questionId:'dr5rty',
             correct: false
         },
         {
             id: 'y5r5',
             label: '5',
+          questionId:'dr5rty',
             correct: true
         },
         {
             id: 'k98nn',
             label: '7',
+          questionId:'dr5rty',
             correct: false
         },
         {
             id: 'dudu7t',
             label: 'Black and yellow',
+          questionId:'dt6r',
             correct: false
         },
         {
             id: 'jsdiu',
             label: 'Green and white',
+          questionId:'dt6r',
             correct: false
         },
         {
             id: '87ydj',
             label: 'Blue and white',
+          questionId:'dt6r',
             correct: false
         },
         {
             id: 'dhi8d',
             label: 'Red and yellow',
+          questionId:'dt6r',
             correct: true
         },
         {
             id: 'jso45h',
             label: 'Fermata',
+          questionId:'ft6t',
             correct: true
         },
         {
             id: 'ehiruh',
             label: 'Pilcrow',
+          questionId:'ft6t',
             correct: true
         },
         {
             id: 'hu7tuh',
             label: 'Interrobang',
+          questionId:'ft6t',
             correct: false
         },
         {
             id: 'o84y4',
             label: 'Biltong',
+          questionId:'ft6t',
             correct: false
         },
     ]

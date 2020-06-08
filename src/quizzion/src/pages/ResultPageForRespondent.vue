@@ -22,24 +22,24 @@
               <th style="width:10%">Status</th>
               <th style="width:5%">Score</th>
             </tr>
-            <tr v-for="guess in getResultById.guessesIds" v-bind:key="guess">
+            <tr v-for="(answer,index) in getResultById.responses" v-bind:key="answer">
               <td style="width:5%">
-                <div class=" flex flex-center">{{getGuessById(guess).number}}</div>
+                <div class=" flex flex-center">{{index+1}}</div>
               </td>
               <td style="width:60%">
-                <div class="row">{{getQuestion(getGuessById(guess).questionId).title}}</div>
+                <div class="row">{{getQuestion(getAnswer(answer).questionId).title}}</div>
               </td>
               <td style="width:20%">
-                <div class="row flex flex-center">{{getAnswer(getGuessById(guess).answerId).label}}</div>
+                <div class="row flex flex-center">{{getAnswer(answer).label}}</div>
               </td>
               <td style="width:10%">
                 <div class="flex flex-center" >
-                <q-icon :name="isCorrectIcon(getAnswer(getGuessById(guess).answerId).correct)" class="flex flex-center"
-                        :color="isCorrectIconColor(getAnswer(getGuessById(guess).answerId).correct)" size="20px"/>
+                <q-icon :name="isCorrectIcon(getAnswer(answer).correct)" class="flex flex-center"
+                        :color="isCorrectIconColor(getAnswer(answer).correct)" size="20px"/>
                 </div>
               </td>
               <td style="width:5%">
-                <div class="flex flex-center">{{addScore(getAnswer(getGuessById(guess).answerId).correct)}}</div>
+                <div class="flex flex-center">{{addScore(getAnswer(answer).correct)}}</div>
               </td>
             </tr>
           </table>
@@ -76,20 +76,16 @@
     },
     data() {
       return{
-
+        resultId:this.$route.params.resultId
       }
     },
     computed: {
       getResultById(){
-        let id='hisd7y'
-        return this.$store.getters['quizzes/results/getResultById'](id)
+        return this.$store.getters['quizzes/results/getResultById'](this.resultId)
       },
       getQuizById(){
-        let id="kh8yi7y"
-        return this.$store.getters['quizzes/getQuizById'](id)
-      },
-      getGuessById(){
-        return this.$store.getters['quizzes/results/getGuessById']
+        let quizId=this.getResultById.quizId
+        return this.$store.getters['quizzes/getQuizById'](quizId)
       },
       getQuestion(){
         return this.$store.getters['quizzes/getQuestionById']

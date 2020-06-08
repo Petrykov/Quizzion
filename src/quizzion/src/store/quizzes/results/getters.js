@@ -16,17 +16,10 @@ export function getTotalParticipantsOfQuiz( state ) {
     }
 }
 
-export function getGuessById( state ) {
-  return function ( id ) {
-    console.log(id)
-    return state.guesses.find(guess => guess.id === id);
-  }
-}
 
-export function isGuessCorrect( state, getters, rootState, rootGetters ) {
-  return function ( guessId ) {
-    let guess = getters.getGuessById(guessId);
-    return rootGetters['quizzes/getAnswerById'](guess.answerId).correct;
+export function isResponseCorrect( state, getters, rootState, rootGetters ) {
+  return function ( responseId ) {
+    return rootGetters['quizzes/getAnswerById'](responseId).correct;
   }
 }
 
@@ -35,8 +28,8 @@ export function getTotalScore(state,getters){
   return function (resultId) {
     let totalScore = 0;
 
-    getters.getResultById(resultId).guessesIds.forEach( guessId => {
-      if (getters.isGuessCorrect(guessId)) totalScore += 10;
+    getters.getResultById(resultId).responses.forEach( responseId => {
+      if (getters.isResponseCorrect(responseId)) totalScore += 10;
     });
 
     return totalScore;
