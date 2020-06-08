@@ -319,15 +319,15 @@ router.put('/:quizId/content', (req, rsp) => {
         wasGood = true;
         rsp.status(200).send(response.data);
     }).catch((error) => {
-        if (wasGood) { return;}
-        rsp.status(400).json(error)
+        if(!wasGood){
+        rsp.status(400).json(error)}
     })
 
 });
 
 
 // update a quiz color and description
-router.put('/:quizId/', (req, rsp) => {
+router.put('/:quizId', (req, rsp) => {
     axios.put(`${baseUrl}/template/${req.params.quizId}`, {
 
         label: req.body.label, //color
@@ -336,7 +336,7 @@ router.put('/:quizId/', (req, rsp) => {
 
 
     }).then((response) => {
-        rsp.json(response)
+        rsp.json(response.data)
     }).catch((error) => {
         rsp.status(400).json(error)
     })
