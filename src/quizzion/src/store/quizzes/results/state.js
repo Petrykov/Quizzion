@@ -18,14 +18,14 @@ export let resultsMock = {
     {id: 'sl9iok', respondent: 'Billy',respondentNumber:3, quizId: 'kh8yi7y', guessesIds: ['fr4rt', 'i87t', 'gfr456']}
   ],
   guesses: [
-    {id: 'huie3', questionId: 'dr5rty', answerId: '65ry5'},
-    {id: 'hgy7u', questionId: 'dr5rty', answerId: '65ry5'},
-    {id: 'fr4rt', questionId: 'dr5rty', answerId: 'y5r5'},
-    {id: 'yt67', questionId: 'dt6r', answerId: 'dhi8d'},
-    {id: 'h7u', questionId: 'dt6r', answerId: 'dhi8d'},
-    {id: 'i87t', questionId: 'dt6r', answerId: 'dhi8d'},
-    {id: 'hy7y', questionId: 'ft6t', answerId: 'ehiruh'},
-    {id: 'gy77u', questionId: 'ft6t', answerId: 'hu7tuh'},
-    {id: 'gfr456', questionId: 'ft6t', answerId: 'o84y4'}
+    {id: 'huie3',number:'1', questionId: 'dr5rty', answerId: '65ry5'},
+    {id: 'hgy7u',number:'1', questionId: 'dr5rty', answerId: '65ry5'},
+    {id: 'fr4rt',number:'1', questionId: 'dr5rty', answerId: 'y5r5'},
+    {id: 'yt67',number:'2', questionId: 'dt6r', answerId: 'dhi8d'},
+    {id: 'h7u',number:'2', questionId: 'dt6r', answerId: 'dhi8d'},
+    {id: 'i87t',number:'2', questionId: 'dt6r', answerId: 'dhi8d'},
+    {id: 'hy7y',number:'3', questionId: 'ft6t', answerId: 'ehiruh'},
+    {id: 'gy77u',number:'3', questionId: 'ft6t', answerId: 'hu7tuh'},
+    {id: 'gfr456',number:'3', questionId: 'ft6t', answerId: 'o84y4'}
   ]
 };

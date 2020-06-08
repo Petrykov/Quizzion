@@ -39,7 +39,7 @@
                         <div class="flex flex-center">
                           <a class="text-weight-20" style="size: 30px">{{getQuestionById(getGuess(guess).questionId).number}}</a>
                         </div>
-                         <q-icon name="check_circle" class="flex flex-center"
+                         <q-icon :name="isCorrectIcon(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)" class="flex flex-center"
                                 :color="isCorrectIconColor(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)" size="20px"/>
                         <div class="flex flex-center" >{{addScore(getCorrectAnswerOfQuestion(getGuess(guess).answerId).correct)}}</div>
                       </div>
@@ -63,6 +63,12 @@
   export default {
     name: "ResultPageForModerator",
     methods: {
+      isCorrectIcon:function(isCorrect){
+        if(isCorrect){
+          return 'check_circle'
+        }
+        return 'fas fa-times-circle'
+      },
       isCorrectIconColor: function (isCorrect) {
         if (!isCorrect) {
           return "red"

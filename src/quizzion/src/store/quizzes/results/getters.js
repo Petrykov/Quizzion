@@ -18,6 +18,7 @@ export function getTotalParticipantsOfQuiz( state ) {
 
 export function getGuessById( state ) {
   return function ( id ) {
+    console.log(id)
     return state.guesses.find(guess => guess.id === id);
   }
 }

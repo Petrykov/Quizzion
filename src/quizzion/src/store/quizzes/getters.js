@@ -14,6 +14,7 @@ export function getQuizById( state ) {
 
 export function getQuestionById( state ) {
     return function (id) {
+      console.log(id)
         return state.questions.find(question => question.id === id);
     }
 }
