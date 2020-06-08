@@ -1,6 +1,5 @@
 <template>
   <q-page class="layout">
-    <!--    <q-btn @click="log">LOG</q-btn>-->
     <div class="row q-pa-md main-layout">
       <div class="col">
 
@@ -78,11 +77,6 @@
     },
     beforeMount() {
       this.selectedQuizId = this.$store.state.user.quizzes[0];
-    },
-    methods: {
-      log() {
-        console.log(this.$store)
-      }
     }
   };
 </script>

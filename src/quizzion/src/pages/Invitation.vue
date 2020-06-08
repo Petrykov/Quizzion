@@ -45,6 +45,9 @@
         return this.$store.getters['quizzes/getQuizById'](this.$route.params.quizId);
       }
     },
+    beforeMount() {
+      this.$store.dispatch('user/participate');
+    },
     methods: {
       toFirstQuestion (){
         this.$router.push(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
