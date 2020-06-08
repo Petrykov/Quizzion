@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 
   export default {
     name: "ResultPageForModerator",
@@ -90,14 +92,13 @@
 
     computed: {
       getResults(){
-        return this.$store.getters['quizzes/results/getResultsOfQuiz']("kh8yi7y")
+        return this.$store.getters['quizzes/results/getResultsOfQuiz'](this.quizId)
       },
       getQuizById(){
         return this.$store.getters['quizzes/getQuizById'](this.quizId)
       },
       getTotalPlayer(){
-        let id="kh8yi7y"
-        return this.$store.getters['quizzes/results/getTotalParticipantsOfQuiz'](id)
+        return this.$store.getters['quizzes/results/getTotalParticipantsOfQuiz'](this.quizId)
       },
       getResponse(){
         return this.$store.getters['quizzes/getAnswerById']

@@ -50,7 +50,6 @@
 </template>
 
 <script>
-  import {getResultById} from "../store/quizzes/results/getters";
 
   export default {
     name: "ResultPageForRespondent",
@@ -84,7 +83,7 @@
         return this.$store.getters['quizzes/results/getResultById'](this.resultId)
       },
       getQuizById(){
-        let quizId=this.getResultById.quizId
+        let quizId=this.getResultById.quizId;
         return this.$store.getters['quizzes/getQuizById'](quizId)
       },
       getQuestion(){
@@ -94,8 +93,7 @@
         return this.$store.getters['quizzes/getAnswerById']
       },
       getTotal(){
-        let id='hisd7y'
-        return this.$store.getters['quizzes/results/getTotalScore'](id)
+        return this.$store.getters['quizzes/results/getTotalScore'](this.resultId)
       }
     }
   }
