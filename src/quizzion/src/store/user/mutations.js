@@ -11,7 +11,7 @@ export function login(state, user) {
 
 export function participate(state, user) {
   state.role = Roles.RESPONDENT;
-  // state.token = user.token;
+  state.token = user.uh;
   state.displayName = user.displayName;
 }
 

@@ -38,15 +38,16 @@ export function participate({commit, dispatch}, displayName) {
     try {
       const response = await api.participate(displayName);
       commit('participate', response.data);
+
+      console.log("Mocking store...");
+      dispatch('mockStore', null, {root: true});
+
       resolve();
     } catch (e) {
       console.log(e);
       reject(e);
     }
   });
-
-  console.log("Mocking store...");
-  dispatch('mockStore', null, {root: true});
 }
 
 export function reset({commit}) {

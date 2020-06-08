@@ -43,6 +43,14 @@ export function login(credentials) {
 
 export function participate(displayName) {
   // return axios.post(`${apiUrl}/user/participate`, { displayName });
+
+  const dummy = {
+    data: {
+      uh: 'participanttoken',
+      displayName
+    }
+  };
+  return dummy;
 }
 
 export function fetchQuizzes() {
@@ -128,7 +136,7 @@ export function fetchQuestions() {
   return dummy;
 }
 
-export function fetchAnswers(cb, errorCb) {
+export function fetchAnswers() {
   // return axios.get(`${apiUrl}/questions`);
 
   const dummy = {
@@ -215,16 +223,10 @@ export function createQuiz(newQuiz) {
 
   const dummy = {
     data: {
-      id: 'qwe1231as',
-      owner: 'qweqwe',
-      title: 'qweqwe',
-      description: 'qweqweqwe',
-      color: 'pink',
-      logo: '',
-      questions: [],
-      active: false
-    },
-  }
+      ...newQuiz,
+      id: 'qwe1231as'
+    }
+  };
 
   return dummy;
 }
