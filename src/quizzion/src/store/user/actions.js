@@ -1,25 +1,30 @@
 import * as api from '../../api/api'
+import ca from "quasar/lang/ca";
 
 
 export function login({commit, dispatch}, credentials) {
-  api.login(
-    credentials,
-    //handle success
-    (response) => {
-      commit('login', response.data[0]);
-      dispatch('quizzes/initialiseAll', null, {root: true});
-      // this.$router.push('/');
-    }, //we might want to set the default axios headers here.
-    //handle failure
-    (error) => {
-      console.log("Error while login API: " + error)
-    }
-  );
 
-  //MOCK DATA
-  console.log("Mocking store...");
-  dispatch('mockStore', null, {root: true});
-  this.$router.push('/') // redirect to home after successful login (or, mock, in this case)
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.login(credentials);
+      //MOCK DATA
+      console.log("Mocking store...");
+      dispatch('mockStore', null, {root: true});
+
+      commit('login', response.data[0]);
+
+      dispatch('quizzes/initialiseAll', null, {root: true}).then(() => {
+        this.$router.push('/');
+        resolve();
+      }).catch((e) => {
+        reject(e);
+      });
+
+    } catch (e) {
+      console.log("Error while login API: " + e);
+      reject(e);
+    }
+  });
 }
 
 export function logout({dispatch}) {

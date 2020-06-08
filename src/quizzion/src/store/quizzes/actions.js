@@ -5,24 +5,32 @@ import * as api from '../../api/api'
 *
 * */
 export function initialiseAll({dispatch}) {
-  dispatch('fetchQuizzes');
-  dispatch('fetchQuestions');
-  dispatch('fetchAnswers');
+
+  const quizzes = dispatch('fetchQuizzes');
+  const questions = dispatch('fetchQuestions');
+  const answers = dispatch('fetchAnswers');
+
+  return Promise.all([quizzes, questions, answers]);
 }
 
 /*
 * grab the quizzes (owned by current user) from the backend, then commit the setQuizzes mutation
-* GET
+*
 * */
-export async function fetchQuizzes({commit}) {
+export function fetchQuizzes({commit}) {
 
-  try {
-    const response = await api.fetchQuizzes();
-    commit('setQuizzes', response.data);
-    commit('user/setQuizzes', response.data, {root: true});
-  } catch (err) {
-    console.log("fetch quizzes error");
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.fetchQuizzes();
+      commit('setQuizzes', response.data);
+      commit('user/setQuizzes', response.data, {root: true});
+      resolve();
+    } catch (e) {
+      console.log("fetch quizzes error ");
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -30,14 +38,18 @@ export async function fetchQuizzes({commit}) {
 *
 * */
 export function fetchQuestions({commit}) {
-  api.fetchQuestions(
-    //handle success
-    (response) => commit('setQuestions', response.data),
-    //handle failure
-    (error) => {
-      console.log("Error while fetching questions API: " + error);
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.fetchQuestions();
+      commit('setQuestions', response.data);
+      resolve();
+    } catch (e) {
+      console.log("Error while fetching questions API: " + e.toString());
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -45,14 +57,18 @@ export function fetchQuestions({commit}) {
 *
 * */
 export function fetchAnswers({commit}) {
-  api.fetchAnswers(
-    //handle success
-    (response) => commit('setAnswers', response.data),
-    //handle failure
-    (error) => {
-      console.log("Error while fetching answers API: " + error);
-    }//do sth
-  );
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.fetchAnswers();
+      commit('setAnswers', response.data);
+      resolve();
+    } catch (e) {
+      console.log("Error while fetching answers API: " + e);
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 /*
@@ -62,21 +78,17 @@ export function fetchAnswers({commit}) {
 export function createQuiz({commit}, newQuiz) {
 
   return new Promise(async (resolve, reject) => {
-
     try {
       const response = await api.createQuiz(newQuiz);
-
       commit("createQuiz", response.data);
       commit("user/createQuiz", response.data.id, {root: true});
       resolve(response.data.id);
-
     } catch (e) {
-      reject(e);
       console.log("Error while creating quiz: " + e);
+      console.log(e);
+      reject(e);
     }
-
   });
-
 }
 
 /*
