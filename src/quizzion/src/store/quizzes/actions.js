@@ -105,8 +105,8 @@ export function updateQuiz({commit}, updatedQuiz) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.updateQuiz(updatedQuiz);
-      commit('updateQuiz', response.data);
+      await api.updateQuiz(updatedQuiz);
+      commit('updateQuiz', updatedQuiz);
       resolve();
     } catch (e) {
       console.log(e);

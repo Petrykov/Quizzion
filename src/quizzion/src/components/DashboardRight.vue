@@ -200,7 +200,12 @@
 
     },
 
-    props: ['currentQuiz']
+    props: {
+      currentQuiz: {
+        type: Object,
+        required: true
+      }
+    }
   };
 </script>
 

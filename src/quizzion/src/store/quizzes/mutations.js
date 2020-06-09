@@ -36,9 +36,10 @@ export function createQuiz(state, newQuiz) {
 * payload should contain the full object that was edited, in proper format
 *
 * */
-export function updateQuiz(state, {id, updatedQuiz}) {
-  let index = state.quizzes.findIndex(quiz => quiz.id === id);
-  state.quizzes[index] = updatedQuiz;
+export function updateQuiz(state, updatedQuiz) {
+  state.quizzes = [
+    ...state.quizzes.filter(quiz => quiz.id !== updatedQuiz.id),
+    updatedQuiz];
 }
 
 /*
@@ -102,9 +103,9 @@ export function deleteAnswer(state, {questionId, answerId}) {
   let question = state.questions.find(question => question.id === questionId);
 
   for (let i = 0; i < question.answers.length; i++) {
-      if(question.answers[i] === answerId){
-        question.answers.splice(i,1);
-      }
+    if (question.answers[i] === answerId) {
+      question.answers.splice(i, 1);
+    }
   }
 }
 

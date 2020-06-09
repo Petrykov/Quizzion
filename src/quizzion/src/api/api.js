@@ -197,7 +197,7 @@ export function createQuiz(newQuiz) {
 }
 
 export function updateQuiz(updatedQuiz) {
-  // return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}`, { updatedQuiz });
+  return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}/edit`, {...updatedQuiz, label: updatedQuiz.color});
 }
 
 export function deleteQuiz(deletedId) {
