@@ -7,13 +7,17 @@
     "start": "node server.js",
     "watch": "npx nodemon server.js",
     "test": "npx mocha"
+    "watch": "npx nodemon server.js",
+    "doc": "apidoc -i routers/ -o apidoc/"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "apidoc": "^0.23.0",
