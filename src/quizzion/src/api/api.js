@@ -201,7 +201,7 @@ export function updateQuiz(updatedQuiz) {
 }
 
 export function deleteQuiz(deletedId) {
-  // return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
+  return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
 export function createQuestion(quizId, newQuestion) {

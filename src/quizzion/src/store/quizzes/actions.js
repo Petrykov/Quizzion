@@ -125,8 +125,9 @@ export function deleteQuiz({commit}, deletedId) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.deleteQuiz(deletedId);
-      commit('deleteQuiz', response.data);
-      resolve();
+      commit('deleteQuiz', deletedId);
+      commit("user/deleteQuizFromUser", deletedId, {root: true});
+      resolve(deletedId);
     } catch (e) {
       console.log(e);
       reject(e);
