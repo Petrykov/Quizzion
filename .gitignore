@@ -3,6 +3,8 @@
 .thumbs.db
 node_modules
 
+/.idea
+
 ### Vuejs ###
 # Recommended template: Node.gitignore
 
