@@ -122,7 +122,7 @@ describe('POST /api/quizzes/start', function () {
             .post('/api/quizzes/start')
             .send({
                 "uh": "b42050a333bd7ad0befd7dfbb9dc4879",
-                "tn":"b2mh4t9jr" 
+                "tn": "b2mh4t9jr" 
             })
             .expect(201, done)
            
@@ -130,10 +130,18 @@ describe('POST /api/quizzes/start', function () {
 
 });
 
+describe('GET api/quizzes/start', function() {
+    it('gets  forms with all the information', function(done) {
+      request(app)
+          .get('/start')
+          .expect(200, done());
+    });
+});
+
 describe('GET api/quizzes/start/:formId', function() {
     it('gets a form with all the information', function(done) {
       request(app)
           .get('/start/:formId')
-          .expect(200, done);
+          .expect(200, done());
     });
 });

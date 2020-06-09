@@ -1,7 +1,7 @@
 let router = module.exports = require('express').Router();
 const axios = require('axios').default;
-const token = '8fa804e1b3d3106f1db3edc894ee6d12bd328be30d8310491477fef159ebebd8f58ba0fc9e1cb5ce12e2d1e0d6aa8bb3f7b1195ec8e7a12769bb737dde0a5ec0'
-axios.defaults.headers.common['X-CSRFToken'] = '8fa804e1b3d3106f1db3edc894ee6d12bd328be30d8310491477fef159ebebd8f58ba0fc9e1cb5ce12e2d1e0d6aa8bb3f7b1195ec8e7a12769bb737dde0a5ec0';
+const token = '048be42fb9a274a2aac8d945206ef837eef56fbbc63a7610dcb4a44e374cb474559731f2f447ece040a7780ca6e24230bd3262fcd18f5bfb3c993bc03a4529eb'
+axios.defaults.headers.common['X-CSRFToken'] = '048be42fb9a274a2aac8d945206ef837eef56fbbc63a7610dcb4a44e374cb474559731f2f447ece040a7780ca6e24230bd3262fcd18f5bfb3c993bc03a4529eb';
 axios.defaults.headers.common['X-Database'] = 'lab';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
@@ -247,7 +247,6 @@ router.put('/:quizId/edit', (req, rsp) =>{
     let active = req.body.active;
 
             axios.put(`${baseUrl}/template/${req.params.quizId}`, {
-            
                 label: label, 
                 description: description,
                 status: 'active'
