@@ -35,7 +35,7 @@ export let stateMockModerator = {
   token: 'heraccesstoken',
 
   userId: 'ghu76t', //unique user id (database pk)
-  quizzes: ['kh8yi7y', 'fy5ryt', 'g67yuhb'], //array of quiz ID's
+  quizzes: [], //array of quiz ID's
   name: 'Wanda Evans',
   email: 'wanda.evans@vueteam.com',
   language: 'English'

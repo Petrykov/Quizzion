@@ -106,25 +106,34 @@
 
     methods: {
       addQuiz: function (showAlert) {
-        let assignedId = uuidv4();
+
         let newQuiz = {
           title: this.quizTitle,
           owner: this.$store.state.user.displayName,
           description: this.quizDes,
           color: this.themeColor,
           questions: [],
-          id: assignedId,
           logo: "",
           active: false
         };
-        this.$store.commit("quizzes/createQuiz", newQuiz);
-        this.$store.commit("user/createQuiz", assignedId);
+
+
+        this.$store.dispatch('quizzes/createQuiz', newQuiz).then((quizId) => {
+
+          if (!showAlert) {
+            this.$router.push(`quizzes/${quizId}/questions`);
+          }
+
+        });
+
+        // this.$store.commit("quizzes/createQuiz", newQuiz);
+        // this.$store.commit("user/createQuiz", assignedId);
+
         this.alert = showAlert;
-        return assignedId;
       },
+
       toAddQuestions() {
-        let newQuizId = this.addQuiz(false);
-        this.$router.push(`quizzes/${newQuizId}/questions`);
+        this.addQuiz(false);
       },
     },
 
@@ -167,33 +176,33 @@
       margin: 0 auto;
     }
 
-    .add-question{
+    .add-question {
       margin-top: 3em;
     }
 
-    .colors{
+    .colors {
       width: 85%;
       margin: 0 auto;
     }
 
   }
 
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 600px) {
 
-    .add-card-section{
+    .add-card-section {
       /*width: 100%;*/
       /*border: 1px solid orange;*/
     }
 
-    col{
+    col {
       padding: 0 !important;
     }
 
-    .colors{
+    .colors {
       width: 100%;
     }
 
-    .color-btn{
+    .color-btn {
       width: 50px;
       height: 50px;
     }
