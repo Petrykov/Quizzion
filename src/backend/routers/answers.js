@@ -5,9 +5,13 @@ const BodyCheck = require('./helper/bodychecker');
 
 const config = require('./../config');
 
-// todo REMOVE AFTER DEMO
-axios.defaults.headers.common['X-CSRFToken'] = config.token;
 axios.defaults.headers.common['X-Database'] = 'lab';
+
+
+router.use((req, rsp, next) => {
+    axios.defaults.headers.common['X-CSRFToken'] = req.headers.authorization;
+    next();
+});
 
 router.get('/answer', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var')

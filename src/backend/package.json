@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "watch": "npx nodemon server.js",
-    "test": "npx mocha"
+    "test": "npx mocha",
     "watch": "npx nodemon server.js",
     "doc": "apidoc -i routers/ -o apidoc/"
   },

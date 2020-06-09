@@ -1,8 +1,6 @@
-// const fs = require("fs");
-// const jwt = require("jsonwebtoken");
 let router = module.exports = require('express').Router();
 const axios = require('axios');
-const baseUrl = "https://lab.dev.easion.nl/backend/api/v5"
+const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
 
 /**
  * @api {post} /user/login Login access for customer
@@ -19,8 +17,8 @@ router.post('/login', (req, rsp) => {
     var token;
     var uid;
 
-    if (req.body.username == undefined) { rsp.status(400).json({ error: "Missing username" }) };
-    if (req.body.password == undefined) { rsp.status(400).json({ error: "Missing password" }) };
+    if (req.body.username == undefined) { rsp.status(400).json({ error: "Missing username" }); return;};
+    if (req.body.password == undefined) { rsp.status(400).json({ error: "Missing password" }); return;};
 
     axios.post(`${baseUrl}/account/access`, {
         username: req.body.username,

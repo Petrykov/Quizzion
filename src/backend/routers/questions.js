@@ -6,8 +6,12 @@ const BodyChecker = require('./helper/bodychecker');
 
 const axios = require('axios').default;
 
-axios.defaults.headers.common['X-CSRFToken'] = config.token;
 axios.defaults.headers.common['X-Database'] = 'lab';
+
+router.use((req, rsp, next) => {
+    axios.defaults.headers.common['X-CSRFToken'] = req.headers.authorization;
+    next();
+});
 
 router.get('/question', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var').then((response) => {
@@ -195,9 +199,9 @@ router.put('/question/:question_id/add/:answer_id', (req, rsp) => {
 
             axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
                 label: JSON.stringify(question)
-            }).then( (response) => {
+            }).then((response) => {
                 rsp.status(200).json(response);
-            }).catch( (err) => {
+            }).catch((err) => {
                 rsp.json(err);
             });
 
@@ -238,15 +242,15 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
             for (let i = 0; i < question.answers.length; i++) {
                 if (req.params.answer_id === question.answers[i]) {
                     //removing an element from array
-                    question.answers.splice(i,1);
+                    question.answers.splice(i, 1);
                 }
             }
 
             axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
                 label: JSON.stringify(question)
-            }).then( (response) => {
+            }).then((response) => {
                 rsp.status(200).json(response);
-            }).catch( (err) => {
+            }).catch((err) => {
                 rsp.json(err);
             });
 
@@ -254,6 +258,7 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
             rsp.status(400).json({error: 'question id is not valid'});
         }
     }
+
     f();
 });
 

@@ -1,10 +1,31 @@
 const request = require('supertest');
 const app = require('../server.js');
 
+let token = '';
+
+describe('POST /api/user/login', function () {
+    it ('generates a token', function (done) {
+        request(app)
+            .post('/api/user/login')
+            .send({
+                "username" : "quizzion_user2",
+                "password" : "ff47967c96b6e97403997b6ef1168fef"
+            })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                //receiving token
+                token = res.body.token;
+                return done();
+            });
+    })
+});
+
 describe('GET /api/question', function () {
     it('returns list of all questions', function (done) {
         request(app)
             .get('/api/question')
+            .set('Authorization', token)
             .expect(200, done);
     });
 });
@@ -17,6 +38,7 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
         request(app)
             .post('/api/quizzes/' + quizId + '/question')
             .set('Content-Type', 'application/json')
+            .set('Authorization', token)
             .send({
                 "title": "question created by automated testing",
                 "description": "description created by automated testing",
@@ -41,6 +63,7 @@ describe('PUT /api/question/:id', function () {
         request(app)
             .put('/api/question/' + questionId)
             .set('Content-Type', 'application/json')
+            .set('Authorization', token)
             .send({
                 time: 666,
                 title: "changed title in automated tests",
@@ -54,6 +77,7 @@ describe('PUT /api/question/:id', function () {
     it('verify newly created object is changed', function (done) {
         request(app)
             .get('/api/question/' + questionId)
+            .set('Authorization', token)
             .expect(200, {
                 time: 666,
                 title: "changed title in automated tests",
@@ -69,12 +93,14 @@ describe('PUT /api/question/:id/add/:answer_id', function () {
     it('adds new answer to the array of answers for created question', function (done) {
         request(app)
             .put('/api/question/' + questionId + '/add/new_sample_answer_id')
+            .set('Authorization', token)
             .expect(200, done);
     });
 
     it('verify that the answer id was added to array', function (done) {
         request(app)
             .get('/api/question/' + questionId)
+            .set('Authorization', token)
             .expect(200, {
                 title: "changed title in automated tests",
                 description: "changed description in automated tests",
@@ -90,12 +116,14 @@ describe('DELETE /api/question/:id/remove/:answer_id', function () {
     it('removes previously created answer from the array of answers for created question', function (done) {
         request(app)
             .delete('/api/question/' + questionId + '/remove/new_sample_answer_id')
+            .set('Authorization', token)
             .expect(200, done);
     });
 
     it('verify that the answer id was removed from answers array', function (done) {
         request(app)
             .get('/api/question/' + questionId)
+            .set('Authorization', token)
             .expect(200, {
                 title: "changed title in automated tests",
                 description: "changed description in automated tests",
@@ -111,6 +139,7 @@ describe('DELETE /api/question/:id', function () {
     it ('removes a newly created question', function (done) {
         request(app)
             .delete('/api/question/' + questionId)
+            .set('Authorization', token)
             .expect(200, done);
     })
-})
+});
