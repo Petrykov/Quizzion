@@ -21,6 +21,10 @@ const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
 * */
 
 
+function timeout(res, ms) {
+  return new Promise(resolve => setTimeout(() => resolve(res), ms));
+}
+
 export function login(credentials) {
   // return axios.post(`${apiUrl}/user/login`, {
   //   username: credentials.username,
@@ -31,6 +35,7 @@ export function login(credentials) {
     data: [
       {
         uh: 'userToken',
+        username: 'username',
         firstname: 'userFirstName',
         lastname: 'userLastName',
         email: 'userEmail'
@@ -39,6 +44,11 @@ export function login(credentials) {
   }
 
   return dummy;
+  // return timeout(dummy, 1000);
+}
+
+export function logout() {
+  // return axios.delete(`${apiUrl}/user/logout`);
 }
 
 export function participate(displayName) {
@@ -91,7 +101,7 @@ export function fetchQuizzes() {
     ],
     status: 200,
     success: 'true'
-  }
+  };
 
   return dummy;
 }
@@ -213,7 +223,7 @@ export function fetchAnswers() {
         questionId: 'ft6t',
         correct: false
       }]
-  }
+  };
 
   return dummy;
 }

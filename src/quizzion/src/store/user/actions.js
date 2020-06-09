@@ -21,15 +21,27 @@ export function login({commit, dispatch}, credentials) {
       });
 
     } catch (e) {
-      console.log("Error while login API: " + e);
+      console.log("Error while login API: ");
+      console.log(e);
       reject(e);
     }
   });
 }
 
 export function logout({dispatch}) {
-  //reset all data in app, we don't need it anymore, call the root action 'resetAll'
-  dispatch('resetAll', null, {root: true});
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      await api.logout(); //do we need a response?
+      //reset all data in app, we don't need it anymore, call the root action 'resetAll'
+      dispatch('resetAll', null, {root: true});
+      resolve();
+    } catch (e) {
+      console.log("Error while logout API: ");
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 
 export function participate({commit, dispatch}, displayName) {
@@ -44,6 +56,7 @@ export function participate({commit, dispatch}, displayName) {
 
       resolve();
     } catch (e) {
+      console.log("Error while participate API: ");
       console.log(e);
       reject(e);
     }
