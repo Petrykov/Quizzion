@@ -22,6 +22,9 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
+      console.log("fetch quizzes: ");
+      console.log(response.data);
+
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
@@ -42,6 +45,8 @@ export function fetchQuestions({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuestions();
+      console.log("fetch questions: ");
+      console.log(response.data);
       commit('setQuestions', response.data);
       resolve();
     } catch (e) {

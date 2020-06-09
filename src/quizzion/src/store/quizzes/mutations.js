@@ -5,6 +5,8 @@ import initialState from "./state";
 *
 * */
 export function setQuizzes(state, quizzes) {
+  console.log("Quizzes: ");
+  console.log(quizzes.length);
   state.quizzes = quizzes;
 }
 

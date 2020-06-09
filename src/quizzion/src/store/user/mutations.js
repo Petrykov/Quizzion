@@ -41,7 +41,7 @@ import {stateMockModerator} from "./state";
 export function mock(state) {
   state.role = Roles.MODERATOR;
   state.displayName = stateMockModerator.displayName;
-  state.token = stateMockModerator.token;
+  // state.token = stateMockModerator.token;
   state.quizzes = stateMockModerator.quizzes;
   state.name = stateMockModerator.name;
   state.email = stateMockModerator.email;

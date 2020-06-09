@@ -68,85 +68,12 @@ export function fetchQuizzes() {
   axios.defaults.headers.common['authorization'] = store.state.user.token;
 
   return axios.get(`${apiUrl}/quizzes/all`);
-
-  // const dummy = {
-  //   data: [
-  //     {
-  //       id: 'g67yuhb',
-  //       owner: 'WandaE', //might want to make this the id
-  //       title: 'test quiz',
-  //       description: 'mock quiz for demo',
-  //       color: '#ffa500',
-  //       logo: '',
-  //       questions: ['dr5rty'],
-  //       active: false
-  //     },
-  //     {
-  //       id: 'fy5ryt',
-  //       owner: 'WandaE',
-  //       title: 'Pubquiz - Quarantine edition',
-  //       description: 'another mock quiz for demo',
-  //       color: '#800080',
-  //       logo: '',
-  //       questions: ['ft6t'],
-  //       active: false
-  //     },
-  //     {
-  //       id: 'kh8yi7y',
-  //       owner: 'WandaE',
-  //       title: 'General knowledge',
-  //       description: 'Random things you should know!',
-  //       color: '#008080',
-  //       logo: '',
-  //       questions: ['dt6r'],
-  //       active: false
-  //     }
-  //   ],
-  //   status: 200,
-  //   success: 'true'
-  // };
-
-  // return dummy;
 }
 
 export function fetchQuestions() {
-  // return axios.get(`${apiUrl}/questions`);
+  axios.defaults.headers.common['authorization'] = store.state.user.token;
 
-  const dummy = {
-    data:
-      [
-        {
-          id: 'dr5rty',
-          number: 1,
-          title: 'How many rings are on the Olympic flag?',
-          description: '',
-          image: 'https://media.newyorker.com/photos/5e791a514f53b7000832d44f/master/pass/Thomas-Olympics.jpg',
-          time: 30,
-          answers: ['65ry5', 'ihy6', 'y5r5', 'k98nn']
-        },
-        {
-          id: 'dt6r',
-          number: 2,
-          title: 'What are the main colours on the flag of spain?',
-          description: 'Hint: You might be able to tell from this image:',
-          image: 'https://www.worldatlas.com/r/w1200-h701-c1200x701/upload/23/08/01/shutterstock-104644850.jpg',
-          time: 15,
-          answers: ['dudu7t', 'jsdiu', '87ydj', 'dhi8d']
-        },
-        {
-          id: 'ft6t',
-          number: 3,
-          title: 'What is the name of this symbol?',
-          description: 'It is used to indicate a new paragraph.',
-          image: 'https://i.pinimg.com/236x/6d/c2/67/6dc267235633a76c5d98d4b968fdb593--self-publishing-how-to-get-rid.jpg',
-          time: 15,
-          answers: ['jso45h', 'ehiruh', 'hu7tuh', 'o84y4']
-        }
-      ]
-
-  };
-
-  return dummy;
+  return axios.get(`${apiUrl}/question`);
 }
 
 export function fetchAnswers() {

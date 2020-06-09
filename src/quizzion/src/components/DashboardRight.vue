@@ -169,10 +169,10 @@
       goToEdit() {
         this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
       },
+
       editQuiz() {
         this.$router.push(`quizzes/${this.currentQuiz.id}`);
       },
-
 
       copyUrl() {
         copyToClipboard(this.getQuizLink);

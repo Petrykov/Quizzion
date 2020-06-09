@@ -269,6 +269,8 @@
 
     beforeMount() {
       AOS.init();
+
+
     },
 
     computed: {

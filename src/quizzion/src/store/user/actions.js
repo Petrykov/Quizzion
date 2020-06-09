@@ -6,12 +6,12 @@ export function login({commit, dispatch}, credentials) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.login(credentials);
+      // const response = await api.login(credentials);
       //MOCK DATA
       console.log("Mocking store...");
       dispatch('mockStore', null, {root: true});
 
-      commit('login', response.data);
+      // commit('login', response.data);
 
       dispatch('quizzes/initialiseAll', null, {root: true}).then(() => {
         this.$router.push('/');
