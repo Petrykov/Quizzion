@@ -1,7 +1,7 @@
 let router = module.exports = require('express').Router();
 const axios = require('axios').default;
-const token = 'e41b57950165809b97b3bfe42cbb08b7cb9dc318e2367d29f11c5af02c8215d298eb6c199ed0f992688b45092b5414310ad163bfdfdc89884628eb24672e3f49'
-axios.defaults.headers.common['X-CSRFToken'] = 'e41b57950165809b97b3bfe42cbb08b7cb9dc318e2367d29f11c5af02c8215d298eb6c199ed0f992688b45092b5414310ad163bfdfdc89884628eb24672e3f49';
+const token = '048be42fb9a274a2aac8d945206ef837eef56fbbc63a7610dcb4a44e374cb474559731f2f447ece040a7780ca6e24230bd3262fcd18f5bfb3c993bc03a4529eb'
+axios.defaults.headers.common['X-CSRFToken'] = '048be42fb9a274a2aac8d945206ef837eef56fbbc63a7610dcb4a44e374cb474559731f2f447ece040a7780ca6e24230bd3262fcd18f5bfb3c993bc03a4529eb';
 axios.defaults.headers.common['X-Database'] = 'lab';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const baseUrl = "https://lab.dev.easion.nl/backend/api/v5";
@@ -38,6 +38,7 @@ router.get('/all', (req, rsp) => {
 
                 let content = JSON.parse(response.data.content.content);
 
+            
                 let quiz = {
                     id: id,
                     color: responseData[i].label,
@@ -86,6 +87,11 @@ router.get('/:quizId', (req, rsp) => {
 
             if (secondReady) {
                 rsp.status(200).json(quiz);
+            } 
+        }).catch((error) => {
+            if (!secondReady) {
+                rsp.status(400).json(error)
+                firstReady = true;
             }
         });
 
@@ -113,7 +119,11 @@ router.get('/:quizId', (req, rsp) => {
 
             if (firstReady) {
                 rsp.status(200).json(quiz);
-            } else {
+            }
+            
+        }).catch((error) => {
+            if (!firstReady) {
+                rsp.status(400).json(error)
                 secondReady = true;
             }
         });
@@ -224,39 +234,99 @@ router.post('/', (req, rsp) => {
   
 });
 
+router.put('/:quizId/edit', (req, rsp) =>{
+
+    let firstReady = false;
+    let secondReady = false;
+    let label = req.body.label;
+    let description = req.body.description;
+    let owner = req.body.owner;
+    let title = req.body.title;
+    let logo = req.body.logo;
+    let questions = req.body.questions;
+    let active = req.body.active;
+
+            axios.put(`${baseUrl}/template/${req.params.quizId}`, {
+                label: label, 
+                description: description,
+                status: 'active'
+
+            })
+             .then((res1) => {
+                    if (secondReady) {
+                        console.log("first req", res1.data)
+                        rsp.json(res1.data);
+                    } else {
+                        firstReady = true;
+                    }
+                }).catch((error) => {
+                    if (!secondReady) {
+                        rsp.status(400).json(error)
+                        firstReady = true;
+                    }
+                });
+
+            axios.put(`${baseUrl}/template/${req.params.quizId}/content`,{
+                contenttype: 'JSON',
+                content: JSON.stringify({
+                    "owner": owner,
+                    "title": title,
+                    "logo": logo,
+                    "questions": questions,
+                    "active": active
+                })
+
+            }) 
+            .then((res2) => {
+                    if (firstReady) {
+                        rsp.json(res2.data);
+                    } else {
+                        secondReady = true;
+                    }
+                }).catch((error) => {
+                    if (!firstReady) {
+                        rsp.status(400).json(error)
+                        secondReady = true;
+                    }
+                });
+       
+});
 
 //edit quiz details
 router.put('/:quizId/content', (req, rsp) => {
 
-    let active = req.body.active;
-    let logo = req.body.logo;
-    let title = req.body.title;
     let owner = req.body.owner;
+    let title = req.body.title;
+    let logo = req.body.logo;
     let questions = req.body.questions;
+    let active = req.body.active;
+  
+    let contentObject = {
+        owner: owner,
+       title: title,
+       logo: logo,
+       questions: questions,
+       active: active
+    };
+  
+    let wasGood = false;
 
     axios.put(`${baseUrl}/template/${req.params.quizId}/content`, {
-
-        tn: req.params.quizId,
         contenttype: 'JSON',
-        content: {
-            "owner": owner,
-            "title": title,
-            "logo": logo,
-            "questions": questions,
-            "active": active
-        }
-
+        content: JSON.stringify(contentObject)
     }).then((response) => {
-        rsp.status(200).json(response)
+        wasGood = true;
+        rsp.status(200).send(response.data);
     }).catch((error) => {
-        rsp.status(400).json(error)
+        if(!wasGood){
+        rsp.status(400).json(error)}
     })
 
 });
 
 
 // update a quiz color and description
-router.put('/:quizId/', (req, rsp) => {
+router.put('/:quizId', (req, rsp) => {
     axios.put(`${baseUrl}/template/${req.params.quizId}`, {
 
         label: req.body.label, //color
@@ -265,7 +335,7 @@ router.put('/:quizId/', (req, rsp) => {
 
 
     }).then((response) => {
-        rsp.status(200).json(response)
+        rsp.json(response.data)
     }).catch((error) => {
         rsp.status(400).json(error)
     })
@@ -295,19 +365,21 @@ router.post('/start', (req, rsp) => {
 // get existing forms
 router.get('/start', (req, rsp) => {
 
-    axios.get(baseUrl + `/form`, {
+    axios.get(`${baseUrl}/form`, {
         headers: {
             'X-CSRFToken': token,
             'X-Database': 'lab',
             'Content-Type': 'application/json'
         }
 
-    }).then(function (response) {
-
-        rsp.send(response.data)
-
-    }).catch(error => rsp.send(error))
-
+    }).then((response) => {
+       
+       rsp.status(200).json(response);
+       
+    }).catch((err) => {
+        rsp.status(400).json(err);
+    
+    });
 })
 
 //get particular form (by fh)
@@ -321,7 +393,7 @@ router.get('/start/:formId', (req, rsp) => {
         }
 
     }).then(function (response) {
-
+      
         rsp.send(response.data)
 
     }).catch(error => rsp.send(error))

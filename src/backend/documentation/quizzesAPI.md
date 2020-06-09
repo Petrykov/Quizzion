@@ -28,7 +28,7 @@
         "owner": "WandaE",
         "title": "Pubquiz - Quarantine edition",
         "logo": "looogo",
-        "questions": "dt6r",
+        "questions": ["dt6r"],
         "active": "false"
     },
     {
@@ -38,7 +38,7 @@
         "owner": "WandaE",
         "title": "General knowledge",
         "logo": "looogo",
-        "questions": "dr5rty",
+        "questions":[ "dr5rty"],
         "active": "false"
     }, ...
 ```
@@ -67,7 +67,7 @@
         "owner": "WandaE",
         "title": "Pubquiz - Quarantine edition",
         "logo": "looogo",
-        "questions": "dt6r",
+        "questions": ["dt6r"],
         "active": "false"
     },
 ```
@@ -123,7 +123,7 @@
   {"owner":"WandaE",
   "title":"Pubquiz - Quarantine edition",
   "logo":"looogo",
-  "questions":"dt6r",
+  "questions":["dt6r"],
   "active":"false"}
 ```
 
@@ -175,7 +175,7 @@ Create a new quiz
      "owner": "WandaE",
      "title": "Pubquiz - Quarantine edition",
      "logo": "looogo",
-     "questions": "dt6r",
+     "questions": ["dt6r"],
      "active": "false"  
     
 }
@@ -194,8 +194,48 @@ Create a new quiz
 ```
 
 ## PUT requests
+1. Update the whole quiz
 
-1. Update template - color and description
+`quizzes/:quizId/edit`
+
+#### Headers
+
+```sh
+'X-CSRFToken': token,
+'X-Database': 'lab',
+'Content-Type': 'application/json'
+  ```
+
+#### Request
+```sh
+quizId as params
+```
+
+
+```sh
+{
+    "label":"#008080",
+     "description": "Random things you should know!",
+     "owner": "WandaE",
+     "title": "Pubquiz - Quarantine edition",
+     "logo": "looogo",
+     "questions": ["dt6r"],
+     "active": "false"  
+    
+}
+```
+
+#### Response
+
+
+```sh
+  
+    {
+        "message": [],
+    }
+```
+
+2. Update template - color and description
 
 `quizzes/:quizId`
 
@@ -231,7 +271,7 @@ quizId as params
     }
 ```
 
-2. Update content of a quiz 
+3. Update content of a quiz 
 
 `quizzes/:quizId/content`
 
@@ -254,7 +294,7 @@ quizId as params
      "owner": "WandaE",
      "title": "Pubquiz - Quarantine edition",
      "logo": "looogo",
-     "questions": "dt6r",
+     "questions": ["dt6r"],
      "active": "false"  
     
 }
