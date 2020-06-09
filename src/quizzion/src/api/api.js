@@ -65,48 +65,9 @@ export function participate(displayName) {
 }
 
 export function fetchQuizzes() {
-  axios.defaults.headers.common['authorization'] = store.state.user.token;
+  axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
   return axios.get(`${apiUrl}/quizzes/all`);
-
-  // const dummy = {
-  //   data: [
-  //     {
-  //       id: 'g67yuhb',
-  //       owner: 'WandaE', //might want to make this the id
-  //       title: 'test quiz',
-  //       description: 'mock quiz for demo',
-  //       color: '#ffa500',
-  //       logo: '',
-  //       questions: ['dr5rty'],
-  //       active: false
-  //     },
-  //     {
-  //       id: 'fy5ryt',
-  //       owner: 'WandaE',
-  //       title: 'Pubquiz - Quarantine edition',
-  //       description: 'another mock quiz for demo',
-  //       color: '#800080',
-  //       logo: '',
-  //       questions: ['ft6t'],
-  //       active: false
-  //     },
-  //     {
-  //       id: 'kh8yi7y',
-  //       owner: 'WandaE',
-  //       title: 'General knowledge',
-  //       description: 'Random things you should know!',
-  //       color: '#008080',
-  //       logo: '',
-  //       questions: ['dt6r'],
-  //       active: false
-  //     }
-  //   ],
-  //   status: 200,
-  //   success: 'true'
-  // };
-
-  // return dummy;
 }
 
 export function fetchQuestions() {
@@ -232,16 +193,7 @@ export function fetchAnswers() {
 }
 
 export function createQuiz(newQuiz) {
-  // return axios.post(`${apiUrl}/quizzes`, {newQuiz});
-
-  const dummy = {
-    data: {
-      ...newQuiz,
-      id: 'qwe1231as'
-    }
-  };
-
-  return dummy;
+  return axios.post(`${apiUrl}/quizzes`, {...newQuiz});
 }
 
 export function updateQuiz(updatedQuiz) {

@@ -22,6 +22,8 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
+      console.log('res')
+      console.log(response)
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
@@ -80,9 +82,13 @@ export function createQuiz({commit}, newQuiz) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.createQuiz(newQuiz);
-      commit("createQuiz", response.data);
-      commit("user/createQuiz", response.data.id, {root: true});
-      resolve(response.data.id);
+
+      const color = newQuiz.label;
+      const id = response.data.tn;
+      delete newQuiz.label;
+      commit("createQuiz", {...newQuiz, id, color});
+      commit("user/createQuiz", id, {root: true});
+      resolve(id);
     } catch (e) {
       console.log("Error while creating quiz: " + e);
       console.log(e);

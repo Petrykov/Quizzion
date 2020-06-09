@@ -111,7 +111,7 @@
           title: this.quizTitle,
           owner: this.$store.state.user.displayName,
           description: this.quizDes,
-          color: this.themeColor,
+          label: this.themeColor,
           questions: [],
           logo: "",
           active: false
