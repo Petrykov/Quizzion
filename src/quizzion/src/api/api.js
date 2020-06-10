@@ -78,84 +78,7 @@ export function fetchQuestions() {
 
 export function fetchAnswers() {
   // return axios.get(`${apiUrl}/questions`);
-
-  const dummy = {
-    data: [{
-      id: '65ry5',
-      label: 'None',
-      questionId: 'dr5rty',
-      correct: false,
-
-    },
-      {
-        id: 'ihy6',
-        label: '4',
-        questionId: 'dr5rty',
-        correct: false
-      },
-      {
-        id: 'y5r5',
-        label: '5',
-        questionId: 'dr5rty',
-        correct: true
-      },
-      {
-        id: 'k98nn',
-        label: '7',
-        questionId: 'dr5rty',
-        correct: false
-      },
-      {
-        id: 'dudu7t',
-        label: 'Black and yellow',
-        questionId: 'dt6r',
-        correct: false
-      },
-      {
-        id: 'jsdiu',
-        label: 'Green and white',
-        questionId: 'dt6r',
-        correct: false
-      },
-      {
-        id: '87ydj',
-        label: 'Blue and white',
-        questionId: 'dt6r',
-        correct: false
-      },
-      {
-        id: 'dhi8d',
-        label: 'Red and yellow',
-        questionId: 'dt6r',
-        correct: true
-      },
-      {
-        id: 'jso45h',
-        label: 'Fermata',
-        questionId: 'ft6t',
-        correct: true
-      },
-      {
-        id: 'ehiruh',
-        label: 'Pilcrow',
-        questionId: 'ft6t',
-        correct: true
-      },
-      {
-        id: 'hu7tuh',
-        label: 'Interrobang',
-        questionId: 'ft6t',
-        correct: false
-      },
-      {
-        id: 'o84y4',
-        label: 'Biltong',
-        questionId: 'ft6t',
-        correct: false
-      }]
-  };
-
-  return dummy;
+  return [{}];
 }
 
 export function createQuiz(newQuiz) {
@@ -179,16 +102,20 @@ export function deleteQuiz(deletedId) {
   // return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
+// -- modified --
 export function createQuestion(quizId, newQuestion) {
-  // return axios.post(`${apiUrl}/quizzes/${quizId}/questions`, { newQuestion });
+  axios.defaults.headers.common['authorization'] = store.state.user.token;
+  return axios.post(`${apiUrl}/quizzes/${quizId}/question`, {...newQuestion});
 }
 
-export function updateQuestion(quizId, updatedQuestion) {
-  // return axios.put(`${apiUrl}/quizzes/${quizId}/questions/${updatedQuestion.id}`, { updatedQuestion });
+export function updateQuestion(questionId, updatedQuestion) {
+  return axios.put(`${apiUrl}/questions/${questionId}`, {...updatedQuestion});
 }
 
-export function deleteQuestion(quizId, deletedQuestionId) {
-  // return axios.delete(`${apiUrl}/quizzes/${quizId}/questions/${deletedQuestionId}`);
+
+// -- modified --
+export function deleteQuestion(questionId) {
+  return axios.delete(`${apiUrl}/question/${questionId}`);
 }
 
 export function submitAnswerForm(quizId, answers) {

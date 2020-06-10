@@ -23,6 +23,8 @@ export function setQuestions(state, questions) {
 *
 * */
 export function setAnswers(state, answers) {
+  console.log("answers: ");
+  console.log(answers);
   state.answers = answers;
 }
 
@@ -53,9 +55,10 @@ export function deleteQuiz(state, deletedId) {
 
 /* +
 * payload should contain the newly created question in proper format, as well as the target quiz id
-*
+* -- modified --
 * */
-export function createQuestion(state, {newQuestion, quizId}) {
+
+export function createQuestion(state, {quizId, newQuestion}) {
 
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
@@ -65,11 +68,11 @@ export function createQuestion(state, {newQuestion, quizId}) {
 
 /* +
 * payload should contain the
-*
+* -- modified --
 * */
-export function updateQuestion(state, {updatedQuestion, questionId, quizId}) {
+export function updateQuestion(state, {questionId, updatedQuestion}) {
 
-  state.questions.map((question, index) => {
+  state.questions.map((question,index) => {
     if (question.id === questionId) {
       state.questions[index] = updatedQuestion;
     }
@@ -78,13 +81,13 @@ export function updateQuestion(state, {updatedQuestion, questionId, quizId}) {
 
 /* +
 * payload should contain the full object that was edited, in proper format, as well as the id of the target quiz
-*
+* -- modified --
 * */
-export function deleteQuestion(state, {quizId, deletedQuestionId}) {
+export function deleteQuestion(state, {quizId, questionId}) {
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
-  quiz.questions = quiz.questions.filter(questionId => questionId !== deletedQuestionId);
 
-  state.questions = state.questions.filter(question => question.id !== deletedQuestionId);
+  quiz.questions = quiz.questions.filter(questionId => questionId !== questionId);
+  state.questions = state.questions.filter(question => question.id !== questionId);
 }
 
 /* +
@@ -104,9 +107,9 @@ export function deleteAnswer(state, {questionId, answerId}) {
   let question = state.questions.find(question => question.id === questionId);
 
   for (let i = 0; i < question.answers.length; i++) {
-      if(question.answers[i] === answerId){
-        question.answers.splice(i,1);
-      }
+    if (question.answers[i] === answerId) {
+      question.answers.splice(i, 1);
+    }
   }
 }
 

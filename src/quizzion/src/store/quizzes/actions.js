@@ -135,14 +135,14 @@ export function deleteQuiz({commit}, deletedId) {
 
 /*
 * send a newly created question to the backend in order to be stored
-*
+* -- modified --
 * */
 export function createQuestion({commit}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.createQuestion(payload.quizId, payload.newQuestion);
-      commit('createQuestion', response.data);
+      commit('createQuestion', {quizId: payload.quizId, newQuestion: {...payload.newQuestion, id: response.data.id}});
       resolve();
     } catch (e) {
       console.log(e);
@@ -153,14 +153,21 @@ export function createQuestion({commit}, payload) {
 
 /*
 * send a modified, but existing quiz to the backend in order to be updated
-*
+* -- modified --
 * */
 export function updateQuestion({commit}, payload) {
 
+  let questionId = payload.questionId;
+  let updatedQuestion = payload.updatedQuestion;
+
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.updateQuestion(payload.quizId, payload.updatedQuestion);
-      commit('updateQuestion', response.data);
+      const response = await api.updateQuestion(questionId, updatedQuestion);
+
+      if (response.status === 200) {
+        commit('updateQuestion', {questionId: questionId, updatedQuestion: updatedQuestion});
+      }
+
       resolve();
     } catch (e) {
       console.log(e);
@@ -171,14 +178,21 @@ export function updateQuestion({commit}, payload) {
 
 /*
 * send an id to the backend in order to delete the corresponding question.
-*
+* -- modified --
 * */
 export function deleteQuestion({commit}, payload) {
 
+  let questionIdToDelete = payload.deletedQuestionId;
+  let quizIdToDelete = payload.quizId;
+
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.deleteQuestion(payload.quizId, payload.deletedQuestionId);
-      commit('deleteQuestion', response.data);
+      const response = await api.deleteQuestion(questionIdToDelete);
+
+      if (response.status === 200) {
+        commit('deleteQuestion', {quizId: quizIdToDelete, questionId: questionIdToDelete});
+      }
+
       resolve();
     } catch (e) {
       console.log(e);

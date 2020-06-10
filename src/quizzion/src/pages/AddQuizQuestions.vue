@@ -269,8 +269,6 @@
 
     beforeMount() {
       AOS.init();
-
-
     },
 
     computed: {
@@ -322,22 +320,18 @@
 
       addQuestion() {
 
-        let quizId, questionId, newQuestion;
+        let quizId, newQuestion;
 
         quizId = this.currentQuizId;
 
-        questionId = uuidv4();
-
         newQuestion = {
-          id: questionId,
-          title: 'new question',
-          description: 'sample description',
-          image: '',
-          time: undefined,
-          answers: []
+          title: "new question",
+          description: "new description",
+          image: "",
+          time: 30
         };
 
-        this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
+        this.$store.dispatch('quizzes/createQuestion', {quizId, newQuestion});
       },
 
       deleteQuestion() {
@@ -347,37 +341,29 @@
         quizId = this.currentQuizId;
         deletedQuestionId = this.selectedQuestionId;
 
-        this.question = ' ';
-        this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+        this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+        // this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
       },
 
       updateQuestion() {
-        let quizId, questionId, updatedQuestion, answers;
+        let questionId, updatedQuestion, answers;
 
         if (this.timeCheck() === false) {
           this.showNotification("Please select the time of the quiz", "red");
         } else {
 
-          quizId = this.currentQuizId;
           questionId = this.selectedQuestionId;
-
-          updatedQuestion = this.question;
-
           answers = this.answersList;
 
-          for (let i = 0; i < answers.length; i++) {
+          updatedQuestion = {
+            title: this.question.title,
+            description: this.question.description,
+            image: this.question.image,
+            time: this.question.time,
+            answers: this.answersList
+          };
 
-            let changedAnswer = answers[i];
-            let answerId = changedAnswer.id;
-
-            updatedQuestion.answers[i] = this.answersList[i].id;
-
-            this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
-          }
-
-          this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
-
-          console.log(this.selectedQuestion);
+          this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
 
           this.showNotification("Question was saved", "blue");
         }
@@ -528,16 +514,16 @@
       text-align: center;
     }
 
-    .timer{
+    .timer {
       width: 80%;
       margin: 0 auto;
     }
 
-    .time-icon{
+    .time-icon {
       margin: 0 auto;
     }
 
-    .wrapper{
+    .wrapper {
       height: 50%;
       padding: 0 !important;
       margin: 0 !important;
