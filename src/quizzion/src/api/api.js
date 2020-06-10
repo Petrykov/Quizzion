@@ -70,15 +70,14 @@ export function fetchQuizzes() {
   return axios.get(`${apiUrl}/quizzes/all`);
 }
 
+// -- modified --
 export function fetchQuestions() {
-  axios.defaults.headers.common['authorization'] = store.state.user.token;
-
   return axios.get(`${apiUrl}/question`);
 }
 
+// -- modified --
 export function fetchAnswers() {
-  // return axios.get(`${apiUrl}/questions`);
-  return [{}];
+  return axios.get(`${apiUrl}/answer`);
 }
 
 export function createQuiz(newQuiz) {
@@ -108,15 +107,36 @@ export function createQuestion(quizId, newQuestion) {
   return axios.post(`${apiUrl}/quizzes/${quizId}/question`, {...newQuestion});
 }
 
+// -- modified --
 export function updateQuestion(questionId, updatedQuestion) {
   return axios.put(`${apiUrl}/questions/${questionId}`, {...updatedQuestion});
 }
-
 
 // -- modified --
 export function deleteQuestion(questionId) {
   return axios.delete(`${apiUrl}/question/${questionId}`);
 }
+
+// -- created --
+export function addAnswer(newAnswer) {
+  return axios.post(`${apiUrl}/answer`, {...newAnswer});
+}
+
+// -- created --
+export function deleteAnswer(answerId) {
+  return axios.delete(`${apiUrl}/answer/${answerId}`);
+}
+
+// -- created --
+export function updateAnswers(answers) {
+
+  return axios.all(
+    answers.map((answer) => {
+      axios.put(`${apiUrl}/answer/${answer.id}`);
+    })
+  )
+}
+
 
 export function submitAnswerForm(quizId, answers) {
   // return axios.post(`${apiUrl}/quizzes/${quizId}/submit`, { answers });

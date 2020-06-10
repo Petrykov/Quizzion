@@ -38,7 +38,7 @@ export function fetchQuizzes({commit}) {
 
 /*
 * grab the questions (owned by current user) from the backend, then commit the setQuestions mutation
-*
+* -- modified --
 * */
 export function fetchQuestions({commit}) {
 
@@ -59,18 +59,81 @@ export function fetchQuestions({commit}) {
 
 /*
 * grab the answers (owned by current user) from the backend, then commit the setQuizzes mutation
-*
+* -- modified --
 * */
 export function fetchAnswers({commit}) {
 
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchAnswers();
-      commit('setAnswers', response.data);
+      commit('setAnswers', response);
       resolve();
     } catch (e) {
       console.log("Error while fetching answers API: " + e);
-      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+// -- created --
+export function createAnswer({commit}, payload) {
+
+  let newAnswer = payload.answer;
+  let questionId = payload.questionId;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.addAnswer(newAnswer);
+
+      let answerId;
+
+      if (response.status === 200) {
+        answerId = response.data;
+        newAnswer.id = answerId;
+
+        commit('addAnswer', {questionId: questionId, answer: newAnswer});
+      }
+
+    } catch (e) {
+      console.log("Error while adding an answer: " + e);
+      reject(e);
+    }
+  });
+}
+
+// -- created --
+export function deleteAnswer({commit}, payload) {
+
+  let answerId = payload.answerId;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.deleteAnswer(answerId);
+
+      if (response.status === 200) {
+        commit('deleteAnswer', {questionId: questionId, answerId: answerId});
+      }
+
+    } catch (e) {
+      console.log("Error while deleting an answer: " + e);
+      reject(e);
+    }
+  });
+}
+
+// -- created --
+export function updateAnswers({commit}, payload) {
+
+  let answers = payload.answers;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      await api.updateAnswers(answers);
+
+      commit('updateAnswers', {answers});
+
+    } catch (e) {
+      console.log("Error while updating an answer: " + e);
       reject(e);
     }
   });

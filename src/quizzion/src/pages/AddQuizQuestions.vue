@@ -355,15 +355,22 @@
           questionId = this.selectedQuestionId;
           answers = this.answersList;
 
+          let answersIdList;
+
+          this.answersList.map((answer) => {
+            answersIdList.push(answer.id);
+          });
+
           updatedQuestion = {
             title: this.question.title,
             description: this.question.description,
             image: this.question.image,
             time: this.question.time,
-            answers: this.answersList
+            answers: answersIdList
           };
 
           this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
+          this.$store.dispatch('quizzes/updateAnswers', {answers});
 
           this.showNotification("Question was saved", "blue");
         }
@@ -388,15 +395,13 @@
         questionId = this.selectedQuestionId;
 
         let answer = {
-          id: uuidv4(),
           label: this.newAnswer,
           correct: false
         };
 
+        this.$store.dispatch('quizzes/createAnswer', {questionId, answer});
+
         this.answersList.push(answer);
-
-        this.$store.commit('quizzes/addAnswer', {questionId, answer});
-
         this.newAnswer = '';
       },
 
@@ -405,14 +410,13 @@
         let questionId;
         questionId = this.selectedQuestionId;
 
+        this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
+
         for (let i = 0; i < this.answersList.length; i++) {
           if (this.answersList[i].id === answerId) {
             this.answersList.splice(i, 1);
           }
-
         }
-
-        this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
       },
 
       promptToDelete() {

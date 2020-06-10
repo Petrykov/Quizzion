@@ -12,7 +12,7 @@ export function setQuizzes(state, quizzes) {
 
 /*
 * payload should contain an array of questions
-*
+* -- modified --
 * */
 export function setQuestions(state, questions) {
   state.questions = questions;
@@ -20,11 +20,9 @@ export function setQuestions(state, questions) {
 
 /*
 * payload should contain an array of answers
-*
+* -- modified --
 * */
 export function setAnswers(state, answers) {
-  console.log("answers: ");
-  console.log(answers);
   state.answers = answers;
 }
 
@@ -57,7 +55,6 @@ export function deleteQuiz(state, deletedId) {
 * payload should contain the newly created question in proper format, as well as the target quiz id
 * -- modified --
 * */
-
 export function createQuestion(state, {quizId, newQuestion}) {
 
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
@@ -72,7 +69,7 @@ export function createQuestion(state, {quizId, newQuestion}) {
 * */
 export function updateQuestion(state, {questionId, updatedQuestion}) {
 
-  state.questions.map((question,index) => {
+  state.questions.map((question, index) => {
     if (question.id === questionId) {
       state.questions[index] = updatedQuestion;
     }
@@ -91,7 +88,7 @@ export function deleteQuestion(state, {quizId, questionId}) {
 }
 
 /* +
-*
+* -- modified --
 */
 export function addAnswer(state, {questionId, answer}) {
   let question = state.questions.find(question => question.id === questionId);
@@ -100,28 +97,28 @@ export function addAnswer(state, {questionId, answer}) {
 }
 
 /* +
-*
+* -- modified
 */
 export function deleteAnswer(state, {questionId, answerId}) {
 
   let question = state.questions.find(question => question.id === questionId);
 
-  for (let i = 0; i < question.answers.length; i++) {
-    if (question.answers[i] === answerId) {
-      question.answers.splice(i, 1);
+  question.answers.map((answer, index) => {
+    if (answer === answerId) {
+      question.answers.splice(index, 1);
     }
-  }
+  });
 }
 
 /* +
 * payload should contain the
 *
 * */
-export function updateAnswer(state, {answerId, changedAnswer}) {
+export function updateAnswers(state, {answers}) {
 
   state.answers.map((answer, index) => {
-    if (answer.id === answerId) {
-      state.answers[index] = changedAnswer;
+    if (answer.id === answers[index].id) {
+      state.answers[index] = answer;
     }
   })
 }
