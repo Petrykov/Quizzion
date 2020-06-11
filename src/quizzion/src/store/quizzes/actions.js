@@ -115,6 +115,36 @@ export function updateQuiz({commit}, updatedQuiz) {
   });
 }
 
+export function generateFormHash(context, quizId) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.generateFormHash({uh: context.rootState.user.userId, tn: quizId});
+      context.commit('setFormHash', {quizId, fh: response.data.form[0]});
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+export function activateQuiz({getters, commit}, quiz) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let activatedQuiz = {...quiz};
+      activatedQuiz.active = true;
+
+      await api.updateQuiz(activatedQuiz);
+      commit('activateQuiz', quiz.id);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
 
 /*
 * send an id to the backend in order to delete the corresponding quiz.

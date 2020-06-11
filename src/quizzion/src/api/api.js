@@ -192,6 +192,10 @@ export function fetchAnswers() {
   return dummy;
 }
 
+export function generateFormHash(payload) {
+  return axios.post(`${apiUrl}/quizzes/start`, payload);
+}
+
 export function createQuiz(newQuiz) {
   return axios.post(`${apiUrl}/quizzes`, {...newQuiz});
 }

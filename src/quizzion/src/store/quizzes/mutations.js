@@ -50,6 +50,13 @@ export function deleteQuiz(state, deletedId) {
   state.quizzes = state.quizzes.filter(quiz => quiz.id !== deletedId);
 }
 
+export function setFormHash(state, {quizId, fh}) {
+  let quiz = {...state.quizzes.find(quiz => quiz.id === quizId), fh};
+  state.quizzes = [
+    ...state.quizzes.filter(quiz => quiz.id !== quizId),
+    quiz];
+}
+
 /* +
 * payload should contain the newly created question in proper format, as well as the target quiz id
 *
