@@ -18,6 +18,8 @@ Example of response:
         "description": "some description",
         "image": "image for question",
         "time": 212,
+        "name": "asad32e1",
+        "quiz_id" : "myquiz1",
         "answers": [
             "55363daf15d58a32ef7e1333b95660c1",
             "sample_id_2",
@@ -46,6 +48,8 @@ A request to get all data about 1 question
     "title": "next level x4",
     "description": "some description x44",
     "image": "image 222",
+    "quiz_id" : "my_quiz1",
+    "name": "asad32e1",
     "time": 212,
     "answers": [
         "55363daf15d58a32ef7e1333b95660c1",
@@ -78,6 +82,8 @@ A request to store on the server newly created question
 
 * `:id` id of a quiz. Is important because later question can be retrieved in **GET `/api/quizzes/:id/question`** request
 
+Also after this request, an id of question is stored in quiz object itself
+
 ##### Body of request: 
 
 JSON object of question, which contains fields:
@@ -86,6 +92,7 @@ JSON object of question, which contains fields:
 * `description` string value
 * `image` string value
 * `time` integer / string value
+* `quiz_id` id of quiz where question appears
 
 Optional: 
 
@@ -100,6 +107,7 @@ Example:
 	"image" : "some link to the image",
 	"time" : 15,
 	"answers": ["answer_id_1","answer_id_1"]
+	"quiz_id" : 
 }
 </pre>
 
@@ -109,7 +117,13 @@ Example:
 
 ##### Example output
 
-`{id: "id_of_created_question"}` and status code **201 Created**
+<pre>
+{
+    id: "id_of_created_question",
+    name: "auto_generated_name"
+}
+</pre>
+ and status code **201 Created**
 
 ### PUT `/api/question/:id`
 
@@ -128,6 +142,7 @@ JSON object with the fields which need to be changed:
 * `image` string value
 * `time` integer / string value
 * `questions` array of string with id`s of answers
+* `quiz_id` id of quiz where question is assigned to
 
 Example: 
 

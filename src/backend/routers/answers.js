@@ -17,17 +17,15 @@ router.get('/answer', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var')
         .then((response) => {
             const elements = response.data.var;
-
             let answers = [];
-
             for (let i = 0; i < elements.length; i++) {
-
                 try {
                     let answer = JSON.parse(elements[i].label);
 
                     if (answer.type === config.answer) {
                         answers.push({
                             id: elements[i].vh,
+                            name: elements[i].name,
                             label: answer.label,
                             correct: answer.correct
                         })
@@ -49,16 +47,14 @@ router.get('/answer/:answer_id', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var/' + req.params.answer_id)
         .then((response) => {
             let element = response.data.var[0];
-
             try {
                 let answer = JSON.parse(element.label);
-
                 rsp.status(200).json({
                     id: element.vh,
+                    name: element.name,
                     label: answer.label,
                     correct: answer.correct
                 });
-
             } catch (e) {
                 rsp.status(400).send();
             }
@@ -88,7 +84,10 @@ router.post('/answer', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.status(201).json({id: response.data.vh});
+        rsp.status(201).json({
+            id: response.data.vh,
+            name: response.data.name
+        });
     }).catch((err) => {
         rsp.json(err.data);
     })

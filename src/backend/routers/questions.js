@@ -29,7 +29,8 @@ router.get('/question', (req, rsp) => {
                         title: question.title,
                         description: question.description,
                         image: question.image,
-                        time: question.time
+                        time: question.time,
+                        name: elements[i].name
                     };
 
                     if (question.answers !== undefined) quest.answers = question.answers;
@@ -57,7 +58,8 @@ router.get('/question/:question_id', (req, rsp) => {
                     description: result.description,
                     image: result.image,
                     time: result.time,
-                    answers: result.answers
+                    answers: result.answer,
+                    name: response.data.var[0].name
                 };
 
                 rsp.status(200).json(res);
@@ -83,9 +85,11 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         id: allQuestions[i].vh,
                         title: question.title,
                         description: question.description,
+                        quiz_id: question.quiz_id,
                         image: question.image,
                         time: question.time,
-                        answers: question.answers
+                        answers: question.answers,
+                        name: allQuestions[i].name
                     });
                 }
             } catch (e) {}
@@ -127,7 +131,36 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
-        rsp.status(201).json({id: response.data.vh});
+
+        async function f() {
+
+            let isGood = false;
+
+            let quizDetails = await axios.get('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            });
+
+            quizDetails = quizDetails.data;
+
+            quizDetails.questions.push(response.data.vh);
+
+            axios.put('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", quizDetails, {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            }).then((res) => {
+                rsp.json({
+                    id: response.data.vh,
+                    name: response.data.name
+                });
+            }).catch((errr) => {
+                rsp.status(400).json(errr);
+            })
+        }
+
+        f();
     }).catch((err) => {
         rsp.json(err);
     });
@@ -145,6 +178,7 @@ router.put('/question/:question_id', (req, rsp) => {
     if (b.image !== undefined) changes.image = b.image;
     if (b.time !== undefined) changes.time = b.time;
     if (b.answers !== undefined) changes.answers = b.answers;
+    if (b.quiz_id !== undefined) changes.quiz_id = b.quiz_id;
 
     async function contin() {
 
@@ -160,6 +194,7 @@ router.put('/question/:question_id', (req, rsp) => {
             if (changes.image !== undefined) label.image = changes.image;
             if (changes.time !== undefined) label.time = changes.time;
             if (changes.answers !== undefined) label.answers = changes.answers;
+            if (changes.quiz_id !== undefined) label.quiz_id = changes.quiz_id;
         } catch (e) {
         }
 
