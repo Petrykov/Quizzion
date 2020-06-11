@@ -116,7 +116,7 @@ export function deleteAnswer(state, {questionId, answerId}) {
 * */
 export function updateAnswers(state, {answers}) {
 
-  state.answers.map((answer, index) => {
+  answers.map((answer, index) => {
     if (answer.id === answers[index].id) {
       state.answers[index] = answer;
     }

@@ -45,12 +45,9 @@ export function fetchQuestions({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuestions();
-      console.log("fetch questions: ");
-      console.log(response.data);
       commit('setQuestions', response.data);
       resolve();
     } catch (e) {
-      console.log("Error while fetching questions API: " + e.toString());
       console.log(e);
       reject(e);
     }
@@ -153,7 +150,6 @@ export function createQuiz({commit}, newQuiz) {
       resolve(response.data.id);
     } catch (e) {
       console.log("Error while creating quiz: " + e);
-      console.log(e);
       reject(e);
     }
   });
@@ -171,7 +167,7 @@ export function updateQuiz({commit}, updatedQuiz) {
       commit('updateQuiz', response.data);
       resolve();
     } catch (e) {
-      console.log(e);
+      console.log("Error while updating the quiz: " + e);
       reject(e);
     }
   });

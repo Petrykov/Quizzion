@@ -30,7 +30,9 @@
           <div class="question-list-wrapper">
             <p
               class="q-mt-lg"
-              style="font-size:3em;">{{ currentQuiz.title }}</p>
+              style="font-size:3em;">{{
+              'currentQuiz.title'
+              }}</p>
 
             <div class="q-mt-xl">
 
@@ -90,7 +92,7 @@
                   dark
                   color="grey-12"
                   label="Question's title"
-                  v-model="question.title"
+
                   label-color="grey"/>
               </div>
 
@@ -293,6 +295,9 @@
     methods: {
       onQuestionClick(id) {
 
+        console.log("Question: ");
+        console.log(this.currentQuiz);
+
         this.selectedQuestionId = id;
 
         this.question = {...this.selectedQuestion};
@@ -355,11 +360,15 @@
           questionId = this.selectedQuestionId;
           answers = this.answersList;
 
-          let answersIdList;
+          let answersIdList = [];
 
-          this.answersList.map((answer) => {
-            answersIdList.push(answer.id);
-          });
+          console.log("Answers are: " + this.answersList.length);
+
+          // this.answersList.map((answer) => {
+          //   answersIdList.push(answer.id);
+          // });
+
+          console.log(this.question);
 
           updatedQuestion = {
             title: this.question.title,
@@ -370,7 +379,7 @@
           };
 
           this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
-          this.$store.dispatch('quizzes/updateAnswers', {answers});
+          // this.$store.dispatch('quizzes/updateAnswers', {answers});
 
           this.showNotification("Question was saved", "blue");
         }
