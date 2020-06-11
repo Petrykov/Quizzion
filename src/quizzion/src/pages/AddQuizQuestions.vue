@@ -30,9 +30,7 @@
           <div class="question-list-wrapper">
             <p
               class="q-mt-lg"
-              style="font-size:3em;">{{
-              'currentQuiz.title'
-              }}</p>
+              style="font-size:3em;">{{currentQuiz.title }}</p>
 
             <div class="q-mt-xl">
 
@@ -92,7 +90,7 @@
                   dark
                   color="grey-12"
                   label="Question's title"
-
+                  v-model="question.title"
                   label-color="grey"/>
               </div>
 
@@ -295,14 +293,16 @@
     methods: {
       onQuestionClick(id) {
 
-        console.log("Question: ");
-        console.log(this.currentQuiz);
-
         this.selectedQuestionId = id;
 
         this.question = {...this.selectedQuestion};
-
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
+
+        console.log("Question: ");
+        console.log(this.question);
+
+        console.log("Answers: ");
+        console.log(this.answersList);
       },
 
       deepCopyFunction(inObject) {
@@ -347,7 +347,6 @@
         deletedQuestionId = this.selectedQuestionId;
 
         this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
-        // this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
       },
 
       updateQuestion() {
@@ -362,13 +361,9 @@
 
           let answersIdList = [];
 
-          console.log("Answers are: " + this.answersList.length);
-
-          // this.answersList.map((answer) => {
-          //   answersIdList.push(answer.id);
-          // });
-
-          console.log(this.question);
+          this.answersList.map((answer) => {
+            answersIdList.push(answer.id);
+          });
 
           updatedQuestion = {
             title: this.question.title,
@@ -419,9 +414,10 @@
         let questionId;
         questionId = this.selectedQuestionId;
 
-        this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
+        // this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
 
         for (let i = 0; i < this.answersList.length; i++) {
+          console.log(this.answersList[i].id +" | "+ answerId);
           if (this.answersList[i].id === answerId) {
             this.answersList.splice(i, 1);
           }

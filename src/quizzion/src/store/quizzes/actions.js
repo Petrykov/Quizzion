@@ -246,6 +246,10 @@ export function deleteQuestion({commit}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
+
+      // console.log("Question id to delete: " + questionIdToDelete);
+      // console.log("Data to commit: [ | " + quizIdToDelete + " | " + questionIdToDelete + " | ]");
+
       const response = await api.deleteQuestion(questionIdToDelete);
 
       if (response.status === 200) {

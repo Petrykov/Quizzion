@@ -83,7 +83,9 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
 export function deleteQuestion(state, {quizId, questionId}) {
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
-  quiz.questions = quiz.questions.filter(questionId => questionId !== questionId);
+  console.log(quiz);
+
+  quiz.questions = quiz.questions.filter(id => id !== questionId);
   state.questions = state.questions.filter(question => question.id !== questionId);
 }
 
