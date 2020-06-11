@@ -14,6 +14,10 @@ router.use( (req, rsp, next) => {
     next();
 });
 
+router.get('/sosok', (req, rsp) => {
+    rsp.status(200).send("Hello");
+});
+
 router.use('/quizzes', require('./quizzes'));
 router.use('/', require('./questions'));
 router.use('/', require('./answers'));

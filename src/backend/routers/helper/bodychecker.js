@@ -29,6 +29,8 @@ class Bodychecker {
             errorMessages.push("Field 'image' " + this.message().notIncluded);
         if (body.time === undefined)
             errorMessages.push("Field 'time' " + this.message().notIncluded);
+        if (body.answers === undefined)
+            errorMessages.push("Field 'answers' [] " + this.message().notIncluded);
 
         let result = '';
 
