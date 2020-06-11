@@ -114,18 +114,19 @@ router.get('/:quizId', (req, rsp) => {
 
             }
 
+            secondReady = true;
+
             if (firstReady) {
                 rsp.status(200).json(quiz);
             }
 
         }).catch((error) => {
         if (!firstReady) {
-            rsp.status(400).json(error)
+            rsp.status(400).json(error);
             secondReady = true;
         }
     });
 
-    return;
 });
 
 //get all quizzes -> id, color for the left side of the dashboard page
@@ -248,7 +249,6 @@ router.put('/:quizId/edit', (req, rsp) => {
     })
         .then((res1) => {
             if (secondReady) {
-                console.log("first req", res1.data)
                 rsp.json(res1.data);
             } else {
                 firstReady = true;
