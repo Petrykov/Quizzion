@@ -5,8 +5,8 @@ import initialState from "./state";
 *
 * */
 export function setQuizzes(state, quizzes) {
-  console.log("Quizzes: ");
-  console.log(quizzes.length);
+  // console.log("Quizzes: ");
+  // console.log(quizzes.length);
   state.quizzes = quizzes;
 }
 
@@ -23,7 +23,7 @@ export function setQuestions(state, questions) {
 * -- modified --
 * */
 export function setAnswers(state, answers) {
-  state.answers = answers;
+  state.answers = answers.data;
 }
 
 /*
@@ -77,7 +77,7 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
 
   state.questions.map((question, index) => {
     if (question.id === questionId) {
-      console.log(state.questions[index].title +" [=] "+ updatedQuestion.title);
+      // console.log(state.questions[index].title +" [=] "+ updatedQuestion.title);
       state.questions[index].title = updatedQuestion.title;
       state.questions[index].description = updatedQuestion.description;
       state.questions[index].time = updatedQuestion.time;
@@ -93,7 +93,7 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
 export function deleteQuestion(state, {quizId, questionId}) {
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
-  console.log(quiz);
+  // console.log(quiz);
 
   quiz.questions = quiz.questions.filter(id => id !== questionId);
   state.questions = state.questions.filter(question => question.id !== questionId);

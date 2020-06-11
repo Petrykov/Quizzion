@@ -84,6 +84,7 @@ export function createAnswer({commit}, payload) {
         answerId = response.data;
         newAnswer.id = answerId;
 
+        console.log()
         commit('addAnswer', {questionId: questionId, answer: newAnswer});
       }
 
