@@ -1,4 +1,5 @@
 import * as api from '../../api/api'
+import ca from "quasar/lang/ca";
 
 /*
 * grab everything from the backend in one go
@@ -33,6 +34,21 @@ export function fetchQuizzes({commit}) {
       reject(e);
     }
   });
+}
+
+export function fetchInvitedQuiz({commit}, payload) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.fetchInvitedQuiz(payload);
+      commit('setQuizzes', [response.data]);
+      resolve(response.data.id)
+    } catch (e) {
+      console.log("fetch quiz error ");
+      console.log(e);
+      reject(e);
+    }
+  })
 }
 
 /*

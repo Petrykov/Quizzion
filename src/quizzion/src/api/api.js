@@ -53,7 +53,7 @@ export function logout() {
 }
 
 export function join(fh) {
-  return axios.post(`${apiUrl}/respondent/join`, { quizId: fh });
+  return axios.post(`${apiUrl}/respondent/join`, {quizId: fh});
 
   // const dummy = {
   //   data: {
@@ -68,6 +68,14 @@ export function fetchQuizzes() {
   axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
   return axios.get(`${apiUrl}/quizzes/all`);
+}
+
+export async function fetchInvitedQuiz({fh, token}) {
+  axios.defaults.headers.common['authorization'] = token;
+
+  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  const tn = response.data.form[0].tn;
+  return axios.get(`${apiUrl}/quizzes/${tn}`);
 }
 
 export function fetchQuestions() {
