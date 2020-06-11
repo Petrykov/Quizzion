@@ -115,6 +115,31 @@
               class="q-mt-md"
               color="grey"/>
 
+            <div class="q-pa-md">
+              <div class="flex flex-center">Upload image</div>
+              <div class=" flex flex-center">
+<!--                <q-file-->
+<!--                  style="margin-top: 1em;"-->
+<!--                  size="xx-large"-->
+<!--                  round-->
+<!--                  v-model="file"-->
+<!--                  label="Pick one file"-->
+<!--                  filled-->
+<!--                  color="white"-->
+<!--                  @click="$refs.file.click()">-->
+<!--                  <i class="fas fa-upload fa-lg" style="color: black">-->
+<!--                    <input type="file" ref="file" style="display: none"/>-->
+<!--                  </i>-->
+<!--                </q-file>-->
+<!--                <q-btn @click="$refs.file.click()" >-->
+                  <q-btn @click="$refs.file.click()" >
+                <i class="fas fa-upload fa-lg" style="color: black">
+                  <input type="file" ref="file" style="display: none" @change="convertToDataUrl(file)"/>
+                </i>
+                </q-btn>
+              </div>
+            </div>
+
             <div class="answers-div-wrapper">
               <p
                 class="paragraph q-mt-lg q-ml-md"
@@ -263,7 +288,9 @@
 
         alert: false,
 
-        answersList: ' '
+        answersList: ' ',
+
+        file:null,
       }
     },
 
@@ -291,6 +318,15 @@
     },
 
     methods: {
+      convertToDataUrl(file){
+        let reader = new FileReader();
+        reader.readAsBinaryString(file);
+        let image;
+        reader.onloadend = function () {
+          image=reader.result;//base64encoded string
+        };
+        return image
+      },
       onQuestionClick(id) {
 
         this.selectedQuestionId = id;
@@ -350,7 +386,7 @@
       },
 
       updateQuestion() {
-        let quizId, questionId, updatedQuestion, answers;
+        let quizId, questionId, updatedQuestion, answers, image;
 
         if (this.timeCheck() === false) {
           this.showNotification("Please select the time of the quiz", "red");
@@ -361,6 +397,8 @@
 
           updatedQuestion = this.question;
 
+          image =this.convertToDataUrl();
+
           answers = this.answersList;
 
           for (let i = 0; i < answers.length; i++) {
@@ -369,6 +407,7 @@
             let answerId = changedAnswer.id;
 
             updatedQuestion.answers[i] = this.answersList[i].id;
+            updatedQuestion.image=image;
 
             this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
           }
