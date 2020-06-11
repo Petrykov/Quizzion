@@ -117,6 +117,11 @@ export function deleteQuestion(questionId) {
   return axios.delete(`${apiUrl}/question/${questionId}`);
 }
 
+// -- created
+export function addAnswerToQuestion(questionId, answerId) {
+  return axios.put(`${apiUrl}/question/${questionId}/add/${answerId}`);
+}
+
 // -- created --
 export function addAnswer(newAnswer) {
   return axios.post(`${apiUrl}/answer`, {...newAnswer});

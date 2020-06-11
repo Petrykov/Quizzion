@@ -113,7 +113,19 @@ export function addAnswer(state, {questionId, answer}) {
 */
 export function deleteAnswer(state, {questionId, answerId}) {
 
+
+  console.log(questionId);
+
   let question = state.questions.find(question => question.id === questionId);
+
+  console.log("Question: ");
+  console.log(question);
+
+  // for (let i = 0; i < question.answers.length; i++) {
+  //   if(question.answers[i] === answerId){
+  //     question.answers.splice(index, 1);
+  //   }
+  // }
 
   question.answers.map((answer, index) => {
     if (answer === answerId) {

@@ -99,6 +99,7 @@ export function createAnswer({commit}, payload) {
 export function deleteAnswer({commit}, payload) {
 
   let answerId = payload.answerId;
+  let questionId = payload.questionId;
 
   return new Promise(async (resolve, reject) => {
     try {

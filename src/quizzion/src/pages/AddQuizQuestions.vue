@@ -296,6 +296,10 @@
         this.selectedQuestionId = id;
 
         this.question = {...this.selectedQuestion};
+
+        console.log("Answers: ")
+        console.log(this.getAnswers)
+
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
       },
 
@@ -355,9 +359,15 @@
 
           let answersIdList = [];
 
-          // this.answersList.map((answer) => {
-          //   answersIdList.push(answer.id);
-          // });
+          console.log("answers list before: ");
+          console.log(answersIdList);
+
+          this.answersList.map((answer) => {
+            answersIdList.push(answer.id);
+          });
+
+          console.log("answers list after: ");
+          console.log(answersIdList);
 
           updatedQuestion = {
             title: this.question.title,
@@ -368,7 +378,7 @@
           };
 
           this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
-          // this.$store.dispatch('quizzes/updateAnswers', {answers});
+          this.$store.dispatch('quizzes/updateAnswers', {answers});
 
           this.showNotification("Question was saved", "blue");
         }
@@ -408,7 +418,7 @@
         let questionId;
         questionId = this.selectedQuestionId;
 
-        // this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
+        this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
 
         for (let i = 0; i < this.answersList.length; i++) {
           if (this.answersList[i].id === answerId) {
