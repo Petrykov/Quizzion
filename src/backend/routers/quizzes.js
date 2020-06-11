@@ -337,9 +337,28 @@ router.put('/:quizId', (req, rsp) => {
 });
 
 // create new form
-router.post('/start', (req, rsp) => {
+router.post('/start', async (req, rsp) => {
+
+    const getQuestions = axios.get(`http://localhost:3000/api/quizzes/${req.body.tn}/question`, {headers: {authorization: req.headers.authorization}});
+    const getAnswers = axios.get(`http://localhost:3000/api/answer`, {headers: {authorization: req.headers.authorization}});
+
+    let answers, questions;
+    await axios.all([getQuestions, getAnswers]).then(axios.spread((...responses) => {
+         questions = responses[0];
+         answers = responses[1];
+
+        // console.log(questions.data);
+        // console.log(answers.data);
+        // use/access the results
+    })).catch(errors => {
+        // react on errors.
+        console.log(errors)
+    });
+
+    console.log(456)
+
     axios.post(`${baseUrl}/form`, {
-        frm_label: 'Some label',
+        frm_label: JSON.stringify(questions.data),
         type: 'survey',
         uh: req.body.uh,
         tn: req.body.tn,
@@ -350,6 +369,7 @@ router.post('/start', (req, rsp) => {
     }).then((response) => {
         rsp.status(201).json(response.data);
     }).catch((err) => {
+        console.log(err)
         rsp.status(400).json(err);
 
     });
@@ -391,3 +411,22 @@ router.get('/start/:formId', (req, rsp) => {
     }).catch(error => rsp.send(error))
 
 })
+//
+// function simpleStringify (object){
+//     var simpleObject = {};
+//     for (var prop in object ){
+//         if (!object.hasOwnProperty(prop)){
+//             continue;
+//         }
+//         if (typeof(object[prop]) == 'object'){
+//             continue;
+//         }
+//         if (typeof(object[prop]) == 'function'){
+//             continue;
+//         }
+//         simpleObject[prop] = object[prop];
+//     }
+//
+//     console.log(simpleObject)
+//     return simpleObject
+// };

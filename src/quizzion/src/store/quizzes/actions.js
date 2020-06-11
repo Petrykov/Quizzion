@@ -41,6 +41,7 @@ export function fetchInvitedQuiz({commit}, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchInvitedQuiz(payload);
+      console.log(response)
       commit('setQuizzes', [response.data]);
       resolve(response.data.id)
     } catch (e) {

@@ -74,6 +74,7 @@ export async function fetchInvitedQuiz({fh, token}) {
   axios.defaults.headers.common['authorization'] = token;
 
   const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  console.log(response)
   const tn = response.data.form[0].tn;
   return axios.get(`${apiUrl}/quizzes/${tn}`);
 }

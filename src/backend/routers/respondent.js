@@ -6,6 +6,7 @@ axios.defaults.headers.common['X-Database'] = 'lab';
 
 router.post('/join', (req, res) => {
     // const fid = "2ea7708e7229e8ddb2e179882388d13c"
+    console.log(req.body);
     var fid = req.body.quizId
     let data = { form: fid }
     axios.post(`${baseUrl}/account/link`, {
@@ -35,7 +36,7 @@ router.put('/answer', (req, res) => {
         qVarName: aVarName
     }
     axios.put(`${baseUrl}/data`, {
-        vars: mock
+        vars: savedResponse
     }
     )
         .then((rsp) => {
