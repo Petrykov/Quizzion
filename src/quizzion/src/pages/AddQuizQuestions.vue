@@ -40,17 +40,17 @@
 
                 <div>
                   <p
-                    v-for="(questionId) in currentQuiz.questions"
-                    :key="questionId">
+                    v-for="(question) in currentQuiz.questions"
+                    :key="question">
 
                     <q-btn
                       class="q-mt-lg"
                       style="width:90%;"
-                      :outline="questionId !== selectedQuestionId"
+                      :outline="question !== selectedQuestionId"
                       rounded
                       color="black"
-                      @click="onQuestionClick(questionId)">
-                      {{ questionTitle(questionId) }}
+                      @click="onQuestionClick(question)">
+                      {{ questionTitle(question) }}
                     </q-btn>
 
                   </p>
@@ -297,12 +297,6 @@
 
         this.question = {...this.selectedQuestion};
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
-
-        console.log("Question: ");
-        console.log(this.question);
-
-        console.log("Answers: ");
-        console.log(this.answersList);
       },
 
       deepCopyFunction(inObject) {
@@ -361,9 +355,9 @@
 
           let answersIdList = [];
 
-          this.answersList.map((answer) => {
-            answersIdList.push(answer.id);
-          });
+          // this.answersList.map((answer) => {
+          //   answersIdList.push(answer.id);
+          // });
 
           updatedQuestion = {
             title: this.question.title,
@@ -417,7 +411,6 @@
         // this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
 
         for (let i = 0; i < this.answersList.length; i++) {
-          console.log(this.answersList[i].id +" | "+ answerId);
           if (this.answersList[i].id === answerId) {
             this.answersList.splice(i, 1);
           }

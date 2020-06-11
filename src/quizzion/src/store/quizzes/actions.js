@@ -22,15 +22,11 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
-      console.log("fetch quizzes: ");
-      console.log(response.data);
-
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
     } catch (e) {
-      console.log("fetch quizzes error ");
-      console.log(e);
+      console.log("fetch quizzes error " + e);
       reject(e);
     }
   });
@@ -246,10 +242,6 @@ export function deleteQuestion({commit}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
-
-      // console.log("Question id to delete: " + questionIdToDelete);
-      // console.log("Data to commit: [ | " + quizIdToDelete + " | " + questionIdToDelete + " | ]");
-
       const response = await api.deleteQuestion(questionIdToDelete);
 
       if (response.status === 200) {

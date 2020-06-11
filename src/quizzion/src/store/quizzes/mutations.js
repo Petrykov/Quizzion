@@ -69,9 +69,19 @@ export function createQuestion(state, {quizId, newQuestion}) {
 * */
 export function updateQuestion(state, {questionId, updatedQuestion}) {
 
+  // title: this.question.title,
+  //   description: this.question.description,
+  //   image: this.question.image,
+  //   time: this.question.time,
+  //   answers: answersIdList
+
   state.questions.map((question, index) => {
     if (question.id === questionId) {
-      state.questions[index] = updatedQuestion;
+      console.log(state.questions[index].title +" [=] "+ updatedQuestion.title);
+      state.questions[index].title = updatedQuestion.title;
+      state.questions[index].description = updatedQuestion.description;
+      state.questions[index].time = updatedQuestion.time;
+      state.questions[index].answers = updatedQuestion.answers;
     }
   })
 }

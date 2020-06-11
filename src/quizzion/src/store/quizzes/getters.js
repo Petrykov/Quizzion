@@ -64,7 +64,26 @@ export function getAnswers(state) {
 
 export function getQuestionTitleById(state) {
   return function (id) {
-    console.log(state.questions.find(question => question.id === id).title);
-    return state.questions.find(question => question.id === id).title;
+    // console.log(state.questions.find(question => question.id === id).title);
+    console.log("try to find: " + id);
+    console.log(state.questions);
+
+    for (let i = 0; i < state.questions.length; i++) {
+      if(state.questions[i].id === id){
+        console.log("Title to return: " + state.questions[i].title);
+        return state.questions[i].title;
+      }
+    }
+
+    // state.questions.map((question,index) => {
+    //   if(question.id === id){
+    //     console.log("Found in state: " + question.id);
+    //     console.log(question);
+    //     let title = question.title;
+    //     return title;
+    //   }
+    // })
+
+    // return state.questions.find(question => question.id === id).title;
   }
 }
