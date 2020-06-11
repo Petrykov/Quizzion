@@ -44,17 +44,14 @@ export function logout({dispatch}) {
   });
 }
 
-export function participate({commit, dispatch}, displayName) {
+export function join({commit, dispatch}, fh) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.participate(displayName);
-      commit('participate', response.data);
+      const response = await api.join(fh);
+      commit('join', response.data.token);
 
-      console.log("Mocking store...");
-      dispatch('mockStore', null, {root: true});
-
-      resolve();
+      resolve(response.data.token);
     } catch (e) {
       console.log("Error while participate API: ");
       console.log(e);

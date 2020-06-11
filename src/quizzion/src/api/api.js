@@ -52,16 +52,16 @@ export function logout() {
   // return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function participate(displayName) {
-  // return axios.post(`${apiUrl}/user/participate`, { displayName });
+export function join(fh) {
+  return axios.post(`${apiUrl}/respondent/join`, { quizId: fh });
 
-  const dummy = {
-    data: {
-      uh: 'participanttoken',
-      displayName
-    }
-  };
-  return dummy;
+  // const dummy = {
+  //   data: {
+  //     uh: 'participanttoken',
+  //     displayName
+  //   }
+  // };
+  // return dummy;
 }
 
 export function fetchQuizzes() {

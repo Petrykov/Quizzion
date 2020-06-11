@@ -37,7 +37,8 @@
   export default {
     data: () => {
       return {
-        playerName: ''
+        playerName: '',
+        fh: ''
       };
     },
     computed: {
@@ -46,7 +47,10 @@
       }
     },
     beforeMount() {
-      this.$store.dispatch('user/participate');
+      this.fh = this.$route.params.quizId;
+      this.$store.dispatch('user/join', this.fh).then(() => {
+        this.$store.dispatch('quizzes/fetchInvitedQuiz')
+      });
     },
     methods: {
       toFirstQuestion() {
