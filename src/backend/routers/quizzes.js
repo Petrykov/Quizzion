@@ -167,7 +167,6 @@ router.get('/:quizId/content', (req, rsp) => {
             'X-Database': 'lab',
             'Content-Type': 'application/json'
         }
-
     }).then(function (response) {
 
         let result = (response.data.content.content);

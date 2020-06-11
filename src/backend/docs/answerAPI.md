@@ -15,11 +15,13 @@ A get request to get all answers
     {
         "id": "55363daf15d58a32ef7e1333b95660c1",
         "label": "Answer 1-1",
+        "name" : "12eqw2e",
         "correct": true
     },
     {
         "id": "63e5a4bc137a3033c5e32774869a8e16",
         "label": "Answer 1-2",
+        "name" : "bu2q12v",
         "correct": true
     }
 ]
@@ -42,6 +44,7 @@ A request to get only 1 answer according to his ID
 {
     "id": "55363daf15d58a32ef7e1333b95660c1",
     "label": "Answer 1-1",
+    "name" : "asd321",
     "correct": true
 }
 </pre>
@@ -64,7 +67,8 @@ The body of request is a JSON object, which contains:
 
 <pre>
 {
-    "id": "c8cd2cbdf2da1b0126036d2b9be8f475"
+    "id": "c8cd2cbdf2da1b0126036d2b9be8f475",
+    "name" : "hadsf2"
 }
 </pre>
 
