@@ -128,6 +128,7 @@
                   style="height: 275px; max-width: 300px;">
 
                   <div
+                    v-if="answersList"
                     class="col q-mt-sm">
 
                     <div
@@ -200,7 +201,9 @@
               <div
                 class="timer">
 
-                <div class="row col">
+                <div
+                  v-if="selectedQuestion"
+                  class="row col">
                   <div class="q-pa-md q-gutter-sm time-section">
                     <q-btn
                       v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
@@ -297,9 +300,6 @@
 
         this.question = {...this.selectedQuestion};
 
-        console.log("Answers: ")
-        console.log(this.getAnswers)
-
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
       },
 
@@ -331,7 +331,8 @@
           title: "new question",
           description: "new description",
           image: "",
-          time: 30
+          time: 30,
+          answers: []
         };
 
         this.$store.dispatch('quizzes/createQuestion', {quizId, newQuestion});
@@ -359,15 +360,9 @@
 
           let answersIdList = [];
 
-          console.log("answers list before: ");
-          console.log(answersIdList);
-
           this.answersList.map((answer) => {
             answersIdList.push(answer.id);
           });
-
-          console.log("answers list after: ");
-          console.log(answersIdList);
 
           updatedQuestion = {
             title: this.question.title,
@@ -381,6 +376,8 @@
           this.$store.dispatch('quizzes/updateAnswers', {answers});
 
           this.showNotification("Question was saved", "blue");
+
+          answersIdList = [];
         }
       },
 
@@ -410,6 +407,7 @@
         this.$store.dispatch('quizzes/createAnswer', {questionId, answer});
 
         this.answersList.push(answer);
+
         this.newAnswer = '';
       },
 

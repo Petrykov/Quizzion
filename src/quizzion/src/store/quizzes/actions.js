@@ -76,15 +76,14 @@ export function createAnswer({commit}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
+
       const response = await api.addAnswer(newAnswer);
 
-      let answerId;
+      if (response.status === 201) {
+        newAnswer.id = response.data;
 
-      if (response.status === 200) {
-        answerId = response.data;
-        newAnswer.id = answerId;
+        await api.addAnswerToQuestion(questionId, response.data.id);
 
-        console.log()
         commit('addAnswer', {questionId: questionId, answer: newAnswer});
       }
 
@@ -132,6 +131,23 @@ export function updateAnswers({commit}, payload) {
       reject(e);
     }
   });
+}
+
+
+
+export function addAnswerToTheQuestion({commit}, payload) {
+
+  let questionId = payload.questionId;
+  let answerId = payload.answerId;
+
+  return new Promise(async (resolve,reject) => {
+    try{
+      await api.addAnswerToQuestion()
+    }catch(err) {
+      console.log("Error while adding answer to the question: " + e)
+    }
+  })
+
 }
 
 /*

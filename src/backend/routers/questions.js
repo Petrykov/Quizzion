@@ -299,6 +299,7 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
 });
 
 router.delete('/question/:question_id', (req, rsp) => {
+
     axios.delete(config.baseURL + '/v5/var/' + req.params.question_id)
         .then((response) => {
             rsp.status(200).json({message: "deleted"});

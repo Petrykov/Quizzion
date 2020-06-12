@@ -91,9 +91,8 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
 * -- modified --
 * */
 export function deleteQuestion(state, {quizId, questionId}) {
-  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
-  // console.log(quiz);
+  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
   quiz.questions = quiz.questions.filter(id => id !== questionId);
   state.questions = state.questions.filter(question => question.id !== questionId);
@@ -103,8 +102,10 @@ export function deleteQuestion(state, {quizId, questionId}) {
 * -- modified --
 */
 export function addAnswer(state, {questionId, answer}) {
+
   let question = state.questions.find(question => question.id === questionId);
-  question.answers.push(answer.id);
+
+  question.answers.push(answer.id.id);
   state.answers.push(answer);
 }
 
@@ -113,19 +114,7 @@ export function addAnswer(state, {questionId, answer}) {
 */
 export function deleteAnswer(state, {questionId, answerId}) {
 
-
-  console.log(questionId);
-
   let question = state.questions.find(question => question.id === questionId);
-
-  console.log("Question: ");
-  console.log(question);
-
-  // for (let i = 0; i < question.answers.length; i++) {
-  //   if(question.answers[i] === answerId){
-  //     question.answers.splice(index, 1);
-  //   }
-  // }
 
   question.answers.map((answer, index) => {
     if (answer === answerId) {

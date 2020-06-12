@@ -41,13 +41,10 @@ export function getNextQuestionId(state, getters) {
   }
 }
 
-export function getQestions(state) {
-  return state.questions;
-}
-
 export function getAnswers(state) {
 
   return function (idList) {
+
     let listToReturn = [];
 
     for (let i = 0; i < state.answers.length; i++) {
@@ -66,7 +63,7 @@ export function getQuestionTitleById(state) {
   return function (id) {
 
     for (let i = 0; i < state.questions.length; i++) {
-      if(state.questions[i].id === id){
+      if (state.questions[i].id === id) {
         return state.questions[i].title;
       }
     }
