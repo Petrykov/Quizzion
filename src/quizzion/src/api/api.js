@@ -49,7 +49,7 @@ export function login(credentials) {
 }
 
 export function logout() {
-  // return axios.delete(`${apiUrl}/user/logout`);
+  return axios.delete(`${apiUrl}/user/logout`);
 }
 
 export function join(fh) {

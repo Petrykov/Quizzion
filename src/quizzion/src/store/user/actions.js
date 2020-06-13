@@ -32,8 +32,9 @@ export function logout({dispatch}) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      await api.logout(); //do we need a response?
+      await api.logout();
       //reset all data in app, we don't need it anymore, call the root action 'resetAll'
+      await this.$router.push('/login');
       dispatch('resetAll', null, {root: true});
       resolve();
     } catch (e) {
