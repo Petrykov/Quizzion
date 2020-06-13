@@ -40,7 +40,7 @@
             </q-item>
           </a>
 
-          <q-item clickable v-ripple style="margin-top: 150px;">
+          <q-item @click="$store.dispatch('user/logout')" clickable v-ripple style="margin-top: 150px;">
             <q-item-section avatar>
               <i class="fas fa-sign-out-alt"></i>
             </q-item-section>

@@ -68,7 +68,7 @@ router.get('/question/:question_id', (req, rsp) => {
             } catch (e) {
             }
         }).catch((err) => {
-        rsp.json(err);
+        rsp.status(400).json(err);
     });
 });
 

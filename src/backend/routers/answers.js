@@ -84,6 +84,7 @@ router.post('/answer', (req, rsp) => {
         vartype: 'item',
         datatype: 'text'
     }).then((response) => {
+        axios.put(`http://localhost:3000/api/question/${req.body.questionId}/add/${response.data.vh}`, null, {headers: {authorization: req.headers.authorization}}).then().catch();
         rsp.status(201).json({
             id: response.data.vh,
             name: response.data.name
@@ -120,9 +121,9 @@ router.put('/answer/:answer_id', (req, rsp) => {
 
         axios.put(config.baseURL + '/v5/var/' + req.params.answer_id, {
             label: JSON.stringify(details)
-        }).then( (resp) => {
+        }).then((resp) => {
             rsp.json(resp)
-        }).catch ( (err) => {
+        }).catch((err) => {
             rsp.json(err);
         });
     }

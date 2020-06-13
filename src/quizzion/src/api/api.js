@@ -49,25 +49,34 @@ export function login(credentials) {
 }
 
 export function logout() {
-  // return axios.delete(`${apiUrl}/user/logout`);
+  return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function participate(displayName) {
-  // return axios.post(`${apiUrl}/user/participate`, { displayName });
+export function join(fh) {
+  return axios.post(`${apiUrl}/respondent/join`, {quizId: fh});
 
-  const dummy = {
-    data: {
-      uh: 'participanttoken',
-      displayName
-    }
-  };
-  return dummy;
+  // const dummy = {
+  //   data: {
+  //     uh: 'participanttoken',
+  //     displayName
+  //   }
+  // };
+  // return dummy;
 }
 
 export function fetchQuizzes() {
   axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
   return axios.get(`${apiUrl}/quizzes/all`);
+}
+
+export async function fetchInvitedQuiz({fh, token}) {
+  axios.defaults.headers.common['authorization'] = token;
+
+  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  console.log(response)
+  const tn = response.data.form[0].tn;
+  return axios.get(`${apiUrl}/quizzes/${tn}`);
 }
 
 export function fetchQuestions() {

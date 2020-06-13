@@ -10,10 +10,9 @@ export function login(state, user) {
   state.email = user.email;
 }
 
-export function participate(state, user) {
+export function join(state, token) {
   state.role = Roles.RESPONDENT;
-  state.token = user.uh;
-  state.displayName = user.displayName;
+  state.token = token;
 }
 
 export function setQuizzes(state, quizzes) {
@@ -33,17 +32,4 @@ export function deleteQuizFromUser(state, deletedId) {
 
 export function reset(state) {
   Object.assign(state, initialState());
-}
-
-//mock only for dev
-import {stateMockModerator} from "./state";
-
-export function mock(state) {
-  state.role = Roles.MODERATOR;
-  state.displayName = stateMockModerator.displayName;
-  state.token = stateMockModerator.token;
-  state.quizzes = stateMockModerator.quizzes;
-  state.name = stateMockModerator.name;
-  state.email = stateMockModerator.email;
-  state.language = stateMockModerator.language;
 }
