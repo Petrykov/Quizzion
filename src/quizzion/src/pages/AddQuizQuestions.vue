@@ -115,26 +115,7 @@
               class="q-mt-md"
               color="grey"/>
 
-<!--            <div class="q-pa-md">-->
-<!--              <div class="flex flex-center">-->
-<!--                <q-file-->
-<!--                  style="margin-top: 1px;"-->
-<!--                  size="xx-large"-->
-<!--                  round-->
-<!--                  v-model="file"-->
-<!--                  label="Pick one file"-->
-<!--                  filled-->
-<!--                  color="white"-->
-<!--                  @click="$refs.file.click()">-->
-<!--                </q-file>-->
-<!--                <q-btn label="Upload" @click="uploadToFirebase">-->
-<!--                </q-btn>-->
-<!--                <q-img-->
-<!--                  :src="imageUrl"-->
-<!--                  :width="imageShow(imageUrl)"-->
-<!--                ></q-img>-->
-<!--              </div>-->
-<!--            </div>-->
+
             <div style="display: flex;justify-content: center;padding-top: 10px">
               <q-img :src="imageUrl"
                      :width="imageShow(imageUrl)"></q-img>
@@ -143,12 +124,14 @@
                 size="xx-large"
                 round
                 v-model="file"
+                label-color="white"
                 label="Pick one image"
                 filled
                 color="white"
                 @click="$refs.file.click()">
               </q-file>
-              <q-btn label="Upload" @click="uploadToFirebase">
+              <q-btn  @click="uploadToFirebase">
+                <i class="fas fa-upload" style="color: white"></i>
               </q-btn>
             </div>
             <div class="answers-div-wrapper">

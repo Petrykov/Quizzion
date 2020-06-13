@@ -55,6 +55,9 @@
         <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
 
         <div class="theme-bubble" style="padding-top: 10px">
+          <q-img :src="updatedQuiz.logo"
+                 v-model="updatedQuiz.logo"
+                 :width="imageShow(updatedQuiz.logo)"></q-img>
           <q-file
             size="xx-large"
             round
@@ -64,14 +67,11 @@
             filled
             @click="$refs.file.click()">
           </q-file>
-          <q-btn label="Upload" @click="uploadToFirebase">
+          <q-btn  @click="uploadToFirebase">
+            <i class="fas fa-upload" style="color: white"></i>
           </q-btn>
         </div>
-        <div class="flex flex-center" style="padding-top: 10px">
-          <q-img :src="updatedQuiz.logo"
-                 v-model="updatedQuiz.logo"
-                 :width="imageShow(updatedQuiz.logo)"></q-img>
-        </div>
+
       </div>
     </div>
     <div class="q-pa-md theme-bubble save-btn">
