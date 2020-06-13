@@ -11,7 +11,7 @@ export function login({commit, dispatch}, credentials) {
       console.log("Mocking store...");
       dispatch('mockStore', null, {root: true});
 
-      commit('login', response.data[0]);
+      commit('login', response.data);
 
       dispatch('quizzes/initialiseAll', null, {root: true}).then(() => {
         this.$router.push('/');

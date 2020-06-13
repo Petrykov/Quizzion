@@ -89,29 +89,10 @@
         this.alert = true;
       },
       saveQuiz: function () {
-        this.$store.commit("quizzes/updateQuiz", {
-          id: this.currentQuiz.id,
-          updatedQuiz: this.updatedQuiz
-        });
-        // this.$emit("edit", updateQuiz);
+        this.$store.dispatch('quizzes/updateQuiz', this.updatedQuiz);
       },
       deleteQuiz: function () {
-        this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
-        this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
-        console.log(this.currentQuiz.id + " is deleted");
-        // emit: change current quiz to the id near by
-      }
-    },
-    computed: {
-      selectedQuiz() {
-        return this.currentQuiz;
-      },
-      selectedColor() {
-        if (themeColor == null) {
-          return this.currentQuiz.color;
-        } else {
-          return themeColor;
-        }
+        this.$store.dispatch('quizzes/deleteQuiz', this.currentQuiz.id);
       }
     },
     props: {

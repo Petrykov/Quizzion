@@ -4,7 +4,8 @@ import initialState from './state'
 export function login(state, user) {
   state.role = Roles.MODERATOR;
   state.displayName = user.username;
-  state.token = user.uh;
+  state.token = user.token;
+  state.userId = user.uh;
   state.name = user.firstname + ' ' + user.lastname;
   state.email = user.email;
 }

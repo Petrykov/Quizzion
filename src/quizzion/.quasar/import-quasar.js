@@ -17,7 +17,7 @@ import iconSet from 'quasar/icon-set/material-icons'
 
 import Vue from 'vue'
 
-import {Quasar,QBtn,QBtnGroup,QInput,QDialog,QUploader,QFile,ClosePopup,Notify} from 'quasar'
+import {Quasar,QBtn,QBtnGroup,QInput,QDialog,QUploader,QFile,ClosePopup,Notify,Loading} from 'quasar'
 
 
-Vue.use(Quasar, { config: {},lang: lang,iconSet: iconSet,components: {QBtn,QBtnGroup,QInput,QDialog,QUploader,QFile},directives: {ClosePopup},plugins: {Notify} })
+Vue.use(Quasar, { config: {},lang: lang,iconSet: iconSet,components: {QBtn,QBtnGroup,QInput,QDialog,QUploader,QFile},directives: {ClosePopup},plugins: {Notify,Loading} })

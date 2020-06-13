@@ -22,6 +22,8 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
+      console.log('res')
+      console.log(response)
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
@@ -80,9 +82,13 @@ export function createQuiz({commit}, newQuiz) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.createQuiz(newQuiz);
-      commit("createQuiz", response.data);
-      commit("user/createQuiz", response.data.id, {root: true});
-      resolve(response.data.id);
+
+      const color = newQuiz.label;
+      const id = response.data.tn;
+      delete newQuiz.label;
+      commit("createQuiz", {...newQuiz, id, color});
+      commit("user/createQuiz", id, {root: true});
+      resolve(id);
     } catch (e) {
       console.log("Error while creating quiz: " + e);
       console.log(e);
@@ -99,8 +105,8 @@ export function updateQuiz({commit}, updatedQuiz) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.updateQuiz(updatedQuiz);
-      commit('updateQuiz', response.data);
+      await api.updateQuiz(updatedQuiz);
+      commit('updateQuiz', updatedQuiz);
       resolve();
     } catch (e) {
       console.log(e);
@@ -109,6 +115,36 @@ export function updateQuiz({commit}, updatedQuiz) {
   });
 }
 
+export function generateFormHash(context, quizId) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.generateFormHash({uh: context.rootState.user.userId, tn: quizId});
+      context.commit('setFormHash', {quizId, fh: response.data.form[0]});
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+export function activateQuiz({getters, commit}, quiz) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let activatedQuiz = {...quiz};
+      activatedQuiz.active = true;
+
+      await api.updateQuiz(activatedQuiz);
+      commit('activateQuiz', quiz.id);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
 
 /*
 * send an id to the backend in order to delete the corresponding quiz.
@@ -119,8 +155,9 @@ export function deleteQuiz({commit}, deletedId) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.deleteQuiz(deletedId);
-      commit('deleteQuiz', response.data);
-      resolve();
+      commit('deleteQuiz', deletedId);
+      commit("user/deleteQuizFromUser", deletedId, {root: true});
+      resolve(deletedId);
     } catch (e) {
       console.log(e);
       reject(e);

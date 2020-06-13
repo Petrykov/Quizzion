@@ -4,7 +4,7 @@
     <h4 class="text-h4">Welcome back</h4>
     <div class="row">
       <q-form>
-        <q-input square bordered class="q-pa-lg shadow-1" v-model="email" label="Your email"/>
+        <q-input square bordered class="q-pa-lg shadow-1" v-model="username" label="Username"/>
         <div class="space"></div>
         <q-input
           square
@@ -30,13 +30,13 @@
     name: "LoginForm",
     data() {
       return {
-        email: '',
+        username: '',
         password: ''
       }
     },
     methods: {
       login() {
-        this.$store.dispatch('user/login', {username: this.email, password: this.password})
+        this.$store.dispatch('user/login', {username: this.username, password: this.password})
           .then(() => {
           }).catch(e => {
           console.log(e)
