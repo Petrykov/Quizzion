@@ -59,17 +59,22 @@
 
         <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
 
-        <div class="theme-bubble">
-          <q-btn
-            style="margin-top: 1em;"
+        <div class="theme-bubble" style="padding-top: 10px">
+          <q-file
             size="xx-large"
             round
-            color="white"
+            v-model="file"
+            label-color="white"
+            label="Pick one logo"
+            filled
             @click="$refs.file.click()">
-            <i class="fas fa-upload fa-lg" style="color: black">
-              <input type="file" ref="file" style="display: none"/>
-            </i>
+          </q-file>
+          <q-btn label="Upload" @click="uploadToFirebase">
           </q-btn>
+        </div>
+        <div class="flex flex-center" style="padding-top: 10px">
+          <q-img :src="logoUrl"
+                 :width="imageShow(logoUrl)"></q-img>
         </div>
 
       </div>
@@ -89,6 +94,7 @@
 
 <script>
   import {v4 as uuidv4} from "uuid";
+  import firebase from 'firebase';
 
   import AOS from 'aos';
   import 'aos/dist/aos.css';
@@ -100,11 +106,30 @@
         quizDes: "",
         quizTitle: null,
         alert: false,
-        themeColor: "teal"
+        themeColor: "teal",
+        logoUrl: null,
+        file: null,
       };
     },
 
     methods: {
+      imageShow(logoUrl){
+        if(logoUrl!=null){
+          return '10%'
+        }
+        return 0
+      },
+      uploadToFirebase() {
+        if (this.file != null) {
+          let storageRef = firebase.storage().ref(`${this.file.name}`).put(this.file);
+          storageRef.on('state_changed',
+            () => {
+              storageRef.snapshot.ref.getDownloadURL().then((url) => {
+                this.logoUrl = url;
+              })
+            })
+        }
+      },
       addQuiz: function (showAlert) {
 
         let newQuiz = {
@@ -113,7 +138,7 @@
           description: this.quizDes,
           color: this.themeColor,
           questions: [],
-          logo: "",
+          logo: this.logoUrl,
           active: false
         };
 

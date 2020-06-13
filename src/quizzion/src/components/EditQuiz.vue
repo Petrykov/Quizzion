@@ -54,12 +54,23 @@
         </div>
         <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
 
-        <div class="q-pa-md theme-bubble upload-img">
-          <q-btn size="xx-large" round color="white" @click="$refs.file.click()">
-            <i class="fas fa-upload fa-lg" style="color: black">
-              <input type="file" ref="file" style="display: none"/>
-            </i>
+        <div class="theme-bubble" style="padding-top: 10px">
+          <q-file
+            size="xx-large"
+            round
+            v-model="file"
+            label-color="white"
+            label="Pick one logo"
+            filled
+            @click="$refs.file.click()">
+          </q-file>
+          <q-btn label="Upload" @click="uploadToFirebase">
           </q-btn>
+        </div>
+        <div class="flex flex-center" style="padding-top: 10px">
+          <q-img :src="updatedQuiz.logo"
+                 v-model="updatedQuiz.logo"
+                 :width="imageShow(updatedQuiz.logo)"></q-img>
         </div>
       </div>
     </div>
@@ -73,6 +84,7 @@
 
   import AOS from 'aos';
   import 'aos/dist/aos.css';
+  import firebase from 'firebase'
 
   export default {
     data: () => {
@@ -80,11 +92,30 @@
         colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
         alert: false,
         themeColor: null,
-        updatedQuiz: undefined
+        updatedQuiz: undefined,
+        file:null
+
       };
     },
 
     methods: {
+      imageShow(logoUrl){
+        if(logoUrl!=null){
+          return '10%'
+        }
+        return 0
+      },
+      uploadToFirebase() {
+        if (this.file != null) {
+          let storageRef = firebase.storage().ref(`${this.file.name}`).put(this.file);
+          storageRef.on('state_changed',
+            () => {
+              storageRef.snapshot.ref.getDownloadURL().then((url) => {
+                this.updatedQuiz.logo = url;
+              })
+            })
+        }
+      },
       onDelete: function () {
         this.alert = true;
       },
