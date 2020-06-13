@@ -201,8 +201,9 @@ router.post('/', (req, rsp) => {
     let owner = req.body.owner;
     let questions = req.body.questions;
 
-    axios.post(`${baseUrl}/template`, {
+    console.log(req.body);
 
+    axios.post(`${baseUrl}/template`, {
         label: req.body.label, //save color as a label
         description: req.body.description,
         type: 'form_json',
@@ -215,12 +216,12 @@ router.post('/', (req, rsp) => {
             "logo": logo,
             "questions": questions,
             "active": active
-
         })
 
     }).then((response) => {
         rsp.status(201).json(response.data);
     }).catch((err) => {
+        console.log(err);
         rsp.status(400).json(err);
 
     });
@@ -317,7 +318,6 @@ router.put('/:quizId/content', (req, rsp) => {
     })
 
 });
-
 
 // update a quiz color and description
 router.put('/:quizId', (req, rsp) => {
