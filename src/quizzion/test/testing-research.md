@@ -13,7 +13,7 @@ Good tests also document code because tests are basically specifications for how
 
 A quick summary of a couple of relevant types of tests.
 
-#### Unit tests 
+#### Unit tests
 
 Unit tests call a piece of code (like a function) and report back whether that code returned the expected output. Unit tests are not about styling, just about output, like returned data or rendered components. Unit testing is a form of 'white box' testing, this contributes to the fact that errors/bugs are easily found and debugged. Potential candidates for writing/running these tests are Jest and Mocha.
 
@@ -23,7 +23,7 @@ Integration tests check whether different modules of your application are workin
 
 #### End to end tests
 
-E2e tests assert your component's public interface, and jest like integration tests, they treat its internals as a black box. E2e tests are slow, this is why there usually is not a lot of them. 
+E2e tests assert your component's public interface, and jest like integration tests, they treat its internals as a black box. E2e tests are slow, this is why there usually is not a lot of them.
 
 #### Snapshot tests
 
@@ -83,7 +83,7 @@ test('fetchValue commits value returned by api call', async () => {
 ```
 
 #### Test store instance
-Testing a store instance means that you dispatch an action, and check whether the state is updated. Without looking at the internals of the action or mutation. Benefits of doing this are: you get a lot more coverage for less tests; the insides of the store may change and it won't affect your tests; actions that dispatch other actions or multiple mutations are tested easier. 
+Testing a store instance means that you dispatch an action, and check whether the state is updated. Without looking at the internals of the action or mutation. Benefits of doing this are: you get a lot more coverage for less tests; the insides of the store may change and it won't affect your tests; actions that dispatch other actions or multiple mutations are tested easier.
 
 But it is not all good, it is harder to find out what is wrong if a test fails and it may also be more difficult to maintain the tests as the store grows. <br>
 These tests could be seen as both Unit or Integration tests.
@@ -111,7 +111,7 @@ test('updates value', async () => {
     expect(store.state.value).toBe('randomVal')
 })
 ```
-[Testing Vuex reference (YouTube)](https://www.youtube.com/watch?v=gbr0tPRqChM) 
+[Testing Vuex reference (YouTube)](https://www.youtube.com/watch?v=gbr0tPRqChM)
 
 ### Testing Vue (SF)Components
 
@@ -215,6 +215,8 @@ For more information, check out these references. <br>
 
 - Yerburgh, E. (2018). [Testing Vue.js Applications](https://livebook.manning.com/book/testing-vue-js-applications/) (Vol. 2018). United States, New York: Manning Publications.
 - https://vue-test-utils.vuejs.org/
+- https://vue-test-utils.vuejs.org/guides/using-with-vuex.html
+- https://vuex.vuejs.org/guide/testing.html
 - https://lmiller1990.github.io/vue-testing-handbook/
 - https://www.youtube.com/watch?v=LxXsGNXsMo8 testing vue components (Edd Yerburgh @ VueJS Amserdam)
 - https://www.youtube.com/watch?v=gbr0tPRqChM testing vuex (Edd Yerburgh @ InfoQ Brasil)
