@@ -1,5 +1,6 @@
 import axios from 'axios'
 import md5 from 'md5'
+import store from '../store'
 
 const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
 
@@ -26,84 +27,56 @@ function timeout(res, ms) {
 }
 
 export function login(credentials) {
-  // return axios.post(`${apiUrl}/user/login`, {
-  //   username: credentials.username,
-  //   password: md5(credentials.password)
-  // });
+  return axios.post(`${apiUrl}/user/login`, {
+    username: credentials.username,
+    password: md5(credentials.password)
+  });
 
-  const dummy = {
-    data: [
-      {
-        uh: 'userToken',
-        username: 'username',
-        firstname: 'userFirstName',
-        lastname: 'userLastName',
-        email: 'userEmail'
-      }
-    ]
-  }
+  // const dummy = {
+  //   data: [
+  //     {
+  //       uh: 'userToken',
+  //       username: 'username',
+  //       firstname: 'userFirstName',
+  //       lastname: 'userLastName',
+  //       email: 'userEmail'
+  //     }
+  //   ]
+  // }
 
-  return dummy;
+  // return dummy;
   // return timeout(dummy, 1000);
 }
 
 export function logout() {
-  // return axios.delete(`${apiUrl}/user/logout`);
+  return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function participate(displayName) {
-  // return axios.post(`${apiUrl}/user/participate`, { displayName });
+export function join(fh) {
+  return axios.post(`${apiUrl}/respondent/join`, {quizId: fh});
 
-  const dummy = {
-    data: {
-      uh: 'participanttoken',
-      displayName
-    }
-  };
-  return dummy;
+  // const dummy = {
+  //   data: {
+  //     uh: 'participanttoken',
+  //     displayName
+  //   }
+  // };
+  // return dummy;
 }
 
 export function fetchQuizzes() {
-  // return axios.get(`${apiUrl}/quizzes`);
+  axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
-  const dummy = {
-    data: [
-      {
-        id: 'g67yuhb',
-        owner: 'WandaE', //might want to make this the id
-        title: 'test quiz',
-        description: 'mock quiz for demo',
-        color: '#ffa500',
-        logo: '',
-        questions: ['dr5rty'],
-        active: false
-      },
-      {
-        id: 'fy5ryt',
-        owner: 'WandaE',
-        title: 'Pubquiz - Quarantine edition',
-        description: 'another mock quiz for demo',
-        color: '#800080',
-        logo: '',
-        questions: ['ft6t'],
-        active: false
-      },
-      {
-        id: 'kh8yi7y',
-        owner: 'WandaE',
-        title: 'General knowledge',
-        description: 'Random things you should know!',
-        color: '#008080',
-        logo: '',
-        questions: ['dt6r'],
-        active: false
-      }
-    ],
-    status: 200,
-    success: 'true'
-  };
+  return axios.get(`${apiUrl}/quizzes/all`);
+}
 
-  return dummy;
+export async function fetchInvitedQuiz({fh, token}) {
+  axios.defaults.headers.common['authorization'] = token;
+
+  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  console.log(response)
+  const tn = response.data.form[0].tn;
+  return axios.get(`${apiUrl}/quizzes/${tn}`);
 }
 
 export function fetchQuestions() {
@@ -228,25 +201,20 @@ export function fetchAnswers() {
   return dummy;
 }
 
+export function generateFormHash(payload) {
+  return axios.post(`${apiUrl}/quizzes/start`, payload);
+}
+
 export function createQuiz(newQuiz) {
-  // return axios.post(`${apiUrl}/quizzes`, {newQuiz});
-
-  const dummy = {
-    data: {
-      ...newQuiz,
-      id: 'qwe1231as'
-    }
-  };
-
-  return dummy;
+  return axios.post(`${apiUrl}/quizzes`, {...newQuiz});
 }
 
 export function updateQuiz(updatedQuiz) {
-  // return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}`, { updatedQuiz });
+  return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}/edit`, {...updatedQuiz, label: updatedQuiz.color});
 }
 
 export function deleteQuiz(deletedId) {
-  // return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
+  return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
 export function createQuestion(quizId, newQuestion) {

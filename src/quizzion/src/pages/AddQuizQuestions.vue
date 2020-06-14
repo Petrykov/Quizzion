@@ -115,6 +115,25 @@
               class="q-mt-md"
               color="grey"/>
 
+
+            <div style="display: flex;justify-content: center;padding-top: 10px">
+              <q-img :src="imageUrl"
+                     :width="imageShow(imageUrl)"></q-img>
+              <q-file
+                style="margin-top: 1px;"
+                size="xx-large"
+                round
+                v-model="file"
+                label-color="white"
+                label="Pick one image"
+                filled
+                color="white"
+                @click="$refs.file.click()">
+              </q-file>
+              <q-btn  @click="uploadToFirebase">
+                <i class="fas fa-upload" style="color: white"></i>
+              </q-btn>
+            </div>
             <div class="answers-div-wrapper">
               <p
                 class="paragraph q-mt-lg q-ml-md"
@@ -122,7 +141,7 @@
                 The answers?
               </p>
 
-              <div>
+              <div class="col">
                 <q-scroll-area
                   class="scroll-area scrollarea answers-wrapper"
                   style="height: 275px; max-width: 300px;">
@@ -183,7 +202,6 @@
 
                 </q-scroll-area>
               </div>
-
             </div>
 
             <div class="timer-wrapper">
@@ -240,11 +258,11 @@
     </div>
   </q-page>
 </template>
-
 <script>
 
   import AOS from 'aos';
   import 'aos/dist/aos.css';
+  import firebase from 'firebase';
 
   import {v4 as uuidv4} from 'uuid';
 
@@ -263,7 +281,11 @@
 
         alert: false,
 
-        answersList: ' '
+        answersList: ' ',
+
+        file: null,
+
+        imageUrl: null
       }
     },
 
@@ -272,7 +294,6 @@
     },
 
     computed: {
-
       currentQuiz() {
         return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
       },
@@ -291,6 +312,23 @@
     },
 
     methods: {
+      imageShow(imageUrl){
+        if(imageUrl!=null){
+          return '10%'
+        }
+        return 0
+      },
+      uploadToFirebase() {
+        if(this.file!=null){
+          let storageRef = firebase.storage().ref(`${this.file.name+this.currentQuizId}`).put(this.file);
+          storageRef.on('state_changed',
+            () => {
+              storageRef.snapshot.ref.getDownloadURL().then((url) => {
+                this.imageUrl = url;
+              })
+            })
+        }
+      },
       onQuestionClick(id) {
 
         this.selectedQuestionId = id;
@@ -298,6 +336,10 @@
         this.question = {...this.selectedQuestion};
 
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
+
+        this.imageUrl=this.question.image;
+
+        this.file=null;
       },
 
       deepCopyFunction(inObject) {
@@ -349,8 +391,8 @@
         this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
       },
 
-      updateQuestion() {
-        let quizId, questionId, updatedQuestion, answers;
+      async updateQuestion() {
+        let quizId, questionId, updatedQuestion, answers, image;
 
         if (this.timeCheck() === false) {
           this.showNotification("Please select the time of the quiz", "red");
@@ -359,8 +401,10 @@
           quizId = this.currentQuizId;
           questionId = this.selectedQuestionId;
 
+
           updatedQuestion = this.question;
 
+          updatedQuestion.image = this.imageUrl;
           answers = this.answersList;
 
           for (let i = 0; i < answers.length; i++) {
@@ -526,16 +570,16 @@
       text-align: center;
     }
 
-    .timer{
+    .timer {
       width: 80%;
       margin: 0 auto;
     }
 
-    .time-icon{
+    .time-icon {
       margin: 0 auto;
     }
 
-    .wrapper{
+    .wrapper {
       height: 50%;
       padding: 0 !important;
       margin: 0 !important;

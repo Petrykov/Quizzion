@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import answerForm from './answer-form'
 import quizzes from './quizzes'
 import user from './user'
-
+import firebase from 'firebase'
 Vue.use(Vuex);
 
 const modules = {
@@ -12,6 +12,17 @@ const modules = {
   quizzes,
   user
 };
+//initialize firebase app
+firebase.initializeApp({
+  apiKey: "AIzaSyBTxjMYfe3FcYQPE1fQsBoKwBkExKbkay0",
+  authDomain: "quizzion-parantion.firebaseapp.com",
+  databaseURL: "https://quizzion-parantion.firebaseio.com",
+  projectId: "quizzion-parantion",
+  storageBucket: "quizzion-parantion.appspot.com",
+  messagingSenderId: "222824783332",
+  appId: "1:222824783332:web:86aaf98f891c39de68fbf1",
+  measurementId: "G-0LJSYKN8BX"
+});
 
 export function createStoreConfig() {
   return {
