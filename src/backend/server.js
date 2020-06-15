@@ -20,7 +20,6 @@ const db = {
     quizzes: []
 };
 
-let sock = 'empty';
 server_socket.on('connection', (socket) => {
 
     socket.on('connect-t', function (data) {
@@ -52,34 +51,41 @@ server_socket.on('connection', (socket) => {
                 })
             }
         }
-        console.log(db);
     });
+
+    socket.on('start', function () {
+        for (let i = 0; i < db.quizzes.length; i++) {
+            if (db.quizzes[i].quizMaster === socket.id) {
+                for (let j = 0; j < db.quizzes[i].users.length; j++) {
+                    server_socket.to(db.quizzes[i].users[j].id).emit('start');
+                }
+            }
+        }
+    });
+
+    socket.on('quiz-done', function (data) {
+        for (let i = 0; i < db.quizzes.length; i++) {
+            if (db.quizzes[i].quiz_id === data.quiz_id) {
+
+                server_socket.to(db.quizzes[i].quizMaster).emit('user-done-quiz', {name: data.name});
+            }
+        }
+    })
+
+    socket.on('show-results', function (data) {
+        for (let i = 0; i < db.quizzes.length; i++) {
+            if (db.quizzes[i].quiz_id === data.quiz_id) {
+                for (let j = 0; j < db.quizzes[i].users.length; j++) {
+                    server_socket.to(db.quizzes[i].users[j].id).emit('show-results')
+                }
+            }
+        }
+    })
+
     socket.on('disconnect', function () {
         console.log("client disconnected");
     })
 });
-
-// app.use((req, rsp, next) => {
-//     req.server_socket = server_socket;
-//     server_socket.on('connection', (socket) => {
-//
-//         console.log("Established connection");
-//         console.log(socket);
-//
-//         socket.on('connect', (data) => {
-//             console.log('connected someone');
-//             console.log("data:");
-//             console.log(data);
-//
-//         });
-//     });
-//     next();
-//     next();
-// });
-
-app.get('/sosok', (req, rsp) => {
-    rsp.status(200).send(sock);
-})
 
 app.use('/', require('./routers/websocket'));
 
