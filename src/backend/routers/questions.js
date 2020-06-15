@@ -298,12 +298,50 @@ router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
     f();
 });
 
-router.delete('/question/:question_id', (req, rsp) => {
+router.delete('/question/:question_id', async (req, rsp) => {
+
+    let response = await axios.get('http://localhost:3000/api/question/' + req.params.question_id, {
+        headers: {
+            Authorization: req.headers.authorization
+        }
+    });
+
+    const quiz_id = response.data.quiz_id;
 
     axios.delete(config.baseURL + '/v5/var/' + req.params.question_id)
-        .then((response) => {
-            rsp.status(200).json({message: "deleted"});
+        .then(async (response) => {
+
+            let quiz = await axios.get('http://localhost:3000/api/quizzes/' + quiz_id + '/content', {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            });
+
+            quiz = quiz.data;
+
+            if (quiz.questions === undefined) {
+                rsp.status(400).json({error: "Question is not in the quiz list"});
+                return;
+            }
+            for (let i = 0; i < quiz.questions.length; i++) {
+                if (quiz.questions[i] === req.params.question_id) {
+                    quiz.questions.splice(i, 1);
+                }
+            }
+
+            axios.put('http://localhost:3000/api/quizzes/' + quiz_id + '/content', quiz, {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            }).then((resp) => {
+                rsp.status(200).json({message: "deleted"})
+            }).catch((errr) => {
+                rsp.status(400).json(errr);
+            });
+
         }).catch((err) => {
         rsp.json(err);
     });
+
 });
+

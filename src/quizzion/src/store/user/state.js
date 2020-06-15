@@ -2,7 +2,7 @@ export default function () {
   return {
     role: '', //maybe enum or sth for mod or respondent
     displayName: '', //display name, for mods that is registered in db
-    token: 'b135951e72899728cccaeb82bae350327a84e1aa19926825b00812b1a2146d8e1fbaf9f950e5f53d61260dcb8ed2d42246af915986a844da175e9fda38c19bb9', //token to access Parantion backend
+    token: 'a31c35910ef9017ea86526d389c59dfb4b172277ef75b50c035b7deef03156777b85937e39e96080a3a1d98d2bad613ae6be12f5b21685f7592dff305e3ce489', //token to access Parantion backend
 
     //rest solely for role === mod
     userId: '', //unique user id (database pk)

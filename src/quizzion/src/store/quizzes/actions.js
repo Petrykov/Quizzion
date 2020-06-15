@@ -80,10 +80,8 @@ export function createAnswer({commit}, payload) {
       const response = await api.addAnswer(newAnswer);
 
       if (response.status === 201) {
-        newAnswer.id = response.data;
-
+        newAnswer.id = response.data.id;
         await api.addAnswerToQuestion(questionId, response.data.id);
-
         commit('addAnswer', {questionId: questionId, answer: newAnswer});
       }
 
@@ -238,6 +236,8 @@ export function updateQuestion({commit}, payload) {
       const response = await api.updateQuestion(questionId, updatedQuestion);
 
       if (response.status === 200) {
+        console.log("updated question")
+        console.log(updatedQuestion)
         commit('updateQuestion', {questionId: questionId, updatedQuestion: updatedQuestion});
       }
 

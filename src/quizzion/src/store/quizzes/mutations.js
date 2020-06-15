@@ -5,8 +5,6 @@ import initialState from "./state";
 *
 * */
 export function setQuizzes(state, quizzes) {
-  // console.log("Quizzes: ");
-  // console.log(quizzes.length);
   state.quizzes = quizzes;
 }
 
@@ -69,15 +67,8 @@ export function createQuestion(state, {quizId, newQuestion}) {
 * */
 export function updateQuestion(state, {questionId, updatedQuestion}) {
 
-  // title: this.question.title,
-  //   description: this.question.description,
-  //   image: this.question.image,
-  //   time: this.question.time,
-  //   answers: answersIdList
-
   state.questions.map((question, index) => {
     if (question.id === questionId) {
-      // console.log(state.questions[index].title +" [=] "+ updatedQuestion.title);
       state.questions[index].title = updatedQuestion.title;
       state.questions[index].description = updatedQuestion.description;
       state.questions[index].time = updatedQuestion.time;
@@ -105,7 +96,7 @@ export function addAnswer(state, {questionId, answer}) {
 
   let question = state.questions.find(question => question.id === questionId);
 
-  question.answers.push(answer.id.id);
+  question.answers.push(answer.id);
   state.answers.push(answer);
 }
 
@@ -117,6 +108,7 @@ export function deleteAnswer(state, {questionId, answerId}) {
   let question = state.questions.find(question => question.id === questionId);
 
   question.answers.map((answer, index) => {
+    console.log(answer + " | " + answerId);
     if (answer === answerId) {
       question.answers.splice(index, 1);
     }
@@ -129,11 +121,20 @@ export function deleteAnswer(state, {questionId, answerId}) {
 * */
 export function updateAnswers(state, {answers}) {
 
-  answers.map((answer, index) => {
-    if (answer.id === answers[index].id) {
-      state.answers[index] = answer;
+  // answers.map((answer, index) => {
+  //   // console.log(answer)
+  //   if (answer.id === answers[index].id) {
+  //     // state.answers[index] = answer;
+  //   }
+  // })
+
+  for (let i = 0; i <state.answers.length ; i++) {
+    for (let j = 0; j <answers.length ; j++) {
+      if(state.answers[i].id === answers[j].id){
+        state.answers[i] = answers[j];
+      }
     }
-  })
+  }
 }
 
 export function activateQuiz(state, activatedId) {

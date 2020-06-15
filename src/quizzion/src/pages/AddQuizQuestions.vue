@@ -285,7 +285,7 @@
       },
 
       getAnswers() {
-        return this.$store.getters['quizzes/getAnswers'](this.question.answers);
+        return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
       },
 
       questionTitle() {
@@ -301,6 +301,9 @@
         this.question = {...this.selectedQuestion};
 
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
+
+        console.log("answers:")
+        console.log(this.getAnswers)
       },
 
       deepCopyFunction(inObject) {
@@ -349,7 +352,7 @@
       },
 
       updateQuestion() {
-        let questionId, updatedQuestion, answers;
+        let questionId, updatedQuestion, answers = [];
 
         if (this.timeCheck() === false) {
           this.showNotification("Please select the time of the quiz", "red");
@@ -372,12 +375,11 @@
             answers: answersIdList
           };
 
-          this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
           this.$store.dispatch('quizzes/updateAnswers', {answers});
+          this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
+
 
           this.showNotification("Question was saved", "blue");
-
-          answersIdList = [];
         }
       },
 

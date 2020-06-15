@@ -109,6 +109,7 @@ export function createQuestion(quizId, newQuestion) {
 
 // -- modified --
 export function updateQuestion(questionId, updatedQuestion) {
+
   return axios.put(`${apiUrl}/question/${questionId}`, {...updatedQuestion});
 }
 
@@ -137,7 +138,7 @@ export function updateAnswers(answers) {
 
   return axios.all(
     answers.map((answer) => {
-      axios.put(`${apiUrl}/answer/${answer.id}`);
+      axios.put(`${apiUrl}/answer/${answer.id}`,{...answer});
     })
   )
 }
