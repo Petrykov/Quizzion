@@ -108,7 +108,6 @@ export function deleteAnswer(state, {questionId, answerId}) {
   let question = state.questions.find(question => question.id === questionId);
 
   question.answers.map((answer, index) => {
-    console.log(answer + " | " + answerId);
     if (answer === answerId) {
       question.answers.splice(index, 1);
     }
@@ -120,14 +119,6 @@ export function deleteAnswer(state, {questionId, answerId}) {
 *
 * */
 export function updateAnswers(state, {answers}) {
-
-  // answers.map((answer, index) => {
-  //   // console.log(answer)
-  //   if (answer.id === answers[index].id) {
-  //     // state.answers[index] = answer;
-  //   }
-  // })
-
   for (let i = 0; i <state.answers.length ; i++) {
     for (let j = 0; j <answers.length ; j++) {
       if(state.answers[i].id === answers[j].id){

@@ -301,9 +301,6 @@
         this.question = {...this.selectedQuestion};
 
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
-
-        console.log("answers:")
-        console.log(this.getAnswers)
       },
 
       deepCopyFunction(inObject) {
