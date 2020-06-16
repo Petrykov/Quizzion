@@ -16,10 +16,7 @@ export function join(state, token) {
 }
 
 export function setQuizzes(state, quizzes) {
-  quizzes.map((quiz) => {
-    // should check with which value id returns from backend
-    state.quizzes.push(quiz.id);
-  });
+  state.quizzes = quizzes;
 }
 
 export function createQuiz(state, newQuizId) {
