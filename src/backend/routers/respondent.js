@@ -2,6 +2,12 @@ let router = module.exports = require('express').Router();
 const axios = require('axios').default
 const baseUrl = "https://lab.dev.easion.nl/backend/api/v5"
 
+const fs = require('fs')
+const sqlite3 = require('sqlite3');
+let db = new sqlite3.Database('responses.db');
+
+// db.exec(fs.readFileSync('schema.sql').toString());
+
 axios.defaults.headers.common['X-Database'] = 'lab';
 
 router.post('/join', (req, res) => {
@@ -46,4 +52,29 @@ router.put('/answer', (req, res) => {
             console.log(err.response.data)
             res.send(err)
         })
+})
+
+router.get('/questions/all', (req, res) => {
+    db.all('select * from questions', (err, questions) => {
+        if (questions) res.send(questions)
+        else res.send("Errors occured")
+    })
+})
+
+router.post('/:quiz_id/questions', (req, res) => {
+    db.prepare("INSERT INTO questions (id, title, description, quizId) values(?,?,?,?)").run(req.body.id, req.body.title, req.body.description, req.params.quiz_id)
+    if (res) res.json("Successfully added!")
+    else res.send("Errors occured")
+})
+
+router.post('/:questionId/answers', (req, res) => {
+    db.prepare("INSERT INTO answers (id, label, isCorrect, questionId) values(?,?,?,?)").run(req.body.id, req.body.label, req.body.isCorrect, req.params.questionId)
+    if (res) res.send("Successfuly added!")
+    else res.send("Errors occured")
+})
+
+router.post('/answer', (req, res) => {
+    db.prepare("INSERT INTO responses (answerId, questionId,time) values(?,?,?)").run(req.body.answerId, req.body.questionId, req.body.time);
+    if (res) res.send("Successful")
+    else res.send("Errors occured")
 })

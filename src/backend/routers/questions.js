@@ -58,7 +58,7 @@ router.get('/question/:question_id', (req, rsp) => {
                     description: result.description,
                     image: result.image,
                     time: result.time,
-                    answers: result.answer,
+                    answers: result.answers,
                     name: response.data.var[0].name
                 };
 
