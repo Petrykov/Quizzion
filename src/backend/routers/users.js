@@ -62,7 +62,7 @@ router.delete('/logout', (req, rsp) => {
     }
     axios.delete(`${baseUrl}/account/access`, {
         headers: {
-            'X-CSRFToken': req.body.token
+            'X-CSRFToken': req.headers.authorization
         }
     })
         .then(res => rsp.status(200).send("log out successfully!"))
