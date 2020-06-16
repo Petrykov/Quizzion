@@ -76,17 +76,17 @@
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
           <q-btn
-            v-if="!currentQuiz.active"
+            v-if="!currentQuiz.fh"
             unelevated
             rounded
             color="white"
             text-color="black"
             label="Get link"
-            @click="$store.commit('quizzes/activateQuiz', currentQuiz.id)"
+            @click="generateLink"
           />
         </div>
 
-        <div class="row justify-between" v-if="currentQuiz.active">
+        <div class="row justify-between" v-if="currentQuiz.fh">
 
           <div>
             <q-icon
@@ -134,6 +134,7 @@
             </q-icon>
 
             <q-btn
+              @click="$store.dispatch('quizzes/activateQuiz', currentQuiz)"
               unelevated
               rounded
               class="col-offset-2 col-2"
@@ -190,17 +191,28 @@
             }
           ]
         })
+      },
+      generateLink() {
+
+        if (!this.currentQuiz.fh){
+          this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id)
+        }
       }
     },
 
     computed: {
       getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+        return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
       },
 
     },
 
-    props: ['currentQuiz']
+    props: {
+      currentQuiz: {
+        type: Object,
+        required: true
+      }
+    }
   };
 </script>
 

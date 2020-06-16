@@ -54,13 +54,24 @@
         </div>
         <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
 
-        <div class="q-pa-md theme-bubble upload-img">
-          <q-btn size="xx-large" round color="white" @click="$refs.file.click()">
-            <i class="fas fa-upload fa-lg" style="color: black">
-              <input type="file" ref="file" style="display: none"/>
-            </i>
+        <div class="theme-bubble" style="padding-top: 10px">
+          <q-img :src="updatedQuiz.logo"
+                 v-model="updatedQuiz.logo"
+                 :width="imageShow(updatedQuiz.logo)"></q-img>
+          <q-file
+            size="xx-large"
+            round
+            v-model="file"
+            label-color="white"
+            label="Pick one logo"
+            filled
+            @click="$refs.file.click()">
+          </q-file>
+          <q-btn  @click="uploadToFirebase">
+            <i class="fas fa-upload" style="color: white"></i>
           </q-btn>
         </div>
+
       </div>
     </div>
     <div class="q-pa-md theme-bubble save-btn">
@@ -73,6 +84,7 @@
 
   import AOS from 'aos';
   import 'aos/dist/aos.css';
+  import firebase from 'firebase'
 
   export default {
     data: () => {
@@ -80,38 +92,38 @@
         colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
         alert: false,
         themeColor: null,
-        updatedQuiz: undefined
+        updatedQuiz: undefined,
+        file:null
+
       };
     },
 
     methods: {
+      imageShow(logoUrl){
+        if(logoUrl!=null){
+          return '10%'
+        }
+        return 0
+      },
+      uploadToFirebase() {
+        if (this.file != null) {
+          let storageRef = firebase.storage().ref(`${this.file.name}`).put(this.file);
+          storageRef.on('state_changed',
+            () => {
+              storageRef.snapshot.ref.getDownloadURL().then((url) => {
+                this.updatedQuiz.logo = url;
+              })
+            })
+        }
+      },
       onDelete: function () {
         this.alert = true;
       },
       saveQuiz: function () {
-        this.$store.commit("quizzes/updateQuiz", {
-          id: this.currentQuiz.id,
-          updatedQuiz: this.updatedQuiz
-        });
-        // this.$emit("edit", updateQuiz);
+        this.$store.dispatch('quizzes/updateQuiz', this.updatedQuiz);
       },
       deleteQuiz: function () {
-        this.$store.commit("user/deleteQuizFromUser", this.currentQuiz.id); //there should be a better way
-        this.$store.commit("quizzes/deleteQuiz", this.currentQuiz.id);
-        console.log(this.currentQuiz.id + " is deleted");
-        // emit: change current quiz to the id near by
-      }
-    },
-    computed: {
-      selectedQuiz() {
-        return this.currentQuiz;
-      },
-      selectedColor() {
-        if (themeColor == null) {
-          return this.currentQuiz.color;
-        } else {
-          return themeColor;
-        }
+        this.$store.dispatch('quizzes/deleteQuiz', this.currentQuiz.id);
       }
     },
     props: {

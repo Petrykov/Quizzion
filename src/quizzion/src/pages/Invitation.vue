@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-image">
+  <q-page v-if="invitedQuiz" class="bg-image">
     <div class="bg-image row window-height items-center">
       <div class="left-side col-xs-12 col-sm-6">
         <h2 style="color: white">
@@ -37,16 +37,26 @@
   export default {
     data: () => {
       return {
-        playerName: ''
+        playerName: '',
+        fh: '',
+        quizId: ''
       };
     },
     computed: {
       invitedQuiz() {
-        return this.$store.getters['quizzes/getQuizById'](this.$route.params.quizId);
+        return this.$store.getters['quizzes/getQuizById'](this.quizId);
       }
     },
     beforeMount() {
-      this.$store.dispatch('user/participate');
+      this.fh = this.$route.params.quizId;
+
+      this.$q.loading.show({message: 'Loading quiz content...'});
+      this.$store.dispatch('user/join', this.fh).then((token) => {
+        this.$store.dispatch('quizzes/fetchInvitedQuiz', {token, fh: this.fh}).then((quizId) => {
+          this.quizId = quizId;
+          this.$q.loading.hide();
+        })
+      });
     },
     methods: {
       toFirstQuestion() {

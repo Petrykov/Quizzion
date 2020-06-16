@@ -36,9 +36,10 @@ export function createQuiz(state, newQuiz) {
 * payload should contain the full object that was edited, in proper format
 *
 * */
-export function updateQuiz(state, {id, updatedQuiz}) {
-  let index = state.quizzes.findIndex(quiz => quiz.id === id);
-  state.quizzes[index] = updatedQuiz;
+export function updateQuiz(state, updatedQuiz) {
+  state.quizzes = [
+    ...state.quizzes.filter(quiz => quiz.id !== updatedQuiz.id),
+    updatedQuiz];
 }
 
 /*
@@ -47,6 +48,13 @@ export function updateQuiz(state, {id, updatedQuiz}) {
 * */
 export function deleteQuiz(state, deletedId) {
   state.quizzes = state.quizzes.filter(quiz => quiz.id !== deletedId);
+}
+
+export function setFormHash(state, {quizId, fh}) {
+  let quiz = {...state.quizzes.find(quiz => quiz.id === quizId), fh};
+  state.quizzes = [
+    ...state.quizzes.filter(quiz => quiz.id !== quizId),
+    quiz];
 }
 
 /* +

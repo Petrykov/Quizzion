@@ -53,19 +53,17 @@ router.post('/login', (req, rsp) => {
  * @apiSuccess {String} password  Password of the User.
  */
 
+
 router.delete('/logout', (req, rsp) => {
 
     //need to verify the token if it's a correct one
 
-    if (req == null) {
-        rsp.status(400).send("no user logged in")
-    }
     axios.delete(`${baseUrl}/account/access`, {
         headers: {
-            'X-CSRFToken': req.body.token
+            'X-CSRFToken': req.headers.authorization
         }
     })
-        .then(res => rsp.status(200).send("log out successfully!"))
-        .catch(error => rsp.send(error))
+        .then(res => rsp.status(200).send({"message": "log out successfully!"}))
+        .catch(error => rsp.status(400).send(error))
 
 })

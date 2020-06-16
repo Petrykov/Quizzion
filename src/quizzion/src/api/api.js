@@ -49,25 +49,34 @@ export function login(credentials) {
 }
 
 export function logout() {
-  // return axios.delete(`${apiUrl}/user/logout`);
+  return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function participate(displayName) {
-  // return axios.post(`${apiUrl}/user/participate`, { displayName });
+export function join(fh) {
+  return axios.post(`${apiUrl}/respondent/join`, {quizId: fh});
 
-  const dummy = {
-    data: {
-      uh: 'participanttoken',
-      displayName
-    }
-  };
-  return dummy;
+  // const dummy = {
+  //   data: {
+  //     uh: 'participanttoken',
+  //     displayName
+  //   }
+  // };
+  // return dummy;
 }
 
 export function fetchQuizzes() {
-  axios.defaults.headers.common['authorization'] = store.state.user.token;
+  axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
   return axios.get(`${apiUrl}/quizzes/all`);
+}
+
+export async function fetchInvitedQuiz({fh, token}) {
+  axios.defaults.headers.common['authorization'] = token;
+
+  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  console.log(response)
+  const tn = response.data.form[0].tn;
+  return axios.get(`${apiUrl}/quizzes/${tn}`);
 }
 
 // -- modified --
@@ -80,25 +89,20 @@ export function fetchAnswers() {
   return axios.get(`${apiUrl}/answer`);
 }
 
+export function generateFormHash(payload) {
+  return axios.post(`${apiUrl}/quizzes/start`, payload);
+}
+
 export function createQuiz(newQuiz) {
-  // return axios.post(`${apiUrl}/quizzes`, {newQuiz});
-
-  const dummy = {
-    data: {
-      ...newQuiz,
-      id: 'qwe1231as'
-    }
-  };
-
-  return dummy;
+  return axios.post(`${apiUrl}/quizzes`, {...newQuiz});
 }
 
 export function updateQuiz(updatedQuiz) {
-  // return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}`, { updatedQuiz });
+  return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}/edit`, {...updatedQuiz, label: updatedQuiz.color});
 }
 
 export function deleteQuiz(deletedId) {
-  // return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
+  return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
 // -- modified --
