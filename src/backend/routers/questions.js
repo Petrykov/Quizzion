@@ -94,8 +94,7 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         name: allQuestions[i].name
                     });
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
@@ -109,6 +108,8 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
     let bodyChecker = new BodyChecker();
 
     let inspectionResult = bodyChecker.checkPOSTquestion(req.body);
+
+    console.log(req.body);
 
     if (inspectionResult.length !== 0) {
         rsp.status(400).json({error: inspectionResult});
@@ -359,3 +360,4 @@ router.delete('/question/:question_id', async (req, rsp) => {
     });
 
 });
+
