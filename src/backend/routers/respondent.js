@@ -60,12 +60,12 @@ router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
     if (rsp) {
-        rsp.send({ "id": uniqueId})
+        rsp.send({ "id": uniqueId })
     }
     else rsp.send("Errors occured!")
 })
 
-router.get('/:quizId/invite', (req,rsp) => {
+router.get('/:quizId/invite', (req, rsp) => {
     let stateQuiz = findItemById(req.params.quizId)
     rsp.send(stateQuiz)
 })
@@ -113,7 +113,8 @@ router.get("/:quizId/responses", (req, res) => {
 })
 
 router.post('/respondent/:quizId/answer', (req, res) => {
-    db.prepare("INSERT INTO responses (uid,answerId, questionId,time, quizId) values(?,?,?,?,?)").run(req.body.uid, req.body.answerId, req.body.questionId, req.body.time, req.params.quizId);
+    db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
+        caculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
     if (res) res.send("Successful")
     else res.send("Errors occured!")
 })
@@ -130,10 +131,10 @@ router.get("/respondent/:id", (req, res) => {
 router.delete('/:quizId/stop', (req, res) => {
     let currentQuiz = quizList.find(quiz => quiz.id === req.params.quizId);
     for (let i = 0; i < quizList.length; i++) {
-      if (quizList[i].id === currentQuiz.id) {
-        quizList.splice(i, 1);
-        res.send({message: "successfull!", quizList: quizList})
-      }
+        if (quizList[i].id === currentQuiz.id) {
+            quizList.splice(i, 1);
+            res.send({ message: "successfull!", quizList: quizList })
+        }
     }
 })
 
@@ -142,4 +143,70 @@ router.delete('/respondent/:id/logout', (req, res) => {
         if (rsp) res.send("Deleted!")
         else rsp.send(err)
     })
+})
+
+
+router.get('/:quizId/result/respondent/:id', (req, res) => {
+
+    db.all("select questionTitle,answerLabel, correct, score  from responses where quizId = ? AND uid = ?", [req.params.quizId, req.params.id], (err, rsp) => {
+        if (rsp) {
+            res.send(rsp)
+        }
+        else res.send(err)
+    })
+})
+
+function caculateScore(isCorrect, total, time) {
+    let score;
+    let scale = total / 4
+    if (isCorrect) {
+        if (time <= scale) {
+            score = 10
+        }
+        else if (scale < time && time <= (total / 2)) {
+            score = 7
+        }
+        else if (scale * 2 < time && time <= scale * 3) {
+            score = 5
+        }
+        else if (time > scale * 3) {
+            score = 2
+        }
+    }
+    else { score = 0 }
+
+    return score;
+}
+
+router.get('/results/:quizId', (req, rsp) => {
+
+    let copy = []
+    let players = []
+    let results = []
+    db.all(`SELECT DISTINCT displayName,uid
+    FROM respondents
+    INNER JOIN
+    responses 
+    ON respondents.id = responses.uid
+    WHERE responses.quizId =?`, [req.params.quizId], (err, res) => {
+        if (res) {
+            players = res
+            for (let i of players) {
+                console.log("here")
+                 db.all("select correct, score from responses where uid = ?", [i.uid], function (err, resp) {
+                    if (resp) {
+                        let response = {
+                            user: "i",
+                            response: resp
+                        }
+                        results.push(response)
+                        console.log(results)
+                    }
+                })
+            }
+            console.log("here2")
+            rsp.send(results)
+        }
+    })
+
 })
