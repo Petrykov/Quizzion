@@ -36,7 +36,7 @@
 
       <p
         class="question-description"
-        style="color: black; font-size: 1.8em; width: fit-content;">
+        style="color: white; font-size: 1.8em; width: fit-content;">
         {{currentQuiz.description }}
       </p>
     </div>
@@ -64,7 +64,7 @@
                 <p
                   v-for="(questionId, index) in currentQuiz.questions"
                   :key="questionId"
-                  style="font-size: 1.5em; color:black; margin-bottom: 1em;">
+                  style="font-size: 1.5em; color:white; margin-bottom: 1em;">
                   {{(index+1) +") "+ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
                 </p>
               </li>
