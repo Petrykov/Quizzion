@@ -20,10 +20,8 @@ export function getRespondentResults({commit}, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchRespondentResult(payload);
-      console.log(response);
 
       commit('setResults', response.data);
-
       resolve();
     } catch (e) {
       console.log(e);

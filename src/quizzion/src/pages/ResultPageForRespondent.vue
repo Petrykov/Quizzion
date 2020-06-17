@@ -66,13 +66,7 @@
           return "red"
         }
         return "green"
-      },
-      addScore: function (isCorrect) {
-        if (isCorrect) {
-          return 10
-        }
-        return 0
-      },
+      }
     },
     data() {
       return {

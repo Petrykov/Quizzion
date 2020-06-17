@@ -113,7 +113,6 @@ router.get("/:quizId/responses", (req, res) => {
 
 //RESPONDENT_ANSER
 router.post('/respondent/:quizId/answer', (req, res) => {
-    console.log(req.body);
     db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
         calculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
     if (res) res.send("Successful")
