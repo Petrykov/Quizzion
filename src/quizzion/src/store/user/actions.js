@@ -1,5 +1,4 @@
 import * as api from '../../api/api'
-import ca from "quasar/lang/ca";
 
 
 export function login({commit, dispatch}, credentials) {
@@ -41,11 +40,8 @@ export function join({commit, dispatch}, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.join(payload);
-      console.log("response");
-      console.log(response);
 
       commit('join', {token: response.data.id, name: payload.name});
-
       resolve();
     } catch (e) {
       console.log("Error while participate API: ");

@@ -1,6 +1,6 @@
 import {createLocalVue} from '@vue/test-utils';
 import Vuex from 'vuex';
-import {login} from '../../../../src/api/api.js';
+import {login, join} from '../../../../src/api/api.js';
 import {createStoreConfig} from '../../../../src/store';
 
 const localVue = createLocalVue();
@@ -74,8 +74,18 @@ describe('User module', () => {
 
   describe('As a respondent, the', () => {
 
-    it('join action should', async () => {
+    it('join action should retrieve and store a token', async () => {
+      const respondentToken = 'uuidv4token';
+      const joinResponse = new Promise(resolve => resolve({status: 200, data: {id: respondentToken}}));
 
+      join.mockResolvedValue(joinResponse);
+
+      const store = new Vuex.Store(createStoreConfig());
+
+      await store.dispatch('user/join', {quizId: 'quiz10', name: 'JohnTest'});
+
+      expect(store.state.user.token).toBe(respondentToken);
+      expect(store.state.user.role).toBe('respondent');
     });
   });
 
