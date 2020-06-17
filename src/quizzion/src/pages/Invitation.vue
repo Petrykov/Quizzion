@@ -38,7 +38,6 @@
     data: () => {
       return {
         playerName: '',
-        fh: '',
         quizId: ''
       };
     },
@@ -48,19 +47,20 @@
       }
     },
     beforeMount() {
-      this.fh = this.$route.params.quizId;
+      this.quizId = this.$route.params.quizId;
 
       this.$q.loading.show({message: 'Loading quiz content...'});
-      this.$store.dispatch('user/join', this.fh).then((token) => {
-        this.$store.dispatch('quizzes/fetchInvitedQuiz', {token, fh: this.fh}).then((quizId) => {
-          this.quizId = quizId;
-          this.$q.loading.hide();
-        })
+      this.$store.dispatch('quizzes/fetchInvitedQuiz', this.quizId).then(() => {
+        this.$q.loading.hide();
       });
     },
     methods: {
       toFirstQuestion() {
-        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+
+        this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
+          this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+        });
+
       }
     }
   }

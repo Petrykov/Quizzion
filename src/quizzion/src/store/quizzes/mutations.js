@@ -21,7 +21,7 @@ export function setQuestions(state, questions) {
 * -- modified --
 * */
 export function setAnswers(state, answers) {
-  state.answers = answers.data;
+  state.answers = answers;
 }
 
 /*
@@ -50,8 +50,8 @@ export function deleteQuiz(state, deletedId) {
   state.quizzes = state.quizzes.filter(quiz => quiz.id !== deletedId);
 }
 
-export function setFormHash(state, {quizId, fh}) {
-  let quiz = {...state.quizzes.find(quiz => quiz.id === quizId), fh};
+export function setStored(state, quizId) {
+  let quiz = {...state.quizzes.find(quiz => quiz.id === quizId), stored: true};
   state.quizzes = [
     ...state.quizzes.filter(quiz => quiz.id !== quizId),
     quiz];

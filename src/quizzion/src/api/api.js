@@ -31,37 +31,18 @@ export function login(credentials) {
     username: credentials.username,
     password: md5(credentials.password)
   });
-
-  // const dummy = {
-  //   data: [
-  //     {
-  //       uh: 'userToken',
-  //       username: 'username',
-  //       firstname: 'userFirstName',
-  //       lastname: 'userLastName',
-  //       email: 'userEmail'
-  //     }
-  //   ]
-  // }
-
-  // return dummy;
-  // return timeout(dummy, 1000);
 }
 
 export function logout() {
   return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function join(fh) {
-  return axios.post(`${apiUrl}/respondent/join`, {quizId: fh});
+export function invite(quizId) {
+  return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
+}
 
-  // const dummy = {
-  //   data: {
-  //     uh: 'participanttoken',
-  //     displayName
-  //   }
-  // };
-  // return dummy;
+export function join({quizId, name}) {
+  return axios.post(`${apiUrl}/respondent/join/${quizId}`, {name});
 }
 
 export function fetchQuizzes() {
@@ -89,8 +70,8 @@ export function fetchAnswers() {
   return axios.get(`${apiUrl}/answer`);
 }
 
-export function generateFormHash(payload) {
-  return axios.post(`${apiUrl}/quizzes/start`, payload);
+export function startQuiz(payload) {
+  return axios.post(`${apiUrl}/quizzes/:quizId/start`, payload);
 }
 
 export function createQuiz(newQuiz) {
