@@ -30,7 +30,8 @@ router.get('/question', (req, rsp) => {
                         description: question.description,
                         image: question.image,
                         time: question.time,
-                        name: elements[i].name
+                        name: elements[i].name,
+                        quiz_id: question.quiz_id
                     };
 
                     if (question.answers !== undefined) quest.answers = question.answers;
@@ -58,7 +59,8 @@ router.get('/question/:question_id', (req, rsp) => {
                     description: result.description,
                     image: result.image,
                     time: result.time,
-                    answers: result.answers,
+                    quiz_id: result.quiz_id,
+                    answers: result.answer,
                     name: response.data.var[0].name
                 };
 
@@ -92,8 +94,7 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         name: allQuestions[i].name
                     });
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
@@ -107,6 +108,8 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
     let bodyChecker = new BodyChecker();
 
     let inspectionResult = bodyChecker.checkPOSTquestion(req.body);
+
+    console.log(req.body);
 
     if (inspectionResult.length !== 0) {
         rsp.status(400).json({error: inspectionResult});
@@ -129,37 +132,44 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         label: payloadString,
         vartype: 'item',
         datatype: 'text'
-    }).then((response) => {
+    }).then(async (response) => {
 
-        async function f() {
+        let error = false;
 
-            let isGood = false;
 
-            let quizDetails = await axios.get('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", {
-                headers: {
-                    Authorization: req.headers.authorization
-                }
-            });
+        let quizDetails = await axios.get('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", {
+            headers: {
+                Authorization: req.headers.authorization
+            }
+        }).catch((err) => {
+            rsp.status(400).json ({error: "Quiz does not exist"})
+            error = true;
+        });
+        if (error) return;
 
-            quizDetails = quizDetails.data;
+        quizDetails = quizDetails.data;
 
-            quizDetails.questions.push(response.data.vh);
+        if (typeof quizDetails === "string") quizDetails = JSON.parse(quizDetails);
 
-            axios.put('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", quizDetails, {
-                headers: {
-                    Authorization: req.headers.authorization
-                }
-            }).then((res) => {
-                rsp.json({
-                    id: response.data.vh,
-                    name: response.data.name
-                });
-            }).catch((errr) => {
-                rsp.status(400).json(errr);
-            })
+        if (quizDetails === undefined) {
+            rsp.status(400).json({error: "Quiz id " + req.params.quiz_id + " does not exists!"})
+            return ;
         }
 
-        f();
+        quizDetails.questions.push(response.data.vh);
+
+        axios.put('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", quizDetails, {
+            headers: {
+                Authorization: req.headers.authorization
+            }
+        }).then((res) => {
+            rsp.json({
+                id: response.data.vh,
+                name: response.data.name
+            });
+        }).catch((errr) => {
+            rsp.status(400).json(errr);
+        })
     }).catch((err) => {
         rsp.json(err);
     });
@@ -249,59 +259,105 @@ router.put('/question/:question_id/add/:answer_id', (req, rsp) => {
 
 });
 
-router.delete('/question/:question_id/remove/:answer_id', (req, rsp) => {
-    async function f() {
-        let works = true;
+router.delete('/question/:question_id/remove/:answer_id', async (req, rsp) => {
+    let works = true;
 
-        const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch((err) => {
-            works = false;
-        });
+    const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch(() => {
+        works = false;
+    });
 
-        if (!works) {
-            rsp.status(400).json({error: 'question id is not valid'});
+    if (!works) {
+        rsp.status(400).json({error: 'question id is not valid'});
+        return;
+    }
+
+    let element = response.data.var[0];
+
+    try {
+        let question = JSON.parse(element.label);
+
+        if (question.answers === undefined) {
+            rsp.status(400).json({error: "Answers for question " + req.params.question_id + " does not exist"});
             return;
         }
 
-        let element = response.data.var[0];
+        let removed = false;
 
-        try {
-            let question = JSON.parse(element.label);
+        for (let i = 0; i < question.answers.length; i++) {
+            if (req.params.answer_id === question.answers[i]) {
+                //removing an element from array
+                question.answers.splice(i, 1);
+            }
+        }
 
-            if (question.answers === undefined) {
-                rsp.status(400).json({error: "Answers for question " + req.params.question_id + " does not exist"});
+        axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
+            label: JSON.stringify(question)
+        }).then((response) => {
+            rsp.status(200).json(response);
+        }).catch((err) => {
+            rsp.json(err);
+        });
+
+    } catch (e) {
+        rsp.status(400).json({error: 'question id is not valid'});
+    }
+});
+
+router.delete('/question/:question_id', async (req, rsp) => {
+
+    let error = false;
+
+    let response = await axios.get('http://localhost:3000/api/question/' + req.params.question_id, {
+        headers: {
+            Authorization: req.headers.authorization
+        }
+    }).catch( (err) => {
+        error = true;
+        rsp.status(400).json({error: "Question does not exists"});
+    });
+
+    if (error) return;
+
+    const quiz_id = response.data.quiz_id;
+
+    axios.delete(config.baseURL + '/v5/var/' + req.params.question_id)
+        .then(async (response) => {
+
+            let quiz = await axios.get('http://localhost:3000/api/quizzes/' + quiz_id + '/content', {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            }).catch( (err) => {
+                rsp.status(400).json({error: "Quiz (where quesion is assigned to) does not exist"})
+                error = true;
+            });
+
+            if (error) return;
+
+            quiz = quiz.data;
+
+            if (quiz.questions === undefined) {
+                rsp.status(400).json({error: "Question is not in the quiz list"});
                 return;
             }
-
-            let removed = false;
-
-            for (let i = 0; i < question.answers.length; i++) {
-                if (req.params.answer_id === question.answers[i]) {
-                    //removing an element from array
-                    question.answers.splice(i, 1);
+            for (let i = 0; i < quiz.questions.length; i++) {
+                if (quiz.questions[i] === req.params.question_id) {
+                    quiz.questions.splice(i, 1);
                 }
             }
 
-            axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
-                label: JSON.stringify(question)
-            }).then((response) => {
-                rsp.status(200).json(response);
-            }).catch((err) => {
-                rsp.json(err);
+            axios.put('http://localhost:3000/api/quizzes/' + quiz_id + '/content', quiz, {
+                headers: {
+                    Authorization: req.headers.authorization
+                }
+            }).then((resp) => {
+                rsp.status(200).json({message: "deleted"})
+            }).catch((errr) => {
+                rsp.status(400).json(errr);
             });
-
-        } catch (e) {
-            rsp.status(400).json({error: 'question id is not valid'});
-        }
-    }
-
-    f();
-});
-
-router.delete('/question/:question_id', (req, rsp) => {
-    axios.delete(config.baseURL + '/v5/var/' + req.params.question_id)
-        .then((response) => {
-            rsp.status(200).json({message: "deleted"});
         }).catch((err) => {
         rsp.json(err);
     });
+
 });
+

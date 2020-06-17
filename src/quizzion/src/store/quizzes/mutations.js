@@ -10,7 +10,7 @@ export function setQuizzes(state, quizzes) {
 
 /*
 * payload should contain an array of questions
-*
+* -- modified --
 * */
 export function setQuestions(state, questions) {
   state.questions = questions;
@@ -18,10 +18,10 @@ export function setQuestions(state, questions) {
 
 /*
 * payload should contain an array of answers
-*
+* -- modified --
 * */
 export function setAnswers(state, answers) {
-  state.answers = answers;
+  state.answers = answers.data;
 }
 
 /*
@@ -59,9 +59,9 @@ export function setFormHash(state, {quizId, fh}) {
 
 /* +
 * payload should contain the newly created question in proper format, as well as the target quiz id
-*
+* -- modified --
 * */
-export function createQuestion(state, {newQuestion, quizId}) {
+export function createQuestion(state, {quizId, newQuestion}) {
 
   let quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
@@ -71,62 +71,69 @@ export function createQuestion(state, {newQuestion, quizId}) {
 
 /* +
 * payload should contain the
-*
+* -- modified --
 * */
-export function updateQuestion(state, {updatedQuestion, questionId, quizId}) {
+export function updateQuestion(state, {questionId, updatedQuestion}) {
 
   state.questions.map((question, index) => {
     if (question.id === questionId) {
-      state.questions[index] = updatedQuestion;
+      state.questions[index].title = updatedQuestion.title;
+      state.questions[index].description = updatedQuestion.description;
+      state.questions[index].time = updatedQuestion.time;
+      state.questions[index].answers = updatedQuestion.answers;
     }
   })
 }
 
 /* +
 * payload should contain the full object that was edited, in proper format, as well as the id of the target quiz
-*
+* -- modified --
 * */
-export function deleteQuestion(state, {quizId, deletedQuestionId}) {
-  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
-  quiz.questions = quiz.questions.filter(questionId => questionId !== deletedQuestionId);
+export function deleteQuestion(state, {quizId, questionId}) {
 
-  state.questions = state.questions.filter(question => question.id !== deletedQuestionId);
+  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+
+  quiz.questions = quiz.questions.filter(id => id !== questionId);
+  state.questions = state.questions.filter(question => question.id !== questionId);
 }
 
 /* +
-*
+* -- modified --
 */
 export function addAnswer(state, {questionId, answer}) {
+
   let question = state.questions.find(question => question.id === questionId);
+
   question.answers.push(answer.id);
   state.answers.push(answer);
 }
 
 /* +
-*
+* -- modified
 */
 export function deleteAnswer(state, {questionId, answerId}) {
 
   let question = state.questions.find(question => question.id === questionId);
 
-  for (let i = 0; i < question.answers.length; i++) {
-    if (question.answers[i] === answerId) {
-      question.answers.splice(i, 1);
+  question.answers.map((answer, index) => {
+    if (answer === answerId) {
+      question.answers.splice(index, 1);
     }
-  }
+  });
 }
 
 /* +
 * payload should contain the
 *
 * */
-export function updateAnswer(state, {answerId, changedAnswer}) {
-
-  state.answers.map((answer, index) => {
-    if (answer.id === answerId) {
-      state.answers[index] = changedAnswer;
+export function updateAnswers(state, {answers}) {
+  for (let i = 0; i <state.answers.length ; i++) {
+    for (let j = 0; j <answers.length ; j++) {
+      if(state.answers[i].id === answers[j].id){
+        state.answers[i] = answers[j];
+      }
     }
-  })
+  }
 }
 
 export function activateQuiz(state, activatedId) {

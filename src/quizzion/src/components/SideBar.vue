@@ -40,7 +40,7 @@
             </q-item>
           </a>
 
-          <q-item clickable v-ripple style="margin-top: 150px;">
+          <q-item @click="$store.dispatch('user/logout')" clickable v-ripple style="margin-top: 150px;">
             <q-item-section avatar>
               <i class="fas fa-sign-out-alt"></i>
             </q-item-section>
@@ -57,7 +57,7 @@
         <div class="absolute-center bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <!-- // TODO get the logo -->
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+            <img src="~assets/boy_avatar@2x.png" />
           </q-avatar>
 
           <div class="text-weight-bold">{{ $store.state.user.displayName }}</div>

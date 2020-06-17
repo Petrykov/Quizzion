@@ -3,13 +3,14 @@ const app = require('../server.js');
 
 let token = '';
 
+
 describe('POST /api/user/login', function () {
-    it ('generates a token', function (done) {
+    it('generates a token', function (done) {
         request(app)
             .post('/api/user/login')
             .send({
-                "username" : "quizzion_user2",
-                "password" : "ff47967c96b6e97403997b6ef1168fef"
+                "username": "quizzion_user2",
+                "password": "ff47967c96b6e97403997b6ef1168fef"
             })
             .expect(200)
             .end((err, res) => {
@@ -31,12 +32,39 @@ describe('GET /api/question', function () {
 });
 
 let questionId;
-const quizId = 'testQuiz';
+let quiz_id = '';
+
 
 describe('POST /api/quizzes/:quiz_id/question', function () {
+
+    it('creates a mock quiz, where question will be added', function (done) {
+        request(app)
+            .post('/api/quizzes/')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .send({
+                label: "test color (generated in automated testing)",
+                description: "Test name (generated in automated testing)",
+                owner: "Test owner (generated in automated testing)",
+                title: "Test title (generated in automated testing)",
+                logo: "test logo (generated in automated testing)",
+                questions: [
+                    "-1- (generated in automated testing)",
+                    "-1- (generated in automated testing)"
+                ],
+                active: "false"
+            })
+            .expect(201)
+            .end((err, rsp) => {
+                if (err) throw err;
+                quiz_id = rsp.body.tn;
+                return done();
+            })
+    })
+
     it('creates a question', function (done) {
         request(app)
-            .post('/api/quizzes/' + quizId + '/question')
+            .post('/api/quizzes/' + quiz_id + '/question')
             .set('Content-Type', 'application/json')
             .set('Authorization', token)
             .send({
@@ -46,9 +74,9 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
                 "time": 15,
                 "answers": ["answer_id_1", "answer_id_2", "answer_id_3"]
             })
-            .expect(201)
+            .expect(200)
             .end((err, res) => {
-                if (err) return done(err);
+                if (err) throw err;
 
                 //id of the answer
                 questionId = res.body.id;
@@ -56,9 +84,31 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
                 return done();
             });
     });
+
+    it('verify that quiz has id of newly created question', function (done) {
+        request(app)
+            .get('/api/quizzes/' + quiz_id + '/content')
+            .set('Authorization', token)
+            .expect(200)
+            .end((err, rsp) => {
+                if (err) throw err;
+                let questionDetails = rsp.body;
+
+                let questionIdExists = false;
+                for (let i = 0; i < questionDetails.questions.length; i++) {
+                    if (questionDetails.questions[i] === questionId) questionIdExists = true;
+                }
+
+                if (!questionIdExists) {
+                    throw "POST /api/quizzes/:quiz_id/question does not add question id to list if id"
+                }
+                return done();
+            })
+
+    })
 });
 
-describe('PUT /api/question/:id', function () {
+describe.skip('PUT /api/question/:id', function () {
     it('updates the newly created question', function (done) {
         request(app)
             .put('/api/question/' + questionId)
@@ -89,7 +139,7 @@ describe('PUT /api/question/:id', function () {
     })
 })
 
-describe('PUT /api/question/:id/add/:answer_id', function () {
+describe.skip('PUT /api/question/:id/add/:answer_id', function () {
     it('adds new answer to the array of answers for created question', function (done) {
         request(app)
             .put('/api/question/' + questionId + '/add/new_sample_answer_id')
@@ -112,7 +162,7 @@ describe('PUT /api/question/:id/add/:answer_id', function () {
     });
 });
 
-describe('DELETE /api/question/:id/remove/:answer_id', function () {
+describe.skip('DELETE /api/question/:id/remove/:answer_id', function () {
     it('removes previously created answer from the array of answers for created question', function (done) {
         request(app)
             .delete('/api/question/' + questionId + '/remove/new_sample_answer_id')
@@ -136,10 +186,46 @@ describe('DELETE /api/question/:id/remove/:answer_id', function () {
 });
 
 describe('DELETE /api/question/:id', function () {
-    it ('removes a newly created question', function (done) {
+    it('removes a newly created question', function (done) {
         request(app)
             .delete('/api/question/' + questionId)
             .set('Authorization', token)
             .expect(200, done);
     })
+
+    it('removes the id removed question in quiz`s answers[] array', function (done) {
+        request(app)
+            .get('/api/quizzes/' + quiz_id + '/content')
+            .set('Authorization', token)
+            .expect(200)
+            .end((err, rsp) => {
+                if (err) throw err;
+                let questionDetails = rsp.body;
+
+                let questionIdExists = true;
+                for (let i = 0; i < questionDetails.questions.length; i++) {
+                    if (questionDetails.questions[i] === questionId) questionIdExists = false;
+                }
+
+                if (!questionIdExists) {
+                    throw "POST /api/quizzes/:quiz_id/question does not remove a ";
+                }
+                return done();
+            })
+    });
+});
+
+describe('Removes a test quiz', function () {
+    it('does that', function (done) {
+        request(app)
+            .delete('/api/quizzes/' + quiz_id)
+            .set('Authorization', token)
+            .expect(200)
+            .end( (err, rsp) => {
+                if (err) throw err;
+                console.log(rsp.body);
+                console.log('is body');
+                done();
+            });
+    });
 });
