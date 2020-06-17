@@ -162,7 +162,17 @@
 
       },
       submitAnswer() {
-        console.log("submit answer was called")
+
+        const totalTime =  this.currentQuestion.time;
+        const answer = {
+          uid: this.$store.state.user.token,
+          questionTitle: this.currentQuestion.title,
+          isCorrect: this.$store.getters['quizzes/getAnswerById'](this.selectedAnswer).correct,
+          answerLabel: this.answerLabel(this.selectedAnswer),
+          time: totalTime - this.timeRemaining,
+          totalTime};
+
+        this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
       }
     }
   }

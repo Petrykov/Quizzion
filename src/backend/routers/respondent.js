@@ -113,8 +113,9 @@ router.get("/:quizId/responses", (req, res) => {
 
 //RESPONDENT_ANSER
 router.post('/respondent/:quizId/answer', (req, res) => {
+    console.log(req.body);
     db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
-        caculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
+        calculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
     if (res) res.send("Successful")
     else res.send("Errors occured!")
 })
@@ -156,7 +157,7 @@ router.get('/:quizId/result/respondent/:id', (req, res) => {
     })
 })
 
-function caculateScore(isCorrect, total, time) {
+function calculateScore(isCorrect, total, time) {
     let score;
     let scale = total / 4
     if (isCorrect) {

@@ -333,6 +333,20 @@ export function deleteQuestion({commit}, payload) {
   });
 }
 
+export function submitAnswer({commit}, payload) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.submitAnswer(payload);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+
 /*
 * reset the state of the module, including the nested results module.
 *

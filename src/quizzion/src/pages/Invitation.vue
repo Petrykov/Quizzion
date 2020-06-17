@@ -10,7 +10,11 @@
       <div class="right-side col-xs-12 col-sm-6">
 
         <div>
-          <i class="far fa-paper-plane fa-5x" style="margin-top: 3%; margin-bottom: 3%"></i>
+
+          <q-avatar v-if="invitedQuiz.logo" size="100px" class="q-mt-md">
+            <img :src="invitedQuiz.logo"/>
+          </q-avatar>
+          <i v-else class="far fa-paper-plane fa-5x" style="margin-top: 3%; margin-bottom: 3%"></i>
           <h5 class="text">You're invited to join </h5>
           <h5 class="text"><strong>{{ invitedQuiz.title }}</strong></h5>
           <h5 class="text">By organizer </h5>
@@ -56,7 +60,6 @@
     },
     methods: {
       toFirstQuestion() {
-
         this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
           this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
         });

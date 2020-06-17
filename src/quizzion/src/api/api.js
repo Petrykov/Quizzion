@@ -129,8 +129,8 @@ export function updateAnswers(answers) {
 }
 
 
-export function submitAnswerForm(quizId, answers) {
-  // return axios.post(`${apiUrl}/quizzes/${quizId}/submit`, { answers });
+export function submitAnswer({quizId, answer}) {
+  return axios.post(`${apiUrl}/respondent/${quizId}/answer`, answer );
 }
 
 export function fetchResults() {
