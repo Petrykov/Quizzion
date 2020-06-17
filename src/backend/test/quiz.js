@@ -3,6 +3,9 @@ const app = require('../server.js');
 
 let token = '';
 
+
+return;
+
 describe('POST /api/user/login', function () {
     it ('generates a token', function (done) {
         request(app)

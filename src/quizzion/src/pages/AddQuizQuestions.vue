@@ -30,7 +30,7 @@
           <div class="question-list-wrapper">
             <p
               class="q-mt-lg"
-              style="font-size:3em;">{{ currentQuiz.title }}</p>
+              style="font-size:3em;">{{currentQuiz.title }}</p>
 
             <div class="q-mt-xl">
 
@@ -40,17 +40,17 @@
 
                 <div>
                   <p
-                    v-for="(questionId) in currentQuiz.questions"
-                    :key="questionId">
+                    v-for="(question) in currentQuiz.questions"
+                    :key="question">
 
                     <q-btn
                       class="q-mt-lg"
                       style="width:90%;"
-                      :outline="questionId !== selectedQuestionId"
+                      :outline="question !== selectedQuestionId"
                       rounded
                       color="black"
-                      @click="onQuestionClick(questionId)">
-                      {{ questionTitle(questionId) }}
+                      @click="onQuestionClick(question)">
+                      {{ questionTitle(question) }}
                     </q-btn>
 
                   </p>
@@ -147,6 +147,7 @@
                   style="height: 275px; max-width: 300px;">
 
                   <div
+                    v-if="answersList"
                     class="col q-mt-sm">
 
                     <div
@@ -218,7 +219,9 @@
               <div
                 class="timer">
 
-                <div class="row col">
+                <div
+                  v-if="selectedQuestion"
+                  class="row col">
                   <div class="q-pa-md q-gutter-sm time-section">
                     <q-btn
                       v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
@@ -303,7 +306,7 @@
       },
 
       getAnswers() {
-        return this.$store.getters['quizzes/getAnswers'](this.question.answers);
+        return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
       },
 
       questionTitle() {
@@ -362,22 +365,19 @@
 
       addQuestion() {
 
-        let quizId, questionId, newQuestion;
+        let quizId, newQuestion;
 
         quizId = this.currentQuizId;
 
-        questionId = uuidv4();
-
         newQuestion = {
-          id: questionId,
-          title: 'new question',
-          description: 'sample description',
-          image: '',
-          time: undefined,
+          title: "new question",
+          description: "new description",
+          image: "",
+          time: 30,
           answers: []
         };
 
-        this.$store.commit('quizzes/createQuestion', {newQuestion, quizId});
+        this.$store.dispatch('quizzes/createQuestion', {quizId, newQuestion});
       },
 
       deleteQuestion() {
@@ -387,8 +387,7 @@
         quizId = this.currentQuizId;
         deletedQuestionId = this.selectedQuestionId;
 
-        this.question = ' ';
-        this.$store.commit('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+        this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
       },
 
       async updateQuestion() {
@@ -398,32 +397,35 @@
           this.showNotification("Please select the time of the quiz", "red");
         } else {
 
-          quizId = this.currentQuizId;
           questionId = this.selectedQuestionId;
-
 
           updatedQuestion = this.question;
 
           updatedQuestion.image = this.imageUrl;
           answers = this.answersList;
 
-          for (let i = 0; i < answers.length; i++) {
+          let answersIdList = [];
 
-            let changedAnswer = answers[i];
-            let answerId = changedAnswer.id;
+          this.answersList.map((answer) => {
+            answersIdList.push(answer.id);
+          });
 
-            updatedQuestion.answers[i] = this.answersList[i].id;
+          updatedQuestion = {
+            title: this.question.title,
+            description: this.question.description,
+            image: this.question.image,
+            time: this.question.time,
+            answers: answersIdList
+          };
 
-            this.$store.commit('quizzes/updateAnswer', {answerId, changedAnswer})
-          }
+          this.$store.dispatch('quizzes/updateAnswers', {answers});
+          this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
 
-          this.$store.commit('quizzes/updateQuestion', {updatedQuestion, questionId, quizId});
-
-          console.log(this.selectedQuestion);
 
           this.showNotification("Question was saved", "blue");
-        }
-      },
+          }
+        },
+     
 
       timeCheck() {
 
@@ -444,14 +446,13 @@
         questionId = this.selectedQuestionId;
 
         let answer = {
-          id: uuidv4(),
           label: this.newAnswer,
           correct: false
         };
 
-        this.answersList.push(answer);
+        this.$store.dispatch('quizzes/createAnswer', {questionId, answer});
 
-        this.$store.commit('quizzes/addAnswer', {questionId, answer});
+        this.answersList.push(answer);
 
         this.newAnswer = '';
       },
@@ -461,14 +462,13 @@
         let questionId;
         questionId = this.selectedQuestionId;
 
+        this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
+
         for (let i = 0; i < this.answersList.length; i++) {
           if (this.answersList[i].id === answerId) {
             this.answersList.splice(i, 1);
           }
-
         }
-
-        this.$store.commit('quizzes/deleteAnswer', {questionId, answerId});
       },
 
       promptToDelete() {

@@ -14,10 +14,6 @@ export default function () {
 * */
 
 export let answerFormMock = {
-  quizId: 'kh8yi7y',
-  answers: [
-    {questionId: 'dr5rty', answerId: '65ry5'},
-    {questionId: 'dt6r', answerId: 'dhi8d'},
-    {questionId: 'ft6t', answerId: 'ehiruh'}
-  ]
+  quizId: '',
+  answers: []
 };

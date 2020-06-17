@@ -170,6 +170,7 @@ router.get('/:quizId/content', (req, rsp) => {
     }).then(function (response) {
 
         let result = (response.data.content.content);
+        rsp.setHeader('Content-Type', 'application/json');
         rsp.send(result);
 
     }).catch(error => rsp.send(error))
@@ -202,7 +203,6 @@ router.post('/', (req, rsp) => {
     let owner = req.body.owner;
     let questions = req.body.questions;
 
-    console.log(req.body);
 
     axios.post(`${baseUrl}/template`, {
         label: req.body.label, //save color as a label
