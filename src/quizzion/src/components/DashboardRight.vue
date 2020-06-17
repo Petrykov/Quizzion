@@ -76,7 +76,7 @@
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
           <q-btn
-            v-if="!currentQuiz.fh"
+            v-if="!currentQuiz.stored"
             unelevated
             rounded
             color="white"
@@ -86,7 +86,7 @@
           />
         </div>
 
-        <div class="row justify-between" v-if="currentQuiz.fh">
+        <div class="row justify-between" v-if="currentQuiz.stored">
 
           <div>
             <q-icon
@@ -194,15 +194,15 @@
       },
       generateLink() {
 
-        if (!this.currentQuiz.fh){
-          this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id)
+        if (!this.currentQuiz.stored){
+          this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id)
         }
       }
     },
 
     computed: {
       getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
+        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
       },
 
     },
