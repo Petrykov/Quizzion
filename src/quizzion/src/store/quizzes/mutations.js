@@ -100,7 +100,7 @@ export function deleteQuestion(state, {quizId, questionId}) {
 /* +
 * -- modified --
 */
-export function addAnswer(state, {questionId, answer}) {
+export function createAnswer(state, {questionId, answer}) {
 
   let question = state.questions.find(question => question.id === questionId);
 
@@ -120,6 +120,8 @@ export function deleteAnswer(state, {questionId, answerId}) {
       question.answers.splice(index, 1);
     }
   });
+
+  state.answers = state.answers.filter((answer) => answer.id !== answerId);
 }
 
 /* +

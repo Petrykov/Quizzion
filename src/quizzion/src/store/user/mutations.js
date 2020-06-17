@@ -17,7 +17,9 @@ export function join(state, {token, name}) {
 }
 
 export function setQuizzes(state, quizzes) {
-  state.quizzes = quizzes;
+  quizzes.forEach((quiz) => {
+    state.quizzes.push(quiz.id);
+  });
 }
 
 export function createQuiz(state, newQuizId) {

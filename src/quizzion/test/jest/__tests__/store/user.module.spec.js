@@ -37,14 +37,18 @@ describe('User module', () => {
       expect(store.state.user.role).toBe('moderator');
     });
 
-    it('setQuizzes mutation sets list of quizzes', () => {
+    it('setQuizzes mutation sets list of quizIds', () => {
       const store = new Vuex.Store(createStoreConfig());
 
-      const quizzes = ['quiz1', 'quiz2', 'quiz3'];
+      const quizzes = [
+        {id: 'quiz1', title: 'test'},
+        {id: 'quiz2', title: 'test'},
+        {id: 'quiz3', title: 'test'}
+      ];
 
       store.commit('user/setQuizzes', quizzes);
 
-      expect(store.state.user.quizzes).toEqual(quizzes);
+      expect(store.state.user.quizzes).toEqual(['quiz1', 'quiz2', 'quiz3']);
     });
 
     it('createQuiz mutation adds quiz to quizzes list', () => {
