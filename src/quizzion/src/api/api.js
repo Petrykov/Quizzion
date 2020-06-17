@@ -133,6 +133,10 @@ export function submitAnswer({quizId, answer}) {
   return axios.post(`${apiUrl}/respondent/${quizId}/answer`, answer );
 }
 
+export function fetchRespondentResult({quizId, id}) {
+  return axios.get(`${apiUrl}/${quizId}/result/respondent/${id}`);
+}
+
 export function fetchResults() {
   // return axios.get(`${apiUrl}/results`)
 }
