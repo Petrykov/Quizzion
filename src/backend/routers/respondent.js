@@ -57,12 +57,11 @@ router.put('/answer', (req, res) => {
 })
 
 // RESPONDENT_JOIN
-
 router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
     if (rsp) {
-        rsp.send({ "id": uniqueId })
+        rsp.send({ id: uniqueId, quizInfo: findItemById(req.params.quizId) })
     }
     else rsp.send("Errors occured!")
 })
@@ -78,12 +77,7 @@ router.post('/quizzes/:quizId/start', (req, res) => {
 
     if (res) {
         let request = {
-            id: req.params.quizId,
-            title: req.body.title,
-            description: req.body.description,
-            active: true,
-            logo: req.body.logo,
-            color: req.body.color,
+            quiz: req.body.quiz,
             questions: req.body.questions,
             answers: req.body.answers
         }
@@ -102,7 +96,7 @@ router.post('/quizzes/:quizId/start', (req, res) => {
 
 function findItemById(quizId) {
     for (let item of quizList) {
-        if (item.id === quizId) {
+        if (item.quiz.id === quizId) {
             return item
         }
     }
@@ -199,7 +193,7 @@ router.get('/results/:quizId', (req, rsp) => {
             players = res
             for (let i of players) {
                 console.log("here")
-                 db.all("select correct, score from responses where uid = ?", [i.uid], function (err, resp) {
+                db.all("select correct, score from responses where uid = ?", [i.uid], function (err, resp) {
                     if (resp) {
                         let response = {
                             user: "i",
