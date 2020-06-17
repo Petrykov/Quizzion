@@ -1,5 +1,9 @@
+<!--suppress ALL -->
 <template>
   <q-page v-if="invitedQuiz" class="bg-image">
+<!--    <div class="q-pa-md">-->
+<!--      <q-btn color="red" @click="showLoading" label="Show Loading"/>-->
+<!--    </div>-->
     <div class="bg-image row window-height items-center">
       <div class="left-side col-xs-12 col-sm-6">
         <h2 style="color: white">
@@ -34,36 +38,65 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        playerName: '',
-        fh: '',
-        quizId: ''
-      };
-    },
-    computed: {
-      invitedQuiz() {
-        return this.$store.getters['quizzes/getQuizById'](this.quizId);
-      }
-    },
-    beforeMount() {
-      this.fh = this.$route.params.quizId;
+    import {QSpinnerFacebook} from 'quasar'
 
-      this.$q.loading.show({message: 'Loading quiz content...'});
-      this.$store.dispatch('user/join', this.fh).then((token) => {
-        this.$store.dispatch('quizzes/fetchInvitedQuiz', {token, fh: this.fh}).then((quizId) => {
-          this.quizId = quizId;
-          this.$q.loading.hide();
-        })
-      });
-    },
-    methods: {
-      toFirstQuestion() {
-        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
-      }
+    export default {
+        data: () => {
+            return {
+                playerName: '',
+                fh: '',
+                quizId: ''
+            };
+        },
+        computed: {
+            invitedQuiz() {
+                return this.$store.getters['quizzes/getQuizById'](this.quizId);
+            }
+        },
+        beforeMount() {
+            this.fh = this.$route.params.quizId;
+
+            this.$q.loading.show({message: 'Loading quiz content...'});
+            this.$store.dispatch('user/join', this.fh).then((token) => {
+                this.$store.dispatch('quizzes/fetchInvitedQuiz', {token, fh: this.fh}).then((quizId) => {
+                    this.quizId = quizId;
+                    this.$q.loading.hide();
+                })
+            });
+        },
+        beforeDestroy() {
+            if (this.timer !== void 0) {
+                clearTimeout(this.timer)
+                this.$q.loading.hide()
+            }
+        },
+        methods: {
+            toFirstQuestion() {
+                this.$socket.client.emit('connect-t', {quiz_id: this.fh, name: this.playerName});
+                this.$socket.client.on('start', () => {
+                    this.$q.loading.hide();
+                    this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+                });
+                this.showLoading();
+            },
+            showLoading() {
+                /* This is for Codepen (using UMD) to work */
+                const spinner = typeof QSpinnerFacebook !== 'undefined'
+                    ? QSpinnerFacebook // Non-UMD, imported above
+                    : Quasar.components.QSpinnerFacebook; // eslint-disable-line
+                /* End of Codepen workaround */
+
+                this.$q.loading.show({
+                    spinner,
+                    spinnerColor: 'yellow',
+                    spinnerSize: 140,
+                    backgroundColor: 'purple',
+                    message: 'Waiting for Quiz Master to start the quiz',
+                    messageColor: 'white'
+                });
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

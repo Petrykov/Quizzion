@@ -24,6 +24,8 @@ server_socket.on('connection', (socket) => {
 
     socket.on('connect-t', function (data) {
         console.log("New user connected to TCP socket");
+        console.log(data);
+        console.log('----');
         let quizmaster = false;
         if (data.name === undefined) quizmaster = true;
 
@@ -54,6 +56,8 @@ server_socket.on('connection', (socket) => {
     });
 
     socket.on('start', function () {
+        console.log(".on START ");
+        console.log('----');
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quizMaster === socket.id) {
                 for (let j = 0; j < db.quizzes[i].users.length; j++) {
@@ -64,6 +68,9 @@ server_socket.on('connection', (socket) => {
     });
 
     socket.on('quiz-done', function (data) {
+        console.log(".on QUIZ DONE");
+        console.log(data);
+        console.log('----');
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quiz_id === data.quiz_id) {
 
@@ -73,6 +80,9 @@ server_socket.on('connection', (socket) => {
     })
 
     socket.on('show-results', function (data) {
+        console.log(".on SHOW-RESULTS");
+        console.log(data);
+        console.log('----');
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quiz_id === data.quiz_id) {
                 for (let j = 0; j < db.quizzes[i].users.length; j++) {

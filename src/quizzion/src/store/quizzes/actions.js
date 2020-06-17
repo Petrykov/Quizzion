@@ -214,6 +214,10 @@ export function generateFormHash(context, quizId) {
     try {
       const response = await api.generateFormHash({uh: context.rootState.user.userId, tn: quizId});
       context.commit('setFormHash', {quizId, fh: response.data.form[0]});
+
+      //todo ASK Frontend guy, if this is a nice spot for socket connection
+      //todo (Better to do this in Component itself)
+
       resolve();
     } catch (e) {
       console.log(e);

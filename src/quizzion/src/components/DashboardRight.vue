@@ -73,6 +73,13 @@
         </div>
       </div>
 
+      <div v-if="currentQuiz.fh" style="border: 2px solid red">
+        <p style="color:white; font-size: 2em;">Connected users: </p>
+        <div v-if="users.length !== 0" class="row">
+          <p v-for="(user, index) in users" class="col" :key="index">{{++index}}) {{user}}</p>
+        </div>
+      </div>
+
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
           <q-btn
@@ -134,7 +141,7 @@
             </q-icon>
 
             <q-btn
-              @click="$store.dispatch('quizzes/activateQuiz', currentQuiz)"
+              @click="startQuizMethod"
               unelevated
               rounded
               class="col-offset-2 col-2"
@@ -151,69 +158,89 @@
 </template>
 
 <script>
-  import Qrcode from "./Qrcode";
-  import {copyToClipboard} from 'quasar';
+    import Qrcode from "./Qrcode";
+    import {copyToClipboard} from 'quasar';
 
-  // var baseUrl = "http://mark-developer.com:555/#"
-  var baseUrl = "http://localhost:8080/#";
+    // var baseUrl = "http://mark-developer.com:555/#"
+    var baseUrl = "http://localhost:8080/#";
 
-  export default {
-    components: {Qrcode},
-    data() {
-      return {
-        startQuiz: false,
-        showQRcode: false,
-      };
-    },
+    export default {
+        components: {Qrcode},
+        data() {
+            return {
+                startQuiz: false,
+                showQRcode: false,
+                users: []
+            };
+        },
 
-    methods: {
-      goToEdit() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
-      },
+        methods: {
+            goToEdit() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+            },
 
-      editQuiz() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}`);
-      },
+            editQuiz() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}`);
+            },
 
-      copyUrl() {
-        copyToClipboard(this.getQuizLink);
-        this.triggerNotification();
-      },
+            copyUrl() {
+                copyToClipboard(this.getQuizLink);
+                this.triggerNotification();
+            },
 
-      triggerNotification() {
-        this.$q.notify({
-          type: 'positive',
-          message: `Copied link!`,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => {
-              }
+            startQuizMethod() {
+                this.$socket.client.emit('start');
+                this.$store.dispatch('quizzes/activateQuiz', currentQuiz);
+            },
+
+            triggerNotification() {
+                this.$q.notify({
+                    type: 'positive',
+                    message: `Copied link!`,
+                    actions: [
+                        {
+                            label: 'Dismiss', color: 'white', handler: () => {
+                            }
+                        }
+                    ]
+                })
+            },
+            generateLink() {
+                console.log('method!');
+                if (!this.currentQuiz.fh) {
+                    this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id);
+
+                    setTimeout( () => {
+                        console.log('form hash: ' + this.currentQuiz.fh);
+                        this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.fh});
+                    }, 2000);
+                }
+
+                this.$socket.client.on('user-connected', (data) => {
+                  console.log(data);
+                  console.log("Respondent above");
+                  this.users.push(data.name);
+                });
+
             }
-          ]
-        })
-      },
-      generateLink() {
+        },
 
-        if (!this.currentQuiz.fh){
-          this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id)
-        }
-      }
-    },
+        computed: {
+            getQuizLink() {
+                return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
+            },
 
-    computed: {
-      getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
-      },
+        },
 
-    },
+        props: {
+            currentQuiz: {
+                type: Object,
+                required: true
+            }
+        },
 
-    props: {
-      currentQuiz: {
-        type: Object,
-        required: true
-      }
-    }
-  };
+
+    };
 </script>
 
 

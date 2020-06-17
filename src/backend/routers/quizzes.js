@@ -355,8 +355,6 @@ router.post('/start', async (req, rsp) => {
         console.log(errors)
     });
 
-    console.log(456)
-
     axios.post(`${baseUrl}/form`, {
         frm_label: JSON.stringify(questions.data),
         type: 'survey',
