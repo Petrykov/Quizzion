@@ -1,6 +1,6 @@
 <template>
   <div class="column items-center">
-    <img class="logo" alt="Quasar logo" src="~assets/quasar-logo-full.svg"/>
+    <img class="logo" alt="Quasar logo" src="~assets/logo_2x.png"/>
     <h4 class="text-h4">Welcome back</h4>
     <div class="row">
       <q-form>
@@ -53,7 +53,7 @@
 
   .q-btn.login {
     width: 100%;
-    background-color: #050152;
+    background-color: #181C30;
   }
 
   .img.logo {
