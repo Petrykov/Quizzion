@@ -56,6 +56,8 @@ router.put('/answer', (req, res) => {
         })
 })
 
+// RESPONDENT_JOIN
+
 router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
@@ -65,12 +67,14 @@ router.post('/respondent/join/:quizId', (req, rsp) => {
     else rsp.send("Errors occured!")
 })
 
-router.get('/:quizId/invite', (req, rsp) => {
+//QUIZ_INIT
+router.get('/quizzes/:quizId/invite', (req, rsp) => {
     let stateQuiz = findItemById(req.params.quizId)
     rsp.send(stateQuiz)
 })
 
-router.post('/:quizId/start', (req, res) => {
+//QUIZ_START
+router.post('/quizzes/:quizId/start', (req, res) => {
 
     if (res) {
         let request = {
@@ -90,9 +94,10 @@ router.post('/:quizId/start', (req, res) => {
         } else {
             currentQuiz = request
         }
-        res.send(currentQuiz)
+        res.send(findItemById(req.params.quizId))
     }
     else rsp.send("Some errors occured")
+
 })
 
 function findItemById(quizId) {
@@ -112,6 +117,7 @@ router.get("/:quizId/responses", (req, res) => {
     })
 })
 
+//RESPONDENT_ANSER
 router.post('/respondent/:quizId/answer', (req, res) => {
     db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
         caculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
