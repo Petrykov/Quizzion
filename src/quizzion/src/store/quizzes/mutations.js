@@ -144,12 +144,3 @@ export function activateQuiz(state, activatedId) {
 export function reset(state) {
   Object.assign(state, initialState());
 }
-
-//mock only for dev
-import {quizzesMock} from "./state";
-
-export function mock(state) {
-  state.quizzes = quizzesMock.quizzes;
-  state.questions = quizzesMock.questions;
-  state.answers = quizzesMock.answers;
-}

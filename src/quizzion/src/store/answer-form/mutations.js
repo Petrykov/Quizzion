@@ -21,10 +21,3 @@ export function reset( state ) {
     Object.assign(state, initialState());
 }
 
-//mock only for dev
-import { answerFormMock } from "./state";
-
-export function mock(state) {
-  state.quizId = answerFormMock.quizId;
-  state.answers = answerFormMock.answers;
-}
