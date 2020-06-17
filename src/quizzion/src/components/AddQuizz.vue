@@ -102,7 +102,7 @@
   export default {
     data: () => {
       return {
-        colors: ["#008080", "#800080", "#006600", "#ffa500", "#990000"],
+        colors: ["#522785", "#9A1F40", "#181C30", "#EC633E", "#3099B8"],
         quizDes: "",
         quizTitle: null,
         alert: false,

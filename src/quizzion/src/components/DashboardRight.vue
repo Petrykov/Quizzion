@@ -36,7 +36,7 @@
 
       <p
         class="question-description"
-        style="color: black; font-size: 1.8em; width: fit-content;">
+        style="color: white; font-size: 1.8em; width: fit-content;">
         {{currentQuiz.description }}
       </p>
     </div>
@@ -64,7 +64,7 @@
                 <p
                   v-for="(questionId, index) in currentQuiz.questions"
                   :key="questionId"
-                  style="font-size: 1.5em; color:black; margin-bottom: 1em;">
+                  style="font-size: 1.5em; color:white; margin-bottom: 1em;">
                   {{(index+1) +") "+ $store.getters['quizzes/getQuestionTitleById'](questionId) }}
                 </p>
               </li>
@@ -76,7 +76,7 @@
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
           <q-btn
-            v-if="!currentQuiz.fh"
+            v-if="!currentQuiz.stored"
             unelevated
             rounded
             color="white"
@@ -86,7 +86,7 @@
           />
         </div>
 
-        <div class="row justify-between" v-if="currentQuiz.fh">
+        <div class="row justify-between" v-if="currentQuiz.stored">
 
           <div>
             <q-icon
@@ -170,10 +170,10 @@
       goToEdit() {
         this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
       },
+
       editQuiz() {
         this.$router.push(`quizzes/${this.currentQuiz.id}`);
       },
-
 
       copyUrl() {
         copyToClipboard(this.getQuizLink);
@@ -194,15 +194,15 @@
       },
       generateLink() {
 
-        if (!this.currentQuiz.fh){
-          this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id)
+        if (!this.currentQuiz.stored){
+          this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id)
         }
       }
     },
 
     computed: {
       getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
+        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
       },
 
     },

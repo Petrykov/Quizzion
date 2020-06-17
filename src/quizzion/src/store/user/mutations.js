@@ -10,9 +10,10 @@ export function login(state, user) {
   state.email = user.email;
 }
 
-export function join(state, token) {
+export function join(state, {token, name}) {
   state.role = Roles.RESPONDENT;
   state.token = token;
+  state.displayName = name;
 }
 
 export function setQuizzes(state, quizzes) {

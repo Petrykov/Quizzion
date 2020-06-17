@@ -57,7 +57,7 @@
         <div class="absolute-center bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <!-- // TODO get the logo -->
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+            <img src="~assets/boy_avatar@2x.png" />
           </q-avatar>
 
           <div class="text-weight-bold">{{ $store.state.user.displayName }}</div>

@@ -35,14 +35,18 @@ export function logout({dispatch}) {
   });
 }
 
-export function join({commit, dispatch}, fh) {
+
+export function join({commit, dispatch}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.join(fh);
-      commit('join', response.data.token);
+      const response = await api.join(payload);
+      console.log("response");
+      console.log(response);
 
-      resolve(response.data.token);
+      commit('join', {token: response.data.id, name: payload.name});
+
+      resolve();
     } catch (e) {
       console.log("Error while participate API: ");
       console.log(e);

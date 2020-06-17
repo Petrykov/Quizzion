@@ -23,27 +23,27 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
-      console.log('res')
-      console.log(response)
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
     } catch (e) {
-      console.log("fetch quizzes error ");
-      console.log(e);
+      console.log("fetch quizzes error " + e);
       reject(e);
     }
   });
 }
 
-export function fetchInvitedQuiz({commit}, payload) {
+export function fetchInvitedQuiz({commit}, quizId) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.fetchInvitedQuiz(payload);
-      console.log(response)
-      commit('setQuizzes', [response.data]);
-      resolve(response.data.id)
+      const response = await api.invite(quizId);
+
+      commit('setQuizzes', [response.data.quiz]);
+      commit('setQuestions', response.data.questions);
+      commit('setAnswers', response.data.answers);
+
+      resolve()
     } catch (e) {
       console.log("fetch quiz error ");
       console.log(e);
@@ -54,7 +54,7 @@ export function fetchInvitedQuiz({commit}, payload) {
 
 /*
 * grab the questions (owned by current user) from the backend, then commit the setQuestions mutation
-*
+* -- modified --
 * */
 export function fetchQuestions({commit}) {
 
@@ -64,7 +64,6 @@ export function fetchQuestions({commit}) {
       commit('setQuestions', response.data);
       resolve();
     } catch (e) {
-      console.log("Error while fetching questions API: " + e.toString());
       console.log(e);
       reject(e);
     }
@@ -73,7 +72,7 @@ export function fetchQuestions({commit}) {
 
 /*
 * grab the answers (owned by current user) from the backend, then commit the setQuizzes mutation
-*
+* -- modified --
 * */
 export function fetchAnswers({commit}) {
 
@@ -84,10 +83,89 @@ export function fetchAnswers({commit}) {
       resolve();
     } catch (e) {
       console.log("Error while fetching answers API: " + e);
-      console.log(e);
       reject(e);
     }
   });
+}
+
+// -- created --
+export function createAnswer({commit}, payload) {
+
+  let newAnswer = payload.answer;
+  let questionId = payload.questionId;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+
+      const response = await api.addAnswer(newAnswer);
+
+      if (response.status === 201) {
+        newAnswer.id = response.data.id;
+        await api.addAnswerToQuestion(questionId, response.data.id);
+        commit('addAnswer', {questionId: questionId, answer: newAnswer});
+      }
+
+    } catch (e) {
+      console.log("Error while adding an answer: " + e);
+      reject(e);
+    }
+  });
+}
+
+// -- created --
+export function deleteAnswer({commit}, payload) {
+
+  let answerId = payload.answerId;
+  let questionId = payload.questionId;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.deleteAnswer(answerId);
+
+      if (response.status === 200) {
+        commit('deleteAnswer', {questionId: questionId, answerId: answerId});
+      }
+
+    } catch (e) {
+      console.log("Error while deleting an answer: " + e);
+      reject(e);
+    }
+  });
+}
+
+// -- created --
+export function updateAnswers({commit}, payload) {
+
+  let answers = payload.answers;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      await api.updateAnswers(answers);
+
+      commit('updateAnswers', {answers});
+
+    } catch (e) {
+      console.log("Error while updating an answer: " + e);
+      reject(e);
+    }
+  });
+}
+
+
+
+export function addAnswerToTheQuestion({commit}, payload) {
+
+  let questionId = payload.questionId;
+  let answerId = payload.answerId;
+
+  return new Promise(async (resolve,reject) => {
+    try{
+      await api.addAnswerToQuestion()
+    }catch(err) {
+      console.log("Error while adding answer to the question: " + e)
+    }
+  })
+
 }
 
 /*
@@ -108,7 +186,6 @@ export function createQuiz({commit}, newQuiz) {
       resolve(id);
     } catch (e) {
       console.log("Error while creating quiz: " + e);
-      console.log(e);
       reject(e);
     }
   });
@@ -126,18 +203,22 @@ export function updateQuiz({commit}, updatedQuiz) {
       commit('updateQuiz', updatedQuiz);
       resolve();
     } catch (e) {
-      console.log(e);
+      console.log("Error while updating the quiz: " + e);
       reject(e);
     }
   });
 }
 
-export function generateFormHash(context, quizId) {
+export function startQuiz(context, quizId) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.generateFormHash({uh: context.rootState.user.userId, tn: quizId});
-      context.commit('setFormHash', {quizId, fh: response.data.form[0]});
+      const payload = context.getters['getFullQuizPackage'](quizId);
+
+      console.log(payload)
+
+      await api.startQuiz(payload);
+      context.commit('setStored', quizId);
       resolve();
     } catch (e) {
       console.log(e);
@@ -184,14 +265,14 @@ export function deleteQuiz({commit}, deletedId) {
 
 /*
 * send a newly created question to the backend in order to be stored
-*
+* -- modified --
 * */
 export function createQuestion({commit}, payload) {
 
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.createQuestion(payload.quizId, payload.newQuestion);
-      commit('createQuestion', response.data);
+      commit('createQuestion', {quizId: payload.quizId, newQuestion: {...payload.newQuestion, id: response.data.id}});
       resolve();
     } catch (e) {
       console.log(e);
@@ -202,14 +283,23 @@ export function createQuestion({commit}, payload) {
 
 /*
 * send a modified, but existing quiz to the backend in order to be updated
-*
+* -- modified --
 * */
 export function updateQuestion({commit}, payload) {
 
+  let questionId = payload.questionId;
+  let updatedQuestion = payload.updatedQuestion;
+
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.updateQuestion(payload.quizId, payload.updatedQuestion);
-      commit('updateQuestion', response.data);
+      const response = await api.updateQuestion(questionId, updatedQuestion);
+
+      if (response.status === 200) {
+        console.log("updated question")
+        console.log(updatedQuestion)
+        commit('updateQuestion', {questionId: questionId, updatedQuestion: updatedQuestion});
+      }
+
       resolve();
     } catch (e) {
       console.log(e);
@@ -220,14 +310,21 @@ export function updateQuestion({commit}, payload) {
 
 /*
 * send an id to the backend in order to delete the corresponding question.
-*
+* -- modified --
 * */
 export function deleteQuestion({commit}, payload) {
 
+  let questionIdToDelete = payload.deletedQuestionId;
+  let quizIdToDelete = payload.quizId;
+
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.deleteQuestion(payload.quizId, payload.deletedQuestionId);
-      commit('deleteQuestion', response.data);
+      const response = await api.deleteQuestion(questionIdToDelete);
+
+      if (response.status === 200) {
+        commit('deleteQuestion', {quizId: quizIdToDelete, questionId: questionIdToDelete});
+      }
+
       resolve();
     } catch (e) {
       console.log(e);
@@ -235,6 +332,20 @@ export function deleteQuestion({commit}, payload) {
     }
   });
 }
+
+export function submitAnswer({commit}, payload) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.submitAnswer(payload);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
 
 /*
 * reset the state of the module, including the nested results module.
