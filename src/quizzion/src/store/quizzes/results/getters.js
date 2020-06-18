@@ -23,16 +23,12 @@ export function isResponseCorrect( state, getters, rootState, rootGetters ) {
   }
 }
 
-//TODO: There's probably more things we want to show as results
-export function getTotalScore(state,getters){
-  return function (resultId) {
-    let totalScore = 0;
+export function getTotalScore(state){
+  let total = 0;
 
-    getters.getResultById(resultId).responses.forEach( responseId => {
-      if (getters.isResponseCorrect(responseId)) totalScore += 10;
-    });
-
-    return totalScore;
-    return total
+  for (let result of state.results){
+    total += result.score;
   }
+
+  return total;
 }

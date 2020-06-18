@@ -33,7 +33,7 @@ const routes = [
         component: () => import('pages/ResultPageForModerator.vue'),
       },
       {
-        path:'/result/respondent/:resultId',
+        path:'/result/respondent',
         component:()=>import('pages/ResultPageForRespondent.vue')
       }
 

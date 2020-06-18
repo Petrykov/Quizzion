@@ -224,7 +224,7 @@
                   class="row col">
                   <div class="q-pa-md q-gutter-sm time-section">
                     <q-btn
-                      v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '1 min']"
+                      v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '60 sec']"
                       v-bind:key="index"
                       :id="selectedQuestion.id + '=' + index"
                       round
@@ -425,7 +425,7 @@
           this.showNotification("Question was saved", "blue");
           }
         },
-     
+
 
       timeCheck() {
 

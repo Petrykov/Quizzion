@@ -5,16 +5,16 @@
     </div>
     <div class="row flex flex-center text-center">
       <table>
-        <tr class="text-h4" style="border:  #9C27B0;color: white;height: 30px">{{getResultById.respondent}}</tr>
-        <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Total score: {{getTotal}} </tr>
-        <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Ranking: </tr>
+        <tr class="text-h4" style="border:  #9C27B0;color: white;height: 30px">{{$store.state.user.displayName}}</tr>
+        <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Total score: {{getTotal}}</tr>
+        <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Ranking:</tr>
       </table>
     </div>
     <div
       style="background-color: white;border-radius: 15px 15px 15px 15px;width:100%;margin-left: 5%;margin-right: 5%;width: 90%">
-      <q-scroll-area style="height: 700px;">
+      <q-scroll-area class="q-mt-md q-pt-sm" style="height: 700px;">
         <q-list style="width:100%">
-          <table width="100%">
+          <table style="border-spacing: 10px" >
             <tr>
               <th style="width:5%">No</th>
               <th style="width:60%;">Questions</th>
@@ -22,24 +22,25 @@
               <th style="width:10%">Status</th>
               <th style="width:5%">Score</th>
             </tr>
-            <tr v-for="(answer,index) in getResultById.responses" v-bind:key="answer">
+
+            <tr v-for="(result,index) in results" v-bind:key="index">
               <td style="width:5%">
                 <div class=" flex flex-center">{{index+1}}</div>
               </td>
               <td style="width:60%">
-                <div class="row">{{getQuestion(getAnswer(answer).questionId).title}}</div>
+                <div class="row">{{result.questionTitle}}</div>
               </td>
               <td style="width:20%">
-                <div class="row flex flex-center">{{getAnswer(answer).label}}</div>
+                <div class="row flex flex-center">{{result.answerLabel}}</div>
               </td>
               <td style="width:10%">
-                <div class="flex flex-center" >
-                <q-icon :name="isCorrectIcon(getAnswer(answer).correct)" class="flex flex-center"
-                        :color="isCorrectIconColor(getAnswer(answer).correct)" size="20px"/>
+                <div class="flex flex-center">
+                  <q-icon :name="isCorrectIcon(result.correct)" class="flex flex-center"
+                          :color="isCorrectIconColor(result.correct)" size="20px"/>
                 </div>
               </td>
               <td style="width:5%">
-                <div class="flex flex-center">{{addScore(getAnswer(answer).correct)}}</div>
+                <div class="flex flex-center">{{result.score}}</div>
               </td>
             </tr>
           </table>
@@ -53,9 +54,9 @@
 
   export default {
     name: "ResultPageForRespondent",
-    methods:{
-      isCorrectIcon:function(isCorrect){
-        if(isCorrect){
+    methods: {
+      isCorrectIcon: function (isCorrect) {
+        if (isCorrect) {
           return 'check_circle'
         }
         return 'fas fa-times-circle'
@@ -65,40 +66,37 @@
           return "red"
         }
         return "green"
-      },
-      addScore:function(isCorrect){
-        if(isCorrect){
-          return 10
-        }
-        return 0
-      },
+      }
     },
     data() {
-      return{
-        resultId:this.$route.params.resultId
+      return {
+        quizId: this.$store.state.quizzes.quizzes[0].id
       }
     },
     computed: {
-      getResultById(){
-        return this.$store.getters['quizzes/results/getResultById'](this.resultId)
+      results() {
+        return this.$store.state.quizzes.results.results;
       },
-      getQuizById(){
-        let quizId=this.getResultById.quizId;
-        return this.$store.getters['quizzes/getQuizById'](quizId)
+      getQuizById() {
+        return this.$store.getters['quizzes/getQuizById'](this.quizId);
       },
-      getQuestion(){
-        return this.$store.getters['quizzes/getQuestionById']
-      },
-      getAnswer(){
-        return this.$store.getters['quizzes/getAnswerById']
-      },
-      getTotal(){
-        return this.$store.getters['quizzes/results/getTotalScore'](this.resultId)
+      getTotal() {
+        return this.$store.getters['quizzes/results/getTotalScore'];
       }
+    },
+    created() {
+      this.$store.dispatch('quizzes/results/getRespondentResults', {
+        id: this.$store.state.user.token,
+        quizId: this.quizId
+      });
     }
   }
 </script>
 
 <style scoped>
+
+  td {
+    margin: 1%;
+  }
 
 </style>

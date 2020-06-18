@@ -83,7 +83,7 @@
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
           <q-btn
-            v-if="!currentQuiz.fh"
+            v-if="!currentQuiz.stored"
             unelevated
             rounded
             color="white"
@@ -93,7 +93,7 @@
           />
         </div>
 
-        <div class="row justify-between" v-if="currentQuiz.fh">
+        <div class="row justify-between" v-if="currentQuiz.stored">
 
           <div>
             <q-icon
@@ -158,11 +158,11 @@
 </template>
 
 <script>
-    import Qrcode from "./Qrcode";
-    import {copyToClipboard} from 'quasar';
+  import Qrcode from "./Qrcode";
+  import {copyToClipboard} from 'quasar';
 
-    // var baseUrl = "http://mark-developer.com:555/#"
-    var baseUrl = "http://localhost:8080/#";
+  // var baseUrl = "http://mark-developer.com:555/#"
+  var baseUrl = "http://localhost:8080/#";
 
     export default {
         components: {Qrcode},
@@ -174,19 +174,19 @@
             };
         },
 
-        methods: {
-            goToEdit() {
-                this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
-            },
+    methods: {
+      goToEdit() {
+        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+      },
 
-            editQuiz() {
-                this.$router.push(`quizzes/${this.currentQuiz.id}`);
-            },
+      editQuiz() {
+        this.$router.push(`quizzes/${this.currentQuiz.id}`);
+      },
 
-            copyUrl() {
-                copyToClipboard(this.getQuizLink);
-                this.triggerNotification();
-            },
+      copyUrl() {
+        copyToClipboard(this.getQuizLink);
+        this.triggerNotification();
+      },
 
             startQuizMethod() {
                 this.$socket.client.emit('start');
@@ -225,22 +225,20 @@
             }
         },
 
-        computed: {
-            getQuizLink() {
-                return `${baseUrl}/quizzes/${this.currentQuiz.fh}/invite`;
-            },
+    computed: {
+      getQuizLink() {
+        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+      },
 
-        },
+    },
 
-        props: {
-            currentQuiz: {
-                type: Object,
-                required: true
-            }
-        },
-
-
-    };
+    props: {
+      currentQuiz: {
+        type: Object,
+        required: true
+      }
+    }
+  };
 </script>
 
 

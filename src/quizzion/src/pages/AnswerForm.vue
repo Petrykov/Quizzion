@@ -118,6 +118,7 @@
       },
       goToNextQuestion() {
         if (this.timeRemaining === 0) {
+          this.submitAnswer();
           this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
         } else {
           if (this.selectedAnswer === '') this.triggerNotification();
@@ -129,14 +130,15 @@
       },
       goToResults() {
         if (this.timeRemaining === 0) {
+          this.submitAnswer();
           clearInterval(this.timer);
-          this.$router.replace(`/results`);
+          this.$router.replace(`/result/respondent`);
         } else {
           if (this.selectedAnswer === '') this.triggerNotification();
           else {
             this.submitAnswer();
             clearInterval(this.timer);
-            this.$router.replace(`/results`);
+            this.$router.replace(`/result/respondent`);
           }
         }
       },
@@ -162,7 +164,16 @@
 
       },
       submitAnswer() {
-        console.log("submit answer was called")
+        const totalTime =  this.currentQuestion.time;
+        const answer = {
+          uid: this.$store.state.user.token,
+          questionTitle: this.currentQuestion.title,
+          isCorrect: this.selectedAnswer === '' ? false : this.$store.getters['quizzes/getAnswerById'](this.selectedAnswer).correct,
+          answerLabel: this.selectedAnswer === '' ? 'N/A' : this.answerLabel(this.selectedAnswer),
+          time: totalTime - this.timeRemaining,
+          totalTime};
+
+        this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
       }
     }
   }

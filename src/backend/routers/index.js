@@ -4,7 +4,7 @@ let router = module.exports = require('express').Router();
 
 //login/logout functionality can work fine without `Authorization` token
 router.use('/user', require('./users'));
-router.use('/respondent', require('./respondent'));
+router.use('/', require('./respondent'));
 
 // no other requests can go further if the `Authorization` token was not provided
 router.use( (req, rsp, next) => {

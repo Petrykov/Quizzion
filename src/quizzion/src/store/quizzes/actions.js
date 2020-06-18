@@ -23,8 +23,6 @@ export function fetchQuizzes({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchQuizzes();
-      console.log('res')
-      console.log(response)
       commit('setQuizzes', response.data);
       commit('user/setQuizzes', response.data, {root: true});
       resolve();
@@ -35,14 +33,17 @@ export function fetchQuizzes({commit}) {
   });
 }
 
-export function fetchInvitedQuiz({commit}, payload) {
+export function fetchInvitedQuiz({commit}, quizId) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.fetchInvitedQuiz(payload);
-      console.log(response)
-      commit('setQuizzes', [response.data]);
-      resolve(response.data.id)
+      const response = await api.invite(quizId);
+
+      commit('setQuizzes', [response.data.quiz]);
+      commit('setQuestions', response.data.questions);
+      commit('setAnswers', response.data.answers);
+
+      resolve()
     } catch (e) {
       console.log("fetch quiz error ");
       console.log(e);
@@ -78,7 +79,7 @@ export function fetchAnswers({commit}) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.fetchAnswers();
-      commit('setAnswers', response);
+      commit('setAnswers', response.data);
       resolve();
     } catch (e) {
       console.log("Error while fetching answers API: " + e);
@@ -208,16 +209,19 @@ export function updateQuiz({commit}, updatedQuiz) {
   });
 }
 
-export function generateFormHash(context, quizId) {
+export function startQuiz(context, quizId) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.generateFormHash({uh: context.rootState.user.userId, tn: quizId});
-      context.commit('setFormHash', {quizId, fh: response.data.form[0]});
+      const payload = context.getters['getFullQuizPackage'](quizId);
 
+      console.log(payload)
+
+      await api.startQuiz(payload);
       //todo ASK Frontend guy, if this is a nice spot for socket connection
       //todo (Better to do this in Component itself)
 
+      context.commit('setStored', quizId);
       resolve();
     } catch (e) {
       console.log(e);
@@ -331,6 +335,20 @@ export function deleteQuestion({commit}, payload) {
     }
   });
 }
+
+export function submitAnswer({commit}, payload) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await api.submitAnswer(payload);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
 
 /*
 * reset the state of the module, including the nested results module.
