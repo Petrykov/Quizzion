@@ -10,7 +10,7 @@ router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
     if (rsp) {
-        rsp.send({ id: uniqueId, quizInfo: findItemById(req.params.quizId) })
+        rsp.send({ id: uniqueId})
     }
     else rsp.send("Errors occured!")
 })
@@ -36,7 +36,7 @@ router.post('/quizzes/:quizId/start', (req, res) => {
         } else {
             currentQuiz = request
         }
-        res.send(findItemById(req.params.quizId))
+        res.send(quizList)
     }
     else rsp.send("Some errors occured")
 })

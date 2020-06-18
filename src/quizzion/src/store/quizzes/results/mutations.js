@@ -1,9 +1,8 @@
 import initialState from './state'
 //TODO
 
-export function setResults(state, payload) {
-  state.results = payload.results;
-  state.answers = payload.answers;
+export function setResults(state, results) {
+  state.results = results;
 }
 
 export function reset(state) {
