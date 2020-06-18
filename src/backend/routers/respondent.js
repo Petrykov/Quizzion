@@ -1,60 +1,9 @@
 let router = module.exports = require('express').Router();
-const axios = require('axios').default
-const baseUrl = "https://lab.dev.easion.nl/backend/api/v5"
 const { v4: uuidv4 } = require('uuid');
-const fs = require('fs')
+var _ = require('lodash');
 const sqlite3 = require('sqlite3');
-const { question } = require('../config');
 let db = new sqlite3.Database('responses.db');
 let quizList = []
-
-// db.exec(fs.readFileSync('schema.sql').toString());
-
-axios.defaults.headers.common['X-Database'] = 'lab';
-
-// router.post('/join', (req, res) => {
-//     // const fid = "2ea7708e7229e8ddb2e179882388d13c"
-//     console.log(req.body);
-//     var fid = req.body.quizId
-//     let data = { form: fid }
-//     axios.post(`${baseUrl}/account/link`, {
-//         parameter: data
-//     })
-//         .then((rsp) => {
-//             res.status(200).send({ token: rsp.data.token })
-//         })
-//         .catch((error) => {
-//             console.log("get response1")
-//             res.status(500).send({ err: error })
-//         })
-// })
-
-//api for user to write their answer
-router.put('/answer', (req, res) => {
-    let qVarName = req.body.questionVarName
-    let aVarName = req.body.answerVarName
-    let mockBodyContent = {
-        "q_0019": "aq_0019_a1"
-    }
-    let mockFromMark = {
-        'h7mq3t2q4': '5rggp2gf6'
-    }
-
-    let savedResponse = {
-        qVarName: aVarName
-    }
-    axios.put(`${baseUrl}/data`, {
-        vars: savedResponse
-    }
-    )
-        .then((rsp) => {
-            res.send(rsp.data)
-        })
-        .catch((err) => {
-            console.log(err.response.data)
-            res.send(err)
-        })
-})
 
 // RESPONDENT_JOIN
 router.post('/respondent/join/:quizId', (req, rsp) => {
@@ -74,7 +23,6 @@ router.get('/quizzes/:quizId/invite', (req, rsp) => {
 
 //QUIZ_START
 router.post('/quizzes/:quizId/start', (req, res) => {
-
     if (res) {
         let request = {
             quiz: req.body.quiz,
@@ -91,32 +39,15 @@ router.post('/quizzes/:quizId/start', (req, res) => {
         res.send(quizList)
     }
     else rsp.send("Some errors occured")
-
-})
-
-function findItemById(quizId) {
-    for (let item of quizList) {
-        if (item.quiz.id === quizId) {
-            return item
-        }
-    }
-    return null;
-}
-
-
-router.get("/:quizId/responses", (req, res) => {
-    db.all('select * from responses where quizId=?', [req.params.quizId], (err, questions) => {
-        if (questions) res.send(questions)
-        else res.send("Errors occured!")
-    })
 })
 
 //RESPONDENT_ANSER
 router.post('/respondent/:quizId/answer', (req, res) => {
     db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
-        calculateScore(req.body.isCorrect, req.body.totalTime, req.body.time,));
-    if (res) res.send("Successful")
-    else res.send("Errors occured!")
+        calculateScore(req.body.isCorrect, req.body.totalTime, req.body.time), (err, rsp) => {
+            if (err) res.send({ "Errors occured!": err })
+            else res.send("Successfully added!")
+        });
 })
 
 
@@ -145,7 +76,7 @@ router.delete('/respondent/:id/logout', (req, res) => {
     })
 })
 
-
+// RESPONDENT_RESULT
 router.get('/:quizId/result/respondent/:id', (req, res) => {
 
     db.all("select questionTitle,answerLabel, correct, score  from responses where quizId = ? AND uid = ?", [req.params.quizId, req.params.id], (err, rsp) => {
@@ -156,57 +87,48 @@ router.get('/:quizId/result/respondent/:id', (req, res) => {
     })
 })
 
-function calculateScore(isCorrect, total, time) {
-    let score;
-    let scale = total / 4
-    if (isCorrect) {
-        if (time <= scale) {
-            score = 10
-        }
-        else if (scale < time && time <= (total / 2)) {
-            score = 7
-        }
-        else if (scale * 2 < time && time <= scale * 3) {
-            score = 5
-        }
-        else if (time > scale * 3) {
-            score = 2
-        }
-    }
-    else { score = 0 }
-
-    return score;
-}
-
-router.get('/results/:quizId', (req, rsp) => {
-
-    let copy = []
+// QUIZMASTER_RESULT
+router.get('/results/:quizId', (req, res) => {
     let players = []
     let results = []
-    db.all(`SELECT DISTINCT displayName,uid
-    FROM respondents
-    INNER JOIN
-    responses 
-    ON respondents.id = responses.uid
-    WHERE responses.quizId =?`, [req.params.quizId], (err, res) => {
-        if (res) {
-            players = res
-            for (let i of players) {
-                console.log("here")
-                db.all("select correct, score from responses where uid = ?", [i.uid], function (err, resp) {
-                    if (resp) {
-                        let response = {
-                            user: "i",
-                            response: resp
-                        }
-                        results.push(response)
-                        console.log(results)
-                    }
-                })
-            }
-            console.log("here2")
-            rsp.send(results)
-        }
+    const query = `SELECT displayName,uid,correct,score
+        FROM respondents
+        INNER JOIN
+        responses 
+        ON respondents.id = responses.uid
+                    WHERE responses.quizId =? `
+    db.all(query, [req.params.quizId], (err, rsp) => {
+        if (rsp) {
+            results = rsp
+            let result = groupResultByid(results)
+            // console.log(Object.keys(result))
+            res.send(result)
+        }else res.send({"Error occurs:": err})
     })
-
 })
+
+function groupResultByid(results) {
+    var grouped = _.mapValues(_.groupBy(results, 'uid'),
+        clist => clist.map(result => _.omit(result, 'uid')));
+    console.log(grouped)
+    return grouped;
+}
+
+function findItemById(quizId) {
+    for (let item of quizList) {
+        if (item.quiz.id === quizId) {
+            return item
+        }
+    }
+    return null;
+}
+
+function calculateScore(isCorrect, total, time) {
+    let base = 10 / total
+    if (isCorrect) {
+        return Math.round(time * base)
+    }
+    else {
+        return 0;
+    }
+}
