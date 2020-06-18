@@ -215,11 +215,7 @@ export function startQuiz(context, quizId) {
     try {
       const payload = context.getters['getFullQuizPackage'](quizId);
 
-      console.log(payload)
-
       await api.startQuiz(payload);
-      //todo ASK Frontend guy, if this is a nice spot for socket connection
-      //todo (Better to do this in Component itself)
 
       context.commit('setStored', quizId);
       resolve();

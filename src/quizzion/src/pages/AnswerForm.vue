@@ -129,6 +129,7 @@
         }
       },
       goToResults() {
+          //todo see this
         if (this.timeRemaining === 0) {
           this.submitAnswer();
           clearInterval(this.timer);

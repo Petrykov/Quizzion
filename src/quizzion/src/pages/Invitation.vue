@@ -65,11 +65,14 @@
         },
         methods: {
             toFirstQuestion() {
-                this.$socket.client.emit('connect-t', {quiz_id: this.fh, name: this.playerName});
+                console.warn('Below the details')
+                console.log( {quiz_id: this.invitedQuiz.id, name: this.playerName})
+                this.$socket.client.emit('connect-t', {quiz_id: this.invitedQuiz.id, name: this.playerName});
                 this.$socket.client.on('start', () => {
-                        this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
-                            this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
-                        });
+                    this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
+                        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+                    });
+                });
                 this.showLoading();
             },
             showLoading() {

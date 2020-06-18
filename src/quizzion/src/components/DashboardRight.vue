@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <div v-if="currentQuiz.fh" style="border: 2px solid red">
+      <div v-if="currentQuiz.stored" style="border: 2px solid red">
         <p style="color:white; font-size: 2em;">Connected users: </p>
         <div v-if="users.length !== 0" class="row">
           <p v-for="(user, index) in users" class="col" :key="index">{{++index}}) {{user}}</p>
@@ -158,11 +158,11 @@
 </template>
 
 <script>
-  import Qrcode from "./Qrcode";
-  import {copyToClipboard} from 'quasar';
+    import Qrcode from "./Qrcode";
+    import {copyToClipboard} from 'quasar';
 
-  // var baseUrl = "http://mark-developer.com:555/#"
-  var baseUrl = "http://localhost:8080/#";
+    // var baseUrl = "http://mark-developer.com:555/#"
+    var baseUrl = "http://localhost:8080/#";
 
     export default {
         components: {Qrcode},
@@ -174,19 +174,19 @@
             };
         },
 
-    methods: {
-      goToEdit() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
-      },
+        methods: {
+            goToEdit() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+            },
 
-      editQuiz() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}`);
-      },
+            editQuiz() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}`);
+            },
 
-      copyUrl() {
-        copyToClipboard(this.getQuizLink);
-        this.triggerNotification();
-      },
+            copyUrl() {
+                copyToClipboard(this.getQuizLink);
+                this.triggerNotification();
+            },
 
             startQuizMethod() {
                 this.$socket.client.emit('start');
@@ -206,39 +206,35 @@
                 })
             },
             generateLink() {
-                console.log('method!');
-                if (!this.currentQuiz.fh) {
-                    this.$store.dispatch('quizzes/generateFormHash', this.currentQuiz.id);
 
-                    setTimeout( () => {
-                        console.log('form hash: ' + this.currentQuiz.fh);
-                        this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.fh});
-                    }, 2000);
+                if (!this.currentQuiz.stored){
+                    this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
+                    this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
                 }
 
                 this.$socket.client.on('user-connected', (data) => {
-                  console.log(data);
-                  console.log("Respondent above");
-                  this.users.push(data.name);
+                    console.log(data);
+                    console.log("Respondent above");
+                    this.users.push(data.name);
                 });
 
             }
         },
 
-    computed: {
-      getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
-      },
+        computed: {
+            getQuizLink() {
+                return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+            },
 
-    },
+        },
 
-    props: {
-      currentQuiz: {
-        type: Object,
-        required: true
-      }
-    }
-  };
+        props: {
+            currentQuiz: {
+                type: Object,
+                required: true
+            }
+        }
+    };
 </script>
 
 
