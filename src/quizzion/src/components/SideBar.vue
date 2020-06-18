@@ -20,6 +20,13 @@
             <q-item-section>Settings</q-item-section>
           </q-item>
 
+          <q-item clickable v-ripple @click="toStatistics">
+            <q-item-section avatar>
+              <i class="fas fa-chart-bar"></i>
+            </q-item-section>
+            <q-item-section>Statistics</q-item-section>
+          </q-item>
+
           <a href="https://parantion.com/organisatie/" style="text-decoration: none; color: white">
             <q-item clickable v-ripple>
               <q-item-section avatar>
@@ -39,6 +46,8 @@
               <q-item-section>Support</q-item-section>
             </q-item>
           </a>
+
+
 
           <q-item @click="$store.dispatch('user/logout')" clickable v-ripple style="margin-top: 150px;">
             <q-item-section avatar>
@@ -78,6 +87,9 @@ export default {
   methods: {
     toDashBoard() {
       this.$router.push(`/`);
+    },
+    toStatistics() {
+      this.$router.push(`/statistics`);
     }
   }
 };

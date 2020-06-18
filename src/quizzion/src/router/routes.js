@@ -35,6 +35,10 @@ const routes = [
       {
         path:'/result/respondent/:resultId',
         component:()=>import('pages/ResultPageForRespondent.vue')
+      },
+      {
+        path:'/statistics',
+        component: ()=> import('pages/Statistics.vue')
       }
 
     ]
