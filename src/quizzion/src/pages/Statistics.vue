@@ -1,14 +1,15 @@
 <template>
-  <q-page class="flex-center fullscreen" style="background-color:#E1EFFF; overflow: auto">
-    <div style="float: left">
+  <q-page style="background-color:#E1EFFF; overflow: auto">
+    <div style="float: left; margin-left: 2%">
       <div style="margin-left: 25%; margin-top: 50%">
-          <q-avatar size="100px" class="q-mb-sm" >
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
+
+            <img src="../assets/logo_2x.png"  style="width: 100px; height: 100px" />
+
+
       </div>
 
 
-      <table style="width:100%; margin-top: 10%; text-decoration-color: darkblue" >
+      <table style="width:80%; margin-top: 10%; text-decoration-color: darkblue" >
         <tr>
           <th>Name</th>
           <th>Quiz Master</th>
@@ -27,13 +28,22 @@
         </tr>
       </table>
     </div>
-<!--    <div style="background-color: white; border-radius: 15px 15px 15px 15px;">-->
-          <div class="q-pa-md overlap" style="margin-top: 1%;  display: block; float: right; margin-right: 15%">
+
+          <div class="q-pa-md overlap" style="margin-top: 1%;  display: block; float: right; margin-right: 15%;
+                    box-shadow: 5px 5px 5px rgba(0, 0.5, 0.5, 0.5);
+                     border-radius: 15px 15px 15px 15px">
             <OverallStatistic ></OverallStatistic>
           </div>
-          <div class="q-pa-md" style="width: 75%;  display: block; float:right; margin-right: 1%; ">
+          <div class="q-pa-md" style="width: 75%;  display: block; float:right;
+              background-color: white; border-radius: 50px 0px 0px 0px">
+
+            <br>
+            <br>
+            <br>
             <q-table
-              style="height: 400px"
+
+              class="q-pa-md"
+              style="height: 400px; box-shadow: 10px 10px 10px rgba(0, 0, 0, 0);"
               title=" "
               :data="data"
               :columns="columns"
@@ -43,7 +53,7 @@
               :rows-per-page-options="[0]"
             />
           </div>
-<!--    </div>-->
+
   </q-page>
 </template>
 <script>
@@ -154,7 +164,7 @@
     text-align: left;
   }
   .overlap{
-    top: 20px;
+    top: 50px;
     position: relative;
   }
 </style>
