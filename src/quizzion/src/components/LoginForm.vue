@@ -38,6 +38,10 @@
       login() {
         this.$store.dispatch('user/login', {username: this.username, password: this.password})
           .then(() => {
+            this.$store.dispatch('quizzes/initialiseAll')
+              .then(() => {
+                this.$router.push('/');
+              });
           }).catch(e => {
           console.log(e)
         }) //on error we probably want a msg saying incorrect creds.

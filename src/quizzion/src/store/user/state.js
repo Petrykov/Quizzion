@@ -12,31 +12,3 @@ export default function () {
     language: ''
   }
 }
-
-/*
-*
-* Example of what a user will look like
-* Reason quizzes is an array of IDs here: https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/2
-*
-* */
-import {Roles} from '../enums'
-
-//respondent
-export let stateMockRespondent = {
-  role: Roles.RESPONDENT,
-  displayName: 'JohnD',
-  token: 'hisaccesstoken'
-};
-
-//moderator
-export let stateMockModerator = {
-  role: Roles.MODERATOR,
-  displayName: 'WandaE',
-  token: 'heraccesstoken',
-
-  userId: 'ghu76t', //unique user id (database pk)
-  quizzes: [], //array of quiz ID's
-  name: 'Wanda Evans',
-  email: 'wanda.evans@vueteam.com',
-  language: 'English'
-};

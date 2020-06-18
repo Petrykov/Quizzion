@@ -37,7 +37,7 @@ export function logout() {
   return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function invite(quizId) {
+export function fetchInvitedQuiz(quizId) {
   return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
 }
 
@@ -51,14 +51,14 @@ export function fetchQuizzes() {
   return axios.get(`${apiUrl}/quizzes/all`);
 }
 
-export async function fetchInvitedQuiz({fh, token}) {
-  axios.defaults.headers.common['authorization'] = token;
-
-  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
-  console.log(response)
-  const tn = response.data.form[0].tn;
-  return axios.get(`${apiUrl}/quizzes/${tn}`);
-}
+// export async function fetchInvitedQuiz({fh, token}) {
+//   axios.defaults.headers.common['authorization'] = token;
+//
+//   const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+//   console.log(response)
+//   const tn = response.data.form[0].tn;
+//   return axios.get(`${apiUrl}/quizzes/${tn}`);
+// }
 
 // -- modified --
 export function fetchQuestions() {
@@ -109,7 +109,7 @@ export function addAnswerToQuestion(questionId, answerId) {
 }
 
 // -- created --
-export function addAnswer(newAnswer) {
+export function createAnswer(newAnswer) {
   return axios.post(`${apiUrl}/answer`, {...newAnswer});
 }
 
