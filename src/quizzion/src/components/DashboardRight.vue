@@ -122,7 +122,7 @@
             <q-icon
               class="q-mr-lg"
               name="fas fa-trophy"
-              @click="$router.push(`result/moderator/${currentQuiz.id}`)"
+              @click="showResults"
               size="2.5em"
               style="cursor : pointer;"
               color="white">
@@ -197,6 +197,10 @@
         if (!this.currentQuiz.stored){
           this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id)
         }
+      },
+
+      showResults(){
+        this.$router.push(`result/moderator/${this.currentQuiz.id}`);
       }
     },
 

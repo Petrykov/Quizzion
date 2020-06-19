@@ -95,14 +95,14 @@ export function getAnswersByQuizId(state, getters) {
       });
     });
 
-    console.log("answerIds")
-    console.log(answerIds)
+    // console.log("answerIds")
+    // console.log(answerIds)
 
     let answerObjects = [];
     answerIds.forEach((answerId) => {
       let a = getters.getAnswerById(answerId)
-      console.log('a')
-      console.log(a)
+      // console.log('a')
+      // console.log(a)
       answerObjects.push(a);
     });
 

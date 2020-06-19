@@ -5,14 +5,20 @@ import * as api from '../../../api/api'
 *
 *
 * */
-export function fetchResults({commit}) {
-  api.fetchResults(
-    //handle success
-    (response) => commit('setResults', response.data),
-    //handle failure
-    () => {
+export function fetchResultsForQuiz({commit}, payload) {
+
+  let quizId = payload.quizId;
+
+  return new Promise(async(resolve, reject) =>{
+    try{
+      let response = await api.fetchResults(quizId)
+      commit('setResults', Object.values(response.data))
+      resolve();
+    }catch (e) {
+      console.log(e);
+      reject(e);
     }
-  )
+  });
 }
 
 export function getRespondentResults({commit}, payload) {
