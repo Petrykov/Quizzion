@@ -7,9 +7,9 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 
-module.exports = function ( /* ctx */ ) {
+module.exports = function ( /* Ctx */ ) {
   return {
-    // app boot file (/src/boot)
+    // App boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
@@ -32,8 +32,8 @@ module.exports = function ( /* ctx */ ) {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      'roboto-font', // Optional, you are not bound to it
+      'material-icons' // Optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -44,9 +44,9 @@ module.exports = function ( /* ctx */ ) {
       // Possible values for "all":
       // * 'auto' - Auto-import needed Quasar components & directives
       //            (slightly higher compile time; next to minimum bundle size; most convenient)
-      // * false  - Manually specify what to import
+      // * False  - Manually specify what to import
       //            (fastest compile time; minimum bundle size; most tedious)
-      // * true   - Import everything from Quasar
+      // * True   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
 
@@ -78,20 +78,20 @@ module.exports = function ( /* ctx */ ) {
     supportTS: false,
 
     // https://quasar.dev/quasar-cli/cli-documentation/prefetch-feature
-    // preFetch: true
+    // PreFetch: true
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // Available values: 'hash', 'history'
 
-      // rtl: false, // https://quasar.dev/options/rtl-support
-      // preloadChunks: true,
-      // showProgress: false,
-      // gzip: true,
-      // analyze: true,
+      // Rtl: false, // https://quasar.dev/options/rtl-support
+      // PreloadChunks: true,
+      // ShowProgress: false,
+      // Gzip: true,
+      // Analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
-      // extractCSS: false,
+      // ExtractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack ( cfg ) {
@@ -112,7 +112,7 @@ module.exports = function ( /* ctx */ ) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: true // Opens browser window automatically
     },
 
     animations: 'all', // --- includes all animations
@@ -130,7 +130,7 @@ module.exports = function ( /* ctx */ ) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: {}, // Only for GenerateSW
       manifest: {
         name: 'Quizzion 2.0',
         short_name: 'Quizzion 2.0',
@@ -171,7 +171,7 @@ module.exports = function ( /* ctx */ ) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
-      // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
+      // NoIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
       id: 'org.cordova.quasar.app'
     },
 
@@ -188,13 +188,13 @@ module.exports = function ( /* ctx */ ) {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
         // OS X / Mac App Store
-        // appBundleId: '',
-        // appCategoryType: '',
-        // osxSign: '',
-        // protocol: 'myapp://path',
+        // AppBundleId: '',
+        // AppCategoryType: '',
+        // OsxSign: '',
+        // Protocol: 'myapp://path',
 
         // Windows only
-        // win32metadata: { ... }
+        // Win32metadata: { ... }
       },
 
       builder: {
@@ -206,9 +206,9 @@ module.exports = function ( /* ctx */ ) {
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack ( /* cfg */ ) {
-        // do something with Electron main process Webpack cfg
-        // chainWebpack also available besides this extendWebpack
+      extendWebpack ( /* Cfg */ ) {
+        // Do something with Electron main process Webpack cfg
+        // ChainWebpack also available besides this extendWebpack
       }
     }
   };

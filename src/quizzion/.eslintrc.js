@@ -12,6 +12,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly'
   },
   parserOptions: {
+    parser: 'babel-eslint',
     ecmaVersion: 2018,
     sourceType: 'module'
   },
@@ -44,7 +45,14 @@ module.exports = {
     'dot-notation': 'off',
     'import/first': 'off',
     'import/no-duplicates': 'off',
-    'semi-spacing': ['warn', {before: false, after: true}]
+    'semi-spacing': ['warn', {before: false, after: true}],
+    'max-lines-per-function': ['warn', {max: 20}],
+    camelcase: ['error', {properties: 'always'}],
+    'capitalized-comments': ['warn', 'always'],
+    'no-lonely-if': 'warn',
+    'no-whitespace-before-property': 'error',
+    eqeqeq: ['warn', 'smart'],
+    'no-undef': 'off'
 
   }
 };
