@@ -41,7 +41,7 @@
 
     <div class="col-7">
       <div class="instruction">
-        <div style="color: black; font-size: 1.3em;">Be creative! Choose a theme for your quiz</div>
+        <div style="color: white; font-size: 1.3em;">Be creative! Choose a theme for your quiz</div>
         <div
           class="theme-bubble colors"
           style="margin-top: 1em;">
@@ -57,11 +57,11 @@
           />
         </div>
 
-        <div class="q-mt-lg" style="color: black; font-size: 1.3em;">Or a logo from your organization?</div>
+        <div class="q-mt-lg" style="color: white; font-size: 1.3em;">Or a logo from your organization?</div>
 
         <div class="theme-bubble" style="padding-top: 10px">
-          <q-img :src="logoUrl"
-                 :width="imageShow(logoUrl)"></q-img>
+          <q-img v-if="logoUrl" :src="logoUrl"
+                 width="10%"></q-img>
           <q-file
             size="xx-large"
             round
@@ -71,7 +71,7 @@
             filled
             @click="$refs.file.click()">
           </q-file>
-          <q-btn  @click="uploadToFirebase">
+          <q-btn @click="uploadToFirebase">
             <i class="fas fa-upload" style="color: white"></i>
           </q-btn>
         </div>
@@ -93,7 +93,6 @@
 </template>
 
 <script>
-  import {v4 as uuidv4} from "uuid";
   import firebase from 'firebase';
 
   import AOS from 'aos';
@@ -106,28 +105,21 @@
         quizDes: "",
         quizTitle: null,
         alert: false,
-        themeColor: "teal",
+        themeColor: "#522785",
         logoUrl: null,
         file: null,
       };
     },
 
     methods: {
-      imageShow(logoUrl){
-        if(logoUrl!=null){
-          return '10%'
-        }
-        return 0
-      },
       uploadToFirebase() {
         if (this.file != null) {
-          let storageRef = firebase.storage().ref(`${this.file.name}`).put(this.file);
-          storageRef.on('state_changed',
-            () => {
-              storageRef.snapshot.ref.getDownloadURL().then((url) => {
-                this.logoUrl = url;
-              })
+          let storageRef = firebase.storage().ref(`${this.file.name}`);
+          storageRef.put(this.file).then(() => {
+            storageRef.getDownloadURL().then((url) => {
+              this.logoUrl = url;
             })
+          });
         }
       },
       addQuiz: function (showAlert) {
@@ -149,10 +141,9 @@
             this.$router.push(`quizzes/${quizId}/questions`);
           }
 
+        }).catch(() => {
+          this.showNotification('Something went wrong...', 'negative');
         });
-
-        // this.$store.commit("quizzes/createQuiz", newQuiz);
-        // this.$store.commit("user/createQuiz", assignedId);
 
         this.alert = showAlert;
       },
@@ -160,6 +151,18 @@
       toAddQuestions() {
         this.addQuiz(false);
       },
+      showNotification(message, type) {
+        this.$q.notify({
+          type: type,
+          message: message,
+          actions: [
+            {
+              label: 'Dismiss', color: 'white', handler: () => { /* ... */
+              }
+            }
+          ]
+        })
+      }
     },
 
     beforeMount() {
