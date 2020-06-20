@@ -55,12 +55,11 @@
         style="height: 150px; border-right: 1px solid #ddd; color:white; background-color:teal"
       >
         <div class="absolute-center bg-transparent">
-          <q-avatar size="56px" class="q-mb-sm">
-            <!-- // TODO get the logo -->
+          <q-avatar size="56px" class="q-mb-sm q-mr-lg q-ml-lg">
             <img src="~assets/boy_avatar@2x.png" />
           </q-avatar>
 
-          <div class="text-weight-bold">{{ $store.state.user.displayName }}</div>
+          <div class="text-weight-bold text-center">{{$store.state.user.displayName}}</div>
         </div>
       </div>
     </q-drawer>

@@ -103,12 +103,6 @@ export default {
   },
 
   methods: {
-    imageShow(logoUrl) {
-      if (logoUrl != null) {
-        return "10%";
-      }
-      return 0;
-    },
     uploadToFirebase() {
       if (this.file != null) {
         let storageRef = firebase.storage().ref(`${this.file.name}`);
