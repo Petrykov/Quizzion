@@ -81,6 +81,7 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
       state.questions[index].description = updatedQuestion.description;
       state.questions[index].time = updatedQuestion.time;
       state.questions[index].answers = updatedQuestion.answers;
+      state.questions[index].image = updatedQuestion.image;
     }
   })
 }
