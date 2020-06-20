@@ -117,8 +117,8 @@
 
 
             <div style="display: flex;justify-content: center;padding-top: 10px">
-              <q-img :src="imageUrl"
-                     :width="imageShow(imageUrl)"></q-img>
+              <q-img v-if="imageUrl" :src="imageUrl"
+                     width="10%"></q-img>
               <q-file
                 style="margin-top: 1px;"
                 size="xx-large"
@@ -321,21 +321,14 @@
 
     methods: {
       lighten,
-      imageShow(imageUrl) {
-        if (imageUrl != null) {
-          return '10%'
-        }
-        return 0
-      },
       uploadToFirebase() {
         if (this.file != null) {
-          let storageRef = firebase.storage().ref(`${this.file.name + this.currentQuizId}`).put(this.file);
-          storageRef.on('state_changed',
-            () => {
-              storageRef.snapshot.ref.getDownloadURL().then((url) => {
-                this.imageUrl = url;
-              })
+          let storageRef = firebase.storage().ref(`${this.file.name}`);
+          storageRef.put(this.file).then(() => {
+            storageRef.getDownloadURL().then((url) => {
+              this.imageUrl = url;
             })
+          });
         }
       },
       onQuestionClick(id) {

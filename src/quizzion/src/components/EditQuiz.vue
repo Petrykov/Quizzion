@@ -61,16 +61,16 @@
 
         <div class="theme-bubble" style="padding-top: 10px">
           <q-img
+            v-if="updatedQuiz.logo"
             :src="updatedQuiz.logo"
-            v-model="updatedQuiz.logo"
-            :width="imageShow(updatedQuiz.logo)"
+            width="10%"
           ></q-img>
           <q-file
             size="xx-large"
             round
             v-model="file"
             label-color="white"
-            label="Pick one logo"
+            label="Pick a new logo"
             filled
             @click="$refs.file.click()"
           ></q-file>
@@ -111,14 +111,11 @@ export default {
     },
     uploadToFirebase() {
       if (this.file != null) {
-        let storageRef = firebase
-          .storage()
-          .ref(`${this.file.name}`)
-          .put(this.file);
-        storageRef.on("state_changed", () => {
-          storageRef.snapshot.ref.getDownloadURL().then(url => {
+        let storageRef = firebase.storage().ref(`${this.file.name}`);
+        storageRef.put(this.file).then(() => {
+          storageRef.getDownloadURL().then((url) => {
             this.updatedQuiz.logo = url;
-          });
+          })
         });
       }
     },
