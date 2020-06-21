@@ -1,8 +1,9 @@
 import axios from 'axios'
 import md5 from 'md5'
 import store from '../store'
+import config from './../config/config'
 
-const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
+const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
 
 /*
 *

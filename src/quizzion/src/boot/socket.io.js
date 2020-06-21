@@ -1,7 +1,9 @@
 import io from 'socket.io-client';
 import VueSocketIOExt from 'vue-socket.io-extended';
 
-const socket = io('http://localhost:3000');
+import config from './../config/config'
+
+const socket = io(config.backendPath);
 
 export default async ({ store, Vue }) => {
   Vue.use(VueSocketIOExt, socket, {store})

@@ -172,7 +172,7 @@
     import UsersList from "./UsersList";
     import config from './../config/config'
 
-    var baseUrl = "http://localhost:8080/#";
+    var baseUrl = config.frontendPath;
 
     export default {
         components: {Qrcode, UsersList},
