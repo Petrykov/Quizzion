@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ESLint Results</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  
+    .eslint-report {
+      font-family: "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      padding: 20px 40px;
+    }
+  
+    .eslint-report h1 {
+      border-bottom: 1px solid #ddd;
+      line-height: 1;
+      padding-bottom: 12px;
+    }
+  
+    .eslint-report h2 {
+      padding-bottom: 9px;
+      line-height: 1;
+      margin-top: 24px;
+      margin-bottom: 9px;
+    }
+  
+    .eslint-report h3 {
+      line-height: 1;
+      margin-top: 0;
+    }
+  
+    .eslint-report a {
+      text-decoration: none;
+    }
+  
+    .eslint-report table {
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+  
+    .toggle-all-link {
+      font-size: 14px;
+    }
+  
+    .report-table {
+      font-size: 14px;
+      min-width: 800px;
+      border: 1px solid #e6e6e6;
+      margin: 10px;
+    }
+  
+    .report-table thead {
+      background-color: #eee;
+    }
+  
+    .report-table th {
+      text-align: left;
+      vertical-align: middle;
+    }
+  
+    .report-table th,
+    .report-table td {
+      padding: 4px 9px;
+      border: 1px solid #ccc;
+    }
+  
+    .report-table td {
+      line-height: 1.5;
+      vertical-align: top;
+    }
+  
+    .report-table .error-col {
+      width: 41px;
+    }
+  
+    .report-table .warning-col {
+      width: 63px;
+    }
+  
+    .report-table .toggle-link {
+      display: block;
+    }
+  
+    .report-table .danger td {
+      background-color: rgba(242, 222, 222, 0.8);
+    }
+  
+    .report-table .danger:hover td {
+      background-color: rgba(242, 222, 222, 1);
+    }
+  
+    .report-table .warning td {
+      background-color: rgba(252, 248, 227, 0.8);
+    }
+  
+    .report-table .warning:hover td {
+      background-color: rgba(252, 248, 227, 1);
+    }
+  
+    .report-table .success td {
+      background-color: rgba(223, 240, 216, 0.8);
+    }
+  
+    .report-table .success:hover td {
+      background-color: rgba(223, 240, 216, 1);
+    }
+  
+    .table-wrapper {
+      display: flex;
+      justify-content: flex-start;
+      width: 600px;
+      align-items: flex-end;
+    }
+  
+    .table-wrapper.occurrences {
+      align-items: flex-start;
+    }
+  
+    .table-wrapper.occurrences .table-column {
+      height: 180px;
+      overflow-y: auto;
+    }
+  
+    .table-column {
+      flex: 1;
+      margin: 10px;
+    }
+  
+    .summary-table {
+      width: 100%;
+    }
+  
+    .summary-table a {
+      display: block;
+    }
+  
+    .summary-table td {
+      padding: 4px 0;
+    }
+  
+    .summary-table td:last-child {
+      text-align: right;
+    }
+  
+    .summary-table tfoot td {
+      border-top: 2px solid #666;
+      font-weight: bold;
+    }
+  
+    .details-row.hidden {
+      display: none;
+    }
+  
+    .details-table {
+      font-size: 12px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  
+    .details-table td {
+      border: 0;
+      padding: 1px 6px;
+    }
+  
+    .details-table td:first-child {
+      padding-left: 0;
+    }
+  
+    .details-table .location-col {
+      width: 25px;
+    }
+  
+    .details-table .rule-col {
+      white-space: nowrap;
+      width: 100px;
+    }
+  
+    .details-table .rule-col a {
+      display: block;
+    }
+  
+    .details-table .rule-col a:hover {
+      text-decoration: underline;
+    }
+  
+    .details-table .severity-col {
+      width: 45px;
+    }
+  
+    .details-table .msg-danger .severity-col {
+      color: #900;
+    }
+  
+    .details-table .msg-warning .severity-col {
+      color: #f90;
+    }
+  </style>
+
+    <script>
+      // yolo
+      function toggleAllDetails(node) {
+        var rows = document.querySelectorAll("tr.details-row");
+    
+        if (node.innerHTML === "(expand all)") {
+          node.innerHTML = "(collapse all)";
+    
+          for (var x = 0; x < rows.length; x++) {
+            var row = rows[x];
+            row.className = "details-row";
+          }
+        } else {
+          node.innerHTML = "(expand all)";
+    
+          for (var x = 0; x < rows.length; x++) {
+            var row = rows[x];
+            row.className = "details-row hidden";
+          }
+        }
+      }
+    
+      function toggleDetails(node) {
+        var parentRow = node.parentNode.parentNode;
+        var detailsRow = parentRow.nextSibling;
+    
+        if (detailsRow.className === "details-row hidden") {
+          detailsRow.className = "details-row";
+        } else {
+          detailsRow.className = "details-row hidden";
+        }
+      }
+    </script>
+</head>
+<body>
+  <div class="eslint-report">
+    <h1>ESLint Results</h1>
+
+      <h2>Summary</h2>
+      
+      <div class="table-wrapper">
+        <div class="table-column">
+          <table class="summary-table">
+              <tbody>
+                <tr>
+                  <td>Errors</td>
+                  <td>31</td>
+                </tr>
+                <tr>
+                  <td>Warnings</td>
+                  <td>49</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total alerts</td>
+                  <td>80</td>
+                </tr>
+              </tfoot>
+          </table>
+        </div>
+        <div class="table-column">
+          <table class="summary-table">
+              <tbody>
+                <tr>
+                  <td>Files with errors</td>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <td>Files with only warnings</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>Clean files</td>
+                  <td>5</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total files linted</td>
+                  <td>14</td>
+                </tr>
+              </tfoot>
+          </table>
+        </div>
+      </div>
+
+        <h2>Most-Common Errors and Warnings</h2>
+        
+        <div class="table-wrapper occurrences">
+          <div class="table-column">
+            <h3>Errors</h3>
+        
+              <table class="summary-table">
+                <tbody>
+                    <tr class="occurrence row-0">
+                        <td><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="occurrence row-1">
+                        <td><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+                      <td>7</td>
+                    </tr>
+                    <tr class="occurrence row-2">
+                        <td><a href="http://eslint.org/docs/rules/null"></a></td>
+                      <td>2</td>
+                    </tr>
+                    <tr class="occurrence row-3">
+                        <td><a href="http://eslint.org/docs/rules/no-throw-literal">no-throw-literal</a></td>
+                      <td>2</td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+          <div class="table-column">
+            <h3>Warnings</h3>
+        
+              <table class="summary-table">
+                <tbody>
+                    <tr class="occurrence row-0">
+                        <td><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+                      <td>39</td>
+                    </tr>
+                    <tr class="occurrence row-1">
+                        <td><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+                      <td>8</td>
+                    </tr>
+                    <tr class="occurrence row-2">
+                        <td><a href="http://eslint.org/docs/rules/eqeqeq">eqeqeq</a></td>
+                      <td>2</td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+
+      <h2>File Breakdown
+          <a id="toggle" href="javascript:;" onclick="toggleAllDetails(this)" class="toggle-all-link">(expand all)</a></h2>
+      
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th class="error-col">Errors</th>
+            <th class="warning-col">Warnings</th>
+          </tr>
+        </thead>
+        <tbody><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\questions.js</a></td>
+              <td>15</td>
+              <td>15</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              16:25
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (32). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              17:46
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (28). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              33:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              49:38
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (24). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              61:11
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              74:42
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (28). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              75:46
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (24). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              88:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              103:43
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (71). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              119:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              133:11
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async arrow function has too many lines (38). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              141:14
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              175:38
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (43). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              186:40
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              186:52
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              188:3
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async function &#x27;contin&#x27; has too many lines (27). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              201:48
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              201:66
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              219:53
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (34). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              220:3
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async function &#x27;f&#x27; has too many lines (30). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              223:98
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              254:59
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async arrow function has too many lines (42). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              276:11
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;removed&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              297:41
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async arrow function has too many lines (54). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              304:12
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              311:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              314:11
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async arrow function has too many lines (34). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              315:73
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              319:16
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              338:56
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\test\testQuestion.js</a></td>
+              <td>8</td>
+              <td>7</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              35:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              38:49
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (70). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              39:59
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (24). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              59:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              64:28
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              66:31
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              89:30
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              102:11
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected an error object to be thrown.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-throw-literal">no-throw-literal</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              109:40
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (30). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              140:55
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              163:61
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              186:38
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Function has too many lines (29). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              196:30
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              209:11
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected an error object to be thrown.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-throw-literal">no-throw-literal</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              219:33
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\respondent.js</a></td>
+              <td>4</td>
+              <td>8</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              5:7
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;fs&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              7:8
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;question&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              33:23
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (25). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              34:9
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;qVarName&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              36:9
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;mockBodyContent&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              37:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;q_0019&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              39:9
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;mockFromMark&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              104:73
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              171:32
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (30). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              172:9
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;copy&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              180:54
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              185:79
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Expected error to be handled.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/handle-callback-err">handle-callback-err</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\quizzes.js</a></td>
+              <td>2</td>
+              <td>10</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              14:20
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (46). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              21:11
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (36). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              22:5
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async function &#x27;f&#x27; has too many lines (32). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              62:24
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (62). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              126:17
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (25). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              183:18
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (30). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              214:29
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (54). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              270:32
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (29). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              317:23
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async arrow function has too many lines (35). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              324:5
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;answers&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              337:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;frm_label&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              343:7
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;frm_date_start&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\test\testAnswer.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Parsing error: &#x27;return&#x27; outside of function</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/null"></a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\test\quiz.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              7:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Parsing error: &#x27;return&#x27; outside of function</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/null"></a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\answers.js</a></td>
+              <td>0</td>
+              <td>5</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              16:23
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (26). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              18:11
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (21). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              63:24
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (29). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              93:34
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (35). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              99:3
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Async function &#x27;continu&#x27; has too many lines (26). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\users.js</a></td>
+              <td>0</td>
+              <td>3</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              15:23
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (31). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              20:25
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected &#x27;&#x3D;&#x3D;&#x3D;&#x27; and instead saw &#x27;&#x3D;&#x3D;&#x27;.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/eqeqeq">eqeqeq</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              21:25
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected &#x27;&#x3D;&#x3D;&#x3D;&#x27; and instead saw &#x27;&#x3D;&#x3D;&#x27;.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/eqeqeq">eqeqeq</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\results.js</a></td>
+              <td>0</td>
+              <td>1</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              17:27
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Arrow function has too many lines (28). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\.eslintrc.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\config.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\helper\bodychecker.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\routers\index.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\backend\server.js</td>
+              <td>0</td>
+              <td>0</td></tr></tbody>
+      </table>
+
+  </div>
+</body>
+</html>
