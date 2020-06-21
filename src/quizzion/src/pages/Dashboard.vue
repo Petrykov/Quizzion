@@ -39,7 +39,12 @@
                     class="button"
                     to="/"
                     @click="selectQuiz(quizId)"
-                  />
+                  >
+                    <q-tooltip
+                      content-style="font-size: 1em; color: white">
+                      {{quizObject(quizId).title}}
+                    </q-tooltip>
+                  </q-btn>
 
                 </div>
 
