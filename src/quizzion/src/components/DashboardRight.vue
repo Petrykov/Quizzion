@@ -43,9 +43,9 @@
 
     <div style="display: inline-block;"
          class="questions-section">
-      <div class="col-5">
+      <div class="col-5" v-if="!currentQuiz.stored">
         <div class="row justify-between">
-          <p style="color:white; font-size: 2em;">Questions</p>
+          <p style="color:white; font-size: 2em;" >Questions</p>
 
           <div>
             <q-icon
@@ -73,12 +73,7 @@
         </div>
       </div>
 
-      <div v-if="currentQuiz.stored" style="border: 2px solid red">
-        <p style="color:white; font-size: 2em;">Connected users: </p>
-        <div v-if="users.length !== 0" class="row">
-          <p v-for="(user, index) in users" class="col" :key="index">{{++index}}) {{user}}</p>
-        </div>
-      </div>
+      <UsersList v-if="currentQuiz.stored" :status="status"/>
 
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
@@ -127,16 +122,30 @@
 
           <div>
             <q-icon
+            class="q-mr-lg"
+            name="fas fa-trophy"
+            @click="$router.push(`result/moderator/${currentQuiz.id}`)"
+            size="2.5em"
+            style="cursor : pointer;"
+            color="white">
+            <q-tooltip
+              content-class="bg-white"
+              content-style="font-size: 1em; color: black; ">
+              Quiz results
+            </q-tooltip>
+          </q-icon>
+
+            <q-icon
               class="q-mr-lg"
-              name="fas fa-trophy"
-              @click="$router.push(`result/moderator/${currentQuiz.id}`)"
+              name="cancel_presentation"
+              @click="cancelActiveQuiz"
               size="2.5em"
               style="cursor : pointer;"
               color="white">
               <q-tooltip
                 content-class="bg-white"
                 content-style="font-size: 1em; color: black; ">
-                Quiz results
+                Cancel quiz
               </q-tooltip>
             </q-icon>
 
@@ -147,7 +156,7 @@
               class="col-offset-2 col-2"
               color="white"
               text-color="black"
-              label="Start quiz"/>
+              :label="!quizStarted ? 'Start quiz' : 'Quiz started'"/>
 
           </div>
         </div>
@@ -160,16 +169,19 @@
 <script>
     import Qrcode from "./Qrcode";
     import {copyToClipboard} from 'quasar';
+    import UsersList from "./UsersList";
+    import config from './../config/config'
 
-    // var baseUrl = "http://mark-developer.com:555/#"
     var baseUrl = "http://localhost:8080/#";
 
     export default {
-        components: {Qrcode},
+        components: {Qrcode, UsersList},
         data() {
             return {
                 startQuiz: false,
                 showQRcode: false,
+                status: false,
+                quizStarted: false,
                 users: []
             };
         },
@@ -189,8 +201,12 @@
             },
 
             startQuizMethod() {
-                this.$socket.client.emit('start');
-                this.$store.dispatch('quizzes/activateQuiz', currentQuiz);
+                if (!this.quizStarted) {
+                    this.$socket.client.emit('start');
+                    this.$store.dispatch('quizzes/activateQuiz', this.currentQuiz);
+                    this.quizStarted = true;
+                    this.status = true;
+                }
             },
 
             triggerNotification() {
@@ -205,19 +221,19 @@
                     ]
                 })
             },
+
             generateLink() {
 
                 if (!this.currentQuiz.stored){
                     this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
                     this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
                 }
+            },
 
-                this.$socket.client.on('user-connected', (data) => {
-                    console.log(data);
-                    console.log("Respondent above");
-                    this.users.push(data.name);
-                });
-
+            cancelActiveQuiz() {
+              this.$socket.client.emit('stop');
+              console.log('Sent via socket to STOP QUIZ');
+              this.currentQuiz.stored = undefined;
             }
         },
 
