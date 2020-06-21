@@ -20,7 +20,7 @@ module.exports = {
     'vue'
   ],
   rules: {
-    indent: 'off',
+    indent: 'error',
     quotes: ['warn', 'single'],
     'space-before-function-paren': ['warn', {
       anonymous: 'always',
