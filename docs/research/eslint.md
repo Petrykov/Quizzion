@@ -35,7 +35,7 @@
 
 ## Example of incorrect - correct syntex
 
-1. Indent - 4-space(one tab) indentation
+1. Indent - 2-space(one tab) indentation
 
  ```sh 
  if (a) {
@@ -46,25 +46,13 @@
 }
  ```
 
- ```sh
- if (a) {
-    b=c;
-    function foo(d) {
-        e=f;
-    }
-}
-```
 2. space-before-function-paren -
 ```sh
 function withoutSpace(x) {
     // ...
 }
 ```
-```sh
-function withSpace (x) {
-    // ...
-}
-```
+
 
 3. key-spacing
 
@@ -72,26 +60,19 @@ function withSpace (x) {
 var obj = { "foo": 42 };
 ```
 
-```sh
-var obj = { "foo" : 42 };;
-```
 4. space-before-blocks - block has at least one preceding space
-```sh
-if (a){
-    b(); ->5 spaces
-}
-```
+
 
 ```sh
 if (a) {
-    b(); ->4 spaces
+    b(); 
 }
 ```
 
 5. quotes
 ```sh
-var double = "double"; ->280errors
-var single = 'single'; ->90errors
+
+var single = 'single'; 
 ```
 6. semi
 
@@ -103,17 +84,17 @@ var website = "eslint.org";
 7. spaced-comment
 ```sh
 //This is a comment
-// This is a comment
+
 ```
-8. capitalized-comments
+8. capitalized-comments off
 ```sh
 // this is a comment
 // This is a comment
+
 ```
 
 9.  object-curly-spacing - before/after
 ```sh
-var obj = { 'foo': 'bar' };
 var obj = {'foo': 'bar'};
 ```
 
@@ -123,23 +104,10 @@ if (a) {
     b();
 }
 
-if (a) {
-
-    b();
-
-}
-
 ```
 11. keyword-spacing
 
 ```sh
-if (foo) {
-    //...
-}else if (bar) {
-    //...
-}else {
-    //...
-}
 
 if (foo) {
     //...
@@ -152,13 +120,6 @@ if (foo) {
 ```
 
 12. no-multiple-empty-lines - default -max 2 lines between
-```sh
-var foo = 5;
-
-
-
-var bar = 3;
-```
 
 ```sh
 var foo = 5;
@@ -167,9 +128,6 @@ var bar = 3;
 ```
 13. space-infix-ops - before/after
 ```sh
-a+b
-const a={b:1};
-
 
 a + b
 const a = {b:1};
@@ -177,8 +135,6 @@ const a = {b:1};
 
 14. space-in-parens - before/after
 ```sh
-foo( 'bar' );
-var x = ( 1 + 2 ) * 3;
 
 foo('bar');
 var x = (1 + 2) * 3;
@@ -187,16 +143,10 @@ var x = (1 + 2) * 3;
 15. comma-spacing 
 ```sh
 var foo = 1, bar = 2;
-var foo = 1 ,bar = 2;
 ```
 
 16. comma-dangle
 ```sh
-var foo = {
-    bar: "baz",
-    qux: "quux",
-};
-
 var foo = {
     bar: "baz",
     qux: "quux"
@@ -204,22 +154,12 @@ var foo = {
 ```
 17. semi-spacing - before/after
 ```sh
-var foo ;
-var foo;var bar;
-
 var foo;
 var foo; var bar;
 ```
 
 18. no-lonely-if
 ```sh
-if (foo) {
-    // ...
-} else {
-    if (bar) {
-        // ...
-    }
-}
 
 if (foo) {
     // ...
@@ -231,7 +171,6 @@ if (foo) {
 
 19. no-whitespace-before-property
 ```sh
-foo. bar
 
 foo.bar
 ```
@@ -242,10 +181,6 @@ foo.bar
 a == b
 foo == true
 bananas != 1
-
-a === b
-foo === true
-bananas !== 1
 
 ```
 
