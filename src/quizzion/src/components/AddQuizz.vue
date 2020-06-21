@@ -139,7 +139,8 @@
 
           if (!showAlert) {
             this.$router.push(`quizzes/${quizId}/questions`);
-          }
+          } else this.$emit('selectQuiz', quizId);
+
 
         }).catch(() => {
           this.showNotification('Something went wrong...', 'negative');

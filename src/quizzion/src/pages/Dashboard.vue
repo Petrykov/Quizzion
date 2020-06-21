@@ -66,7 +66,11 @@
 
       <div class="col">
         <section>
-          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
+          <router-view
+            class="right"
+            :currentQuiz="quizObject(selectedQuizId)"
+            @selectQuiz="selectQuiz"
+          />
         </section>
       </div>
 
