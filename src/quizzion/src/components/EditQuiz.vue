@@ -12,7 +12,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Are you sure you want to delete this quiz?</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" to="/" />
+          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -120,7 +120,10 @@ export default {
       this.$store.dispatch("quizzes/updateQuiz", this.updatedQuiz);
     },
     deleteQuiz: function() {
-      this.$store.dispatch("quizzes/deleteQuiz", this.currentQuiz.id);
+      this.$emit('selectQuiz', this.$store.state.user.quizzes[0]);
+      this.$store.dispatch("quizzes/deleteQuiz", this.currentQuiz.id).then(() => {
+        this.$router.push('/')
+      });
     }
   },
   props: {
