@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex-center fullscreen" :style="{background:getQuizById.color}">
-    <div class="flex flex-center">
+    <div class="flex flex-center q-mr-md q-ml-md">
       <h2 class="text-h2" style="border:  #9C27B0;color: white">{{getQuizById.title}}</h2>
     </div>
     <div class="row flex flex-center text-center">
