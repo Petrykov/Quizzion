@@ -1,5 +1,4 @@
 import initialState from './state'
-//TODO
 
 export function setResults(state, results) {
   state.results = results;

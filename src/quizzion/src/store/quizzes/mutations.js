@@ -37,6 +37,8 @@ export function createQuiz(state, newQuiz) {
 *
 * */
 export function updateQuiz(state, updatedQuiz) {
+  console.log("UPDATED QUIZ");
+  console.log(updatedQuiz);
   state.quizzes = [
     ...state.quizzes.filter(quiz => quiz.id !== updatedQuiz.id),
     updatedQuiz];

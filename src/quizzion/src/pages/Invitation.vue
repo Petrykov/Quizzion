@@ -26,47 +26,94 @@
             v-model="playerName"
             class="input-name"/>
 
-          <q-btn round color="black"
+          <q-btn v-if="!stopped" round color="black"
                  icon="forward"
                  class="enter-button"
                  @click="toFirstQuestion"/>
 
+
+          <q-banner v-if="stopped" inline-actions style="border-radius: 5px;" class="text-white bg-red q-ma-lg">
+            The quiz can not be played because Quiz master stopped the quiz.
+            <template v-slot:action>
+              <q-btn flat color="white" @click="closeWindow" label="Close the window" />
+            </template>
+          </q-banner>
         </div>
+
+
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        playerName: '',
-        quizId: ''
-      };
-    },
-    computed: {
-      invitedQuiz() {
-        return this.$store.getters['quizzes/getQuizById'](this.quizId);
-      }
-    },
-    beforeMount() {
-      this.quizId = this.$route.params.quizId;
+    import {QSpinnerFacebook, Notify } from 'quasar'
 
-      this.$q.loading.show({message: 'Loading quiz content...'});
-      this.$store.dispatch('quizzes/fetchInvitedQuiz', this.quizId).then(() => {
-        this.$q.loading.hide();
-      });
-    },
-    methods: {
-      toFirstQuestion() {
-        this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
-          this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
-        });
+    export default {
+        data: () => {
+            return {
+                playerName: '',
+                quizId: '',
+                stopped: false,
+            };
+        },
+        computed: {
+            invitedQuiz() {
+                return this.$store.getters['quizzes/getQuizById'](this.quizId);
+            }
+        },
+        beforeMount() {
+            this.quizId = this.$route.params.quizId;
 
-      }
+            this.$q.loading.show({message: 'Loading quiz content...'});
+            this.$store.dispatch('quizzes/fetchInvitedQuiz', this.quizId).then(() => {
+                this.$q.loading.hide();
+            });
+
+            this.$socket.client.emit('client-connected', {quiz_id: this.quizId});
+
+            this.$socket.client.on('stop', () => {
+                console.log('Quiz is stopped');
+                this.$q.loading.hide();
+                this.stopped = true;
+            })
+        },
+        beforeDestroy() {
+            this.$q.loading.hide();
+            this.$socket.client.off('stop');
+            this.$socket.client.off('start');
+        },
+        methods: {
+            toFirstQuestion() {
+                this.$socket.client.emit('connect-t', {quiz_id: this.invitedQuiz.id, name: this.playerName});
+                this.$socket.client.on('start', () => {
+                    this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
+                        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+                    });
+                });
+
+                this.showLoading();
+            },
+            showLoading() {
+                const spinner = typeof QSpinnerFacebook !== 'undefined'
+                    ? QSpinnerFacebook
+                    : Quasar.components.QSpinnerFacebook; // eslint-disable-line
+
+                this.$q.loading.show({
+                    spinner,
+                    spinnerColor: 'yellow',
+                    spinnerSize: 140,
+                    backgroundColor: 'purple',
+                    message: 'Waiting for Quiz Master to start the quiz',
+                    messageColor: 'white'
+                });
+            },
+            closeWindow() {
+                console.log("Should close a window here");
+                window.close();
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

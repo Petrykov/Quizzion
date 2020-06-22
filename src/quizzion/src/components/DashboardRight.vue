@@ -43,9 +43,9 @@
 
     <div style="display: inline-block;"
          class="questions-section">
-      <div class="col-5">
+      <div class="col-5" v-if="!currentQuiz.stored">
         <div class="row justify-between">
-          <p style="color:white; font-size: 2em;">Questions</p>
+          <p style="color:white; font-size: 2em;" >Questions</p>
 
           <div>
             <q-icon
@@ -72,6 +72,8 @@
           </q-scroll-area>
         </div>
       </div>
+
+      <UsersList v-if="currentQuiz.stored" :status="status"/>
 
       <div class="q-mt-md">
         <div class="q-pa-md theme-bubble">
@@ -120,27 +122,41 @@
 
           <div>
             <q-icon
+            class="q-mr-lg"
+            name="fas fa-trophy"
+            @click="showResults"
+            size="2.5em"
+            style="cursor : pointer;"
+            color="white">
+            <q-tooltip
+              content-class="bg-white"
+              content-style="font-size: 1em; color: black; ">
+              Quiz results
+            </q-tooltip>
+          </q-icon>
+
+            <q-icon
               class="q-mr-lg"
-              name="fas fa-trophy"
-              @click="showResults"
+              name="cancel_presentation"
+              @click="cancelActiveQuiz"
               size="2.5em"
               style="cursor : pointer;"
               color="white">
               <q-tooltip
                 content-class="bg-white"
                 content-style="font-size: 1em; color: black; ">
-                Quiz results
+                Cancel quiz
               </q-tooltip>
             </q-icon>
 
             <q-btn
-              @click="$store.dispatch('quizzes/activateQuiz', currentQuiz)"
+              @click="startQuizMethod"
               unelevated
               rounded
               class="col-offset-2 col-2"
               color="white"
               text-color="black"
-              label="Start quiz"/>
+              :label="!quizStarted ? 'Start quiz' : 'Quiz started'"/>
 
           </div>
         </div>
@@ -151,75 +167,114 @@
 </template>
 
 <script>
-  import Qrcode from "./Qrcode";
-  import {copyToClipboard} from 'quasar';
+    import Qrcode from "./Qrcode";
+    import {copyToClipboard} from 'quasar';
+    import UsersList from "./UsersList";
+    import config from './../config/config'
 
-  // var baseUrl = "http://mark-developer.com:555/#"
-  var baseUrl = "http://localhost:8080/#";
+    var baseUrl = config.frontendPath;
 
-  export default {
-    components: {Qrcode},
-    data() {
-      return {
-        startQuiz: false,
-        showQRcode: false,
-      };
-    },
+    export default {
+        components: {Qrcode, UsersList},
+        data() {
+            return {
+                startQuiz: false,
+                showQRcode: false,
+                status: false,
+                quizStarted: false,
+                currentQuizBefore: {},
+                users: []
+            };
+        },
 
-    methods: {
-      goToEdit() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
-      },
+        methods: {
+            goToEdit() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+            },
 
-      editQuiz() {
-        this.$router.push(`quizzes/${this.currentQuiz.id}`);
-      },
+            editQuiz() {
+                this.$router.push(`quizzes/${this.currentQuiz.id}`);
+            },
 
-      copyUrl() {
-        copyToClipboard(this.getQuizLink);
-        this.triggerNotification();
-      },
+            copyUrl() {
+                copyToClipboard(this.getQuizLink);
+                this.triggerNotification();
+            },
 
-      triggerNotification() {
-        this.$q.notify({
-          type: 'positive',
-          message: `Copied link!`,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => {
-              }
+            startQuizMethod() {
+                if (!this.quizStarted) {
+                    this.$socket.client.emit('start');
+                    this.$store.dispatch('quizzes/activateQuiz', this.currentQuiz);
+                    this.quizStarted = true;
+                    this.status = true;
+                }
+            },
+
+            triggerNotification() {
+                this.$q.notify({
+                    type: 'positive',
+                    message: `Copied link!`,
+                    actions: [
+                        {
+                            label: 'Dismiss', color: 'white', handler: () => {
+                            }
+                        }
+                    ]
+                })
+            },
+
+            generateLink() {
+
+                if (!this.currentQuiz.stored){
+                    this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
+                    this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
+                }
+            },
+
+            cancelActiveQuiz() {
+              this.$socket.client.emit('stop');
+              console.log('Sent via socket to STOP QUIZ');
+              //todo currentQuiz.stored = false
+              this.quizStarted = false;
+            },
+            
+            showResults(){
+            this.$router.push(`result/moderator/${this.currentQuiz.id}`);
             }
-          ]
-        })
-      },
-      generateLink() {
+        },
 
-        if (!this.currentQuiz.stored){
-          this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id)
+        computed: {
+            getQuizLink() {
+                return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+            },
+
+        },
+
+        beforeMount() {
+            this.currentQuizBefore = this.currentQuiz;
+            console.log("before mount ");
+            console.warn (this.currentQuizBefore)
+        },
+
+        updated() {
+            if (this.currentQuiz !== this.currentQuizBefore) {
+                this.status = false;
+                console.log("status is 0 now");
+                this.currentQuizBefore = this.currentQuiz;
+                //todo currentQuiz.stored = false
+                this.quizStarted = false;
+            }
+        },
+
+        props: {
+            currentQuiz: {
+                type: Object,
+                required: true
+            }
         }
-      },
 
-      showResults(){
-        this.$router.push(`result/moderator/${this.currentQuiz.id}`);
-      }
-    },
-
-    computed: {
-      getQuizLink() {
-        return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
-      },
-
-    },
-
-    props: {
-      currentQuiz: {
-        type: Object,
-        required: true
-      }
-    }
-  };
+    };
 </script>
-
 
 <style scoped>
 
