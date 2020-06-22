@@ -1,5 +1,5 @@
 <template>
-  <q-page style="background-color:#E1EFFF; overflow: auto">
+  <q-page class="full-width full-height" style="background-color:#E1EFFF; overflow: auto; position: absolute">
     <div style="float: left; margin-left: 2%">
       <div style="margin-left: 25%; margin-top: 50%">
 
