@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex-center fullscreen" :style="{background:getQuizById.color}">
-    <div class="flex flex-center">
+    <div class="flex flex-center q-mr-md q-ml-md">
       <h2 class="text-h2" style="border:  #9C27B0;color: white">{{getQuizById.title}}</h2>
     </div>
     <div class="row flex flex-center text-center">
@@ -14,7 +14,7 @@
       style="background-color: white;border-radius: 15px 15px 15px 15px;width:100%;margin-left: 5%;margin-right: 5%;width: 90%">
       <q-scroll-area class="q-mt-md q-pt-sm" style="height: 700px;">
         <q-list style="width:100%">
-          <table style="border-spacing: 10px" >
+          <table style="border-spacing: 10px; width: 100%" >
             <tr>
               <th style="width:5%">No</th>
               <th style="width:60%;">Questions</th>

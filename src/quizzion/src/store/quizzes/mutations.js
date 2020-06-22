@@ -83,6 +83,7 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
       state.questions[index].description = updatedQuestion.description;
       state.questions[index].time = updatedQuestion.time;
       state.questions[index].answers = updatedQuestion.answers;
+      state.questions[index].image = updatedQuestion.image;
     }
   })
 }
@@ -102,7 +103,7 @@ export function deleteQuestion(state, {quizId, questionId}) {
 /* +
 * -- modified --
 */
-export function addAnswer(state, {questionId, answer}) {
+export function createAnswer(state, {questionId, answer}) {
 
   let question = state.questions.find(question => question.id === questionId);
 
@@ -122,6 +123,8 @@ export function deleteAnswer(state, {questionId, answerId}) {
       question.answers.splice(index, 1);
     }
   });
+
+  state.answers = state.answers.filter((answer) => answer.id !== answerId);
 }
 
 /* +
@@ -145,13 +148,4 @@ export function activateQuiz(state, activatedId) {
 
 export function reset(state) {
   Object.assign(state, initialState());
-}
-
-//mock only for dev
-import {quizzesMock} from "./state";
-
-export function mock(state) {
-  state.quizzes = quizzesMock.quizzes;
-  state.questions = quizzesMock.questions;
-  state.answers = quizzesMock.answers;
 }

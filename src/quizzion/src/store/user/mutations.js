@@ -17,8 +17,7 @@ export function join(state, {token, name}) {
 }
 
 export function setQuizzes(state, quizzes) {
-  quizzes.map((quiz) => {
-    // should check with which value id returns from backend
+  quizzes.forEach((quiz) => {
     state.quizzes.push(quiz.id);
   });
 }
