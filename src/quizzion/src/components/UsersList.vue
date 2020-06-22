@@ -84,7 +84,12 @@
             }
         },
         beforeDestroy() {
+
+            console.log("Called before destroy in UsersList");
             this.$socket.client.off('user-connected');
+            this.usersCleaned = false;
+            this.usersCleaned = false;
+            this.users = [];
         }
     }
 

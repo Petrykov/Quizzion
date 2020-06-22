@@ -182,6 +182,7 @@
                 showQRcode: false,
                 status: false,
                 quizStarted: false,
+                currentQuizBefore: {},
                 users: []
             };
         },
@@ -233,7 +234,8 @@
             cancelActiveQuiz() {
               this.$socket.client.emit('stop');
               console.log('Sent via socket to STOP QUIZ');
-              this.currentQuiz.stored = undefined;
+              //todo currentQuiz.stored = false
+              this.quizStarted = false;
             }
         },
 
@@ -244,6 +246,22 @@
 
         },
 
+        beforeMount() {
+            this.currentQuizBefore = this.currentQuiz;
+            console.log("before mount ");
+            console.warn (this.currentQuizBefore)
+        },
+
+        updated() {
+            if (this.currentQuiz !== this.currentQuizBefore) {
+                this.status = false;
+                console.log("status is 0 now");
+                this.currentQuizBefore = this.currentQuiz;
+                //todo currentQuiz.stored = false
+                this.quizStarted = false;
+            }
+        },
+
         props: {
             currentQuiz: {
                 type: Object,
@@ -252,7 +270,6 @@
         }
     };
 </script>
-
 
 <style scoped>
 
