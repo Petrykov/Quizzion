@@ -1,8 +1,9 @@
 import axios from 'axios'
 import md5 from 'md5'
 import store from '../store'
+import config from './../config/config'
 
-const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
+const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
 
 /*
 *
@@ -37,7 +38,7 @@ export function logout() {
   return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function fetchInvitedQuiz(quizId) {
+export function invite(quizId) {
   return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
 }
 
@@ -51,14 +52,14 @@ export function fetchQuizzes() {
   return axios.get(`${apiUrl}/quizzes/all`);
 }
 
-// export async function fetchInvitedQuiz({fh, token}) {
-//   axios.defaults.headers.common['authorization'] = token;
-//
-//   const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
-//   console.log(response)
-//   const tn = response.data.form[0].tn;
-//   return axios.get(`${apiUrl}/quizzes/${tn}`);
-// }
+export async function fetchInvitedQuiz({fh, token}) {
+  axios.defaults.headers.common['authorization'] = token;
+
+  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
+  // console.log(response)
+  const tn = response.data.form[0].tn;
+  return axios.get(`${apiUrl}/quizzes/${tn}`);
+}
 
 // -- modified --
 export function fetchQuestions() {
@@ -109,7 +110,7 @@ export function addAnswerToQuestion(questionId, answerId) {
 }
 
 // -- created --
-export function createAnswer(newAnswer) {
+export function addAnswer(newAnswer) {
   return axios.post(`${apiUrl}/answer`, {...newAnswer});
 }
 
@@ -137,6 +138,6 @@ export function fetchRespondentResult({quizId, id}) {
   return axios.get(`${apiUrl}/${quizId}/result/respondent/${id}`);
 }
 
-export function fetchResults() {
-  // return axios.get(`${apiUrl}/results`)
+export function fetchResults(quizId) {
+  return axios.get(`${apiUrl}/results/${quizId}`)
 }
