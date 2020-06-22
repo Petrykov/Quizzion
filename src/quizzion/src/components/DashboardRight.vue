@@ -124,7 +124,7 @@
             <q-icon
             class="q-mr-lg"
             name="fas fa-trophy"
-            @click="$router.push(`result/moderator/${currentQuiz.id}`)"
+            @click="showResults"
             size="2.5em"
             style="cursor : pointer;"
             color="white">
@@ -236,6 +236,10 @@
               console.log('Sent via socket to STOP QUIZ');
               //todo currentQuiz.stored = false
               this.quizStarted = false;
+            },
+            
+            showResults(){
+            this.$router.push(`result/moderator/${this.currentQuiz.id}`);
             }
         },
 
@@ -268,6 +272,7 @@
                 required: true
             }
         }
+
     };
 </script>
 

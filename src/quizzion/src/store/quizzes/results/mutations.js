@@ -13,6 +13,6 @@ import { resultsMock } from "./state";
 
 export function mock(state) {
   state.results = resultsMock.results;
-  state.guesses = resultsMock.guesses;
+  // state.guesses = resultsMock.guesses;
 }
 
