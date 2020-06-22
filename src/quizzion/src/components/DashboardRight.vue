@@ -172,8 +172,6 @@
     import UsersList from "./UsersList";
     import config from './../config/config'
 
-    var baseUrl = config.frontendPath;
-
     export default {
         components: {Qrcode, UsersList},
         data() {
@@ -237,7 +235,7 @@
               //todo currentQuiz.stored = false
               this.quizStarted = false;
             },
-            
+
             showResults(){
             this.$router.push(`result/moderator/${this.currentQuiz.id}`);
             }
@@ -245,7 +243,7 @@
 
         computed: {
             getQuizLink() {
-                return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+                return `${config.frontendPath}/quizzes/${this.currentQuiz.id}/invite`;
             },
 
         },
