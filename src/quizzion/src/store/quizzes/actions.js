@@ -215,9 +215,8 @@ export function startQuiz(context, quizId) {
     try {
       const payload = context.getters['getFullQuizPackage'](quizId);
 
-      console.log(payload)
-
       await api.startQuiz(payload);
+
       context.commit('setStored', quizId);
       resolve();
     } catch (e) {

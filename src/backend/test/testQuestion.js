@@ -221,7 +221,7 @@ describe('Removes a test quiz', function () {
             .delete('/api/quizzes/' + quiz_id)
             .set('Authorization', token)
             .expect(200)
-            .end( (err, rsp) => {
+            .end((err, rsp) => {
                 if (err) throw err;
                 console.log(rsp.body);
                 console.log('is body');

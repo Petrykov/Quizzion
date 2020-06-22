@@ -20,6 +20,8 @@
     "md5": "^2.2.1",
     "qrcode.vue": "^1.7.0",
     "quasar": "^1.11.3",
+    "socket.io-client": "^2.3.0",
+    "vue-socket.io-extended": "^4.0.3",
     "uuid": "^8.1.0",
     "vue": "^2.6.11",
     "vue-carousel": "^0.18.0",

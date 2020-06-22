@@ -89,7 +89,10 @@
         id: this.$store.state.user.token,
         quizId: this.quizId
       });
-    }
+    },
+      mounted() {
+        this.$socket.client.emit('quiz-done', {quiz_id : this.quizId});
+      }
   }
 </script>
 
