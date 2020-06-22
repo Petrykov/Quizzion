@@ -11,8 +11,7 @@
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
-          leftDrawerOpen = !leftDrawerOpen
-        />
+          leftDrawerOpen = !leftDrawerOpen/>
 
 
       </q-toolbar>
