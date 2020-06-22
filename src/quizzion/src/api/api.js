@@ -3,6 +3,7 @@ import md5 from 'md5'
 import store from '../store'
 import config from './../config/config'
 
+const apiUrl = `${config.backendPath}/api`;
 
 /*
 *
@@ -23,106 +24,106 @@ import config from './../config/config'
 
 
 export function login(credentials) {
-  return axios.post(`${config.backendPath}/user/login`, {
+  return axios.post(`${apiUrl}/user/login`, {
     username: credentials.username,
     password: md5(credentials.password)
   });
 }
 
 export function logout() {
-  return axios.delete(`${config.backendPath}/user/logout`);
+  return axios.delete(`${apiUrl}/user/logout`);
 }
 
 
 export function join({quizId, name}) {
-  return axios.post(`${config.backendPath}/respondent/join/${quizId}`, {name});
+  return axios.post(`${apiUrl}/respondent/join/${quizId}`, {name});
 }
 
 export function fetchQuizzes() {
   axios.defaults.headers.common['authorization'] = store.state.user.token; //set default token after login
 
-  return axios.get(`${config.backendPath}/quizzes/all`);
+  return axios.get(`${apiUrl}/quizzes/all`);
 }
 
 export async function fetchInvitedQuiz(quizId) {
-  return axios.get(`${config.backendPath}/quizzes/${quizId}/invite`);
+  return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
 }
 
 // -- modified --
 export function fetchQuestions() {
-  return axios.get(`${config.backendPath}/question`);
+  return axios.get(`${apiUrl}/question`);
 }
 
 // -- modified --
 export function fetchAnswers() {
-  return axios.get(`${config.backendPath}/answer`);
+  return axios.get(`${apiUrl}/answer`);
 }
 
 export function startQuiz(payload) {
-  return axios.post(`${config.backendPath}/quizzes/:quizId/start`, payload);
+  return axios.post(`${apiUrl}/quizzes/:quizId/start`, payload);
 }
 
 export function createQuiz(newQuiz) {
-  return axios.post(`${config.backendPath}/quizzes`, {...newQuiz});
+  return axios.post(`${apiUrl}/quizzes`, {...newQuiz});
 }
 
 export function updateQuiz(updatedQuiz) {
-  return axios.put(`${config.backendPath}/quizzes/${updatedQuiz.id}/edit`, {...updatedQuiz, label: updatedQuiz.color});
+  return axios.put(`${apiUrl}/quizzes/${updatedQuiz.id}/edit`, {...updatedQuiz, label: updatedQuiz.color});
 }
 
 export function deleteQuiz(deletedId) {
-  return axios.delete(`${config.backendPath}/quizzes/${deletedId}`);
+  return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
 // -- modified --
 export function createQuestion(quizId, newQuestion) {
   axios.defaults.headers.common['authorization'] = store.state.user.token;
-  return axios.post(`${config.backendPath}/quizzes/${quizId}/question`, {...newQuestion});
+  return axios.post(`${apiUrl}/quizzes/${quizId}/question`, {...newQuestion});
 }
 
 // -- modified --
 export function updateQuestion(questionId, updatedQuestion) {
-  return axios.put(`${config.backendPath}/question/${questionId}`, {...updatedQuestion});
+  return axios.put(`${apiUrl}/question/${questionId}`, {...updatedQuestion});
 }
 
 // -- modified --
 export function deleteQuestion(questionId) {
-  return axios.delete(`${config.backendPath}/question/${questionId}`);
+  return axios.delete(`${apiUrl}/question/${questionId}`);
 }
 
 // -- created
 export function addAnswerToQuestion(questionId, answerId) {
-  return axios.put(`${config.backendPath}/question/${questionId}/add/${answerId}`);
+  return axios.put(`${apiUrl}/question/${questionId}/add/${answerId}`);
 }
 
 // -- created --
 export function createAnswer(newAnswer) {
-  return axios.post(`${config.backendPath}/answer`, {...newAnswer});
+  return axios.post(`${apiUrl}/answer`, {...newAnswer});
 }
 
 // -- created --
 export function deleteAnswer(answerId) {
-  return axios.delete(`${config.backendPath}/answer/${answerId}`);
+  return axios.delete(`${apiUrl}/answer/${answerId}`);
 }
 
 // -- created --
 export function updateAnswers(answers) {
   return axios.all(
     answers.map((answer) => {
-      axios.put(`${config.backendPath}/answer/${answer.id}`,{...answer});
+      axios.put(`${apiUrl}/answer/${answer.id}`,{...answer});
     })
   )
 }
 
 
 export function submitAnswer({quizId, answer}) {
-  return axios.post(`${config.backendPath}/respondent/${quizId}/answer`, answer );
+  return axios.post(`${apiUrl}/respondent/${quizId}/answer`, answer );
 }
 
 export function fetchRespondentResult({quizId, id}) {
-  return axios.get(`${config.backendPath}/${quizId}/result/respondent/${id}`);
+  return axios.get(`${apiUrl}/${quizId}/result/respondent/${id}`);
 }
 
 export function fetchResults(quizId) {
-  return axios.get(`${config.backendPath}/results/${quizId}`)
+  return axios.get(`${apiUrl}/results/${quizId}`)
 }

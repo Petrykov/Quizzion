@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar dev",
+    "build": "quasar build",
     "test:unit": "jest --updateSnapshot",
     "test:unit:coverage": "jest --coverage",
     "test:unit:watch": "jest --watch",
