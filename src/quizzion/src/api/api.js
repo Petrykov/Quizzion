@@ -96,7 +96,7 @@ export function addAnswerToQuestion(questionId, answerId) {
 }
 
 // -- created --
-export function addAnswer(newAnswer) {
+export function createAnswer(newAnswer) {
   return axios.post(`${config.backendPath}/answer`, {...newAnswer});
 }
 
