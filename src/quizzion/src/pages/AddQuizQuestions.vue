@@ -117,8 +117,8 @@
 
 
             <div style="display: flex;justify-content: center;padding-top: 10px">
-              <q-img :src="imageUrl"
-                     :width="imageShow(imageUrl)"></q-img>
+              <q-img v-if="imageUrl" :src="imageUrl"
+                     width="10%"></q-img>
               <q-file
                 style="margin-top: 1px;"
                 size="xx-large"
@@ -130,21 +130,21 @@
                 color="white"
                 @click="$refs.file.click()">
               </q-file>
-              <q-btn  @click="uploadToFirebase">
+              <q-btn @click="uploadToFirebase">
                 <i class="fas fa-upload" style="color: white"></i>
               </q-btn>
             </div>
             <div class="answers-div-wrapper">
               <p
-                class="paragraph q-mt-lg q-ml-md"
-                style="color:white; font-size:2em;">
+                class="paragraph q-mt-md q-ml-xs"
+                style="color:white; font-size:1.5em;">
                 The answers?
               </p>
 
               <div class="col">
                 <q-scroll-area
-                  class="scroll-area scrollarea answers-wrapper"
-                  style="height: 275px; max-width: 300px;">
+                  class="scroll-area cust-scroll-area answers-wrapper"
+                  style="height: 250px; max-width: 300px;">
 
                   <div
                     v-if="answersList"
@@ -206,15 +206,20 @@
             </div>
 
             <div class="timer-wrapper">
-              <p
-                class="q-mt-md"
-                style="color:white; font-size:2em;">What about timer?</p>
 
-              <q-icon
-                name="timer"
-                color="white"
-                size="5em"
-                class="q-mr-xs q-mt-md time-icon"/>
+              <div style="display: flex" class="row items-center">
+
+                <q-icon
+                  name="timer"
+                  color="white"
+                  size="4em"
+                  class="col-2 q-mt-xs time-icon"/>
+
+                <p
+                  class="col-auto q-mt-xs"
+                  style="color:white; font-size:1.5em;">What about the timer?</p>
+
+              </div>
 
               <div
                 class="timer">
@@ -227,12 +232,10 @@
                       v-for="(time, index) in ['5 sec', '10 sec', '15 sec', '30 sec', '60 sec']"
                       v-bind:key="index"
                       :id="selectedQuestion.id + '=' + index"
-                      round
-                      style="border: 1px solid black; padding: 1em;"
-                      color="white"
-                      text-color="black"
+                      style="border-radius: 50px; border: 1px solid white; padding: .6em;"
+                      text-color="white"
                       class="time-button"
-                      :class="{selected : (parseInt(time.split(' ')[0], 10) === question.time)}"
+                      :style="[ (parseInt(time.split(' ')[0], 10) === question.time) ? {background:lighten(currentQuiz.color, 40)} : '']"
                       :label="time"
                       @click="onTimeClick(time, index)"/>
                   </div>
@@ -250,7 +253,7 @@
                 text-color="black"
                 class="q-ml-md"
                 style="cursor : pointer; padding: 0.2em 0.4em; border-radius: 2em;"
-                size="1.2em"
+                size="1em"
                 @click="updateQuestion"/>
             </div>
 
@@ -266,8 +269,10 @@
   import AOS from 'aos';
   import 'aos/dist/aos.css';
   import firebase from 'firebase';
+  import {colors} from 'quasar'
 
-  import {v4 as uuidv4} from 'uuid';
+  const {lighten} = colors;
+
 
   export default {
     data() {
@@ -315,21 +320,15 @@
     },
 
     methods: {
-      imageShow(imageUrl){
-        if(imageUrl!=null){
-          return '10%'
-        }
-        return 0
-      },
+      lighten,
       uploadToFirebase() {
-        if(this.file!=null){
-          let storageRef = firebase.storage().ref(`${this.file.name+this.currentQuizId}`).put(this.file);
-          storageRef.on('state_changed',
-            () => {
-              storageRef.snapshot.ref.getDownloadURL().then((url) => {
-                this.imageUrl = url;
-              })
+        if (this.file != null) {
+          let storageRef = firebase.storage().ref(`${this.file.name}`);
+          storageRef.put(this.file).then(() => {
+            storageRef.getDownloadURL().then((url) => {
+              this.imageUrl = url;
             })
+          });
         }
       },
       onQuestionClick(id) {
@@ -340,9 +339,9 @@
 
         this.answersList = this.deepCopyFunction([...this.getAnswers]);
 
-        this.imageUrl=this.question.image;
+        this.imageUrl = this.question.image;
 
-        this.file=null;
+        this.file = null;
       },
 
       deepCopyFunction(inObject) {
@@ -394,7 +393,7 @@
         let quizId, questionId, updatedQuestion, answers, image;
 
         if (this.timeCheck() === false) {
-          this.showNotification("Please select the time of the quiz", "red");
+          this.showNotification("Please select the time of the quiz", 'negative');
         } else {
 
           questionId = this.selectedQuestionId;
@@ -418,13 +417,16 @@
             answers: answersIdList
           };
 
-          this.$store.dispatch('quizzes/updateAnswers', {answers});
-          this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion});
-
-
-          this.showNotification("Question was saved", "blue");
-          }
-        },
+          Promise.allSettled([
+            this.$store.dispatch('quizzes/updateAnswers', {answers}),
+            this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion})
+          ]).then(() => {
+            this.showNotification("Question was saved!", "positive");
+          }).catch(() => {
+            this.showNotification("Something went wrong...", "negative");
+          });
+        }
+      },
 
 
       timeCheck() {
@@ -475,10 +477,16 @@
         this.alert = true;
       },
 
-      showNotification(message, color) {
+      showNotification(message, type) {
         this.$q.notify({
+          type: type,
           message: message,
-          color: color
+          actions: [
+            {
+              label: 'Dismiss', color: 'white', handler: () => { /* ... */
+              }
+            }
+          ]
         })
       }
     }
@@ -504,16 +512,10 @@
     display: contents;
   }
 
-  .scrollarea {
+  .cust-scroll-area {
     border: none;
     margin-left: 0;
     margin-right: 0;
-  }
-
-  .selected {
-    background: #5dbcd2 !important;
-    border: 1px solid black !important;
-    color: black !important;
   }
 
   .timer {

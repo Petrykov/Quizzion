@@ -39,6 +39,10 @@ const routes = [
       {
         path:'/podium',
         component:()=>import('pages/PodiumPage.vue')
+      },
+      {
+        path:'/statistics',
+        component: ()=> import('pages/Statistics.vue')
       }
 
     ]

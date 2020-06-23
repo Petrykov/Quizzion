@@ -1,8 +1,9 @@
 import axios from 'axios'
 import md5 from 'md5'
 import store from '../store'
+import config from './../config/config'
 
-const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
+const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
 
 /*
 *
@@ -22,9 +23,6 @@ const apiUrl = process.env.DEV ? 'http://localhost:3000/api' : '';
 * */
 
 
-function timeout(res, ms) {
-  return new Promise(resolve => setTimeout(() => resolve(res), ms));
-}
 
 export function login(credentials) {
   return axios.post(`${apiUrl}/user/login`, {
@@ -37,9 +35,6 @@ export function logout() {
   return axios.delete(`${apiUrl}/user/logout`);
 }
 
-export function invite(quizId) {
-  return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
-}
 
 export function join({quizId, name}) {
   return axios.post(`${apiUrl}/respondent/join/${quizId}`, {name});
@@ -51,13 +46,8 @@ export function fetchQuizzes() {
   return axios.get(`${apiUrl}/quizzes/all`);
 }
 
-export async function fetchInvitedQuiz({fh, token}) {
-  axios.defaults.headers.common['authorization'] = token;
-
-  const response = await axios.get(`${apiUrl}/quizzes/start/${fh}`);
-  // console.log(response)
-  const tn = response.data.form[0].tn;
-  return axios.get(`${apiUrl}/quizzes/${tn}`);
+export async function fetchInvitedQuiz(quizId) {
+  return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
 }
 
 // -- modified --
