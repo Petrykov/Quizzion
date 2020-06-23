@@ -40,9 +40,9 @@
 
 ![Ptere](./assets/Persona_Peter.png).
     
-![Olivia](./assets/Persona_Peter.png).
+![Olivia](./assets/Persona_Olivia.png).
     
-![Amy](./assets/Persona_Peter.png).
+![Amy](./assets/Persona_Amy.png).
 
 ## Final High-fidelity prototyping
 
