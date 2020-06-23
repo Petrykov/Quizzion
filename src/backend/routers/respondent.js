@@ -10,7 +10,7 @@ router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
     if (rsp) {
-        rsp.send({ id: uniqueId})
+        rsp.send({ id: uniqueId })
     }
     else rsp.send("Errors occured!")
 })
@@ -61,12 +61,22 @@ router.get("/respondent/:id", (req, res) => {
 
 router.delete('/:quizId/stop', (req, res) => {
     let currentQuiz = quizList.find(quiz => quiz.id === req.params.quizId);
-    for (let i = 0; i < quizList.length; i++) {
-        if (quizList[i].id === currentQuiz.id) {
-            quizList.splice(i, 1);
-            res.send({ message: "successfull!", quizList: quizList })
+    db.run("DELETE FROM responses WHERE quizId = ?", [req.params.quizId], (err, rsp) => {
+        if (err) {
+            res.send(err)
         }
-    }
+        else {
+            for (let i = 0; i < quizList.length; i++) {
+                if (quizList[i].id === currentQuiz.id) {
+                    quizList.splice(i, 1);
+                }
+            }
+            res.send({
+                message: "Deleted!"
+            })
+        }
+    })
+
 })
 
 router.delete('/respondent/:id/logout', (req, res) => {
@@ -103,7 +113,7 @@ router.get('/results/:quizId', (req, res) => {
             let result = groupResultByid(results)
             // console.log(Object.keys(result))
             res.send(result)
-        }else res.send({"Error occurs:": err})
+        } else res.send({ "Error occurs:": err })
     })
 })
 

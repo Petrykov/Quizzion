@@ -1,5 +1,4 @@
 import * as api from '../../api/api'
-import ca from "quasar/lang/ca";
 
 
 export function login({commit, dispatch}, credentials) {
@@ -7,19 +6,9 @@ export function login({commit, dispatch}, credentials) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.login(credentials);
-      //MOCK DATA
-      console.log("Mocking store...");
-      dispatch('mockStore', null, {root: true});
 
       commit('login', response.data);
-
-      dispatch('quizzes/initialiseAll', null, {root: true}).then(() => {
-        this.$router.push('/');
-        resolve();
-      }).catch((e) => {
-        reject(e);
-      });
-
+      resolve();
     } catch (e) {
       console.log("Error while login API: ");
       console.log(e);
@@ -51,11 +40,8 @@ export function join({commit, dispatch}, payload) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await api.join(payload);
-      console.log("response");
-      console.log(response);
 
       commit('join', {token: response.data.id, name: payload.name});
-
       resolve();
     } catch (e) {
       console.log("Error while participate API: ");

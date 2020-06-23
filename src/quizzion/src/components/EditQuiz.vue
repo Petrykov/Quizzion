@@ -12,7 +12,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">Are you sure you want to delete this quiz?</q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" to="/" />
+          <q-btn flat label="OK" color="primary" v-close-popup @click="deleteQuiz" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -61,16 +61,16 @@
 
         <div class="theme-bubble" style="padding-top: 10px">
           <q-img
+            v-if="updatedQuiz.logo"
             :src="updatedQuiz.logo"
-            v-model="updatedQuiz.logo"
-            :width="imageShow(updatedQuiz.logo)"
+            width="10%"
           ></q-img>
           <q-file
             size="xx-large"
             round
             v-model="file"
             label-color="white"
-            label="Pick one logo"
+            label="Pick a new logo"
             filled
             @click="$refs.file.click()"
           ></q-file>
@@ -103,22 +103,13 @@ export default {
   },
 
   methods: {
-    imageShow(logoUrl) {
-      if (logoUrl != null) {
-        return "10%";
-      }
-      return 0;
-    },
     uploadToFirebase() {
       if (this.file != null) {
-        let storageRef = firebase
-          .storage()
-          .ref(`${this.file.name}`)
-          .put(this.file);
-        storageRef.on("state_changed", () => {
-          storageRef.snapshot.ref.getDownloadURL().then(url => {
+        let storageRef = firebase.storage().ref(`${this.file.name}`);
+        storageRef.put(this.file).then(() => {
+          storageRef.getDownloadURL().then((url) => {
             this.updatedQuiz.logo = url;
-          });
+          })
         });
       }
     },
@@ -129,7 +120,10 @@ export default {
       this.$store.dispatch("quizzes/updateQuiz", this.updatedQuiz);
     },
     deleteQuiz: function() {
-      this.$store.dispatch("quizzes/deleteQuiz", this.currentQuiz.id);
+      this.$emit('selectQuiz', this.$store.state.user.quizzes[0]);
+      this.$store.dispatch("quizzes/deleteQuiz", this.currentQuiz.id).then(() => {
+        this.$router.push('/')
+      });
     }
   },
   props: {
