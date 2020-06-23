@@ -1,8 +1,33 @@
-# EsLint
+# ESLint
 
-## First checking - the most common errors
+## Why ESLint?
 
-| error  | description   |  
+#### Find Problems
+
+ESLint provides quick code analyse, generates a report with problems specification. ESLint can run as a part of continuous integration pipeline.
+
+#### Fix Auhomatically
+
+Most of the problems can be fixed automatically with only one command. Additionally ESLint is syntax-aware. After fixing, the code is more consistent, there is less bugs.
+
+
+#### Customize
+ESLint is a very helpful tool. When the whole team is working on a particular project and the client want to have structured code. With ESLint it is really easy to provide code styling. 
+
+
+## Three levels of errors
+- "off" - turn off the rule
+- "warn" - turn on the rule as warning
+- "error" - turn on the rule as an error - exit code will be 1
+
+In this project for all the rules, which can be fixed automatically, the error level is 'warn'. Rules, which cannot be fixed automatically are marked as 'error'.
+
+
+## All problems after running ESLint with standard styling
+
+Running Eslint with standard styling was necessary to find and anylize problems, which can be included later in the 'rules'
+
+| problem  | description   |  
 |---|---|
 | indent  |Expected indentation of 4 spaces but found 6|    
 | space-before-function-paren  |  Missing space before function parentheses  |  
@@ -31,9 +56,11 @@
 |dot-notation   |     ["getFullQuizPackage"] is better written in dot notation   |
 |   semi-spacing |   Unexpected whitespace before semicolon  |   
 | no-dupe-keys|  Duplicate key 'animations'  |
+|camelcase|Identifier 'quiz_id' is not in camel case.|
+|handle-callback-err|Expected error to be handled.|
+|no-throw-literal|Expected an error object to be thrown.|
 
-
-## Example of incorrect - correct syntex
+## Example of correct syntex for rules
 
 1. Indent - 2-space(one tab) indentation
 
@@ -86,10 +113,9 @@ var website = "eslint.org";
 //This is a comment
 
 ```
-8. capitalized-comments off
+8. camelcase
 ```sh
-// this is a comment
-// This is a comment
+var myFavoriteColor   = "#112C85";
 
 ```
 
@@ -185,22 +211,21 @@ bananas != 1
 ```
 
 ### Styling options, which cannot be fixed automatic 
-| error  | example of the error  |  
+| problem  | example of the problem  |  
 |---|---|
-|max-lines-per-function |Function has too many lines (206). Maximum allowed is 20 |
+|max-lines-per-function |Function has too many lines (26). Maximum allowed is 20 |
 | camelcase |Identifier 'short_name' is not in camel case  |
 |no-unused-vars |'uuidv4' is defined but never used   |
 |  prefer-const |'outObject' is never reassigned. Use 'const' instead   |
 |no-undef |'e' is not defined |
-
-### Requirements from Parantion:
-- Naming conventions:
-    - Folders: snake_case
-    - Vue components and classes: PascalCase
-    - Proporties, methods: pascalCase
-    - CSS: pascal-case
-
-- Lenght of method: max 20 lines
-- Props - with a required and a default value.
+|no-throw-literal|Expected an error object to be thrown.|
+|eqeqeq|Expected '===' and instead saw '=='.|
+|handle-callback-err|Expected error to be handled.|
 
 
+### Rules which are off
+| problem  | 
+|---|
+| capitalized-comments | 
+| dot-notation| 
+|no-async-promise-executor|

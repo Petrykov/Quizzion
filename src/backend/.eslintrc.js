@@ -18,11 +18,11 @@ module.exports = {
     'space-before-blocks': ['warn', 'always'],
     semi: ['warn', 'always'],
     'spaced-comment': ['warn', 'never'],
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'error',
     'object-curly-spacing': ['warn', 'never'],
     'padded-blocks': ['warn', 'never'],
     'no-async-promise-executor': 'off',
-    'prefer-const': 'warn',
+    'prefer-const': 'error',
     'keyword-spacing': ['warn', {before: true}],
     'no-multiple-empty-lines': ['warn', {max: 2}],
     'space-infix-ops': ['warn', {int32Hint: false}],
@@ -30,15 +30,18 @@ module.exports = {
     'comma-spacing': ['warn', {before: false, after: true}],
     'comma-dangle': ['warn', 'never'],
     'dot-notation': 'off',
-    'import/first': 'off',
-    'import/no-duplicates': 'off',
+    'import/first': 'warn',
+    'import/no-duplicates': 'warn',
     'semi-spacing': ['warn', {before: false, after: true}],
-    'max-lines-per-function': ['warn', {max: 20}],
+    'max-lines-per-function': ['error', {max: 20}],
     camelcase: ['error', {properties: 'always'}],
     'capitalized-comments': 'off',
     'no-lonely-if': 'warn',
     'no-whitespace-before-property': 'error',
-    eqeqeq: ['warn', 'smart'],
-    'no-undef': 'off'
+    eqeqeq: ['error', 'smart'],
+    'no-undef': 'error',
+    'no-throw-literal': 'error',
+    'handle-callback-err': 'error'
+
   }
 };
