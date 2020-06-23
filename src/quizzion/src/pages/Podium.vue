@@ -4,8 +4,8 @@
       <table style="height: 100%;width: 100%;">
         <td style="width: 27%"></td>
         <td style="width: 13%">
-          <div class="row" style="height: 29%"></div>
-          <div class="row flex-center" >
+          <div class="row" style="height: 28%"></div>
+          <div class="row flex-center">
             <h5 class="text-h5">{{results[1].name}}</h5>
           </div>
         </td>
@@ -14,7 +14,7 @@
         </td>
         <td style="width: 13%">
           <div class="row" style="height: 38%"></div>
-          <div class="row flex-center" >
+          <div class="row flex-center">
             <h5 class="text-h5">{{results[2].name}}</h5>
           </div>
         </td>
@@ -29,17 +29,31 @@
     name: "Podium.vue",
     data() {
       return {
-        results:this.getWinners()
+        results: this.getWinners()
       }
     },
-    computed:{
-    },
-    methods:{
-      getWinners(){
-        let result=this.$store.state.quizzes.results.results.sort(function(a,b){
-          return b.score-a.score;
+    computed: {},
+    methods: {
+      getWinners() {
+        let allResult=this.$store.state.quizzes.results.results;
+        let sortResult=[];
+        for (let i = 0; i <allResult.length ; i++) {
+          sortResult.push(this.getTotalForOneResult(allResult[i]))
+        }
+        sortResult=sortResult.sort(function (a, b) {
+          return b.total - a.total;
         });
-        return result
+        return sortResult;
+      },
+      getTotalForOneResult(result){
+        let eachResult={name:result[0].displayName,total:0};
+
+        for (let i = 0; i <result.length ; i++) {
+
+          eachResult.total += result[i].score;
+        }
+
+        return eachResult;
       }
     }
   }

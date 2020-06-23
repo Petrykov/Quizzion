@@ -37,8 +37,8 @@ const routes = [
         component:()=>import('pages/ResultPageForRespondent.vue')
       },
       {
-        path:'/podium/:quizId',
-        component:()=>import('pages/Podium.vue')
+        path:'/podium',
+        component:()=>import('pages/PodiumPage.vue')
       }
 
     ]
