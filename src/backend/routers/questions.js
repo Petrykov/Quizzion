@@ -60,7 +60,7 @@ router.get('/question/:question_id', (req, rsp) => {
                     image: result.image,
                     time: result.time,
                     quiz_id: result.quiz_id,
-                    answers: result.answer,
+                    answers: result.answers,
                     name: response.data.var[0].name
                 };
 
@@ -94,7 +94,8 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         name: allQuestions[i].name
                     });
                 }
-            } catch (e) {}
+            } catch (e) {
+            }
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
@@ -108,8 +109,6 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
     let bodyChecker = new BodyChecker();
 
     let inspectionResult = bodyChecker.checkPOSTquestion(req.body);
-
-    console.log(req.body);
 
     if (inspectionResult.length !== 0) {
         rsp.status(400).json({error: inspectionResult});
@@ -142,7 +141,7 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
                 Authorization: req.headers.authorization
             }
         }).catch((err) => {
-            rsp.status(400).json ({error: "Quiz does not exist"})
+            rsp.status(400).json({error: "Quiz does not exist"})
             error = true;
         });
         if (error) return;
@@ -153,7 +152,7 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
 
         if (quizDetails === undefined) {
             rsp.status(400).json({error: "Quiz id " + req.params.quiz_id + " does not exists!"})
-            return ;
+            return;
         }
 
         quizDetails.questions.push(response.data.vh);
@@ -221,41 +220,37 @@ router.put('/question/:question_id', (req, rsp) => {
     contin();
 });
 
-router.put('/question/:question_id/add/:answer_id', (req, rsp) => {
+router.put('/question/:question_id/add/:answer_id', async (req, rsp) => {
 
-    async function f() {
-        let works = true;
+    let works = true;
 
-        const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch((err) => {
-            works = false;
-        });
+    const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch((err) => {
+        works = false;
+    });
 
-        if (!works) {
-            rsp.status(400).json({error: 'question id is not valid'});
-            return;
-        }
-
-        let element = response.data.var[0];
-
-        try {
-            let question = JSON.parse(element.label);
-
-            question.answers.push(req.params.answer_id);
-
-            axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
-                label: JSON.stringify(question)
-            }).then((response) => {
-                rsp.status(200).json(response);
-            }).catch((err) => {
-                rsp.json(err);
-            });
-
-        } catch (e) {
-            rsp.status(400).json({error: 'question id is not valid'});
-        }
+    if (!works) {
+        rsp.status(400).json({error: 'question id is not valid'});
+        return;
     }
 
-    f();
+    let element = response.data.var[0];
+
+    try {
+        let question = JSON.parse(element.label);
+
+        question.answers.push(req.params.answer_id);
+
+        axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
+            label: JSON.stringify(question)
+        }).then((response) => {
+            rsp.status(200).json(response);
+        }).catch((err) => {
+            rsp.json(err);
+        });
+
+    } catch (e) {
+        rsp.status(400).json({error: 'question id is not valid'});
+    }
 
 });
 
@@ -311,7 +306,7 @@ router.delete('/question/:question_id', async (req, rsp) => {
         headers: {
             Authorization: req.headers.authorization
         }
-    }).catch( (err) => {
+    }).catch((err) => {
         error = true;
         rsp.status(400).json({error: "Question does not exists"});
     });
@@ -327,7 +322,7 @@ router.delete('/question/:question_id', async (req, rsp) => {
                 headers: {
                     Authorization: req.headers.authorization
                 }
-            }).catch( (err) => {
+            }).catch((err) => {
                 rsp.status(400).json({error: "Quiz (where quesion is assigned to) does not exist"})
                 error = true;
             });

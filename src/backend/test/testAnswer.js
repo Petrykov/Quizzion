@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../server.js');
 
-return;
+ return;
 
 let token = '';
 
