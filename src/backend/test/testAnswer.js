@@ -1,8 +1,6 @@
 const request = require('supertest');
 const app = require('../server.js');
 
-return;
-
 let token = '';
 
 describe('POST /api/user/login', function () {

@@ -223,8 +223,6 @@ describe('Removes a test quiz', function () {
             .expect(200)
             .end((err, rsp) => {
                 if (err) throw err;
-                console.log(rsp.body);
-                console.log('is body');
                 done();
             });
     });

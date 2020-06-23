@@ -12,7 +12,17 @@ router.use((req, rsp, next) => {
     axios.defaults.headers.common['X-CSRFToken'] = req.headers.authorization;
     next();
 });
-
+/**
+ * @api {get} /answer Get all answers
+ * @apiGroup Answers
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess {Object[]} answers Answers list
+ * @apiSuccess  {String} answers.id Id of the answer.
+ * @apiSuccess  {String} answers.label Label of the answer.
+ * @apiSuccess  {String} answers.name Name of the answer.
+ * @apiSuccess  {String} answers.correct Answer isCorrect value.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/answer', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var')
         .then((response) => {
@@ -43,6 +53,18 @@ router.get('/answer', (req, rsp) => {
     })
 });
 
+/**
+ * @api {get} /answer/:answer_id Get answer by id
+ * @apiGroup Answers
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} answer_id Id of the answer
+ * @apiSuccess {Object} answer The Answer
+ * @apiSuccess  {String} answers.id Id of the answer.
+ * @apiSuccess  {String} answers.label Label of the answer.
+ * @apiSuccess  {String} answers.name Name of the answer.
+ * @apiSuccess  {String} answers.correct Answer isCorrect value.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/answer/:answer_id', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var/' + req.params.answer_id)
         .then((response) => {
@@ -63,8 +85,20 @@ router.get('/answer/:answer_id', (req, rsp) => {
     });
 });
 
+/**
+ * @api {post} /answer Create a new answer
+ * @apiGroup Answers
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {Object} request Request body
+ * @apiParam  {String} request.label Label of the answer.
+ * @apiParam  {String} request.correct Answer isCorrect value.
+ * @apiParam  {String} request.questionId Id of the question containing this answer
+ * @apiSuccess (201)  {Object} response Response
+ * @apiSuccess (201) {String} response.id New answer's id
+ * @apiSuccess (201) {Object} response.name New answer's name
+ * @apiError (400) {String} message Bad Request 
+ */
 router.post('/answer', (req, rsp) => {
-
     //checking if body of request has all arguments needed
     let bodyCheck = new BodyCheck();
     let result = bodyCheck.checkPOSTanswer(req.body);
@@ -94,6 +128,17 @@ router.post('/answer', (req, rsp) => {
     })
 });
 
+/**
+ * @api {put} /answer/:answer_id Update an answer
+ * @apiGroup Answers
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} answer_id Id of the answer
+ * @apiParam {Object} request Request body
+ * @apiParam  {String} request.label Label of the answer.
+ * @apiParam  {String} request.correct Answer isCorrect value.
+ * @apiSuccess {Array} message Message from Parantion's backend
+ * @apiError (400) {String} message Bad Request 
+ */
 router.put('/answer/:answer_id', (req, rsp) => {
 
     let changes = {};
@@ -131,6 +176,14 @@ router.put('/answer/:answer_id', (req, rsp) => {
     continu();
 });
 
+/**
+ * @api {delete} /answer/:answer_id Delete answer by id
+ * @apiGroup Answers
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} answer_id Id of the answer
+ * @apiSuccess (200) {String} message empty message from parantion's backend
+ * @apiError (400) {String} message Bad Request 
+ */
 router.delete('/answer/:answer_id', (req, rsp) => {
     let isSuccessful = false;
 
