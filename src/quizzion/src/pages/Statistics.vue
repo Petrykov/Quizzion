@@ -12,19 +12,20 @@
       <table style="width:80%; margin-top: 10%; text-decoration-color: darkblue" >
         <tr>
           <th>Name</th>
-          <th>Quiz Master</th>
+          <th>{{$store.state.user.name}}</th>
         </tr>
         <tr>
           <td>Username</td>
-          <td>quizzer_user2</td>
+          <td>{{$store.state.user.displayName}}</td>
         </tr>
         <tr>
           <td>Email</td>
-          <td>quizmaster@gmail.com</td>
+          <td>{{$store.state.user.email}}</td>
         </tr>
         <tr>
           <td>Language</td>
           <td>English</td>
+<!--          <td>{{$store.state.user.language}}</td>-->
         </tr>
       </table>
     </div>
