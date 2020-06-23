@@ -32,6 +32,9 @@
               </div>
             </div>
           </div>
+          <div>
+            <q-img src="../assets/cup.png"></q-img>
+          </div>
           <div
             data-aos-duration="3000"
             data-aos="zoom-in"
@@ -160,7 +163,7 @@
 
     height: 100%;
 
-    background-image: url("~assets/winners.png");
+    background-image: url("~assets/podium_bg.png");
     background-size: 100%;
     background-repeat: no-repeat;
     position: relative;
@@ -213,7 +216,7 @@
 
     width: 40%;
 
-    height: 70%;
+    height: 100%;
 
     display: table-cell;
 
