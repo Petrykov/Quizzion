@@ -37,7 +37,6 @@
         - At the same time, we want to cut down the need of extra screens that are unnecessary (a big screen for waiting room is unnecessary, instead we used spinning/progress indicator, an the same screen but different arrangement and content)
 
 ## Drafting Personas and End-users wishes
-
     ![Ptere](/assets/Persona_Peter.png).
     
     ![Olivia](/assets/Persona_Peter.png).
