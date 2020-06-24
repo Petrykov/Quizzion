@@ -21,20 +21,28 @@
         class="row q-pa-lg window-height wrapper">
 
         <div
-          v-if="currentQuiz"
           data-aos="fade-down-right"
           data-aos-duration="2000"
           class="col q-pa-xl"
           style="text-align: center;justify-content: center; align-items: center; display: flex;">
 
-          <div class="question-list-wrapper">
+          <div
+            class="question-list-wrapper">
             <p
               class="q-mt-lg"
               style="font-size:3em;">{{currentQuiz.title }}</p>
 
-            <div class="q-mt-xl">
+            <br/>
+            <p
+              style="font-size:2em;"
+              v-if="currentQuiz.questions.length === 0"
+            >Let's add some questions!</p>
+
+            <div
+              class="q-mt-xl">
 
               <q-scroll-area
+                v-if="currentQuiz.questions.length !== 0"
                 class="scroll-area"
                 style="height: 200px; max-width: 300px;">
 
@@ -69,6 +77,8 @@
             </div>
           </div>
 
+
+
         </div>
 
         <div
@@ -77,7 +87,7 @@
           class="col question-card-wrapper"
           :style="{background: currentQuiz.color}"
           style="border-radius: 2em; box-shadow: 10px 10px 30px rgba(0, 0.5, 0.5, 0.5);"
-          v-if="question !== ' '">
+          v-if="question !== undefined">
 
           <q-page padding>
 
@@ -86,7 +96,7 @@
               <div
                 style="width: 100%;">
                 <q-input
-                  style="font-size: 1.8em;"
+                  style="font-size: 1.8em; padding-top: 15px;"
                   dark
                   color="grey-12"
                   label="Question's title"
@@ -98,9 +108,9 @@
                 <q-icon
                   name="delete"
                   color="white"
-                  style="cursor : pointer; position: absolute; right: 0;"
+                  style="cursor : pointer; position: absolute; right: 0px;"
                   class="q-mr-md"
-                  size="3em"
+                  size="2.5em"
                   @click="promptToDelete"/>
               </div>
 
@@ -285,7 +295,7 @@
 
         newAnswer: '',
 
-        question: ' ',
+        question: undefined,
 
         alert: false,
 
@@ -300,6 +310,7 @@
     beforeMount() {
       AOS.init();
     },
+
 
     computed: {
       currentQuiz() {
@@ -387,6 +398,8 @@
         deletedQuestionId = this.selectedQuestionId;
 
         this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+
+        this.question = undefined;
       },
 
       async updateQuestion() {
@@ -528,6 +541,7 @@
   }
 
   .question-list-wrapper {
+    width: 300px;
     display: inline-block;
   }
 
