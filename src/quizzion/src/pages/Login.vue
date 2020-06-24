@@ -8,19 +8,19 @@
     <div class="split-r">
       <carousel  v-bind:autoplay="true" v-bind:loop="true">
         <slide>
-          <img src="~assets/quizz-image-login.png" />
+          <img src="~assets/carousel_1.png" />
         </slide>
         <slide>
-          <img src="~assets/quizz-image-login.png" />
+          <img src="~assets/carousel_2.png" />
         </slide>
         <slide>
-          <img src="~assets/quizz-image-login.png" />
+          <img src="~assets/carousel_1.png" />
         </slide>
         <slide>
-          <img src="~assets/quizz-image-login.png" />
+          <img src="~assets/carousel_2.png" />
         </slide>
         <slide>
-          <img src="~assets/quizz-image-login.png" />
+          <img src="~assets/carousel_1.png" />
         </slide>
       </carousel>
     </div>
@@ -66,7 +66,7 @@ export default {
   z-index: 1;
   position: fixed;
   top: 0;
-  background-color: #050152;
+  background-color: #181C30;
   overflow-x: hidden;
   padding-top: 20px;
   bottom: 0;
