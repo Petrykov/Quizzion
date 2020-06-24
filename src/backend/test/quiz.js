@@ -141,8 +141,6 @@ describe('DELETE /api/quizzes/:quizId', function() {
     });
 });
 
-
-
 describe('POST /api/quizzes/start', function () {
     it('creates a new form', function (done) {
         request(app)
