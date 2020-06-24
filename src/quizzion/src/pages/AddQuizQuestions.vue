@@ -28,11 +28,11 @@
 
           <div
             class="question-list-wrapper">
+
             <p
               class="q-mt-lg"
               style="font-size:3em;">{{currentQuiz.title }}</p>
 
-            <br/>
             <p
               style="font-size:2em;"
               v-if="currentQuiz.questions.length === 0"
@@ -44,7 +44,7 @@
               <q-scroll-area
                 v-if="currentQuiz.questions.length !== 0"
                 class="scroll-area"
-                style="height: 200px; max-width: 300px;">
+                style="height: 200px; width: 300px;">
 
                 <div>
                   <p
@@ -541,7 +541,7 @@
   }
 
   .question-list-wrapper {
-    width: 300px;
+    width: auto;
     display: inline-block;
   }
 
