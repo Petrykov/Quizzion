@@ -11,13 +11,18 @@
               <div class="second-place-trophy"><p style="text-align:center; vertical-align: middle; display: table-cell;font-size: 20px;color: white">{{results[1].name}}</p></div>
             </div>
           </div>
+          <div class="flex flex-center">
+            <q-img src="../assets/sports.png" style="width: 50%"></q-img>
+          </div>
+          <div class="flex flex-center" style="height:30px">
+          </div>
           <div
             data-aos-duration="1500"
             data-aos="zoom-in"
             class="second-place-column">
             <div style="width: 100%; height: 100%; display: flex;">
               <div style="width: 50%; height: 100%; background: #cad3d8;"/>
-              <div style="width: 50%; height: 100%; background: #b7c4ce"/>
+              <div style="width: 50%; height: 100%; background: grey"/>
             </div>
           </div>
         </div>
@@ -28,7 +33,7 @@
             class="first-place-icon">
             <div class="first-place-trophy-wrapper">
               <div class="first-place-trophy">
-                <p style="text-align:center; vertical-align: middle; display: table-cell;font-size: 20px">{{results[0].name}}</p>
+                <p style="text-align:center; vertical-align: middle; display: table-cell;font-size: 20px;color: white">{{results[0].name}}</p>
               </div>
             </div>
           </div>
@@ -55,6 +60,11 @@
                 <p style="text-align:center; vertical-align: middle; display: table-cell;font-size: 20px;color: white">{{results[2].name}}</p>
               </div>
             </div>
+          </div>
+          <div class="flex flex-center">
+            <q-img src="../assets/sports2.png" style="width: 50%"></q-img>
+          </div>
+          <div class="flex flex-center" style="height:30px">
           </div>
           <div
             data-aos-duration="1000"
@@ -338,7 +348,7 @@
     height: 100%;
 
     border-radius: 50%;
-    background: yellow;
+    background: #ecb000;
     display: table;
 
   }
@@ -408,7 +418,7 @@
 
     border-radius: 50%;
 
-    background: red;
+    background: #c9632f;
     display: table;
 
   }
