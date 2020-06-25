@@ -1,0 +1,41 @@
+{
+  "name": "quizzion-backend",
+  "version": "1.0.0",
+  "description": "A Node js server for quiizion API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "npx mocha",
+    "watch": "npx nodemon server.js",
+    "doc": "apidoc -i routers/ -o apidoc/",
+    "lint": "eslint  ./ ",
+    "lint:fix": "eslint   ./ --fix",
+    "lint:report": "eslint ./ -f node_modules/eslint-html-reporter/reporter.js -o eslint/report.html"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "eslint-html-reporter": "^0.7.4",
+    "express": "^4.17.1",
+    "md5": "^2.2.1",
+    "pg": "^8.2.1",
+    "sqlite3": "^4.2.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "apidoc": "^0.23.0",
+    "eslint": "^7.3.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "heroku-cli": "^7.0.9",
+    "mocha": "^7.2.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
+}
