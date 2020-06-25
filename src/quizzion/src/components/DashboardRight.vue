@@ -174,8 +174,6 @@
     import UsersList from "./UsersList";
     import config from './../config/config'
 
-    var baseUrl = config.frontendPath;
-
     export default {
         components: {Qrcode, UsersList},
         data() {
@@ -249,7 +247,7 @@
 
         computed: {
             getQuizLink() {
-                return `${baseUrl}/quizzes/${this.currentQuiz.id}/invite`;
+                return `${config.frontendPath}/quizzes/${this.currentQuiz.id}/invite`;
             },
 
         },

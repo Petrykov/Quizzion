@@ -3,7 +3,7 @@ import md5 from 'md5'
 import store from '../store'
 import config from './../config/config'
 
-const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
+const apiUrl = `${config.backendPath}/api`;
 
 /*
 *
@@ -21,7 +21,6 @@ const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
 * These requests will be caught by our own backend, which might in turn make other requests to the Parantion backend.
 *
 * */
-
 
 
 export function login(credentials) {
@@ -84,7 +83,6 @@ export function createQuestion(quizId, newQuestion) {
 
 // -- modified --
 export function updateQuestion(questionId, updatedQuestion) {
-
   return axios.put(`${apiUrl}/question/${questionId}`, {...updatedQuestion});
 }
 
@@ -99,7 +97,7 @@ export function addAnswerToQuestion(questionId, answerId) {
 }
 
 // -- created --
-export function addAnswer(newAnswer) {
+export function createAnswer(newAnswer) {
   return axios.post(`${apiUrl}/answer`, {...newAnswer});
 }
 
@@ -110,7 +108,6 @@ export function deleteAnswer(answerId) {
 
 // -- created --
 export function updateAnswers(answers) {
-
   return axios.all(
     answers.map((answer) => {
       axios.put(`${apiUrl}/answer/${answer.id}`,{...answer});
