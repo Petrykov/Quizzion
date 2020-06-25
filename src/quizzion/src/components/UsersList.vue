@@ -1,7 +1,17 @@
 <template>
   <div class="col-5">
+
     <div class="row justify-between">
+
+    <div class="col-8">
       <p style="color:white; font-size: 2em;">{{!status ? "Connected users:" : "Users finished quiz:"}}</p>
+    </div>
+
+      <div class="col-4">
+        <p style="color:white; font-size: 2em;" v-if="!status">Joined: {{usersConnected}}/20</p>
+        <p style="color:white; font-size: 2em;" v-if="status">Finished: {{users.length}}/{{usersConnected}}</p>
+      </div>
+
     </div>
 
     <div class="row">
@@ -50,7 +60,8 @@
             return {
                 users: [],
                 usersFinished: false,
-                usersCleaned: false
+                usersCleaned: false,
+                usersConnected: 0
             }
         },
         props: {
@@ -65,11 +76,20 @@
                 console.log("Respondent above");
                 this.users.push(data.name);
                 console.log(this.users);
+                this.usersConnected ++;
             });
             this.$socket.client.on('user-done-quiz', (data) => {
                 console.log(data);
                 console.log('User is done above');
                 this.users.push(data.name);
+            })
+            this.$socket.client.on('user-disconnected', (data) => {
+                if (data.name !== undefined) {
+                    for (let i = 0; i < this.users.length; i++) {
+                        if (this.users[i] === data.name) this.users.splice(i,1);
+                    }
+                }
+                this.usersConnected --;
             })
         },
         beforeUpdate() {
@@ -87,6 +107,8 @@
 
             console.log("Called before destroy in UsersList");
             this.$socket.client.off('user-connected');
+            this.$socket.client.off('user-done-quiz');
+            this.$socket.client.off('user-disconnected');
             this.usersCleaned = false;
             this.usersCleaned = false;
             this.users = [];

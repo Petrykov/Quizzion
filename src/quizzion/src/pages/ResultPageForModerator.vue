@@ -10,7 +10,14 @@
         <tr
           v-if="participants !== ' '"
           class="text-h5" style="border:  #9C27B0;color: white">Participants: {{participants}}
-        <tr class="text-h5" style="border:  #9C27B0;color: white">Result</tr>
+        <tr class="text-h5" style="border:  #9C27B0;color: white">
+          <div style="margin: 1em 0">
+            <q-btn color="teal" @click="$router.push(`/podium`);">
+              <q-icon left size="3em" name="fas fa-trophy"  style="margin: 0.2em 0;"/>
+              <div class="q-ml-md">Winners</div>
+            </q-btn>
+          </div>
+      </tr>
       </table>
     </div>
     <div
@@ -133,3 +140,4 @@
   }
 
 </script>
+

@@ -245,6 +245,24 @@ export function activateQuiz({getters, commit}, quiz) {
   });
 }
 
+export function deactivateQuiz({getters, commit}, quiz) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let deactivatedQuiz = {...quiz};
+      deactivatedQuiz.active = false;
+      deactivatedQuiz.stored = false;
+
+      await api.updateQuiz(deactivatedQuiz);
+      commit('deactivateQuiz', quiz.id);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
 /*
 * send an id to the backend in order to delete the corresponding quiz.
 *

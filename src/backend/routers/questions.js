@@ -17,7 +17,7 @@ router.use((req, rsp, next) => {
  * @api {get} /question Get all quiz master's questions
  * @apiGroup Questions
  * @apiHeader {String} Authorization Moderator's token.
- * @apiSuccess {Object[]} questions List of questions. 
+ * @apiSuccess {Object[]} questions List of questions.
  * @apiSuccess  {String} questions.id Id of the question.
  * @apiSuccess  {String} questions.title Title of the question.
  * @apiSuccess  {String} questions.description Description of the question.
@@ -26,7 +26,7 @@ router.use((req, rsp, next) => {
  * @apiSuccess  {String} questions.name Name of the question.
  * @apiSuccess  {String} questions.quiz_id Quiz id of the question.
  * @apiSuccess  {Array} questions.answers Answers of the question.
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.get('/question', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var').then((response) => {
@@ -67,7 +67,7 @@ router.get('/question', (req, rsp) => {
  * @apiGroup Questions
  * @apiParam {String} Question Id
  * @apiHeader {String} Authorization Moderator's token.
- * @apiSuccess {Object} question A question. 
+ * @apiSuccess {Object} question A question.
  * @apiSuccess  {String} question.id Id of the question.
  * @apiSuccess  {String} question.title Title of the question.
  * @apiSuccess  {String} question.description Description of the question.
@@ -76,7 +76,7 @@ router.get('/question', (req, rsp) => {
  * @apiSuccess  {String} question.name Name of the question.
  * @apiSuccess  {String} question.quiz_id Quiz id of the question.
  * @apiSuccess  {Array} question.answers Answers of the question.
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.get('/question/:question_id', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var/' + req.params.question_id)
@@ -91,7 +91,7 @@ router.get('/question/:question_id', (req, rsp) => {
                     image: result.image,
                     time: result.time,
                     quiz_id: result.quiz_id,
-                    answers: result.answer,
+                    answers: result.answers,
                     name: response.data.var[0].name
                 };
 
@@ -108,7 +108,7 @@ router.get('/question/:question_id', (req, rsp) => {
  * @apiGroup Questions
  * @apiHeader {String} Authorization Moderator's token.
  * @apiParam {String} quiz_id Id of the quiz
- * @apiSuccess {Object[]} questions List of questions. 
+ * @apiSuccess {Object[]} questions List of questions.
  * @apiSuccess  {String} questions.id Id of the question.
  * @apiSuccess  {String} questions.title Title of the question.
  * @apiSuccess  {String} questions.description Description of the question.
@@ -117,7 +117,7 @@ router.get('/question/:question_id', (req, rsp) => {
  * @apiSuccess  {String} questions.name Name of the question.
  * @apiSuccess  {String} questions.quiz_id Quiz id of the question.
  * @apiSuccess  {Array} questions.answers Answers of the question.
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.get('/quizzes/:quiz_id/question', (req, rsp) => {
 
@@ -153,9 +153,9 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
 /**
  * @api {post} /quizzes/:quiz_id/question Create new question
  * @apiGroup Questions
- * @apiParam quiz_id Id of the quiz 
+ * @apiParam quiz_id Id of the quiz
  * @apiHeader {String} Authorization Moderator's token.
- * @apiParam {Object} question The question object. 
+ * @apiParam {Object} question The question object.
  * @apiParam  {String} question.title Title of the question.
  * @apiParam  {String} question.description Description of the question.
  * @apiParam  {String} question.image Image of the question.
@@ -163,7 +163,7 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
  * @apiParam  {Array} question.answers Answers of the question.
  * @apiSuccess (201) {String} id Id of the newly created question.
  * @apiSuccess (201) {String} name Name of the newly created question.
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.post('/quizzes/:quiz_id/question', (req, rsp) => {
 
@@ -211,7 +211,7 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
 
         if (quizDetails === undefined) {
             rsp.status(400).json({error: "Quiz id " + req.params.quiz_id + " does not exists!"})
-            return ;
+            return;
         }
 
         quizDetails.questions.push(response.data.vh);
@@ -237,16 +237,16 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
 /**
  * @api {put} /question/:question_id Update a question
  * @apiGroup Questions
- * @apiParam question_id Id of the question 
+ * @apiParam question_id Id of the question
  * @apiHeader {String} Authorization Moderator's token.
- * @apiParam {Object} question The question object. 
+ * @apiParam {Object} question The question object.
  * @apiParam  {String} question.title Title of the question.
  * @apiParam  {String} question.description Description of the question.
  * @apiParam  {String} question.image Image of the question.
  * @apiParam  {Number} question.time Time of the question.
  * @apiParam  {Array} question.answers Array of string with id`s of answers
  * @apiSuccess (200) {Array} message Empty message from Parantion's backend
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.put('/question/:question_id', (req, rsp) => {
 
@@ -293,43 +293,38 @@ router.put('/question/:question_id', (req, rsp) => {
 
     contin();
 });
+//Update doc
+router.put('/question/:question_id/add/:answer_id', async (req, rsp) => {
 
-//DON'T NEED TO BE DOCUMENTED
-router.put('/question/:question_id/add/:answer_id', (req, rsp) => {
+    let works = true;
 
-    async function f() {
-        let works = true;
+    const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch((err) => {
+        works = false;
+    });
 
-        const response = await axios.get(config.baseURL + '/v5/var/' + req.params.question_id).catch((err) => {
-            works = false;
-        });
-
-        if (!works) {
-            rsp.status(400).json({error: 'question id is not valid'});
-            return;
-        }
-
-        let element = response.data.var[0];
-
-        try {
-            let question = JSON.parse(element.label);
-
-            question.answers.push(req.params.answer_id);
-
-            axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
-                label: JSON.stringify(question)
-            }).then((response) => {
-                rsp.status(200).json(response);
-            }).catch((err) => {
-                rsp.json(err);
-            });
-
-        } catch (e) {
-            rsp.status(400).json({error: 'question id is not valid'});
-        }
+    if (!works) {
+        rsp.status(400).json({error: 'question id is not valid'});
+        return;
     }
 
-    f();
+    let element = response.data.var[0];
+
+    try {
+        let question = JSON.parse(element.label);
+
+        question.answers.push(req.params.answer_id);
+
+        axios.put(config.baseURL + '/v5/var/' + req.params.question_id, {
+            label: JSON.stringify(question)
+        }).then((response) => {
+            rsp.status(200).json(response);
+        }).catch((err) => {
+            rsp.json(err);
+        });
+
+    } catch (e) {
+        rsp.status(400).json({error: 'question id is not valid'});
+    }
 
 });
 
@@ -337,8 +332,8 @@ router.put('/question/:question_id/add/:answer_id', (req, rsp) => {
 /**
  * @api {delete} /question/:question_id/remove/:answer_id Remove an answer from a question
  * @apiGroup Answers
- * @apiParam question_id Id of the question 
- * @apiParam answer_id Id of the answer 
+ * @apiParam question_id Id of the question
+ * @apiParam answer_id Id of the answer
  * @apiHeader {String} Authorization Moderator's token.
  * @apiSuccess (200) {Array} message Message from Parantion's backend
  * @apiError (400) {Object} error Answers for does not exist
@@ -391,10 +386,10 @@ router.delete('/question/:question_id/remove/:answer_id', async (req, rsp) => {
 /**
  * @api {delete} /question/:question_id/question Remove a question using id
  * @apiGroup Questions
- * @apiParam question_id Id of the question 
+ * @apiParam question_id Id of the question
  * @apiHeader {String} Authorization Moderator's token.
  * @apiSuccess (200) {Object} message Deleted
- * @apiError (400) {String} message Bad Request 
+ * @apiError (400) {String} message Bad Request
  */
 router.delete('/question/:question_id', async (req, rsp) => {
 
@@ -404,7 +399,7 @@ router.delete('/question/:question_id', async (req, rsp) => {
         headers: {
             Authorization: req.headers.authorization
         }
-    }).catch( (err) => {
+    }).catch((err) => {
         error = true;
         rsp.status(400).json({error: "Question does not exists"});
     });
@@ -420,7 +415,7 @@ router.delete('/question/:question_id', async (req, rsp) => {
                 headers: {
                     Authorization: req.headers.authorization
                 }
-            }).catch( (err) => {
+            }).catch((err) => {
                 rsp.status(400).json({error: "Quiz (where quesion is assigned to) does not exist"})
                 error = true;
             });

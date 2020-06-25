@@ -124,6 +124,7 @@
             <q-icon
             class="q-mr-lg"
             name="fas fa-trophy"
+            v-if="quizStarted"
             @click="showResults"
             size="2.5em"
             style="cursor : pointer;"
@@ -156,6 +157,7 @@
               class="col-offset-2 col-2"
               color="white"
               text-color="black"
+              :disable="quizStarted"
               :label="!quizStarted ? 'Start quiz' : 'Quiz started'"/>
 
           </div>
@@ -234,10 +236,12 @@
             cancelActiveQuiz() {
               this.$socket.client.emit('stop');
               console.log('Sent via socket to STOP QUIZ');
-              //todo currentQuiz.stored = false
+
+              this.$store.dispatch('quizzes/deactivateQuiz', this.currentQuiz);
+
               this.quizStarted = false;
             },
-            
+
             showResults(){
             this.$router.push(`result/moderator/${this.currentQuiz.id}`);
             }

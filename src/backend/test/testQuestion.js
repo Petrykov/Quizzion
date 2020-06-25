@@ -72,7 +72,7 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
                 "description": "description created by automated testing",
                 "image": "some link for image created by automated testing",
                 "time": 15,
-                "answers": ["answer_id_1", "answer_id_2", "answer_id_3"]
+                "answers": ["answer_id_1", "answer_id_2"]
             })
             .expect(200)
             .end((err, res) => {
@@ -100,7 +100,7 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
                 }
 
                 if (!questionIdExists) {
-                    throw "POST /api/quizzes/:quiz_id/question does not add question id to list if id"
+                    return done(new Error("POST /api/quizzes/:quiz_id/question does not add question id to list if id"));
                 }
                 return done();
             })
@@ -108,7 +108,7 @@ describe('POST /api/quizzes/:quiz_id/question', function () {
     })
 });
 
-describe.skip('PUT /api/question/:id', function () {
+describe('PUT /api/question/:id', function () {
     it('updates the newly created question', function (done) {
         request(app)
             .put('/api/question/' + questionId)
@@ -128,18 +128,30 @@ describe.skip('PUT /api/question/:id', function () {
         request(app)
             .get('/api/question/' + questionId)
             .set('Authorization', token)
-            .expect(200, {
-                time: 666,
-                title: "changed title in automated tests",
-                description: "changed description in automated tests",
-                image: "changed image in automated tests",
-                answers: ['changed_id_1', 'changed_id_2'],
-                id: questionId
-            }, done);
+            .expect(200)
+            .end( (err, rsp) => {
+                if (err) throw err;
+                let obj = rsp.body;
+                let wrong = false;
+                if (obj.title !== "changed title in automated tests") wrong = true;
+                if (obj.description !== "changed description in automated tests") wrong = true;
+                if (obj.time !== 666) wrong = true;
+                if (obj.image !== "changed image in automated tests") wrong = true;
+                if (obj.answers !== undefined) {
+                    if (obj.answers[0] !== 'changed_id_1') wrong = true;
+                    if (obj.answers[1] !== 'changed_id_2') wrong = true;
+                } else {
+                    wrong = true;
+                }
+
+                if (wrong) return done(new Error('PUT question did not change in request'))
+                return done();
+            });
+
     })
 })
 
-describe.skip('PUT /api/question/:id/add/:answer_id', function () {
+describe('PUT /api/question/:id/add/:answer_id', function () {
     it('adds new answer to the array of answers for created question', function (done) {
         request(app)
             .put('/api/question/' + questionId + '/add/new_sample_answer_id')
@@ -151,18 +163,24 @@ describe.skip('PUT /api/question/:id/add/:answer_id', function () {
         request(app)
             .get('/api/question/' + questionId)
             .set('Authorization', token)
-            .expect(200, {
-                title: "changed title in automated tests",
-                description: "changed description in automated tests",
-                image: "changed image in automated tests",
-                time: 666,
-                answers: ['changed_id_1', 'changed_id_2', 'new_sample_answer_id'],
-                id: questionId
-            }, done);
+            .expect(200)
+            .end( (err, rsp) => {
+                if (err) throw err;
+
+                let obj = rsp.body;
+
+                try {
+                    if (obj.answers[2] !== 'new_sample_answer_id') return done(new Error("New answer was not added to the question list"));
+                } catch (e) {
+                    return done (new Error("New answer was not added to the question list"));
+                }
+
+                return done();
+            });
     });
 });
 
-describe.skip('DELETE /api/question/:id/remove/:answer_id', function () {
+describe('DELETE /api/question/:id/remove/:answer_id', function () {
     it('removes previously created answer from the array of answers for created question', function (done) {
         request(app)
             .delete('/api/question/' + questionId + '/remove/new_sample_answer_id')
@@ -174,14 +192,16 @@ describe.skip('DELETE /api/question/:id/remove/:answer_id', function () {
         request(app)
             .get('/api/question/' + questionId)
             .set('Authorization', token)
-            .expect(200, {
-                title: "changed title in automated tests",
-                description: "changed description in automated tests",
-                image: "changed image in automated tests",
-                time: 666,
-                answers: ['changed_id_1', 'changed_id_2'],
-                id: questionId
-            }, done);
+            .expect(200)
+            .end( (err, rsp) => {
+                if (err) throw err;
+
+                let obj = rsp.body;
+
+                if (obj.answers.length !== 2) return done(new Error("New question did not delete the answer itself"));
+
+                return done();
+            });
     });
 });
 
@@ -208,7 +228,7 @@ describe('DELETE /api/question/:id', function () {
                 }
 
                 if (!questionIdExists) {
-                    throw "POST /api/quizzes/:quiz_id/question does not remove a ";
+                    return done(new Error("POST /api/quizzes/:quiz_id/question does not remove a question id there"));
                 }
                 return done();
             })
@@ -220,10 +240,6 @@ describe('Removes a test quiz', function () {
         request(app)
             .delete('/api/quizzes/' + quiz_id)
             .set('Authorization', token)
-            .expect(200)
-            .end((err, rsp) => {
-                if (err) throw err;
-                done();
-            });
+            .expect(200, done());
     });
 });

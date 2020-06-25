@@ -20,6 +20,8 @@ const db = {
     quizzes: []
 };
 
+const MAX_CLIENTS = 5;
+
 server_socket.on('connection', (socket) => {
 
     socket.on('connect-t', function (data) {
@@ -33,12 +35,18 @@ server_socket.on('connection', (socket) => {
             db.quizzes.push({
                 quizMaster: socket.id,
                 quiz_id: data.quiz_id,
+                started: false,
                 users: []
             });
         } else {
             let quiz_master_id = '-';
             for (let i = 0; i < db.quizzes.length; i++) {
                 if (db.quizzes[i].quiz_id === data.quiz_id) {
+
+                    if(db.quizzes[i].started) {
+                        server_socket.to(socket.id).emit('max-clients');
+                        return;
+                    }
 
                     for (let j = 0; j < db.quizzes[i].users.length; j++) {
                         if (db.quizzes[i].users[j].id === socket.id) {
@@ -61,6 +69,17 @@ server_socket.on('connection', (socket) => {
     socket.on('client-connected', function (data) {
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quiz_id === data.quiz_id) {
+
+                if (db.quizzes[i].users.length >= MAX_CLIENTS) {
+                    server_socket.to(socket.id).emit('max-clients');
+                    return;
+                }
+
+                if (db.quizzes[i].started) {
+                    server_socket.to(socket.id).emit('quiz-already-started');
+                    return;
+                }
+
                 db.quizzes[i].users.push({
                     id: socket.id
                 });
@@ -73,6 +92,7 @@ server_socket.on('connection', (socket) => {
         console.log('----');
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quizMaster === socket.id) {
+                db.quizzes[i].started = true;
                 for (let j = 0; j < db.quizzes[i].users.length; j++) {
                     server_socket.to(db.quizzes[i].users[j].id).emit('start');
                 }
@@ -122,17 +142,23 @@ server_socket.on('connection', (socket) => {
     })
 
     socket.on('disconnect', function () {
-
+        console.log("client disconnected");
         for (let i = 0; i < db.quizzes.length; i++) {
             if (db.quizzes[i].quizMaster === socket.id) {
                 db.quizzes.splice(i,1);
+                return;
             }
+
+            for (let j = 0; j < db.quizzes[i].users.length; j++) {
+                if (db.quizzes[i].users[j].id === socket.id) {
+                    server_socket.to(db.quizzes[i].quizMaster).emit('user-disconnected', {name: db.quizzes[i].users[j].name})
+                    db.quizzes[i].users.splice(i,1);
+                }
+            }
+
         }
-        console.log("client disconnected");
     })
 });
-
-app.use('/', require('./routers/websocket'));
 
 //all the requests in
 app.use('/api', require('./routers/index'));
