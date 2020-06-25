@@ -10,7 +10,7 @@
     "doc": "apidoc -i routers/ -o apidoc/",
     "lint": "eslint  ./ ",
     "lint:fix": "eslint   ./ --fix",
-    "lint:report": "eslint ./ -f node_modules/eslint-html-reporter/reporter.js -o report.html"
+    "lint:report": "eslint ./ -f node_modules/eslint-html-reporter/reporter.js -o eslint/report.html"
   },
   "author": "",
   "license": "MIT",
