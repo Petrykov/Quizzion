@@ -2,6 +2,7 @@
 .thumbs.db
 node_modules
 quasar.conf.js
+/apidoc
 /test
 
 # Quasar core related directories

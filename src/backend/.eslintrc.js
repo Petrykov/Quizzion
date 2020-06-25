@@ -1,24 +1,15 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es2020: true
   },
   extends: [
-    'plugin:vue/essential',
     'standard'
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
-  },
   parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 2018,
+    ecmaVersion: 11,
     sourceType: 'module'
   },
-  plugins: [
-    'vue'
-  ],
   rules: {
     indent: ['warn', 2],
     quotes: ['warn', 'single'],
@@ -43,11 +34,11 @@ module.exports = {
     'import/no-duplicates': 'warn',
     'semi-spacing': ['warn', {before: false, after: true}],
     'max-lines-per-function': ['warn', {max: 20}],
-    camelcase: ['warn', {properties: 'always'}],
+    camelcase: ['error', {properties: 'always'}],
     'capitalized-comments': 'off',
     'no-lonely-if': 'warn',
     'no-whitespace-before-property': 'error',
-    eqeqeq: ['warn', 'smart'],
+    eqeqeq: ['error', 'smart'],
     'no-undef': 'error',
     'no-throw-literal': 'error',
     'handle-callback-err': 'error'

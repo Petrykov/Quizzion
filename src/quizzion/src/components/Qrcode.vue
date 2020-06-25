@@ -4,17 +4,17 @@
   </div>
 </template>
 <script>
-  import QrcodeVue from 'qrcode.vue'
+import QrcodeVue from 'qrcode.vue';
 
-  export default {
-    data() {
-      return {
-        size: 300,
-      }
-    },
-    components: {
-      QrcodeVue,
-    },
-    props:['link']
-  }
+export default {
+  data() {
+    return {
+      size: 300
+    };
+  },
+  components: {
+    QrcodeVue
+  },
+  props: ['link']
+};
 </script>

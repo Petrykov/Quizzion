@@ -1,4 +1,4 @@
-export default function () {
+export default function() {
   return {
     role: '', //maybe enum or sth for mod or respondent
     displayName: '', //display name, for mods that is registered in db
@@ -10,5 +10,5 @@ export default function () {
     name: '',
     email: '',
     language: ''
-  }
+  };
 }

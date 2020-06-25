@@ -84,43 +84,43 @@
 </template>
 <script>
 
-  import AOS from 'aos';
-  import 'aos/dist/aos.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
-  export default {
-    name: "Dashboard",
+export default {
+  name: 'Dashboard',
 
-    components: {},
+  components: {},
 
-    data() {
-      return {
-        themeColor: '',
-        selectedQuizId: '',
-        leftDrawerOpen: false,
-        copyLinkOpen: false
-      };
+  data() {
+    return {
+      themeColor: '',
+      selectedQuizId: '',
+      leftDrawerOpen: false,
+      copyLinkOpen: false
+    };
+  },
+
+  computed: {
+    currentUser() {
+      return this.$store.state.user;
     },
+    quizObject() {
+      return this.$store.getters['quizzes/getQuizById'];
+    }
+  },
 
-    computed: {
-      currentUser() {
-        return this.$store.state.user;
-      },
-      quizObject() {
-        return this.$store.getters['quizzes/getQuizById'];
-      }
-    },
+  methods: {
+    selectQuiz(quizId) {
+      this.selectedQuizId = quizId;
+    }
+  },
 
-    methods: {
-      selectQuiz(quizId) {
-        this.selectedQuizId = quizId;
-      }
-    },
-
-    beforeMount() {
-      AOS.init();
-      this.selectedQuizId = this.$store.state.user.quizzes[0];
-    },
-  };
+  beforeMount() {
+    AOS.init();
+    this.selectedQuizId = this.$store.state.user.quizzes[0];
+  }
+};
 </script>
 
 <style lang="css" scoped>

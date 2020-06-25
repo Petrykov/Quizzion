@@ -26,46 +26,49 @@
 </template>
 
 <script>
-  export default {
-    name: "LoginForm",
-    data() {
-      return {
-        username: '',
-        password: ''
-      }
-    },
-    methods: {
-      login() {
-        this.$q.loading.show({message: 'Logging in...'});
-        this.$store.dispatch('user/login', {username: this.username, password: this.password})
-          .then(() => {
-            this.$q.loading.show({message: 'Fetching data...'});
-            this.$store.dispatch('quizzes/initialiseAll')
-              .then(() => {
-                this.$q.loading.hide();
-                this.$router.push('/');
-              }).catch(() => {
+export default {
+  name: 'LoginForm',
+  data() {
+    return {
+      username: '',
+      password: ''
+    };
+  },
+  methods: {
+    login() {
+      this.$q.loading.show({message: 'Logging in...'});
+      this.$store.dispatch('user/login', {username: this.username, password: this.password})
+        .then(() => {
+          this.$q.loading.show({message: 'Fetching data...'});
+          this.$store.dispatch('quizzes/initialiseAll')
+            .then(() => {
               this.$q.loading.hide();
-              this.triggerNotification('Could not reach the server. Contact 0570-parantion123')
+              this.$router.push('/');
+            }).catch(() => {
+              this.$q.loading.hide();
+              this.triggerNotification('Could not reach the server. Contact 0570-parantion123');
             });
-          }).catch(e => {
+        }).catch(e => {
           this.$q.loading.hide();
-          this.triggerNotification('Login failed, make sure you use the right credentials!')
-        })
-      }, triggerNotification(text) {
-        this.$q.notify({
-          type: 'negative',
-          message: text,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => { /* ... */
-              }
+          this.triggerNotification('Login failed, make sure you use the right credentials!');
+        });
+    },
+    triggerNotification(text) {
+      this.$q.notify({
+        type: 'negative',
+        message: text,
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'white',
+            handler: () => { /*... */
             }
-          ]
-        })
-      }
+          }
+        ]
+      });
     }
-  };
+  }
+};
 </script>
 
 <style scoped>

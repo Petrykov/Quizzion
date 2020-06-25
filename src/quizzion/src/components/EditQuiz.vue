@@ -87,14 +87,14 @@
 </template>
 
 <script>
-import AOS from "aos";
-import "aos/dist/aos.css";
-import firebase from "firebase";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import firebase from 'firebase';
 
 export default {
   data: () => {
     return {
-      colors: ["#522785", "#9A1F40", "#181C30", "#EC633E", "#3099B8"],
+      colors: ['#522785', '#9A1F40', '#181C30', '#EC633E', '#3099B8'],
       alert: false,
       themeColor: null,
       updatedQuiz: undefined,
@@ -105,11 +105,11 @@ export default {
   methods: {
     uploadToFirebase() {
       if (this.file != null) {
-        let storageRef = firebase.storage().ref(`${this.file.name}`);
+        const storageRef = firebase.storage().ref(`${this.file.name}`);
         storageRef.put(this.file).then(() => {
           storageRef.getDownloadURL().then((url) => {
             this.updatedQuiz.logo = url;
-          })
+          });
         });
       }
     },
@@ -117,12 +117,12 @@ export default {
       this.alert = true;
     },
     saveQuiz: function() {
-      this.$store.dispatch("quizzes/updateQuiz", this.updatedQuiz);
+      this.$store.dispatch('quizzes/updateQuiz', this.updatedQuiz);
     },
     deleteQuiz: function() {
       this.$emit('selectQuiz', this.$store.state.user.quizzes[0]);
-      this.$store.dispatch("quizzes/deleteQuiz", this.currentQuiz.id).then(() => {
-        this.$router.push('/')
+      this.$store.dispatch('quizzes/deleteQuiz', this.currentQuiz.id).then(() => {
+        this.$router.push('/');
       });
     }
   },
@@ -134,7 +134,7 @@ export default {
   },
   beforeMount() {
     AOS.init();
-    this.updatedQuiz = { ...this.currentQuiz };
+    this.updatedQuiz = {...this.currentQuiz};
   }
 };
 </script>
