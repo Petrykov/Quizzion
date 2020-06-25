@@ -146,6 +146,12 @@ export function activateQuiz(state, activatedId) {
   quiz.active = true;
 }
 
+export function deactivateQuiz(state, activatedId) {
+  let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
+  quiz.active = false;
+  quiz.stored = false;
+}
+
 export function reset(state) {
   Object.assign(state, initialState());
 }

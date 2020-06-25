@@ -124,6 +124,7 @@
             <q-icon
             class="q-mr-lg"
             name="fas fa-trophy"
+            v-if="quizStarted"
             @click="showResults"
             size="2.5em"
             style="cursor : pointer;"
@@ -235,7 +236,9 @@
             cancelActiveQuiz() {
               this.$socket.client.emit('stop');
               console.log('Sent via socket to STOP QUIZ');
-              //todo currentQuiz.stored = false
+
+              this.$store.dispatch('quizzes/deactivateQuiz', this.currentQuiz);
+
               this.quizStarted = false;
             },
 

@@ -33,10 +33,7 @@
 
 
           <q-banner v-if="stopped" inline-actions style="border-radius: 5px;" class="text-white bg-red q-ma-lg">
-            The quiz can not be played because Quiz master stopped the quiz.
-            <template v-slot:action>
-              <q-btn flat color="white" @click="closeWindow" label="Close the window" />
-            </template>
+            {{errorMessage}}
           </q-banner>
         </div>
 
@@ -55,6 +52,7 @@
                 playerName: '',
                 quizId: '',
                 stopped: false,
+                errorMessage: ''
             };
         },
         computed: {
@@ -76,11 +74,28 @@
                 console.log('Quiz is stopped');
                 this.$q.loading.hide();
                 this.stopped = true;
+                this.errorMessage = 'The quiz can not be played because Quiz master stopped the quiz.';
+            });
+
+            this.$socket.client.on('quiz-already-started', () => {
+                console.log("The quiz has already started");
+                this.$q.loading.hide();
+                this.errorMessage = 'You are a little bit late, the quiz has already started';
+                this.stopped = true;
             })
+
+            this.$socket.client.on('max-clients', () => {
+                console.log('Max users were connected');
+                this.$q.loading.hide();
+                this.errorMessage = 'The quiz player list is full.';
+                this.stopped = true;
+            });
+
         },
         beforeDestroy() {
             this.$q.loading.hide();
             this.$socket.client.off('stop');
+            this.$socket.client.off('max-clients');
             this.$socket.client.off('start');
         },
         methods: {
@@ -107,10 +122,6 @@
                     message: 'Waiting for Quiz Master to start the quiz',
                     messageColor: 'white'
                 });
-            },
-            closeWindow() {
-                console.log("Should close a window here");
-                window.close();
             }
         }
     }
