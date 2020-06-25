@@ -91,7 +91,7 @@ export default {
     });
   },
   mounted() {
-    this.$socket.client.emit('quiz-done', {quiz_id: this.quizId});
+    this.$socket.client.emit('quiz-done', {quizId: this.quizId});
   }
 };
 </script>

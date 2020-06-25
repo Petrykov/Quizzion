@@ -228,7 +228,7 @@ export default {
     generateLink() {
       if (!this.currentQuiz.stored) {
         this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
-        this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
+        this.$socket.client.emit('connect-t', {quizId: this.currentQuiz.id});
       }
     },
 

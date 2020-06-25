@@ -1,18 +1,18 @@
-let router = module.exports = require('express').Router();
+const router = module.exports = require('express').Router();
 
-// all the request for here
+//all the request for here
 
 //login/logout functionality can work fine without `Authorization` token
 router.use('/user', require('./users'));
 router.use('/', require('./respondent'));
 
-// no other requests can go further if the `Authorization` token was not provided
-router.use( (req, rsp, next) => {
-    if (req.headers.authorization === undefined) {
-        rsp.status(401).json({error: "Authorization token was not provided"});
-        return;
-    }
-    next();
+//no other requests can go further if the `Authorization` token was not provided
+router.use((req, rsp, next) => {
+  if (req.headers.authorization === undefined) {
+    rsp.status(401).json({error: 'Authorization token was not provided'});
+    return;
+  }
+  next();
 });
 
 router.use('/quizzes', require('./quizzes'));

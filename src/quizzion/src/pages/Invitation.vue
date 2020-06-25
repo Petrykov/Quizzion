@@ -68,7 +68,7 @@ export default {
       this.$q.loading.hide();
     });
 
-    this.$socket.client.emit('client-connected', {quiz_id: this.quizId});
+    this.$socket.client.emit('client-connected', {quizId: this.quizId});
 
     this.$socket.client.on('stop', () => {
       this.$q.loading.hide();
@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     toFirstQuestion() {
-      this.$socket.client.emit('connect-t', {quiz_id: this.invitedQuiz.id, name: this.playerName});
+      this.$socket.client.emit('connect-t', {quizId: this.invitedQuiz.id, name: this.playerName});
       this.$socket.client.on('start', () => {
         this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
           this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);

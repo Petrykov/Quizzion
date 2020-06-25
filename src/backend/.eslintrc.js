@@ -33,7 +33,7 @@ module.exports = {
     'import/first': 'warn',
     'import/no-duplicates': 'warn',
     'semi-spacing': ['warn', {before: false, after: true}],
-    'max-lines-per-function': ['error', {max: 20}],
+    'max-lines-per-function': ['warn', {max: 20}],
     camelcase: ['error', {properties: 'always'}],
     'capitalized-comments': 'off',
     'no-lonely-if': 'warn',

@@ -29,7 +29,7 @@
           <th style="width:20%">Score</th>
         </tr>
       </table>
-      <q-scroll-area style="height: 450px;">
+      <q-scroll-area style="height: 50vh;">
         <q-list style="width:100%">
           <table
             width="100%">
