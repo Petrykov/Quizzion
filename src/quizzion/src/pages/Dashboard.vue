@@ -50,7 +50,8 @@
 
                 <div
                   class="q-pa-xs"
-                  style="display: inline-flex; border: transparent solid 1.5px"
+                  :style="[ selectedQuizId === '' ? {border: `grey solid 1.5px`} : {border: 'transparent solid 1.5px'}]"
+                  style="border-radius: 10px; display: inline-flex"
                 >
                   <q-btn
                     class="button"
