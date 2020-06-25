@@ -10,7 +10,21 @@ router.use((req, rsp, next) => {
     next();
 });
 
-//get quizzes, with all the possible information (can take a while)
+/**
+ * @api {get} /quizzes/all Get all quizzes' information
+ * @apiGroup Quizzes
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess {Object[]} quizzes List of quizzes. 
+ * @apiSuccess  {String} quizzes.id Id of the quiz.
+ * @apiSuccess  {String} quizzes.color Color of the quiz.
+ * @apiSuccess  {String} quizzes.description Description of the quiz.
+ * @apiSuccess  {String} quizzes.owner Owner of the quiz.
+ * @apiSuccess  {String} quizzes.title Title of the quiz.
+ * @apiSuccess  {String} quizzes.logo Logo of the quiz.
+ * @apiSuccess  {Array} quizzes.questions Questions of the quiz.
+ * @apiSuccess  {Boolean} quizzes.active Status of the quiz.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/all', (req, rsp) => {
 
     axios.get(`${baseUrl}/template`, {
@@ -61,7 +75,22 @@ router.get('/all', (req, rsp) => {
     })
 });
 
-//get all data about one quiz - by id
+/**
+ * @api {get} /quizzes/:quizId Get a quiz by id
+ * @apiGroup Quizzes
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} quizId Quiz unique ID
+ * @apiSuccess {Object} quiz Quiz Object. 
+ * @apiSuccess  {String} quiz.id Id of the quiz.
+ * @apiSuccess  {String} quiz.color Color of the quiz.
+ * @apiSuccess  {String} quiz.description Description of the quiz.
+ * @apiSuccess  {String} quiz.owner Owner of the quiz.
+ * @apiSuccess  {String} quiz.title Title of the quiz.
+ * @apiSuccess  {String} quiz.logo Logo of the quiz.
+ * @apiSuccess  {Array} quiz.questions Questions of the quiz.
+ * @apiSuccess  {Boolean} quiz.active Status of the quiz.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/:quizId', (req, rsp) => {
 
     let firstReady = false;
@@ -87,11 +116,11 @@ router.get('/:quizId', (req, rsp) => {
                 rsp.status(200).json(quiz);
             }
         }).catch((error) => {
-        if (!secondReady) {
-            rsp.status(400).json(error)
-            firstReady = true;
-        }
-    });
+            if (!secondReady) {
+                rsp.status(400).json(error)
+                firstReady = true;
+            }
+        });
 
     axios.get(`${baseUrl}/template/${req.params.quizId}/content`, {
         headers: {
@@ -121,15 +150,24 @@ router.get('/:quizId', (req, rsp) => {
             }
 
         }).catch((error) => {
-        if (!firstReady) {
-            rsp.status(400).json(error);
-            secondReady = true;
-        }
-    });
+            if (!firstReady) {
+                rsp.status(400).json(error);
+                secondReady = true;
+            }
+        });
 
 });
 
-//get all quizzes -> id, color for the left side of the dashboard page
+/**
+ * @api {get} /quizzes/ Get all quizzes' basic info
+ * @apiGroup Quizzes
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess {Object[]} quizzes List of quizzes. 
+ * @apiSuccess  {String} quizzes.id Id of the quiz.
+ * @apiSuccess  {String} quizzes.color Color of the quiz.
+ * @apiSuccess  {String} quizzes.description Description of the quiz.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/', (req, rsp) => {
     axios.get(baseUrl + '/template', {
         headers: {
@@ -159,7 +197,19 @@ router.get('/', (req, rsp) => {
 
 });
 
-//get the rest of information about particular quiz - by id
+/**
+ * @api {get} /quizzes/:quizId/content Get a quiz's content by id
+ * @apiGroup Quizzes
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} quizId Quiz unique ID
+ * @apiSuccess {Object} quiz Quiz Object. 
+ * @apiSuccess  {String} quiz.owner Owner of the quiz.
+ * @apiSuccess  {String} quiz.title Title of the quiz.
+ * @apiSuccess  {String} quiz.logo Logo of the quiz.
+ * @apiSuccess  {Array} quiz.questions Questions of the quiz.
+ * @apiSuccess  {Boolean} quiz.active Status of the quiz.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.get('/:quizId/content', (req, rsp) => {
 
     axios.get(`${baseUrl}/template/${req.params.quizId}/content`, {
@@ -178,6 +228,13 @@ router.get('/:quizId/content', (req, rsp) => {
 })
 
 //delete quiz by Id
+/**
+ * @api {delete} /quizzes/:quizId Delete quiz by id
+ * @apiGroup Quizzes
+ * @apiParam {String} quizId Quiz unique ID
+ * @apiSuccess {Array} message Empty Message. 
+ * @apiError (400) {String} message Bad Request 
+ */
 router.delete('/:quizId', (req, rsp) => {
     axios.delete(`${baseUrl}/template/${req.params.quizId}`, {
         headers: {
@@ -193,8 +250,14 @@ router.delete('/:quizId', (req, rsp) => {
 
 });
 
-
-//post new quiz
+/**
+ * @api {post} /quizzes Create new quiz
+ * @apiGroup Quizzes
+ * @apiSuccess {Object} quiz Quiz Object. 
+ * @apiSuccess  {String} quiz.id Id of the quiz.
+ * @apiSuccess  {Array} quiz.message Message from Parantion's backend.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.post('/', (req, rsp) => {
 
     let active = req.body.active;
@@ -229,6 +292,22 @@ router.post('/', (req, rsp) => {
 
 });
 
+/**
+ * @api {put} /quizzes/:quizId/edit Update a quiz by id
+ * @apiGroup Quizzes
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} quizId Quiz unique ID
+ * @apiParam {Object} quiz Quiz Object. 
+ * @apiParam  {String} quiz.label Color of the quiz.
+ * @apiParam  {String} quiz.description Description of the quiz.
+ * @apiParam  {String} quiz.owner Owner of the quiz.
+ * @apiParam  {String} quiz.title Title of the quiz.
+ * @apiParam  {String} quiz.logo Logo of the quiz.
+ * @apiParam  {Array} quiz.questions Questions of the quiz.
+ * @apiParam  {Boolean} quiz.active Status of the quiz.
+ * @apiSuccess  {Array} message Message from Parantion's backend.
+ * @apiError (400) {String} message Bad Request 
+ */
 router.put('/:quizId/edit', (req, rsp) => {
 
     let firstReady = false;
@@ -254,11 +333,11 @@ router.put('/:quizId/edit', (req, rsp) => {
                 firstReady = true;
             }
         }).catch((error) => {
-        if (!secondReady) {
-            rsp.status(400).json(error)
-            firstReady = true;
-        }
-    });
+            if (!secondReady) {
+                rsp.status(400).json(error)
+                firstReady = true;
+            }
+        });
 
     axios.put(`${baseUrl}/template/${req.params.quizId}/content`, {
         contenttype: 'JSON',
@@ -278,15 +357,16 @@ router.put('/:quizId/edit', (req, rsp) => {
                 secondReady = true;
             }
         }).catch((error) => {
-        if (!firstReady) {
-            rsp.status(400).json(error)
-            secondReady = true;
-        }
-    });
+            if (!firstReady) {
+                rsp.status(400).json(error)
+                secondReady = true;
+            }
+        });
 
 });
 
 //edit quiz details
+//COULD BE DELETED
 router.put('/:quizId/content', (req, rsp) => {
 
     let owner = req.body.owner;
@@ -320,6 +400,7 @@ router.put('/:quizId/content', (req, rsp) => {
 });
 
 // update a quiz color and description
+
 router.put('/:quizId', (req, rsp) => {
     axios.put(`${baseUrl}/template/${req.params.quizId}`, {
 
@@ -337,25 +418,19 @@ router.put('/:quizId', (req, rsp) => {
 });
 
 // create new form
+//SHOULD BE DELETED
 router.post('/start', async (req, rsp) => {
 
-    const getQuestions = axios.get(`http://localhost:3000/api/quizzes/${req.body.tn}/question`, {headers: {authorization: req.headers.authorization}});
-    const getAnswers = axios.get(`http://localhost:3000/api/answer`, {headers: {authorization: req.headers.authorization}});
+    const getQuestions = axios.get(`http://localhost:3000/api/quizzes/${req.body.tn}/question`, { headers: { authorization: req.headers.authorization } });
+    const getAnswers = axios.get(`http://localhost:3000/api/answer`, { headers: { authorization: req.headers.authorization } });
 
     let answers, questions;
     await axios.all([getQuestions, getAnswers]).then(axios.spread((...responses) => {
-         questions = responses[0];
-         answers = responses[1];
-
-        // console.log(questions.data);
-        // console.log(answers.data);
-        // use/access the results
+        questions = responses[0];
+        answers = responses[1];
     })).catch(errors => {
-        // react on errors.
         console.log(errors)
     });
-
-    console.log(456)
 
     axios.post(`${baseUrl}/form`, {
         frm_label: JSON.stringify(questions.data),
@@ -375,8 +450,8 @@ router.post('/start', async (req, rsp) => {
     });
 });
 
-
 // get existing forms
+//SHOULD BE DELETED
 router.get('/start', (req, rsp) => {
 
     axios.get(`${baseUrl}/form`, {
@@ -396,6 +471,7 @@ router.get('/start', (req, rsp) => {
 })
 
 //get particular form (by fh)
+//SHOULD BE DELETED
 router.get('/start/:formId', (req, rsp) => {
 
     axios.get(`${baseUrl}/form/${req.params.formId}`, {
@@ -411,22 +487,3 @@ router.get('/start/:formId', (req, rsp) => {
     }).catch(error => rsp.send(error))
 
 })
-//
-// function simpleStringify (object){
-//     var simpleObject = {};
-//     for (var prop in object ){
-//         if (!object.hasOwnProperty(prop)){
-//             continue;
-//         }
-//         if (typeof(object[prop]) == 'object'){
-//             continue;
-//         }
-//         if (typeof(object[prop]) == 'function'){
-//             continue;
-//         }
-//         simpleObject[prop] = object[prop];
-//     }
-//
-//     console.log(simpleObject)
-//     return simpleObject
-// };

@@ -129,6 +129,7 @@
         }
       },
       goToResults() {
+          //todo see this
         if (this.timeRemaining === 0) {
           this.submitAnswer();
           clearInterval(this.timer);
@@ -170,7 +171,7 @@
           questionTitle: this.currentQuestion.title,
           isCorrect: this.selectedAnswer === '' ? false : this.$store.getters['quizzes/getAnswerById'](this.selectedAnswer).correct,
           answerLabel: this.selectedAnswer === '' ? 'N/A' : this.answerLabel(this.selectedAnswer),
-          time: totalTime - this.timeRemaining,
+          time: this.timeRemaining,
           totalTime};
 
         this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});

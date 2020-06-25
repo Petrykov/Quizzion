@@ -37,7 +37,7 @@ export function fetchInvitedQuiz({commit}, quizId) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await api.invite(quizId);
+      const response = await api.fetchInvitedQuiz(quizId);
 
       commit('setQuizzes', [response.data.quiz]);
       commit('setQuestions', response.data.questions);
@@ -97,12 +97,13 @@ export function createAnswer({commit}, payload) {
   return new Promise(async (resolve, reject) => {
     try {
 
-      const response = await api.addAnswer(newAnswer);
+      const response = await api.createAnswer(newAnswer);
 
       if (response.status === 201) {
         newAnswer.id = response.data.id;
         await api.addAnswerToQuestion(questionId, response.data.id);
-        commit('addAnswer', {questionId: questionId, answer: newAnswer});
+        commit('createAnswer', {questionId: questionId, answer: newAnswer});
+        resolve();
       }
 
     } catch (e) {
@@ -124,6 +125,7 @@ export function deleteAnswer({commit}, payload) {
 
       if (response.status === 200) {
         commit('deleteAnswer', {questionId: questionId, answerId: answerId});
+        resolve();
       }
 
     } catch (e) {
@@ -143,7 +145,7 @@ export function updateAnswers({commit}, payload) {
       await api.updateAnswers(answers);
 
       commit('updateAnswers', {answers});
-
+      resolve();
     } catch (e) {
       console.log("Error while updating an answer: " + e);
       reject(e);
@@ -158,10 +160,10 @@ export function addAnswerToTheQuestion({commit}, payload) {
   let questionId = payload.questionId;
   let answerId = payload.answerId;
 
-  return new Promise(async (resolve,reject) => {
-    try{
+  return new Promise(async (resolve, reject) => {
+    try {
       await api.addAnswerToQuestion()
-    }catch(err) {
+    } catch (err) {
       console.log("Error while adding answer to the question: " + e)
     }
   })
@@ -215,9 +217,8 @@ export function startQuiz(context, quizId) {
     try {
       const payload = context.getters['getFullQuizPackage'](quizId);
 
-      console.log(payload)
-
       await api.startQuiz(payload);
+
       context.commit('setStored', quizId);
       resolve();
     } catch (e) {
@@ -236,6 +237,24 @@ export function activateQuiz({getters, commit}, quiz) {
 
       await api.updateQuiz(activatedQuiz);
       commit('activateQuiz', quiz.id);
+      resolve();
+    } catch (e) {
+      console.log(e);
+      reject(e);
+    }
+  });
+}
+
+export function deactivateQuiz({getters, commit}, quiz) {
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let deactivatedQuiz = {...quiz};
+      deactivatedQuiz.active = false;
+      deactivatedQuiz.stored = false;
+
+      await api.updateQuiz(deactivatedQuiz);
+      commit('deactivateQuiz', quiz.id);
       resolve();
     } catch (e) {
       console.log(e);

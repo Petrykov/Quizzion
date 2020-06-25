@@ -1,5 +1,4 @@
 import initialState from './state'
-//TODO
 
 export function setResults(state, results) {
   state.results = results;
@@ -14,6 +13,6 @@ import { resultsMock } from "./state";
 
 export function mock(state) {
   state.results = resultsMock.results;
-  state.guesses = resultsMock.guesses;
+  // state.guesses = resultsMock.guesses;
 }
 

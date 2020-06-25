@@ -40,6 +40,8 @@ import createApp from './app.js'
 
 
 
+import qboot_Bootsocketio from 'boot/socket.io'
+
 import qboot_Bootaxios from 'boot/axios'
 
 
@@ -72,7 +74,7 @@ async function start () {
   }
 
   const urlPath = window.location.href.replace(window.location.origin, '')
-  const bootFiles = [qboot_Bootaxios]
+  const bootFiles = [qboot_Bootsocketio,qboot_Bootaxios]
 
   for (let i = 0; routeUnchanged === true && i < bootFiles.length; i++) {
     if (typeof bootFiles[i] !== 'function') {

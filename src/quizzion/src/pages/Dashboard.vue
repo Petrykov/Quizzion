@@ -25,27 +25,42 @@
 
             <div class="col-8" style="margin: 0 auto; text-align: center;">
               <h3>Quizzes</h3>
-              <div class="q-pl-md q-gutter-md q-gutter-y-md q-mt-lg">
+              <div class="q-pl-md q-gutter-sm q-gutter-y-md q-mt-lg flex justify-center">
 
-                <q-btn
-                  to="/"
+                <div
+                  class="q-pa-xs"
+                  :style="[ selectedQuizId === quizId ? {border: `${quizObject(quizId).color} solid 1.5px`} : {border: 'transparent solid 1.5px'}]"
+                  style="border-radius: 10px; display: inline-flex"
                   v-for="(quizId) in currentUser.quizzes"
                   :key="quizId"
-                  :style="{'background-color':quizObject(quizId).color}"
-                  class="quizzes button"
-                  @click="selectQuiz(quizId)"
-                />
-
-                <q-btn
-                  to="/AddQuiz"
-                  class="add button"
-                  padding="sm"
-                  color="grey"
-                  icon="fas fa-plus"
-                  @click="themeColor='teal'"
                 >
-                  <div class="ex1"/>
-                </q-btn>
+                  <q-btn
+                    :style="{'background-color':quizObject(quizId).color}"
+                    class="button"
+                    to="/"
+                    @click="selectQuiz(quizId)"
+                  >
+                    <q-tooltip
+                      content-style="font-size: 1em; color: white">
+                      {{quizObject(quizId).title}}
+                    </q-tooltip>
+                  </q-btn>
+
+                </div>
+
+                <div
+                  class="q-pa-xs"
+                  style="display: inline-flex; border: transparent solid 1.5px"
+                >
+                  <q-btn
+                    class="button"
+                    color="grey"
+                    icon="fas fa-plus"
+                    to="/AddQuiz"
+                    @click="selectedQuizId = ''"
+                  >
+                  </q-btn>
+                </div>
 
               </div>
             </div>
@@ -56,7 +71,11 @@
 
       <div class="col">
         <section>
-          <router-view class="right" :currentQuiz="quizObject(selectedQuizId)"/>
+          <router-view
+            class="right"
+            :currentQuiz="quizObject(selectedQuizId)"
+            @selectQuiz="selectQuiz"
+          />
         </section>
       </div>
 
