@@ -90,7 +90,7 @@ router.post('/answer', (req, rsp) => {
             name: response.data.name
         });
     }).catch((err) => {
-        rsp.json(err.data);
+        rsp.status(400).json(err.data);
     })
 });
 

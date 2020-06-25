@@ -1,8 +1,6 @@
 const request = require('supertest');
 const app = require('../server.js');
 
- return;
-
 let token = '';
 
 describe('POST /api/user/login', function () {
@@ -47,6 +45,7 @@ describe('POST /api/answer', function () {
 
                 //id of the answer
                 answerId = res.body.id;
+                console.log("Answer id: " + answerId)
 
                 return done();
             });
@@ -76,11 +75,20 @@ describe('PUT /api/answer/:id', function () {
         request(app)
             .get('/api/answer/' + answerId)
             .set('Authorization', token)
-            .expect(200, {
-                id: answerId,
-                label: "Changed in automated test",
-                correct: true
-            }, done)
+            .expect(200)
+            .end( (err, rsp) => {
+                if (err) return done(err);
+
+                let fieldsMissing = false;
+                let obj = rsp.body;
+
+                if (obj.label !== 'Changed in automated test') fieldsMissing = true;
+                if (!obj.correct) fieldsMissing = true;
+
+                if (fieldsMissing) return done(new Error("Fields of answer were not changed in automated tests"));
+
+                return done();
+            });
     })
 });
 

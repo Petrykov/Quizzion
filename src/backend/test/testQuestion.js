@@ -228,7 +228,7 @@ describe('DELETE /api/question/:id', function () {
                 }
 
                 if (!questionIdExists) {
-                    throw "POST /api/quizzes/:quiz_id/question does not remove a ";
+                    return done(new Error("POST /api/quizzes/:quiz_id/question does not remove a question id there"));
                 }
                 return done();
             })
