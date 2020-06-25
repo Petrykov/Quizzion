@@ -2,7 +2,7 @@
   <div class="q-pa-md">
     <q-drawer show-if-above :width="200" :breakpoint="400">
       <q-scroll-area
-        style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd; color:white; background-color:teal"
+        style="height: calc(100% - 150px); margin-top: 150px; color:white; background-color: #181C30"
       >
         <q-list padding>
 
@@ -61,7 +61,7 @@
 
       <div
         class="absolute-top"
-        style="height: 150px; border-right: 1px solid #ddd; color:white; background-color:teal"
+        style="height: 150px; color:white; background-color: #181C30"
       >
         <div class="absolute-center bg-transparent">
           <q-avatar size="56px" class="q-mb-sm q-mr-lg q-ml-lg">
