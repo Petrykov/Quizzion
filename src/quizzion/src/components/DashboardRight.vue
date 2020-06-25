@@ -156,6 +156,7 @@
               class="col-offset-2 col-2"
               color="white"
               text-color="black"
+              :disable="quizStarted"
               :label="!quizStarted ? 'Start quiz' : 'Quiz started'"/>
 
           </div>
@@ -237,7 +238,7 @@
               //todo currentQuiz.stored = false
               this.quizStarted = false;
             },
-            
+
             showResults(){
             this.$router.push(`result/moderator/${this.currentQuiz.id}`);
             }

@@ -1,7 +1,16 @@
 <template>
   <div class="col-5">
+
     <div class="row justify-between">
+
+    <div class="col-9">
       <p style="color:white; font-size: 2em;">{{!status ? "Connected users:" : "Users finished quiz:"}}</p>
+    </div>
+
+      <div class="col-3">
+        <p style="color:white; font-size: 2em;">Joined: {{users.length}}/20</p>
+      </div>
+
     </div>
 
     <div class="row">
