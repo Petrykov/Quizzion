@@ -1,19 +1,18 @@
-import * as api from '../../../api/api'
+import * as api from '../../../api/api';
 
 /*
 *
 *
 * */
 export function fetchResultsForQuiz({commit}, payload) {
+  const quizId = payload.quizId;
 
-  let quizId = payload.quizId;
-
-  return new Promise(async(resolve, reject) =>{
-    try{
-      let response = await api.fetchResults(quizId)
-      commit('setResults', Object.values(response.data))
+  return new Promise(async(resolve, reject) => {
+    try {
+      const response = await api.fetchResults(quizId);
+      commit('setResults', Object.values(response.data));
       resolve();
-    }catch (e) {
+    } catch (e) {
       console.log(e);
       reject(e);
     }
@@ -21,8 +20,7 @@ export function fetchResultsForQuiz({commit}, payload) {
 }
 
 export function getRespondentResults({commit}, payload) {
-
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     try {
       const response = await api.fetchRespondentResult(payload);
 

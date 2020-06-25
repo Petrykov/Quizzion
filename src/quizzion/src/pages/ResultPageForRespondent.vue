@@ -52,48 +52,48 @@
 
 <script>
 
-  export default {
-    name: "ResultPageForRespondent",
-    methods: {
-      isCorrectIcon: function (isCorrect) {
-        if (isCorrect) {
-          return 'check_circle'
-        }
-        return 'fas fa-times-circle'
-      },
-      isCorrectIconColor: function (isCorrect) {
-        if (!isCorrect) {
-          return "red"
-        }
-        return "green"
+export default {
+  name: 'ResultPageForRespondent',
+  methods: {
+    isCorrectIcon: function(isCorrect) {
+      if (isCorrect) {
+        return 'check_circle';
       }
+      return 'fas fa-times-circle';
     },
-    data() {
-      return {
-        quizId: this.$store.state.quizzes.quizzes[0].id
+    isCorrectIconColor: function(isCorrect) {
+      if (!isCorrect) {
+        return 'red';
       }
+      return 'green';
+    }
+  },
+  data() {
+    return {
+      quizId: this.$store.state.quizzes.quizzes[0].id
+    };
+  },
+  computed: {
+    results() {
+      return this.$store.state.quizzes.results.results;
     },
-    computed: {
-      results() {
-        return this.$store.state.quizzes.results.results;
-      },
-      getQuizById() {
-        return this.$store.getters['quizzes/getQuizById'](this.quizId);
-      },
-      getTotal() {
-        return this.$store.getters['quizzes/results/getTotalScore'];
-      }
+    getQuizById() {
+      return this.$store.getters['quizzes/getQuizById'](this.quizId);
     },
-    created() {
-      this.$store.dispatch('quizzes/results/getRespondentResults', {
-        id: this.$store.state.user.token,
-        quizId: this.quizId
-      });
-    },
-      mounted() {
-        this.$socket.client.emit('quiz-done', {quiz_id : this.quizId});
-      }
+    getTotal() {
+      return this.$store.getters['quizzes/results/getTotalScore'];
+    }
+  },
+  created() {
+    this.$store.dispatch('quizzes/results/getRespondentResults', {
+      id: this.$store.state.user.token,
+      quizId: this.quizId
+    });
+  },
+  mounted() {
+    this.$socket.client.emit('quiz-done', {quiz_id: this.quizId});
   }
+};
 </script>
 
 <style scoped>

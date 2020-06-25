@@ -66,118 +66,115 @@
 </template>
 
 <script>
-  import {colors} from 'quasar'
+import {colors} from 'quasar';
 
-  const {lighten} = colors;
+const {lighten} = colors;
 
-  export default {
-    name: "AnswerForm",
+export default {
+  name: 'AnswerForm',
 
-    data() {
-      return {
-        quizId: this.$route.params.quizId,
-        questionId: this.$route.params.questionId,
-        indexes: ["A", "B", "C", "D", "E", "F"], //TODO: Should we restrict the amount of options a question can have?
-        selectedAnswer: '',
-        timeRemaining: 0,
-        timer: ''
+  data() {
+    return {
+      quizId: this.$route.params.quizId,
+      questionId: this.$route.params.questionId,
+      indexes: ['A', 'B', 'C', 'D', 'E', 'F'],
+      selectedAnswer: '',
+      timeRemaining: 0,
+      timer: ''
+    };
+  },
+  computed: {
+    currentQuiz() {
+      return this.$store.getters['quizzes/getQuizById'](this.quizId);
+    },
+    currentQuestion() {
+      return this.$store.getters['quizzes/getQuestionById'](this.questionId);
+    },
+    nextQuestionId() {
+      return this.$store.getters['quizzes/getNextQuestionId'](this.quizId)(this.questionId);
+    },
+    answerLabel() {
+      return this.$store.getters['quizzes/getAnswerLabelById'];
+    }
+  },
+  beforeRouteUpdate(to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
+    this.quizId = to.params.quizId;
+    this.questionId = to.params.questionId;
+    this.selectedAnswer = '';
+    this.timeRemaining = this.currentQuestion.time;
+    next();
+  },
+  mounted() {
+    this.startTimer(this.currentQuestion.time);
+  },
+  methods: {
+    lighten,
+    selectAnswer(answerId) {
+      this.selectedAnswer = answerId;
+    },
+    goToNextPage() {
+      if (this.nextQuestionId) this.goToNextQuestion();
+      else this.goToResults();
+    },
+    goToNextQuestion() {
+      if (this.timeRemaining === 0) {
+        this.submitAnswer();
+        this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
+      } else if (this.selectedAnswer === '') this.triggerNotification();
+      else {
+        this.submitAnswer();
+        this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
       }
     },
-    computed: {
-      currentQuiz() {
-        return this.$store.getters['quizzes/getQuizById'](this.quizId);
-      },
-      currentQuestion() {
-        return this.$store.getters['quizzes/getQuestionById'](this.questionId);
-      },
-      nextQuestionId() {
-        return this.$store.getters['quizzes/getNextQuestionId'](this.quizId)(this.questionId);
-      },
-      answerLabel() {
-        return this.$store.getters['quizzes/getAnswerLabelById'];
+    goToResults() {
+      if (this.timeRemaining === 0) {
+        this.submitAnswer();
+        clearInterval(this.timer);
+        this.$router.replace('/result/respondent');
+      } else if (this.selectedAnswer === '') this.triggerNotification();
+      else {
+        this.submitAnswer();
+        clearInterval(this.timer);
+        this.$router.replace('/result/respondent');
       }
     },
-    beforeRouteUpdate(to, from, next) { //router navigation guard, makes sure that the local state is in line with displayed data/url
-      this.quizId = to.params.quizId;
-      this.questionId = to.params.questionId;
-      this.selectedAnswer = '';
-      this.timeRemaining = this.currentQuestion.time;
-      next();
-    },
-    mounted() {
-      this.startTimer(this.currentQuestion.time);
-    },
-    methods: {
-      lighten,
-      selectAnswer(answerId) {
-        this.selectedAnswer = answerId;
-      },
-      goToNextPage() {
-        if (this.nextQuestionId) this.goToNextQuestion();
-        else this.goToResults();
-      },
-      goToNextQuestion() {
-        if (this.timeRemaining === 0) {
-          this.submitAnswer();
-          this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
-        } else {
-          if (this.selectedAnswer === '') this.triggerNotification();
-          else {
-            this.submitAnswer();
-            this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
-          }
-        }
-      },
-      goToResults() {
-          //todo see this
-        if (this.timeRemaining === 0) {
-          this.submitAnswer();
-          clearInterval(this.timer);
-          this.$router.replace(`/result/respondent`);
-        } else {
-          if (this.selectedAnswer === '') this.triggerNotification();
-          else {
-            this.submitAnswer();
-            clearInterval(this.timer);
-            this.$router.replace(`/result/respondent`);
-          }
-        }
-      },
-      triggerNotification() {
-        this.$q.notify({
-          type: 'negative',
-          message: `Please select an answer.`,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => { /* ... */
-              }
+    triggerNotification() {
+      this.$q.notify({
+        type: 'negative',
+        message: 'Please select an answer.',
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'white',
+            handler: () => { /*... */
             }
-          ]
-        })
-      },
-      startTimer(maxTime) {
-        this.timeRemaining = maxTime;
+          }
+        ]
+      });
+    },
+    startTimer(maxTime) {
+      this.timeRemaining = maxTime;
 
-        this.timer = setInterval(() => {
-          if (this.timeRemaining > 0) this.timeRemaining -= 1;
-          else this.goToNextPage();
-        }, 1000)
+      this.timer = setInterval(() => {
+        if (this.timeRemaining > 0) this.timeRemaining -= 1;
+        else this.goToNextPage();
+      }, 1000);
+    },
+    submitAnswer() {
+      const totalTime = this.currentQuestion.time;
+      const answer = {
+        uid: this.$store.state.user.token,
+        questionTitle: this.currentQuestion.title,
+        isCorrect: this.selectedAnswer === '' ? false : this.$store.getters['quizzes/getAnswerById'](this.selectedAnswer).correct,
+        answerLabel: this.selectedAnswer === '' ? 'N/A' : this.answerLabel(this.selectedAnswer),
+        time: this.timeRemaining,
+        totalTime
+      };
 
-      },
-      submitAnswer() {
-        const totalTime =  this.currentQuestion.time;
-        const answer = {
-          uid: this.$store.state.user.token,
-          questionTitle: this.currentQuestion.title,
-          isCorrect: this.selectedAnswer === '' ? false : this.$store.getters['quizzes/getAnswerById'](this.selectedAnswer).correct,
-          answerLabel: this.selectedAnswer === '' ? 'N/A' : this.answerLabel(this.selectedAnswer),
-          time: this.timeRemaining,
-          totalTime};
-
-        this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
-      }
+      this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
     }
   }
+};
 </script>
 
 <style scoped>

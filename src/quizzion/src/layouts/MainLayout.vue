@@ -37,7 +37,7 @@
 
 <script>
 
-import SideBar from '../components/SideBar'
+import SideBar from '../components/SideBar';
 export default {
   name: 'MainLayout',
 
@@ -45,17 +45,17 @@ export default {
     SideBar
   },
 
-  data () {
+  data() {
     return {
       leftDrawerOpen: false
-    }
+    };
   },
   computed: {
-    view (){
+    view() {
       return this.leftDrawerOpen ? 'lHh Lpr lFf' : 'hHh Lpr lFf';
     }
   }
-}
+};
 </script>
 
 <style>

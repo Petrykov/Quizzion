@@ -247,17 +247,17 @@
               <tbody>
                 <tr>
                   <td>Errors</td>
-                  <td>0</td>
+                  <td>21</td>
                 </tr>
                 <tr>
                   <td>Warnings</td>
-                  <td>27</td>
+                  <td>25</td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <td>Total alerts</td>
-                  <td>27</td>
+                  <td>46</td>
                 </tr>
               </tfoot>
           </table>
@@ -267,21 +267,21 @@
               <tbody>
                 <tr>
                   <td>Files with errors</td>
-                  <td>0</td>
+                  <td>10</td>
                 </tr>
                 <tr>
                   <td>Files with only warnings</td>
-                  <td>7</td>
+                  <td>1</td>
                 </tr>
                 <tr>
                   <td>Clean files</td>
-                  <td>37</td>
+                  <td>40</td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <td>Total files linted</td>
-                  <td>44</td>
+                  <td>51</td>
                 </tr>
               </tfoot>
           </table>
@@ -294,7 +294,30 @@
           <div class="table-column">
             <h3>Errors</h3>
         
-              <p>No errors were found!</p>
+              <table class="summary-table">
+                <tbody>
+                    <tr class="occurrence row-0">
+                        <td><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+                      <td>8</td>
+                    </tr>
+                    <tr class="occurrence row-1">
+                        <td><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+                      <td>7</td>
+                    </tr>
+                    <tr class="occurrence row-2">
+                        <td><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+                      <td>4</td>
+                    </tr>
+                    <tr class="occurrence row-3">
+                        <td><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
+                      <td>1</td>
+                    </tr>
+                    <tr class="occurrence row-4">
+                        <td><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+                      <td>1</td>
+                    </tr>
+                </tbody>
+              </table>
           </div>
           <div class="table-column">
             <h3>Warnings</h3>
@@ -302,16 +325,12 @@
               <table class="summary-table">
                 <tbody>
                     <tr class="occurrence row-0">
-                        <td><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-                      <td>12</td>
+                        <td><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+                      <td>23</td>
                     </tr>
                     <tr class="occurrence row-1">
-                        <td><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-                      <td>8</td>
-                    </tr>
-                    <tr class="occurrence row-2">
-                        <td><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
-                      <td>7</td>
+                        <td><a href="http://eslint.org/docs/rules/import/no-duplicates">import/no-duplicates</a></td>
+                      <td>2</td>
                     </tr>
                 </tbody>
               </table>
@@ -329,297 +348,449 @@
             <th class="warning-col">Warnings</th>
           </tr>
         </thead>
-        <tbody><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\AddQuizQuestions.vue</a></td>
-              <td>0</td>
-              <td>12</td></tr><tr class="details-row hidden">
+        <tbody><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\actions.js</a></td>
+              <td>7</td>
+              <td>0</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
-                              270:15
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;uuidv4&#x27; is defined but never used.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              353:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;outObject&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              366:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;quizId&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              368:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;newQuestion&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              382:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;quizId&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              383:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;deletedQuestionId&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              388:5
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">Async method &#x27;updateQuestion&#x27; has too many lines (34). Maximum allowed is 20.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              389:11
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;quizId&#x27; is defined but never used.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              389:57
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;image&#x27; is defined but never used.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              427:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;selectedTime&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              438:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;questionId&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              454:7
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;questionId&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
-      </tr></tbody>
-                  </table>
-                </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\actions.js</a></td>
-              <td>0</td>
-              <td>6</td></tr><tr class="details-row hidden">
-                <td colspan="3">
-                  <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
+                    <tbody><tr class="msg-danger"><td class="location-col">
                               2:8
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">&#x27;ca&#x27; is defined but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              144:9
+      </tr><tr class="msg-danger"><td class="location-col">
+                              147:9
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">&#x27;questionId&#x27; is assigned a value but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              145:9
+      </tr><tr class="msg-danger"><td class="location-col">
+                              148:9
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">&#x27;answerId&#x27; is assigned a value but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              235:13
+      </tr><tr class="msg-danger"><td class="location-col">
+                              154:67
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;e&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              254:13
+                          </td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">&#x27;response&#x27; is assigned a value but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              267:8
+      </tr><tr class="msg-danger"><td class="location-col">
+                              286:8
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">Function &#x27;updateQuestion&#x27; has too many lines (21). Maximum allowed is 20.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              316:13
+      </tr><tr class="msg-danger"><td class="location-col">
+                              335:13
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">&#x27;response&#x27; is assigned a value but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\user\actions.js</a></td>
-              <td>0</td>
-              <td>3</td></tr><tr class="details-row hidden">
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\Invitation.vue</a></td>
+              <td>4</td>
+              <td>0</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
-                              2:8
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              47:27
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;ca&#x27; is defined but never used.</td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;Notify&#x27; is defined but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              5:8
+      </tr><tr class="msg-danger"><td class="location-col">
+                              63:3
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">Function &#x27;login&#x27; has too many lines (23). Maximum allowed is 20.</td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Method &#x27;beforeMount&#x27; has too many lines (31). Maximum allowed is 20.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              6:23
+      </tr><tr class="msg-danger"><td class="location-col">
+                              71:51
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">Async arrow function has too many lines (21). Maximum allowed is 20.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              102:46
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\AddQuizz.vue</a></td>
-              <td>0</td>
-              <td>2</td></tr><tr class="details-row hidden">
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\AddQuizQuestions.vue</a></td>
+              <td>2</td>
+              <td>23</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
-                              96:15
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              395:5
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;uuidv4&#x27; is defined but never used.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
-                              133:14
-                          </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">Method &#x27;addQuiz&#x27; has too many lines (23). Maximum allowed is 20.</td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Async method &#x27;updateQuestion&#x27; has too many lines (33). Maximum allowed is 20.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              398:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 7.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              400:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              402:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              403:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              403:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;answers&#x27; is never reassigned. Use &#x27;const&#x27; instead.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/prefer-const">prefer-const</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              405:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              407:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              408:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              409:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              411:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              412:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              413:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              414:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              415:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              416:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              417:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              419:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              420:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              421:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              422:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              423:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              424:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              425:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 8 spaces but found 10.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              426:1
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">Expected indentation of 6 spaces but found 8.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/indent">indent</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\getters.js</a></td>
-              <td>0</td>
-              <td>2</td></tr><tr class="details-row hidden">
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\getters.js</a></td>
+              <td>2</td>
+              <td>0</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
+                    <tbody><tr class="msg-danger"><td class="location-col">
                               84:8
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">Function &#x27;getAnswersByQuizId&#x27; has too many lines (25). Maximum allowed is 20.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
-      </tr><tr class="msg-warning"><td class="location-col">
+      </tr><tr class="msg-danger"><td class="location-col">
                               85:10
                           </td>
-                          <td class="severity-col">Warning</td>
+                          <td class="severity-col">Error</td>
                           <td class="message-col">Function has too many lines (23). Maximum allowed is 20.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\api\api.js</a></td>
-              <td>0</td>
-              <td>1</td></tr><tr class="details-row hidden">
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\Statistics.vue</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
-                              25:10
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              132:3
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;timeout&#x27; is defined but never used.</td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Method &#x27;data&#x27; has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\answer-form\actions.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              1:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;api&#x27; is defined but never used.</td>
                             <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\ResultPageForModerator.vue</a></td>
-              <td>0</td>
-              <td>1</td></tr><tr class="details-row hidden">
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\DashboardRight.vue</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
                 <td colspan="3">
                   <table class="details-table">
-                    <tbody><tr class="msg-warning"><td class="location-col">
-                              62:9
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              231:48
                           </td>
-                          <td class="severity-col">Warning</td>
-                          <td class="message-col">&#x27;mapGetters&#x27; is defined but never used.</td>
-                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
       </tr></tbody>
                   </table>
                 </td>
-              </tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\.eslintrc.js</td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\ResultPageForRespondent.vue</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              94:44
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Identifier &#x27;quiz_id&#x27; is not in camel case.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/camelcase">camelcase</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\UsersList.vue</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              73:3
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Method &#x27;mounted&#x27; has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\AddQuizz.vue</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              125:14
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">Method &#x27;addQuiz&#x27; has too many lines (22). Maximum allowed is 20.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/max-lines-per-function">max-lines-per-function</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="warning"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\mutations.js</a></td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\babel.config.js</td>
+              <td>2</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-warning"><td class="location-col">
+                              1:26
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\state.js&#x27; imported multiple times.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/import/no-duplicates">import/no-duplicates</a></td>
+      </tr><tr class="msg-warning"><td class="location-col">
+                              4:27
+                          </td>
+                          <td class="severity-col">Warning</td>
+                          <td class="message-col">&#x27;C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\state.js&#x27; imported multiple times.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/import/no-duplicates">import/no-duplicates</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\.eslintrc.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\App.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\babel.config.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\boot\axios.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\jest.config.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\DashboardRight.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\App.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\EditQuiz.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\api\api.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\LoginForm.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\boot\axios.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\Qrcode.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\boot\socket.io.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\components\SideBar.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\EditQuiz.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\layouts\LoginLayout.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\LoginForm.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\layouts\MainLayout.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\OverallStatistic.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\AnswerForm.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\Qrcode.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\Dashboard.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\components\SideBar.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\Error404.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\config\config.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\Invitation.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\layouts\LoginLayout.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\Login.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\layouts\MainLayout.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\pages\ResultPageForRespondent.vue</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\AnswerForm.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\router\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\Dashboard.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\router\routes.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\Error404.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\answer-form\actions.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\Login.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\answer-form\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\PodiumPage.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\answer-form\mutations.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\pages\ResultPageForModerator.vue</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\answer-form\state.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\router\index.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\enums.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\router\routes.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\answer-form\index.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\answer-form\mutations.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\mutations.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\answer-form\state.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\results\actions.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\enums.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\results\getters.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\index.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\results\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\index.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\results\mutations.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\mutations.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\results\state.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\actions.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\quizzes\state.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\getters.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\user\getters.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\index.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\user\index.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\results\state.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\user\mutations.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\quizzes\state.js</td>
               <td>0</td>
-              <td>0</td></tr><tr class="success"><td>C:\Users\Kasia\Documents\Second Year\ProjectHBO\02\src\quizzion\src\store\user\state.js</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\user\actions.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\user\getters.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\user\index.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\user\mutations.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\Ellie\OneDrive\Saxion\2nd year\Project IT corp\02\src\quizzion\src\store\user\state.js</td>
               <td>0</td>
               <td>0</td></tr></tbody>
       </table>

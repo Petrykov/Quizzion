@@ -93,84 +93,81 @@
 </template>
 
 <script>
-  import firebase from 'firebase';
+import firebase from 'firebase';
 
-  import AOS from 'aos';
-  import 'aos/dist/aos.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
-  export default {
-    data: () => {
-      return {
-        colors: ["#522785", "#9A1F40", "#181C30", "#EC633E", "#3099B8"],
-        quizDes: "",
-        quizTitle: null,
-        alert: false,
-        themeColor: "#522785",
-        logoUrl: null,
-        file: null,
-      };
-    },
+export default {
+  data: () => {
+    return {
+      colors: ['#522785', '#9A1F40', '#181C30', '#EC633E', '#3099B8'],
+      quizDes: '',
+      quizTitle: null,
+      alert: false,
+      themeColor: '#522785',
+      logoUrl: null,
+      file: null
+    };
+  },
 
-    methods: {
-      uploadToFirebase() {
-        if (this.file != null) {
-          let storageRef = firebase.storage().ref(`${this.file.name}`);
-          storageRef.put(this.file).then(() => {
-            storageRef.getDownloadURL().then((url) => {
-              this.logoUrl = url;
-            })
+  methods: {
+    uploadToFirebase() {
+      if (this.file != null) {
+        const storageRef = firebase.storage().ref(`${this.file.name}`);
+        storageRef.put(this.file).then(() => {
+          storageRef.getDownloadURL().then((url) => {
+            this.logoUrl = url;
           });
-        }
-      },
-      addQuiz: function (showAlert) {
-
-        let newQuiz = {
-          title: this.quizTitle,
-          owner: this.$store.state.user.displayName,
-          description: this.quizDes,
-          label: this.themeColor,
-          questions: [],
-          logo: this.logoUrl,
-          active: false
-        };
-
-
-        this.$store.dispatch('quizzes/createQuiz', newQuiz).then((quizId) => {
-
-          if (!showAlert) {
-            this.$router.push(`quizzes/${quizId}/questions`);
-          } else this.$emit('selectQuiz', quizId);
-
-
-        }).catch(() => {
-          this.showNotification('Something went wrong...', 'negative');
         });
-
-        this.alert = showAlert;
-      },
-
-      toAddQuestions() {
-        this.addQuiz(false);
-      },
-      showNotification(message, type) {
-        this.$q.notify({
-          type: type,
-          message: message,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => { /* ... */
-              }
-            }
-          ]
-        })
       }
     },
+    addQuiz: function(showAlert) {
+      const newQuiz = {
+        title: this.quizTitle,
+        owner: this.$store.state.user.displayName,
+        description: this.quizDes,
+        label: this.themeColor,
+        questions: [],
+        logo: this.logoUrl,
+        active: false
+      };
 
-    beforeMount() {
-      AOS.init();
+      this.$store.dispatch('quizzes/createQuiz', newQuiz).then((quizId) => {
+        if (!showAlert) {
+          this.$router.push(`quizzes/${quizId}/questions`);
+        } else this.$emit('selectQuiz', quizId);
+      }).catch(() => {
+        this.showNotification('Something went wrong...', 'negative');
+      });
+
+      this.alert = showAlert;
+    },
+
+    toAddQuestions() {
+      this.addQuiz(false);
+    },
+    showNotification(message, type) {
+      this.$q.notify({
+        type: type,
+        message: message,
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'white',
+            handler: () => { /*... */
+            }
+          }
+        ]
+      });
     }
+  },
 
-  };
+  beforeMount() {
+    AOS.init();
+  }
+
+};
 </script>
 
 <style lang="css" scoped>

@@ -1,4 +1,4 @@
-import initialState from "./state";
+import initialState from './state';
 
 /*
 * payload should contain an array of quizzes
@@ -37,7 +37,7 @@ export function createQuiz(state, newQuiz) {
 *
 * */
 export function updateQuiz(state, updatedQuiz) {
-  console.log("UPDATED QUIZ");
+  console.log('UPDATED QUIZ');
   console.log(updatedQuiz);
   state.quizzes = [
     ...state.quizzes.filter(quiz => quiz.id !== updatedQuiz.id),
@@ -53,30 +53,28 @@ export function deleteQuiz(state, deletedId) {
 }
 
 export function setStored(state, quizId) {
-  let quiz = {...state.quizzes.find(quiz => quiz.id === quizId), stored: true};
+  const quiz = {...state.quizzes.find(quiz => quiz.id === quizId), stored: true};
   state.quizzes = [
     ...state.quizzes.filter(quiz => quiz.id !== quizId),
     quiz];
 }
 
-/* +
+/*+
 * payload should contain the newly created question in proper format, as well as the target quiz id
 * -- modified --
 * */
 export function createQuestion(state, {quizId, newQuestion}) {
-
-  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+  const quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
   quiz.questions.push(newQuestion.id);
   state.questions.push(newQuestion);
 }
 
-/* +
+/*+
 * payload should contain the
 * -- modified --
 * */
 export function updateQuestion(state, {questionId, updatedQuestion}) {
-
   state.questions.map((question, index) => {
     if (question.id === questionId) {
       state.questions[index].title = updatedQuestion.title;
@@ -85,38 +83,35 @@ export function updateQuestion(state, {questionId, updatedQuestion}) {
       state.questions[index].answers = updatedQuestion.answers;
       state.questions[index].image = updatedQuestion.image;
     }
-  })
+  });
 }
 
-/* +
+/*+
 * payload should contain the full object that was edited, in proper format, as well as the id of the target quiz
 * -- modified --
 * */
 export function deleteQuestion(state, {quizId, questionId}) {
-
-  let quiz = state.quizzes.find(quiz => quiz.id === quizId);
+  const quiz = state.quizzes.find(quiz => quiz.id === quizId);
 
   quiz.questions = quiz.questions.filter(id => id !== questionId);
   state.questions = state.questions.filter(question => question.id !== questionId);
 }
 
-/* +
+/*+
 * -- modified --
 */
 export function createAnswer(state, {questionId, answer}) {
-
-  let question = state.questions.find(question => question.id === questionId);
+  const question = state.questions.find(question => question.id === questionId);
 
   question.answers.push(answer.id);
   state.answers.push(answer);
 }
 
-/* +
+/*+
 * -- modified
 */
 export function deleteAnswer(state, {questionId, answerId}) {
-
-  let question = state.questions.find(question => question.id === questionId);
+  const question = state.questions.find(question => question.id === questionId);
 
   question.answers.map((answer, index) => {
     if (answer === answerId) {
@@ -127,14 +122,14 @@ export function deleteAnswer(state, {questionId, answerId}) {
   state.answers = state.answers.filter((answer) => answer.id !== answerId);
 }
 
-/* +
+/*+
 * payload should contain the
 *
 * */
 export function updateAnswers(state, {answers}) {
-  for (let i = 0; i <state.answers.length ; i++) {
-    for (let j = 0; j <answers.length ; j++) {
-      if(state.answers[i].id === answers[j].id){
+  for (let i = 0; i < state.answers.length; i++) {
+    for (let j = 0; j < answers.length; j++) {
+      if (state.answers[i].id === answers[j].id) {
         state.answers[i] = answers[j];
       }
     }
@@ -142,12 +137,12 @@ export function updateAnswers(state, {answers}) {
 }
 
 export function activateQuiz(state, activatedId) {
-  let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
+  const quiz = state.quizzes.find(quiz => quiz.id === activatedId);
   quiz.active = true;
 }
 
 export function deactivateQuiz(state, activatedId) {
-  let quiz = state.quizzes.find(quiz => quiz.id === activatedId);
+  const quiz = state.quizzes.find(quiz => quiz.id === activatedId);
   quiz.active = false;
   quiz.stored = false;
 }

@@ -78,7 +78,6 @@
           </div>
 
 
-
         </div>
 
         <div
@@ -276,234 +275,208 @@
 </template>
 <script>
 
-  import AOS from 'aos';
-  import 'aos/dist/aos.css';
-  import firebase from 'firebase';
-  import {colors} from 'quasar'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import firebase from 'firebase';
+import {colors} from 'quasar';
 
-  const {lighten} = colors;
+const {lighten} = colors;
 
 
-  export default {
-    data() {
+export default {
+  data() {
+    return {
 
-      return {
+      currentQuizId: this.$route.params.quizId,
 
-        currentQuizId: this.$route.params.quizId,
+      selectedQuestionId: ' ',
 
-        selectedQuestionId: ' ',
+      newAnswer: '',
 
-        newAnswer: '',
+      question: undefined,
 
-        question: undefined,
+      alert: false,
 
-        alert: false,
+      answersList: ' ',
 
-        answersList: ' ',
+      file: null,
 
-        file: null,
+      imageUrl: null
+    };
+  },
 
-        imageUrl: null
+  beforeMount() {
+    AOS.init();
+  },
+
+
+  computed: {
+    currentQuiz() {
+      return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
+    },
+
+    selectedQuestion() {
+      return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
+    },
+
+    getAnswers() {
+      return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
+    },
+
+    questionTitle() {
+      return this.$store.getters['quizzes/getQuestionTitleById'];
+    }
+  },
+
+  methods: {
+    lighten,
+    uploadToFirebase() {
+      if (this.file != null) {
+        const storageRef = firebase.storage().ref(`${this.file.name}`);
+        storageRef.put(this.file).then(() => {
+          storageRef.getDownloadURL().then((url) => {
+            this.imageUrl = url;
+          });
+        });
+      }
+    },
+    onQuestionClick(id) {
+      this.selectedQuestionId = id;
+
+      this.question = {...this.selectedQuestion};
+
+      this.answersList = this.deepCopyFunction([...this.getAnswers]);
+
+      this.imageUrl = this.question.image;
+
+      this.file = null;
+    },
+
+    deepCopyFunction(inObject) {
+      let value, key;
+
+      if (typeof inObject !== 'object' || inObject === null) {
+        return inObject;
+      }
+
+      const outObject = Array.isArray(inObject) ? [] : {};
+
+      for (key in inObject) {
+        value = inObject[key];
+        outObject[key] = this.deepCopyFunction(value);
+      }
+
+      return outObject;
+    },
+
+    addQuestion() {
+      const quizId = this.currentQuizId;
+
+      const newQuestion = {
+        title: 'new question',
+        description: 'new description',
+        image: '',
+        time: 30,
+        answers: []
+      };
+
+      this.$store.dispatch('quizzes/createQuestion', {quizId, newQuestion});
+    },
+
+    deleteQuestion() {
+      const quizId = this.currentQuizId;
+      const deletedQuestionId = this.selectedQuestionId;
+
+      this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
+
+      this.question = undefined;
+    },
+
+    async updateQuestion() {
+      let updatedQuestion;
+
+      const questionId = this.selectedQuestionId;
+
+      updatedQuestion = this.question;
+
+      updatedQuestion.image = this.imageUrl;
+      const answers = this.answersList;
+
+      const answersIdList = [];
+
+      this.answersList.map((answer) => {
+        answersIdList.push(answer.id);
+      });
+
+      updatedQuestion = {
+        title: this.question.title,
+        description: this.question.description,
+        image: this.imageUrl,
+        time: this.question.time,
+        answers: answersIdList
+      };
+
+      Promise.allSettled([
+        this.$store.dispatch('quizzes/updateAnswers', {answers}),
+        this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion})
+      ]).then(() => {
+        this.showNotification('Question was saved!', 'positive');
+      }).catch(() => {
+        this.showNotification('Something went wrong...', 'negative');
+      });
+    },
+
+    onTimeClick(time) {
+      this.question.time = parseInt(time.split(' '), 10);
+    },
+
+    addAnswer() {
+      const questionId = this.selectedQuestionId;
+
+      const answer = {
+        label: this.newAnswer,
+        correct: false
+      };
+
+      this.$store.dispatch('quizzes/createAnswer', {questionId, answer});
+
+      this.answersList.push(answer);
+
+      this.newAnswer = '';
+    },
+
+    deleteAnswer(answerId) {
+      const questionId = this.selectedQuestionId;
+
+      this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
+
+      for (let i = 0; i < this.answersList.length; i++) {
+        if (this.answersList[i].id === answerId) {
+          this.answersList.splice(i, 1);
+        }
       }
     },
 
-    beforeMount() {
-      AOS.init();
+    promptToDelete() {
+      this.alert = true;
     },
 
-
-    computed: {
-      currentQuiz() {
-        return this.$store.getters['quizzes/getQuizById'](this.currentQuizId);
-      },
-
-      selectedQuestion() {
-        return this.$store.getters['quizzes/getQuestionById'](this.selectedQuestionId);
-      },
-
-      getAnswers() {
-        return this.$store.getters['quizzes/getAnswers'](this.selectedQuestion.answers);
-      },
-
-      questionTitle() {
-        return this.$store.getters['quizzes/getQuestionTitleById'];
-      }
-    },
-
-    methods: {
-      lighten,
-      uploadToFirebase() {
-        if (this.file != null) {
-          let storageRef = firebase.storage().ref(`${this.file.name}`);
-          storageRef.put(this.file).then(() => {
-            storageRef.getDownloadURL().then((url) => {
-              this.imageUrl = url;
-            })
-          });
-        }
-      },
-      onQuestionClick(id) {
-
-        this.selectedQuestionId = id;
-
-        this.question = {...this.selectedQuestion};
-
-        this.answersList = this.deepCopyFunction([...this.getAnswers]);
-
-        this.imageUrl = this.question.image;
-
-        this.file = null;
-      },
-
-      deepCopyFunction(inObject) {
-
-        let outObject, value, key;
-
-        if (typeof inObject !== "object" || inObject === null) {
-          return inObject
-        }
-
-        outObject = Array.isArray(inObject) ? [] : {}
-
-        for (key in inObject) {
-          value = inObject[key]
-          outObject[key] = this.deepCopyFunction(value);
-        }
-
-        return outObject
-      },
-
-      addQuestion() {
-
-        let quizId, newQuestion;
-
-        quizId = this.currentQuizId;
-
-        newQuestion = {
-          title: "new question",
-          description: "new description",
-          image: "",
-          time: 30,
-          answers: []
-        };
-
-        this.$store.dispatch('quizzes/createQuestion', {quizId, newQuestion});
-      },
-
-      deleteQuestion() {
-
-        let quizId, deletedQuestionId;
-
-        quizId = this.currentQuizId;
-        deletedQuestionId = this.selectedQuestionId;
-
-        this.$store.dispatch('quizzes/deleteQuestion', {quizId, deletedQuestionId});
-
-        this.question = undefined;
-      },
-
-      async updateQuestion() {
-        let quizId, questionId, updatedQuestion, answers, image;
-
-        if (this.timeCheck() === false) {
-          this.showNotification("Please select the time of the quiz", 'negative');
-        } else {
-
-          questionId = this.selectedQuestionId;
-
-          updatedQuestion = this.question;
-
-          updatedQuestion.image = this.imageUrl;
-          answers = this.answersList;
-
-          let answersIdList = [];
-
-          this.answersList.map((answer) => {
-            answersIdList.push(answer.id);
-          });
-
-          updatedQuestion = {
-            title: this.question.title,
-            description: this.question.description,
-            image: this.question.image,
-            time: this.question.time,
-            answers: answersIdList
-          };
-
-          Promise.allSettled([
-            this.$store.dispatch('quizzes/updateAnswers', {answers}),
-            this.$store.dispatch('quizzes/updateQuestion', {questionId, updatedQuestion})
-          ]).then(() => {
-            this.showNotification("Question was saved!", "positive");
-          }).catch(() => {
-            this.showNotification("Something went wrong...", "negative");
-          });
-        }
-      },
-
-
-      timeCheck() {
-
-        let selectedTime;
-
-        selectedTime = this.question.time !== undefined;
-
-        return selectedTime;
-      },
-
-      onTimeClick(time) {
-        this.question.time = parseInt(time.split(' '), 10);
-      },
-
-      addAnswer() {
-
-        let questionId;
-        questionId = this.selectedQuestionId;
-
-        let answer = {
-          label: this.newAnswer,
-          correct: false
-        };
-
-        this.$store.dispatch('quizzes/createAnswer', {questionId, answer});
-
-        this.answersList.push(answer);
-
-        this.newAnswer = '';
-      },
-
-      deleteAnswer(answerId) {
-
-        let questionId;
-        questionId = this.selectedQuestionId;
-
-        this.$store.dispatch('quizzes/deleteAnswer', {questionId, answerId});
-
-        for (let i = 0; i < this.answersList.length; i++) {
-          if (this.answersList[i].id === answerId) {
-            this.answersList.splice(i, 1);
-          }
-        }
-      },
-
-      promptToDelete() {
-        this.alert = true;
-      },
-
-      showNotification(message, type) {
-        this.$q.notify({
-          type: type,
-          message: message,
-          actions: [
-            {
-              label: 'Dismiss', color: 'white', handler: () => { /* ... */
-              }
+    showNotification(message, type) {
+      this.$q.notify({
+        type: type,
+        message: message,
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'white',
+            handler: () => { /*... */
             }
-          ]
-        })
-      }
+          }
+        ]
+      });
     }
   }
+};
 </script>
 
 <style scoped>

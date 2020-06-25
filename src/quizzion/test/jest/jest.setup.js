@@ -1,11 +1,11 @@
-// No console.log() / setTimeout
-// console.log = jest.fn(() => { throw new Error('Do not use console.log() in production') })
-jest.setTimeout(1000)
+//No console.log() / setTimeout
+//console.log = jest.fn(() => { throw new Error('Do not use console.log() in production') })
+jest.setTimeout(1000);
 
-// jest speedup when errors are part of the game
-// Error.stackTraceLimit = 0
+//jest speedup when errors are part of the game
+//Error.stackTraceLimit = 0
 
-global.Promise = require('promise')
+global.Promise = require('promise');
 
 /*
 import chai from 'chai'
@@ -46,7 +46,7 @@ global.expect = (actual) => {
 Object.keys(originalExpect).forEach(key => (global.expect[key] = originalExpect[key]))
 */
 
-// do this to make sure we don't get multiple hits from both webpacks when running SSR
-setTimeout(()=>{
-  // do nothing
-}, 1)
+//do this to make sure we don't get multiple hits from both webpacks when running SSR
+setTimeout(() => {
+  //do nothing
+}, 1);

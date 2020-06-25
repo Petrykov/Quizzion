@@ -28,11 +28,11 @@
 </template>
 
 <script >
-import LoginForm from "../components/LoginForm";
-import { Carousel, Slide } from "vue-carousel";
+import LoginForm from '../components/LoginForm';
+import {Carousel, Slide} from 'vue-carousel';
 
 export default {
-  name: "PageLogin",
+  name: 'PageLogin',
 
   components: {
     LoginForm,

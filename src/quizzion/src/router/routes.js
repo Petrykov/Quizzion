@@ -15,11 +15,11 @@ const routes = [
           },
 
           {
-            path: "/AddQuiz", component: () => import('components/AddQuizz.vue')
+            path: '/AddQuiz', component: () => import('components/AddQuizz.vue')
           },
 
           {
-            path: "/quizzes/:quizId", component: () => import('components/EditQuiz.vue')
+            path: '/quizzes/:quizId', component: () => import('components/EditQuiz.vue')
           }
         ]
       },
@@ -30,19 +30,19 @@ const routes = [
       },
       {
         path: '/result/moderator/:quizId',
-        component: () => import('pages/ResultPageForModerator.vue'),
+        component: () => import('pages/ResultPageForModerator.vue')
       },
       {
-        path:'/result/respondent',
-        component:()=>import('pages/ResultPageForRespondent.vue')
+        path: '/result/respondent',
+        component: () => import('pages/ResultPageForRespondent.vue')
       },
       {
-        path:'/podium',
-        component:()=>import('pages/PodiumPage.vue')
+        path: '/podium',
+        component: () => import('pages/PodiumPage.vue')
       },
       {
-        path:'/statistics',
-        component: ()=> import('pages/Statistics.vue')
+        path: '/statistics',
+        component: () => import('pages/Statistics.vue')
       }
 
     ]
@@ -84,12 +84,12 @@ const routes = [
   }
 ];
 
-// Always leave this as last one
+//Always leave this as last one
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
     component: () => import('pages/Error404.vue')
-  })
+  });
 }
 
-export default routes
+export default routes;

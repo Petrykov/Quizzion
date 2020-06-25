@@ -169,113 +169,113 @@
 </template>
 
 <script>
-    import Qrcode from "./Qrcode";
-    import {copyToClipboard} from 'quasar';
-    import UsersList from "./UsersList";
-    import config from './../config/config'
+import Qrcode from './Qrcode';
+import {copyToClipboard} from 'quasar';
+import UsersList from './UsersList';
+import config from './../config/config';
 
-    export default {
-        components: {Qrcode, UsersList},
-        data() {
-            return {
-                startQuiz: false,
-                showQRcode: false,
-                status: false,
-                quizStarted: false,
-                currentQuizBefore: {},
-                users: []
-            };
-        },
-
-        methods: {
-            goToEdit() {
-                this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
-            },
-
-            editQuiz() {
-                this.$router.push(`quizzes/${this.currentQuiz.id}`);
-            },
-
-            copyUrl() {
-                copyToClipboard(this.getQuizLink);
-                this.triggerNotification();
-            },
-
-            startQuizMethod() {
-                if (!this.quizStarted) {
-                    this.$socket.client.emit('start');
-                    this.$store.dispatch('quizzes/activateQuiz', this.currentQuiz);
-                    this.quizStarted = true;
-                    this.status = true;
-                }
-            },
-
-            triggerNotification() {
-                this.$q.notify({
-                    type: 'positive',
-                    message: `Copied link!`,
-                    actions: [
-                        {
-                            label: 'Dismiss', color: 'white', handler: () => {
-                            }
-                        }
-                    ]
-                })
-            },
-
-            generateLink() {
-
-                if (!this.currentQuiz.stored){
-                    this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
-                    this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
-                }
-            },
-
-            cancelActiveQuiz() {
-              this.$socket.client.emit('stop');
-              console.log('Sent via socket to STOP QUIZ');
-
-              this.$store.dispatch('quizzes/deactivateQuiz', this.currentQuiz);
-
-              this.quizStarted = false;
-            },
-
-            showResults(){
-            this.$router.push(`result/moderator/${this.currentQuiz.id}`);
-            }
-        },
-
-        computed: {
-            getQuizLink() {
-                return `${config.frontendPath}/quizzes/${this.currentQuiz.id}/invite`;
-            },
-
-        },
-
-        beforeMount() {
-            this.currentQuizBefore = this.currentQuiz;
-            console.log("before mount ");
-            console.warn (this.currentQuizBefore)
-        },
-
-        updated() {
-            if (this.currentQuiz !== this.currentQuizBefore) {
-                this.status = false;
-                console.log("status is 0 now");
-                this.currentQuizBefore = this.currentQuiz;
-                //todo currentQuiz.stored = false
-                this.quizStarted = false;
-            }
-        },
-
-        props: {
-            currentQuiz: {
-                type: Object,
-                required: true
-            }
-        }
-
+export default {
+  components: {Qrcode, UsersList},
+  data() {
+    return {
+      startQuiz: false,
+      showQRcode: false,
+      status: false,
+      quizStarted: false,
+      currentQuizBefore: {},
+      users: []
     };
+  },
+
+  methods: {
+    goToEdit() {
+      this.$router.push(`quizzes/${this.currentQuiz.id}/questions`);
+    },
+
+    editQuiz() {
+      this.$router.push(`quizzes/${this.currentQuiz.id}`);
+    },
+
+    copyUrl() {
+      copyToClipboard(this.getQuizLink);
+      this.triggerNotification();
+    },
+
+    startQuizMethod() {
+      if (!this.quizStarted) {
+        this.$socket.client.emit('start');
+        this.$store.dispatch('quizzes/activateQuiz', this.currentQuiz);
+        this.quizStarted = true;
+        this.status = true;
+      }
+    },
+
+    triggerNotification() {
+      this.$q.notify({
+        type: 'positive',
+        message: 'Copied link!',
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'white',
+            handler: () => {
+            }
+          }
+        ]
+      });
+    },
+
+    generateLink() {
+      if (!this.currentQuiz.stored) {
+        this.$store.dispatch('quizzes/startQuiz', this.currentQuiz.id);
+        this.$socket.client.emit('connect-t', {quiz_id: this.currentQuiz.id});
+      }
+    },
+
+    cancelActiveQuiz() {
+      this.$socket.client.emit('stop');
+      console.log('Sent via socket to STOP QUIZ');
+
+      this.$store.dispatch('quizzes/deactivateQuiz', this.currentQuiz);
+
+      this.quizStarted = false;
+    },
+
+    showResults() {
+      this.$router.push(`result/moderator/${this.currentQuiz.id}`);
+    }
+  },
+
+  computed: {
+    getQuizLink() {
+      return `${config.frontendPath}/quizzes/${this.currentQuiz.id}/invite`;
+    }
+
+  },
+
+  beforeMount() {
+    this.currentQuizBefore = this.currentQuiz;
+    console.log('before mount ');
+    console.warn(this.currentQuizBefore);
+  },
+
+  updated() {
+    if (this.currentQuiz !== this.currentQuizBefore) {
+      this.status = false;
+      console.log('status is 0 now');
+      this.currentQuizBefore = this.currentQuiz;
+      this.quizStarted = false;
+    }
+  },
+
+  props: {
+    currentQuiz: {
+      type: Object,
+      required: true
+    }
+  }
+
+};
 </script>
 
 <style scoped>
