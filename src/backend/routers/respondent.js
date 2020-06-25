@@ -5,7 +5,15 @@ const sqlite3 = require('sqlite3');
 let db = new sqlite3.Database('responses.db');
 let quizList = []
 
-// RESPONDENT_JOIN
+/**
+ * @api {post} /respondent/join/:quizId Join a quiz as a respondent
+ * @apiGroup Respondents
+ * @apiParam {String} quizId Id of the Invited quiz.
+ * @apiParam {String} name  Name of the respondent.
+ * @apiSuccess {Object} respondent Respondent
+ * @apiSuccess {String} id Unique id for respondent
+ * @apiError (500) {String} message Errors occured!
+ */
 router.post('/respondent/join/:quizId', (req, rsp) => {
     let uniqueId = uuidv4();
     db.prepare('insert into respondents (id, displayName, quizId) values(?,?,?)').run(uniqueId, req.body.name, req.params.quizId)
@@ -22,6 +30,17 @@ router.get('/quizzes/:quizId/invite', (req, rsp) => {
 })
 
 //QUIZ_START
+/**
+ * @api {post} /quizzes/:quizId/start Start the quiz
+ * @apiGroup Quizzes
+ * @apiParam {String} quizId Id of the Invited quiz.
+ * @apiParam {Object} request Request.
+ * @apiParam {Object} request.quiz Quiz information
+ * @apiParam {Array} request.questions Questions of the quiz
+ * @apiParam {Array} request.answers Answers of the quiz
+ * @apiSuccess {Array} quizList temporary quiz list
+ * @apiError (500) {String} message Errors occured!
+ */
 router.post('/quizzes/:quizId/start', (req, res) => {
     if (res) {
         let request = {
@@ -38,10 +57,24 @@ router.post('/quizzes/:quizId/start', (req, res) => {
         }
         res.send(quizList)
     }
-    else rsp.send("Some errors occured")
+    else res.send("Some errors occured")
 })
 
 //RESPONDENT_ANSER
+/**
+ * @api {post} /respondent/:quizId/answer Start the quiz
+ * @apiGroup Respondents
+ * @apiParam {String} quizId Id of the Invited quiz.
+ * @apiParam {Object} request Request.
+ * @apiParam {String} request.uid Quiz information
+ * @apiParam {String} request.answerLabel Questions of the quiz
+ * @apiParam {String} request.isCorrect Answers of the quiz
+ * @apiParam {String} request.questionTitle Answers of the quiz
+ * @apiParam {String} request.time Answers of the quiz
+ * @apiParam {String} request.totalTime Answers of the quiz
+ * @apiSuccess {String} message Successfully added!
+ * @apiError (500) {String} message Errors occured!
+ */
 router.post('/respondent/:quizId/answer', (req, res) => {
     db.prepare("INSERT INTO responses (uid,answerLabel, correct , questionTitle,time,totalTime , quizId, score) values(?,?,?,?,?,?,?,?)").run(req.body.uid, req.body.answerLabel, req.body.isCorrect, req.body.questionTitle, req.body.time, req.body.totalTime, req.params.quizId,
         calculateScore(req.body.isCorrect, req.body.totalTime, req.body.time), (err, rsp) => {
@@ -87,6 +120,18 @@ router.delete('/respondent/:id/logout', (req, res) => {
 })
 
 // RESPONDENT_RESULT
+/**
+ * @api {get} /:quizId/result/respondent/:id Get respondent's result
+ * @apiGroup Results
+ * @apiParam {String} quizId Id of the Invited quiz.
+ * @apiParam {String} id Id of the Respondent
+ * @apiSuccess {Object} result Respondent's result
+ * @apiSuccess {String} result.questionTitle Respondent's result
+ * @apiSuccess {String} result.answerLabel Respondent's result
+ * @apiSuccess {String} result.correct Respondent's result
+ * @apiSuccess {String} result.score Respondent's result
+ * @apiError (500) {String} message Errors occured!
+ */
 router.get('/:quizId/result/respondent/:id', (req, res) => {
 
     db.all("select questionTitle,answerLabel, correct, score  from responses where quizId = ? AND uid = ?", [req.params.quizId, req.params.id], (err, rsp) => {
@@ -98,6 +143,19 @@ router.get('/:quizId/result/respondent/:id', (req, res) => {
 })
 
 // QUIZMASTER_RESULT
+/**
+ * @api {get} /results/:quizId Get Quiz's result
+ * @apiGroup Results
+ * @apiParam {String} quizId Id of the Invited quiz.
+ * @apiSuccess {Object} result respondents' result
+ * @apiSuccess {String} result.uid Respondents id
+ * @apiSuccess {Object[]} result.uid.result Respondent's result
+ * @apiSuccess {Object} result.uid.result.object Respondent's result
+ * @apiSuccess {String} result.uid.result.object.displayName Respondent's name
+ * @apiSuccess {String} result.uid.result.object.correct Respondent's isCorrect
+ * @apiSuccess {String} result.uid.result.object.score Respondent's score
+ * @apiError (500) {String} message Errors occured!
+ */
 router.get('/results/:quizId', (req, res) => {
     let players = []
     let results = []
@@ -136,9 +194,12 @@ function findItemById(quizId) {
 function calculateScore(isCorrect, total, time) {
     let base = 10 / total
     if (isCorrect) {
+        if(time === 0){
+            return 2
+        }
         return Math.round(time * base)
     }
     else {
-        return 0;
+        return 0
     }
 }

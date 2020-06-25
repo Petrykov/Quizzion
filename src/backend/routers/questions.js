@@ -13,6 +13,21 @@ router.use((req, rsp, next) => {
     next();
 });
 
+/**
+ * @api {get} /question Get all quiz master's questions
+ * @apiGroup Questions
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess {Object[]} questions List of questions.
+ * @apiSuccess  {String} questions.id Id of the question.
+ * @apiSuccess  {String} questions.title Title of the question.
+ * @apiSuccess  {String} questions.description Description of the question.
+ * @apiSuccess  {String} questions.image Image of the question.
+ * @apiSuccess  {Number} questions.time Time of the question.
+ * @apiSuccess  {String} questions.name Name of the question.
+ * @apiSuccess  {String} questions.quiz_id Quiz id of the question.
+ * @apiSuccess  {Array} questions.answers Answers of the question.
+ * @apiError (400) {String} message Bad Request
+ */
 router.get('/question', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var').then((response) => {
         let elements = response.data.var;
@@ -47,6 +62,22 @@ router.get('/question', (req, rsp) => {
     });
 });
 
+/**
+ * @api {get} /question/:question_id Get a question by id
+ * @apiGroup Questions
+ * @apiParam {String} Question Id
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess {Object} question A question.
+ * @apiSuccess  {String} question.id Id of the question.
+ * @apiSuccess  {String} question.title Title of the question.
+ * @apiSuccess  {String} question.description Description of the question.
+ * @apiSuccess  {String} question.image Image of the question.
+ * @apiSuccess  {Number} question.time Time of the question.
+ * @apiSuccess  {String} question.name Name of the question.
+ * @apiSuccess  {String} question.quiz_id Quiz id of the question.
+ * @apiSuccess  {Array} question.answers Answers of the question.
+ * @apiError (400) {String} message Bad Request
+ */
 router.get('/question/:question_id', (req, rsp) => {
     axios.get(config.baseURL + '/v5/var/' + req.params.question_id)
         .then((response) => {
@@ -72,6 +103,22 @@ router.get('/question/:question_id', (req, rsp) => {
     });
 });
 
+/**
+ * @api {get} /quizzes/:quiz_id/question Get questions from 1 quiz
+ * @apiGroup Questions
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {String} quiz_id Id of the quiz
+ * @apiSuccess {Object[]} questions List of questions.
+ * @apiSuccess  {String} questions.id Id of the question.
+ * @apiSuccess  {String} questions.title Title of the question.
+ * @apiSuccess  {String} questions.description Description of the question.
+ * @apiSuccess  {String} questions.image Image of the question.
+ * @apiSuccess  {Number} questions.time Time of the question.
+ * @apiSuccess  {String} questions.name Name of the question.
+ * @apiSuccess  {String} questions.quiz_id Quiz id of the question.
+ * @apiSuccess  {Array} questions.answers Answers of the question.
+ * @apiError (400) {String} message Bad Request
+ */
 router.get('/quizzes/:quiz_id/question', (req, rsp) => {
 
     axios.get(config.baseURL + '/v5/var').then((response) => {
@@ -94,8 +141,7 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
                         name: allQuestions[i].name
                     });
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         }
         rsp.status(200).json(questions);
     }).catch((error) => {
@@ -103,8 +149,23 @@ router.get('/quizzes/:quiz_id/question', (req, rsp) => {
     });
 });
 
+
+/**
+ * @api {post} /quizzes/:quiz_id/question Create new question
+ * @apiGroup Questions
+ * @apiParam quiz_id Id of the quiz
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {Object} question The question object.
+ * @apiParam  {String} question.title Title of the question.
+ * @apiParam  {String} question.description Description of the question.
+ * @apiParam  {String} question.image Image of the question.
+ * @apiParam  {Number} question.time Time of the question.
+ * @apiParam  {Array} question.answers Answers of the question.
+ * @apiSuccess (201) {String} id Id of the newly created question.
+ * @apiSuccess (201) {String} name Name of the newly created question.
+ * @apiError (400) {String} message Bad Request
+ */
 router.post('/quizzes/:quiz_id/question', (req, rsp) => {
-    //check if all field are present in body
 
     let bodyChecker = new BodyChecker();
 
@@ -114,7 +175,6 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
         rsp.status(400).json({error: inspectionResult});
         return;
     }
-
     let payload = {
         type: config.question,
         quiz_id: req.params.quiz_id,
@@ -135,13 +195,12 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
 
         let error = false;
 
-
         let quizDetails = await axios.get('http://localhost:3000/api/quizzes/' + req.params.quiz_id + "/content", {
             headers: {
                 Authorization: req.headers.authorization
             }
         }).catch((err) => {
-            rsp.status(400).json({error: "Quiz does not exist"})
+            rsp.status(400).json ({error: "Quiz does not exist"})
             error = true;
         });
         if (error) return;
@@ -174,6 +233,21 @@ router.post('/quizzes/:quiz_id/question', (req, rsp) => {
     });
 });
 
+
+/**
+ * @api {put} /question/:question_id Update a question
+ * @apiGroup Questions
+ * @apiParam question_id Id of the question
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiParam {Object} question The question object.
+ * @apiParam  {String} question.title Title of the question.
+ * @apiParam  {String} question.description Description of the question.
+ * @apiParam  {String} question.image Image of the question.
+ * @apiParam  {Number} question.time Time of the question.
+ * @apiParam  {Array} question.answers Array of string with id`s of answers
+ * @apiSuccess (200) {Array} message Empty message from Parantion's backend
+ * @apiError (400) {String} message Bad Request
+ */
 router.put('/question/:question_id', (req, rsp) => {
 
     let changes = {};
@@ -219,7 +293,7 @@ router.put('/question/:question_id', (req, rsp) => {
 
     contin();
 });
-
+//Update doc
 router.put('/question/:question_id/add/:answer_id', async (req, rsp) => {
 
     let works = true;
@@ -254,6 +328,16 @@ router.put('/question/:question_id/add/:answer_id', async (req, rsp) => {
 
 });
 
+
+/**
+ * @api {delete} /question/:question_id/remove/:answer_id Remove an answer from a question
+ * @apiGroup Answers
+ * @apiParam question_id Id of the question
+ * @apiParam answer_id Id of the answer
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess (200) {Array} message Message from Parantion's backend
+ * @apiError (400) {Object} error Answers for does not exist
+ */
 router.delete('/question/:question_id/remove/:answer_id', async (req, rsp) => {
     let works = true;
 
@@ -298,6 +382,15 @@ router.delete('/question/:question_id/remove/:answer_id', async (req, rsp) => {
     }
 });
 
+
+/**
+ * @api {delete} /question/:question_id/question Remove a question using id
+ * @apiGroup Questions
+ * @apiParam question_id Id of the question
+ * @apiHeader {String} Authorization Moderator's token.
+ * @apiSuccess (200) {Object} message Deleted
+ * @apiError (400) {String} message Bad Request
+ */
 router.delete('/question/:question_id', async (req, rsp) => {
 
     let error = false;

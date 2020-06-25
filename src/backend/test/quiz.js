@@ -3,9 +3,6 @@ const app = require('../server.js');
 
 let token = '';
 
-
-return;
-
 describe('POST /api/user/login', function () {
     it ('generates a token', function (done) {
         request(app)
@@ -100,37 +97,6 @@ describe('PUT /api/quizzes/:quizId/edit', function () {
     });
 });
 
-describe('PUT /api/quizzes/:quizId', function () {
-    it('updates basic information about one quiz', function (done) {
-        request(app)
-            .put('/api/quizzes/:quizId')
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token)
-            .send({
-                "label":"#008080",
-                "description": "Random things you should know!",
-            })
-            .expect(200, done)
-    });
-});
-
-describe('PUT /api/quizzes/:quizId/content', function () {
-    it('updates information about one quiz', function (done) {
-        request(app)
-            .put('/api/quizzes/:quizId/content')
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token)
-            .send({
-                "owner": "WandaE",
-                "title": "Pubquiz - Quarantine edition",
-                "logo": "looogo",
-                "questions": ["dt6r"],
-                "active": "false"
-            })
-            .expect(200, done)
-
-    });
-});
 
 describe('DELETE /api/quizzes/:quizId', function() {
     it('removes a quiz', function(done) {
@@ -141,20 +107,7 @@ describe('DELETE /api/quizzes/:quizId', function() {
     });
 });
 
-describe('POST /api/quizzes/start', function () {
-    it('creates a new form', function (done) {
-        request(app)
-            .post('/api/quizzes/start')
-            .set('Authorization', token)
-            .send({
-                "uh": "b42050a333bd7ad0befd7dfbb9dc4879",
-                "tn": "b2mh4t9jr"
-            })
-            .expect(201, done)
 
-    });
-
-});
 
 describe('GET api/quizzes/start', function() {
     it('gets  forms with all the information', function(done) {
