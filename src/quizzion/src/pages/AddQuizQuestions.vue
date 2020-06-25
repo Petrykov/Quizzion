@@ -94,7 +94,7 @@
             <div style="display:flex;">
 
               <div
-                style="width: 100%;">
+                style="width: 95%;">
                 <q-input
                   style="font-size: 1.8em; padding-top: 15px;"
                   dark
@@ -104,11 +104,13 @@
                   label-color="grey"/>
               </div>
 
-              <div>
+              <div
+                style="width: 5%; display: table; margin: auto;"
+              >
                 <q-icon
                   name="delete"
                   color="white"
-                  style="cursor : pointer; position: absolute; right: 0px;"
+                  style="cursor : pointer;"
                   class="q-mr-md"
                   size="2.5em"
                   @click="promptToDelete"/>
