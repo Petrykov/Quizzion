@@ -96,7 +96,7 @@
               <div
                 style="width: 95%;">
                 <q-input
-                  style="font-size: 1.8em; padding-top: 15px;"
+                  style="font-size: 1.8em; width: 98%"
                   dark
                   color="grey-12"
                   label="Question's title"
@@ -105,13 +105,12 @@
               </div>
 
               <div
-                style="width: 5%; display: table; margin: auto;"
+                style="width: 5%; display: table"
               >
                 <q-icon
                   name="delete"
                   color="white"
                   style="cursor : pointer;"
-                  class="q-mr-md"
                   size="2.5em"
                   @click="promptToDelete"/>
               </div>
