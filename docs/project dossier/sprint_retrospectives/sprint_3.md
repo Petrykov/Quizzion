@@ -42,6 +42,6 @@ We were able to show the winners of the quiz on podium screen and managed to fin
 For the last sprint, we did not have any big question for our client. However, we hope that if we could have chance to work together again with Paration, they can put more focus on the project progress
 and reply our concerns as soon as possible so that we can keep track of our progress.
 
-We have nothing more to complain, but a big compliment to our collaboration, especially during corona outbreak. 
+We have nothing to complain, but a big compliment to our collaboration, especially during corona outbreak. 
 We think we could even make it better if we could meet up in person for group discussion.
 
