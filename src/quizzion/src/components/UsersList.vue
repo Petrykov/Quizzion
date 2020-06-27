@@ -1,15 +1,26 @@
 <template>
-  <div class="col-5">
+  <div class="col-5 q-mt-md">
+
     <div class="row justify-between">
+
+    <div class="col-8">
       <p style="color:white; font-size: 2em;">{{!status ? "Connected users:" : "Users finished quiz:"}}</p>
     </div>
 
+      <div class="col-4">
+        <p style="color:white; font-size: 2em;" v-if="!status">Joined: {{usersConnected}}/20</p>
+        <p style="color:white; font-size: 2em;" v-if="status">Finished: {{users.length}}/{{usersConnected}}</p>
+      </div>
+
+    </div>
+    <q-scroll-area
+      class="questions-scroll-area">
     <div class="row">
+
+
 
       <div
         style="margin-top: 1em; " class="col">
-        <q-scroll-area
-          class="questions-scroll-area">
           <ul class="questions-ul" style="list-style-type: none;">
             <li class="list-item" v-for="(user, index) in users"
                 :key="index">
@@ -19,13 +30,11 @@
               </p>
             </li>
           </ul>
-        </q-scroll-area>
       </div>
 
       <div
         style="margin-top: 1em;" class="col">
-        <q-scroll-area
-          class="questions-scroll-area">
+
           <ul class="questions-ul" style="list-style-type: none;">
             <li class="list-item" v-for="(user, index) in users"
                 :key="index">
@@ -35,63 +44,69 @@
               </p>
             </li>
           </ul>
-        </q-scroll-area>
       </div>
 
 
+
+
     </div>
+    </q-scroll-area>
   </div>
 </template>
 
 <script>
 
-    export default {
-        data() {
-            return {
-                users: [],
-                usersFinished: false,
-                usersCleaned: false
-            }
-        },
-        props: {
-            status: {
-                type: Boolean,
-                required: true
-            }
-        },
-        mounted() {
-            this.$socket.client.on('user-connected', (data) => {
-                console.log(data);
-                console.log("Respondent above");
-                this.users.push(data.name);
-                console.log(this.users);
-            });
-            this.$socket.client.on('user-done-quiz', (data) => {
-                console.log(data);
-                console.log('User is done above');
-                this.users.push(data.name);
-            })
-        },
-        beforeUpdate() {
-            console.log('Triggered update');
-            if (this.status) this.usersFinished = true;
-
-            if (this.usersFinished && !this.usersCleaned) {
-                console.log("Cleaning the users");
-                this.users.splice(0,this.users.length);
-                this.usersFinished = false;
-                this.usersCleaned = true;
-            }
-        },
-        beforeDestroy() {
-
-            console.log("Called before destroy in UsersList");
-            this.$socket.client.off('user-connected');
-            this.usersCleaned = false;
-            this.usersCleaned = false;
-            this.users = [];
-        }
+export default {
+  data() {
+    return {
+      users: [],
+      usersFinished: false,
+      usersCleaned: false,
+      usersConnected: 0
+    };
+  },
+  props: {
+    status: {
+      type: Boolean,
+      required: true
     }
+  },
+  mounted() {
+    this.$socket.client.on('user-connected', (data) => {
+      this.users.push(data.name);
+      this.usersConnected++;
+    });
+    this.$socket.client.on('user-done-quiz', (data) => {
+      this.users.push(data.name);
+    });
+    this.$socket.client.on('user-disconnected', (data) => {
+      if (data.name !== undefined) {
+        for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i] === data.name) this.users.splice(i, 1);
+        }
+      }
+      this.usersConnected--;
+      if (this.usersConnected < 0) this.usersConnected = 0;
+    });
+  },
+  beforeUpdate() {
+    if (this.status) this.usersFinished = true;
+
+    if (this.usersFinished && !this.usersCleaned) {
+      this.users.splice(0, this.users.length);
+      this.usersFinished = false;
+      this.usersCleaned = true;
+    }
+  },
+  beforeDestroy() {
+    this.$socket.client.off('user-connected');
+    this.$socket.client.off('user-done-quiz');
+    this.$socket.client.off('user-disconnected');
+    this.usersCleaned = false;
+    this.usersCleaned = false;
+    this.users = [];
+  }
+};
 
 </script>
 

@@ -112,47 +112,44 @@
 </template>
 
 <script>
-  import AOS from 'aos';
+import AOS from 'aos';
 
-  import 'aos/dist/aos.css';
+import 'aos/dist/aos.css';
 
 
-  export default {
-    name: "PodiumPage",
-    beforeMount() {
-
-      AOS.init();
-
-    },
-    data() {
-      return {
-        results: this.getWinners()
+export default {
+  name: 'PodiumPage',
+  beforeMount() {
+    AOS.init();
+  },
+  data() {
+    return {
+      results: this.getWinners()
+    };
+  },
+  methods: {
+    getWinners() {
+      const allResult = this.$store.state.quizzes.results.results;
+      let sortResult = [];
+      for (let i = 0; i < allResult.length; i++) {
+        sortResult.push(this.getTotalForOneResult(allResult[i]));
       }
+      sortResult = sortResult.sort(function(a, b) {
+        return b.total - a.total;
+      });
+      return sortResult;
     },
-    methods: {
-      getWinners() {
-        let allResult = this.$store.state.quizzes.results.results;
-        let sortResult = [];
-        for (let i = 0; i < allResult.length; i++) {
-          sortResult.push(this.getTotalForOneResult(allResult[i]))
-        }
-        sortResult = sortResult.sort(function (a, b) {
-          return b.total - a.total;
-        });
-        return sortResult;
-      },
-      getTotalForOneResult(result) {
-        let eachResult = {name: result[0].displayName, total: 0};
+    getTotalForOneResult(result) {
+      const eachResult = {name: result[0].displayName, total: 0};
 
-        for (let i = 0; i < result.length; i++) {
-
-          eachResult.total += result[i].score;
-        }
-
-        return eachResult;
+      for (let i = 0; i < result.length; i++) {
+        eachResult.total += result[i].score;
       }
+
+      return eachResult;
     }
   }
+};
 </script>
 
 <style lang="css" scoped>

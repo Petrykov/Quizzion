@@ -1,3 +1,3 @@
-export function totalQuizzes ( state ) {
-    return state.quizzes.length;
+export function totalQuizzes(state) {
+  return state.quizzes.length;
 }

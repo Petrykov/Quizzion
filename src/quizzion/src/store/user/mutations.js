@@ -1,5 +1,5 @@
-import {Roles} from "../enums";
-import initialState from './state'
+import {Roles} from '../enums';
+import initialState from './state';
 
 export function login(state, user) {
   state.role = Roles.MODERATOR;

@@ -9,17 +9,15 @@ localVue.use(Vuex);
 jest.mock('../../../../src/api/api.js');
 
 describe('User module', () => {
-
   describe('As a moderator, the', () => {
-
-    it('login action retrieves and stores user information', async () => {
+    it('login action retrieves and stores user information', async() => {
       const user = {
         username: 'WandaE',
         token: 'accesstoken',
         uh: 'ghu76t',
         firstname: 'Wanda',
         lastname: 'Evans',
-        email: 'wanda.evans@vueteam.com',
+        email: 'wanda.evans@vueteam.com'
       };
       const loginResponse = new Promise(resolve => resolve({status: 200, data: user}));
 
@@ -77,8 +75,7 @@ describe('User module', () => {
   });
 
   describe('As a respondent, the', () => {
-
-    it('join action should retrieve and store a token', async () => {
+    it('join action should retrieve and store a token', async() => {
       const respondentToken = 'uuidv4token';
       const joinResponse = new Promise(resolve => resolve({status: 200, data: {id: respondentToken}}));
 
@@ -92,5 +89,4 @@ describe('User module', () => {
       expect(store.state.user.role).toBe('respondent');
     });
   });
-
 });

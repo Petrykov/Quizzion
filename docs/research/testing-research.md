@@ -43,7 +43,7 @@ Here we will quickly go over the different approach you can have to testing.
 
 
 #### Don't test
-Writing and maintaining tests is time consuming and thus, expensive. This is why for some projects it is not cost/time efficient. (Spoiler: we won't take this approach)
+Writing and maintaining tests is time consuming and thus, expensive. This is why for some projects it is not cost/time efficient.
 
 ### Testing Vuex
 

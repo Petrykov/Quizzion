@@ -29,7 +29,7 @@
           <th style="width:20%">Score</th>
         </tr>
       </table>
-      <q-scroll-area style="height: 450px;">
+      <q-scroll-area style="height: 50vh;">
         <q-list style="width:100%">
           <table
             width="100%">
@@ -77,67 +77,65 @@
 
 <script>
 
-  export default {
-    name: "ResultPageForModerator",
-    methods: {
+export default {
+  name: 'ResultPageForModerator',
+  methods: {
 
-      isCorrectIcon(isCorrect) {
-
-        if (isCorrect === 0) {
-          return 'check_circle'
-        }
-        return 'fas fa-times-circle'
-      },
-
-      isCorrectIconColor: function (isCorrect) {
-        if (!isCorrect) {
-          return "red"
-        }
-        return "green"
-      },
-
-      getTotalPlayer() {
-        return this.$store.state.quizzes.results.results.length;
-      },
-
-      getTotal(arrayOfResults) {
-
-        let totalScoreForOneRespondent = 0;
-
-        for (let i = 0; i <arrayOfResults.length ; i++) {
-          totalScoreForOneRespondent += arrayOfResults[i].score;
-        }
-
-        return totalScoreForOneRespondent;
-      },
-
-      getResults(){
-        return this.$store.state.quizzes.results.results;
+    isCorrectIcon(isCorrect) {
+      if (isCorrect === 0) {
+        return 'check_circle';
       }
-
+      return 'fas fa-times-circle';
     },
 
-    data() {
-      return {
-        quizId: this.$route.params.quizId,
-        participants: ' ',
+    isCorrectIconColor: function(isCorrect) {
+      if (!isCorrect) {
+        return 'red';
       }
+      return 'green';
     },
 
-    mounted() {
-      this.$store.dispatch('quizzes/results/fetchResultsForQuiz', {quizId: this.$route.params.quizId}).then(()=>{
+    getTotalPlayer() {
+      return this.$store.state.quizzes.results.results.length;
+    },
+
+    getTotal(arrayOfResults) {
+      let totalScoreForOneRespondent = 0;
+
+      for (let i = 0; i < arrayOfResults.length; i++) {
+        totalScoreForOneRespondent += arrayOfResults[i].score;
+      }
+
+      return totalScoreForOneRespondent;
+    },
+
+    getResults() {
+      return this.$store.state.quizzes.results.results;
+    }
+
+  },
+
+  data() {
+    return {
+      quizId: this.$route.params.quizId,
+      participants: ' '
+    };
+  },
+
+  mounted() {
+    this.$store.dispatch('quizzes/results/fetchResultsForQuiz', {quizId: this.$route.params.quizId}).then(() => {
       this.participants = this.getTotalPlayer();
       this.getResults();
       this.getTotal();
-      })
-    },
+    });
+  },
 
-    computed: {
-      getQuizById() {
-        return this.$store.getters['quizzes/getQuizById'](this.quizId)
-      }
+  computed: {
+    getQuizById() {
+      return this.$store.getters['quizzes/getQuizById'](this.quizId);
     }
   }
+};
 
 </script>
 

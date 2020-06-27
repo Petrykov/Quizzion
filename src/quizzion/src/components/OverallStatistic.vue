@@ -30,27 +30,27 @@
   </section>
 </template>
 <script>
-  import Vue from 'vue'
-  import VueApexCharts from 'vue-apexcharts'
+import Vue from 'vue';
+import VueApexCharts from 'vue-apexcharts';
 
-  Vue.component('apexchart', VueApexCharts)
+Vue.component('apexchart', VueApexCharts);
 
-  export default {
-    data() {
-      return {
-        options: {
-          labels: [ '2020', '2019', '2018', '2017'],
-          colors: ['#F2A95C','#9A1F40','#181C30','#57709B']
-        },
-        series: [44, 55, 41, 17],
-        total: {
-          label: 'Active'
-        }
-
-
+export default {
+  data() {
+    return {
+      options: {
+        labels: ['2020', '2019', '2018', '2017'],
+        colors: ['#F2A95C', '#9A1F40', '#181C30', '#57709B']
+      },
+      series: [44, 55, 41, 17],
+      total: {
+        label: 'Active'
       }
-    }
+
+
+    };
   }
+};
 </script>
 <style>
 

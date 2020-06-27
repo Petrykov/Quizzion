@@ -33,10 +33,7 @@
 
 
           <q-banner v-if="stopped" inline-actions style="border-radius: 5px;" class="text-white bg-red q-ma-lg">
-            The quiz can not be played because Quiz master stopped the quiz.
-            <template v-slot:action>
-              <q-btn flat color="white" @click="closeWindow" label="Close the window" />
-            </template>
+            {{errorMessage}}
           </q-banner>
         </div>
 
@@ -47,73 +44,83 @@
 </template>
 
 <script>
-    import {QSpinnerFacebook, Notify } from 'quasar'
+import {QSpinnerFacebook} from 'quasar';
 
-    export default {
-        data: () => {
-            return {
-                playerName: '',
-                quizId: '',
-                stopped: false,
-            };
-        },
-        computed: {
-            invitedQuiz() {
-                return this.$store.getters['quizzes/getQuizById'](this.quizId);
-            }
-        },
-        beforeMount() {
-            this.quizId = this.$route.params.quizId;
+export default {
+  data: () => {
+    return {
+      playerName: '',
+      quizId: '',
+      stopped: false,
+      errorMessage: ''
+    };
+  },
+  computed: {
+    invitedQuiz() {
+      return this.$store.getters['quizzes/getQuizById'](this.quizId);
+    }
+  },
+  beforeMount() {
+    this.quizId = this.$route.params.quizId;
 
-            this.$q.loading.show({message: 'Loading quiz content...'});
-            this.$store.dispatch('quizzes/fetchInvitedQuiz', this.quizId).then(() => {
-                this.$q.loading.hide();
-            });
+    this.$q.loading.show({message: 'Loading quiz content...'});
+    this.$store.dispatch('quizzes/fetchInvitedQuiz', this.quizId).then(() => {
+      this.$q.loading.hide();
+    });
 
-            this.$socket.client.emit('client-connected', {quiz_id: this.quizId});
+    this.$socket.client.emit('client-connected', {quizId: this.quizId});
 
-            this.$socket.client.on('stop', () => {
-                console.log('Quiz is stopped');
-                this.$q.loading.hide();
-                this.stopped = true;
-            })
-        },
-        beforeDestroy() {
-            this.$q.loading.hide();
-            this.$socket.client.off('stop');
-            this.$socket.client.off('start');
-        },
-        methods: {
-            toFirstQuestion() {
-                this.$socket.client.emit('connect-t', {quiz_id: this.invitedQuiz.id, name: this.playerName});
-                this.$socket.client.on('start', () => {
-                    this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
-                        this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
-                    });
-                });
+    this.$socket.client.on('stop', () => {
+      this.$q.loading.hide();
+      this.stopped = true;
+      this.errorMessage = 'The quiz can not be played because Quiz master stopped the quiz.';
+    });
 
-                this.showLoading();
-            },
-            showLoading() {
-                const spinner = typeof QSpinnerFacebook !== 'undefined'
-                    ? QSpinnerFacebook
+    this.$socket.client.on('quiz-already-started', () => {
+      this.$q.loading.hide();
+      this.errorMessage = 'You are a little bit late, the quiz has already started';
+      this.stopped = true;
+    });
+
+    this.$socket.client.on('max-clients', () => {
+      this.$q.loading.hide();
+      this.errorMessage = 'The quiz player list is full.';
+      this.stopped = true;
+    });
+  },
+  beforeDestroy() {
+    this.$q.loading.hide();
+    this.$socket.client.off('stop');
+    this.$socket.client.off('max-clients');
+    this.$socket.client.off('start');
+  },
+  methods: {
+    toFirstQuestion() {
+      this.$socket.client.emit('connect-t', {quizId: this.invitedQuiz.id, name: this.playerName});
+      this.$socket.client.on('start', () => {
+        this.$store.dispatch('user/join', {name: this.playerName, quizId: this.quizId}).then(() => {
+          this.$router.replace(`/quizzes/${this.invitedQuiz.id}/questions/${this.invitedQuiz.questions[0]}`);
+        });
+      });
+
+      this.showLoading();
+    },
+    showLoading() {
+      const spinner = typeof QSpinnerFacebook !== 'undefined'
+        ? QSpinnerFacebook
                     : Quasar.components.QSpinnerFacebook; // eslint-disable-line
 
-                this.$q.loading.show({
-                    spinner,
-                    spinnerColor: 'yellow',
-                    spinnerSize: 140,
-                    backgroundColor: 'purple',
-                    message: 'Waiting for Quiz Master to start the quiz',
-                    messageColor: 'white'
-                });
-            },
-            closeWindow() {
-                console.log("Should close a window here");
-                window.close();
-            }
-        }
+      this.$q.loading.show({
+        spinner,
+        spinnerColor: 'yellow',
+        spinnerSize: 140,
+        backgroundColor: 'purple',
+        message: 'Waiting for Quiz Master to start the quiz',
+        messageColor: 'white'
+      });
     }
+  }
+};
 </script>
 
 <style scoped>

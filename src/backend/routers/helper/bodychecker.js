@@ -1,59 +1,54 @@
 class Bodychecker {
+  checkPOSTanswer(body) {
+    let result = '';
 
-    checkPOSTanswer(body) {
-        let result = '';
+    const errorMessages = [];
 
-        let errorMessages = [];
+    if (body.label === undefined || body.label === '') errorMessages.push('Field \'label\'' + this.message().empty);
+    if (body.correct === undefined) errorMessages.push('Field \'correct\'' + this.message().notIncluded);
+    if (typeof body.correct !== 'boolean') errorMessages.push('Field \'correct\' is not boolean type');
 
-        if (body.label === undefined || body.label === '') errorMessages.push("Field 'label'" + this.message().empty);
-        if (body.correct === undefined) errorMessages.push("Field 'correct'" + this.message().notIncluded);
-        if (typeof body.correct !== "boolean") errorMessages.push("Field 'correct' is not boolean type");
-
-        for (let i = 0; i < errorMessages.length; i++) {
-            result += errorMessages[i];
-            if (i !== errorMessages.length - 1) result += ",";
-        }
-
-        return result;
+    for (let i = 0; i < errorMessages.length; i++) {
+      result += errorMessages[i];
+      if (i !== errorMessages.length - 1) result += ',';
     }
 
-    checkPOSTquestion(body) {
-        let errorMessages = [];
+    return result;
+  }
 
-        if (body.title === undefined) errorMessages.push("Field 'title' " + this.message().notIncluded);
-        else if (body.title === '') errorMessages.push("Field 'title' " + this.message().empty);
+  checkPOSTquestion(body) {
+    const errorMessages = [];
 
-        if (body.description === undefined)
-            errorMessages.push("Field 'description' " +  this.message().notIncluded);
-        if (body.image === undefined)
-            errorMessages.push("Field 'image' " + this.message().notIncluded);
-        if (body.time === undefined)
-            errorMessages.push("Field 'time' " + this.message().notIncluded);
-        if (body.answers === undefined)
-            errorMessages.push("Field 'answers' [] " + this.message().notIncluded);
+    if (body.title === undefined) errorMessages.push('Field \'title\' ' + this.message().notIncluded);
+    else if (body.title === '') errorMessages.push('Field \'title\' ' + this.message().empty);
 
-        let result = '';
+    if (body.description === undefined) { errorMessages.push('Field \'description\' ' + this.message().notIncluded); }
+    if (body.image === undefined) { errorMessages.push('Field \'image\' ' + this.message().notIncluded); }
+    if (body.time === undefined) { errorMessages.push('Field \'time\' ' + this.message().notIncluded); }
+    if (body.answers === undefined) { errorMessages.push('Field \'answers\' [] ' + this.message().notIncluded); }
 
-        for (let i = 0; i < errorMessages.length; i++) {
-            result += errorMessages[i];
-            if (i !== errorMessages.length - 1) result += ',';
-        }
+    let result = '';
 
-        return result;
+    for (let i = 0; i < errorMessages.length; i++) {
+      result += errorMessages[i];
+      if (i !== errorMessages.length - 1) result += ',';
     }
 
-    checkPUTquestionAddAnswer(body) {
-        if (body.answerId === undefined) return "Field 'answerId " + this.message().notIncluded;
-        if (body.answerId === '') return "Field 'answerId' " + this.message().empty;
-        return '';
-    }
+    return result;
+  }
 
-    message() {
-        return {
-            empty: 'is empty',
-            notIncluded: 'is not included'
-        };
-    }
+  checkPUTquestionAddAnswer(body) {
+    if (body.answerId === undefined) return 'Field \'answerId ' + this.message().notIncluded;
+    if (body.answerId === '') return 'Field \'answerId\' ' + this.message().empty;
+    return '';
+  }
+
+  message() {
+    return {
+      empty: 'is empty',
+      notIncluded: 'is not included'
+    };
+  }
 }
 
 module.exports = Bodychecker;

@@ -1,9 +1,9 @@
-import axios from 'axios'
-import md5 from 'md5'
-import store from '../store'
-import config from './../config/config'
+import axios from 'axios';
+import md5 from 'md5';
+import store from '../store';
+import config from './../config/config';
 
-const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
+const apiUrl = `${config.backendPath}/api`;
 
 /*
 *
@@ -21,7 +21,6 @@ const apiUrl = process.env.DEV ? config.backendPath + '/api'  : '';
 * These requests will be caught by our own backend, which might in turn make other requests to the Parantion backend.
 *
 * */
-
 
 
 export function login(credentials) {
@@ -50,12 +49,12 @@ export async function fetchInvitedQuiz(quizId) {
   return axios.get(`${apiUrl}/quizzes/${quizId}/invite`);
 }
 
-// -- modified --
+//-- modified --
 export function fetchQuestions() {
   return axios.get(`${apiUrl}/question`);
 }
 
-// -- modified --
+//-- modified --
 export function fetchAnswers() {
   return axios.get(`${apiUrl}/answer`);
 }
@@ -76,51 +75,49 @@ export function deleteQuiz(deletedId) {
   return axios.delete(`${apiUrl}/quizzes/${deletedId}`);
 }
 
-// -- modified --
+//-- modified --
 export function createQuestion(quizId, newQuestion) {
   axios.defaults.headers.common['authorization'] = store.state.user.token;
   return axios.post(`${apiUrl}/quizzes/${quizId}/question`, {...newQuestion});
 }
 
-// -- modified --
+//-- modified --
 export function updateQuestion(questionId, updatedQuestion) {
-
   return axios.put(`${apiUrl}/question/${questionId}`, {...updatedQuestion});
 }
 
-// -- modified --
+//-- modified --
 export function deleteQuestion(questionId) {
   return axios.delete(`${apiUrl}/question/${questionId}`);
 }
 
-// -- created
+//-- created
 export function addAnswerToQuestion(questionId, answerId) {
   return axios.put(`${apiUrl}/question/${questionId}/add/${answerId}`);
 }
 
-// -- created --
-export function addAnswer(newAnswer) {
+//-- created --
+export function createAnswer(newAnswer) {
   return axios.post(`${apiUrl}/answer`, {...newAnswer});
 }
 
-// -- created --
+//-- created --
 export function deleteAnswer(answerId) {
   return axios.delete(`${apiUrl}/answer/${answerId}`);
 }
 
-// -- created --
+//-- created --
 export function updateAnswers(answers) {
-
   return axios.all(
     answers.map((answer) => {
-      axios.put(`${apiUrl}/answer/${answer.id}`,{...answer});
+      axios.put(`${apiUrl}/answer/${answer.id}`, {...answer});
     })
-  )
+  );
 }
 
 
 export function submitAnswer({quizId, answer}) {
-  return axios.post(`${apiUrl}/respondent/${quizId}/answer`, answer );
+  return axios.post(`${apiUrl}/respondent/${quizId}/answer`, answer);
 }
 
 export function fetchRespondentResult({quizId, id}) {
@@ -128,5 +125,5 @@ export function fetchRespondentResult({quizId, id}) {
 }
 
 export function fetchResults(quizId) {
-  return axios.get(`${apiUrl}/results/${quizId}`)
+  return axios.get(`${apiUrl}/results/${quizId}`);
 }

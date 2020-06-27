@@ -48,7 +48,6 @@
           </a>
 
 
-
           <q-item @click="$store.dispatch('user/logout')" clickable v-ripple style="margin-top: 150px;">
             <q-item-section avatar>
               <i class="fas fa-sign-out-alt"></i>
@@ -77,7 +76,7 @@
 
 <script>
 export default {
-  name: "SideBar",
+  name: 'SideBar',
   data() {
     return {
       //...
@@ -85,10 +84,10 @@ export default {
   },
   methods: {
     toDashBoard() {
-      this.$router.push(`/`);
+      this.$router.push('/');
     },
     toStatistics() {
-      this.$router.push(`/statistics`);
+      this.$router.push('/statistics');
     }
   }
 };
