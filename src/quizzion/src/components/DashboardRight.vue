@@ -142,6 +142,7 @@
               @click="cancelActiveQuiz"
               size="2.5em"
               style="cursor : pointer;"
+              v-if="!quizStarted"
               color="white">
               <q-tooltip
                 content-class="bg-white"
