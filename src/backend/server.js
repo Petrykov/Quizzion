@@ -20,7 +20,7 @@ const db = {
   quizzes: []
 };
 
-const MAX_CLIENTS = 5;
+const MAX_CLIENTS = 20;
 
 serverSocket.on('connection', (socket) => {
   socket.on('connect-t', function(data) {
@@ -42,7 +42,7 @@ serverSocket.on('connection', (socket) => {
       for (let i = 0; i < db.quizzes.length; i++) {
         if (db.quizzes[i].quizId === data.quizId) {
           if (db.quizzes[i].started) {
-            serverSocket.to(socket.id).emit('max-clients');
+            serverSocket.to(socket.id).emit('quiz-already-started');
             return;
           }
 

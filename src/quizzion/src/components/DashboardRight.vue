@@ -45,7 +45,7 @@
          class="questions-section">
       <div class="col-5" v-if="!currentQuiz.stored">
         <div class="row justify-between">
-          <p style="color:white; font-size: 2em;" >Questions</p>
+          <p style="color:white; font-size: 2em;">Questions</p>
 
           <div>
             <q-icon
@@ -122,19 +122,19 @@
 
           <div>
             <q-icon
-            class="q-mr-lg"
-            name="fas fa-trophy"
-            v-if="quizStarted"
-            @click="showResults"
-            size="2.5em"
-            style="cursor : pointer;"
-            color="white">
-            <q-tooltip
-              content-class="bg-white"
-              content-style="font-size: 1em; color: black; ">
-              Quiz results
-            </q-tooltip>
-          </q-icon>
+              class="q-mr-lg"
+              name="fas fa-trophy"
+              v-if="quizStarted"
+              @click="showResults"
+              size="2.5em"
+              style="cursor : pointer;"
+              color="white">
+              <q-tooltip
+                content-class="bg-white"
+                content-style="font-size: 1em; color: black; ">
+                Quiz results
+              </q-tooltip>
+            </q-icon>
 
             <q-icon
               class="q-mr-lg"
@@ -142,6 +142,7 @@
               @click="cancelActiveQuiz"
               size="2.5em"
               style="cursor : pointer;"
+              v-if="!quizStarted"
               color="white">
               <q-tooltip
                 content-class="bg-white"
@@ -250,21 +251,17 @@ export default {
     getQuizLink() {
       return `${config.frontendPath}/quizzes/${this.currentQuiz.id}/invite`;
     }
-
   },
 
   beforeMount() {
     this.currentQuizBefore = this.currentQuiz;
-    console.log('before mount ');
-    console.warn(this.currentQuizBefore);
   },
 
   updated() {
-    if (this.currentQuiz !== this.currentQuizBefore) {
+    if (this.currentQuiz.title !== this.currentQuizBefore.title) {
       this.status = false;
-      console.log('status is 0 now');
-      this.currentQuizBefore = this.currentQuiz;
       this.quizStarted = false;
+      this.$store.dispatch('quizzes/deactivateQuiz', this.currentQuiz).then(() => { this.currentQuizBefore = this.currentQuiz; });
     }
   },
 

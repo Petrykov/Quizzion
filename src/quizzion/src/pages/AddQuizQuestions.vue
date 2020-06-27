@@ -28,11 +28,11 @@
 
           <div
             class="question-list-wrapper">
+
             <p
               class="q-mt-lg"
               style="font-size:3em;">{{currentQuiz.title }}</p>
 
-            <br/>
             <p
               style="font-size:2em;"
               v-if="currentQuiz.questions.length === 0"
@@ -44,7 +44,7 @@
               <q-scroll-area
                 v-if="currentQuiz.questions.length !== 0"
                 class="scroll-area"
-                style="height: 200px; max-width: 300px;">
+                style="height: 200px; width: 300px;">
 
                 <div>
                   <p
@@ -93,9 +93,9 @@
             <div style="display:flex;">
 
               <div
-                style="width: 100%;">
+                style="width: 95%;">
                 <q-input
-                  style="font-size: 1.8em; padding-top: 15px;"
+                  style="font-size: 1.8em; width: 98%"
                   dark
                   color="grey-12"
                   label="Question's title"
@@ -103,12 +103,13 @@
                   label-color="grey"/>
               </div>
 
-              <div>
+              <div
+                style="width: 5%; display: table"
+              >
                 <q-icon
                   name="delete"
                   color="white"
-                  style="cursor : pointer; position: absolute; right: 0px;"
-                  class="q-mr-md"
+                  style="cursor : pointer;"
                   size="2.5em"
                   @click="promptToDelete"/>
               </div>
@@ -514,7 +515,7 @@ export default {
   }
 
   .question-list-wrapper {
-    width: 300px;
+    width: auto;
     display: inline-block;
   }
 

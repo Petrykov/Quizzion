@@ -1,5 +1,5 @@
 <template>
-  <div class="col-5">
+  <div class="col-5 q-mt-md">
 
     <div class="row justify-between">
 
@@ -13,13 +13,14 @@
       </div>
 
     </div>
-
+    <q-scroll-area
+      class="questions-scroll-area">
     <div class="row">
+
+
 
       <div
         style="margin-top: 1em; " class="col">
-        <q-scroll-area
-          class="questions-scroll-area">
           <ul class="questions-ul" style="list-style-type: none;">
             <li class="list-item" v-for="(user, index) in users"
                 :key="index">
@@ -29,13 +30,11 @@
               </p>
             </li>
           </ul>
-        </q-scroll-area>
       </div>
 
       <div
         style="margin-top: 1em;" class="col">
-        <q-scroll-area
-          class="questions-scroll-area">
+
           <ul class="questions-ul" style="list-style-type: none;">
             <li class="list-item" v-for="(user, index) in users"
                 :key="index">
@@ -45,11 +44,13 @@
               </p>
             </li>
           </ul>
-        </q-scroll-area>
       </div>
 
 
+
+
     </div>
+    </q-scroll-area>
   </div>
 </template>
 
@@ -85,6 +86,7 @@ export default {
         }
       }
       this.usersConnected--;
+      if (this.usersConnected < 0) this.usersConnected = 0;
     });
   },
   beforeUpdate() {

@@ -257,9 +257,9 @@ export default {
 
   .second-place-trophy-wrapper {
 
-    width: 75px;
+    width: 90px;
 
-    height: 75px;
+    height: 90px;
 
     border-radius: 50%;
 
@@ -325,9 +325,9 @@ export default {
 
   .first-place-trophy-wrapper {
 
-    width: 75px;
+    width: 90px;
 
-    height: 75px;
+    height: 90px;
 
     border-radius: 50%;
 
@@ -392,9 +392,9 @@ export default {
 
   .third-place-trophy-wrapper {
 
-    width: 75px;
+    width: 90px;
 
-    height: 75px;
+    height: 90px;
 
     border-radius: 50%;
 
