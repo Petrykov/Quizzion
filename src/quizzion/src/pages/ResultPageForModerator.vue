@@ -82,7 +82,7 @@ export default {
   methods: {
 
     isCorrectIcon(isCorrect) {
-      if (isCorrect === 0) {
+      if (isCorrect) {
         return 'check_circle';
       }
       return 'fas fa-times-circle';
