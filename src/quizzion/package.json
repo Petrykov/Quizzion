@@ -24,6 +24,7 @@
     "test:e2e": "cypress open",
     "test:e2e:CI": "cypress run"
   },
+
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vue/test-utils": "^1.0.3",
