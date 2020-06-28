@@ -24,9 +24,6 @@ const MAX_CLIENTS = 20;
 
 serverSocket.on('connection', (socket) => {
   socket.on('connect-t', function(data) {
-    console.log('New user connected to TCP socket');
-    console.log(data);
-    console.log('----');
     let quizmaster = false;
     if (data.name === undefined) quizmaster = true;
 
@@ -56,7 +53,6 @@ serverSocket.on('connection', (socket) => {
         }
       }
       if (quizMasterId !== '-') {
-        console.log('sending to quiz master');
         serverSocket.to(quizMasterId).emit('user-connected', {
           name: data.name
         });
@@ -85,8 +81,6 @@ serverSocket.on('connection', (socket) => {
   });
 
   socket.on('start', function() {
-    console.log('.on START ');
-    console.log('----');
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizMaster === socket.id) {
         db.quizzes[i].started = true;
@@ -102,17 +96,13 @@ serverSocket.on('connection', (socket) => {
       if (db.quizzes[i].quizMaster === socket.id) {
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
           serverSocket.to(db.quizzes[i].users[j].id).emit('stop');
-          console.log('Stop to resp. to ' + db.quizzes[i].users[j].id + ' name: ' + db.quizzes[i].users[j].name);
-        }
+         }
       }
       db.quizzes.splice(i, 1);
     }
   });
 
   socket.on('quiz-done', function(data) {
-    console.log('.on QUIZ DONE');
-    console.log(data);
-    console.log('----');
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizId === data.quizId) {
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
@@ -125,9 +115,6 @@ serverSocket.on('connection', (socket) => {
   });
 
   socket.on('show-results', function(data) {
-    console.log('.on SHOW-RESULTS');
-    console.log(data);
-    console.log('----');
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizId === data.quizId) {
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
@@ -138,7 +125,6 @@ serverSocket.on('connection', (socket) => {
   });
 
   socket.on('disconnect', function() {
-    console.log('client disconnected');
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizMaster === socket.id) {
         db.quizzes.splice(i, 1);
