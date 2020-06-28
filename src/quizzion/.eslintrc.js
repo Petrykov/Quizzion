@@ -1,64 +1,56 @@
 module.exports = {
-  // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
-  // This option interrupts the configuration hierarchy at this file
-  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
-  root: true,
-
+  env: {
+    browser: true,
+    es6: true
+  },
+  extends: [
+    'plugin:vue/essential',
+    'standard'
+  ],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly'
+  },
   parserOptions: {
     parser: 'babel-eslint',
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module' // Allows for the use of imports
+    ecmaVersion: 2018,
+    sourceType: 'module'
   },
-
-  env: {
-    browser: true
-  },
-
-  // Rules order is important, please avoid shuffling them
-  extends: [
-    // Base ESLint recommended rules
-    // 'eslint:recommended',
-
-
-    // Uncomment any of the lines below to choose desired strictness,
-    // but leave only one uncommented!
-    // See https://eslint.vuejs.org/rules/#available-rules
-    'plugin:vue/essential', // Priority A: Essential (Error Prevention)
-    // 'plugin:vue/strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
-    // 'plugin:vue/recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
-
-    // https://github.com/prettier/eslint-config-prettier#installation
-    // usage with Prettier, provided by 'eslint-config-prettier'.
-    'prettier',
-    
-    'prettier/vue'
-  ],
-
   plugins: [
-    // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
-    // required to lint *.vue files
-    'vue',
-
-    // https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
-    // Prettier has not been included as plugin to avoid performance impact
-    // add it as an extension for your IDE
+    'vue'
   ],
-
-  globals: {
-    'ga': true, // Google Analytics
-    'cordova': true,
-    '__statics': true,
-    'process': true,
-    'Capacitor': true,
-    'chrome': true
-  },
-
-  // add your custom rules here
   rules: {
-    'prefer-promise-reject-errors': 'off',
+    indent: ['warn', 2],
+    quotes: ['warn', 'single'],
+    'space-before-function-paren': ['warn', 'never'],
+    'key-spacing': ['warn', {beforeColon: false}],
+    'space-before-blocks': ['warn', 'always'],
+    semi: ['warn', 'always'],
+    'spaced-comment': ['warn', 'never'],
+    'no-unused-vars': 'error',
+    'object-curly-spacing': ['warn', 'never'],
+    'padded-blocks': ['warn', 'never'],
+    'no-async-promise-executor': 'off',
+    'prefer-const': 'error',
+    'keyword-spacing': ['warn', {before: true}],
+    'no-multiple-empty-lines': ['warn', {max: 2}],
+    'space-infix-ops': ['warn', {int32Hint: false}],
+    'space-in-parens': ['warn', 'never'],
+    'comma-spacing': ['warn', {before: false, after: true}],
+    'comma-dangle': ['warn', 'never'],
+    'dot-notation': 'off',
+    'import/first': 'warn',
+    'import/no-duplicates': 'warn',
+    'semi-spacing': ['warn', {before: false, after: true}],
+    'max-lines-per-function': ['warn', {max: 20}],
+    camelcase: ['warn', {properties: 'always'}],
+    'capitalized-comments': 'off',
+    'no-lonely-if': 'warn',
+    'no-whitespace-before-property': 'error',
+    eqeqeq: ['warn', 'smart'],
+    'no-undef': 'error',
+    'no-throw-literal': 'error',
+    'handle-callback-err': 'error'
 
-
-    // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
-}
+};
