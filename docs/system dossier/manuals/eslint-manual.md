@@ -28,6 +28,19 @@ Eslint is running in the background of the application, but if it's necessary, i
 - `npm run lint:fix` - to fix all the warnings
 - `npm run lint:report` - to run ESLint and generate HTML report, which can be find later in `Eslint/report.html`
 
+## Basic settings:
+Before the installation, it is necessary to choose basic settings for ESLint:
+- ESLint is used to check syntex, find errors and enforce code styling
+- There are JavaScript modules (import/export)
+- There is Vue.js framework in the project
+- There is no TypeScript
+- The code runs in :
+  - Browser (Frontend)
+  - Node (Backend)
+- A popular style is used to define a style for the project
+- This project follow Standard style
+- ESLing configuration file has JavaScript formal  
+
 ## All problems after running ESLint with standard styling for the first time
 
 Running Eslint with standard styling was necessary to find and analyze problems, which can be included later in the 'rules'.
