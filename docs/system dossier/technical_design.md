@@ -16,7 +16,7 @@ _Team Dev-a6-01_
 
 # 1. Infrastructure services
 
-# paste services from assets
+![design backend](manuals/assets/services.PNG)
 
 **Infrastructure Services-** fundamental information technology resources under which applications will be built.
 
@@ -26,7 +26,7 @@ _Team Dev-a6-01_
 
 As a visual representation of what we have built, we have made this high level application overview.
 
-# paste design from assets
+![design backend](./manuals/assets/design.PNG)
 
 The backend of Quizzion will serve as a layer between our frontend and the already existing Parantion backend. This means that it will make API calls to Parantion on behalf of our users. On top of this, the Quizzion API will also add some additional features such as the features needed for playing live quizzes with websockets.
 
@@ -78,7 +78,7 @@ We have to build our application on top of the existing Parantion API. This make
 
 # 3. Components diagram
 
-# paste component diagram from assets
+![design backend](manuals/assets/component-diagram.PNG)
 
 # 4. Relevant information regarding security, scripting, backups
 
