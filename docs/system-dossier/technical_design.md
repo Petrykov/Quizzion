@@ -131,4 +131,4 @@ We have to build our application on top of the existing Parantion API. This make
 
 # 7. Our own database
 
--   
+-   The documentation for our own database can be found in system-dossier/manuals/our-db.md
