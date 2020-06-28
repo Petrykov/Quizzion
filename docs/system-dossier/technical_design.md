@@ -12,7 +12,11 @@ _Team Dev-a6-01_
 
 **[4)](#_Toc41927040)** **Relevant information regarding security, scripting, backups and monitoring** 
 
-**[5)](#_Toc41927041)** **CI/CD** 
+**[5)](#_Toc41927041)** **CI (Continuous integration)** 
+
+**[6)](#_Toc41927041)** **API documentation** 
+
+**[7)](#_Toc41927041)** **Our own database** 
 
 # 1. Infrastructure services
 
@@ -46,7 +50,7 @@ The first thing we did was set an approval rule for merge requests. The idea beh
 
 We also make use of gitlab&#39;s SCRUM-features such as issue boards, burndown charts and milestones. This helped us to visualise progress both during and after each sprint. Starting in sprint 2 we also tried to estimate the workload of each issue.
 
-## Vuejs
+## Vue.js
 
 As specified in the initial assignment, we use the JavaScript frontend framework &#39;Vue&#39;. Vue is one of the most popular frameworks, along with React and Angular. There are some specified preferences by Parantion, which we keep in mind during development.
 
@@ -85,15 +89,32 @@ We have to build our application on top of the existing Parantion API. This make
 - Security:
   - Each request to API will be made using OAuth2 access tokens
   - Passwords will be stored encrypted under md5 hashing algorithm
+  
 - Scripting:
 
-  - Eslint: npm run ...
+  1. Eslint:
+  - `npm run lint` - to run eslint 
+  - `npm run lint:fix` - to fix errors/warnings from eslint
+  - `npm run lint:report` - to run eslint and get HTML report, which can be find in `eslint/report.html`
+  
+  2. Tests:
+       A) Frontend tests
+         - `npm run test` - to run all the mocha tests
+  
+       B) Backend tests
+          - `npm run test` - to run all the mocha tests
 
 - Backups:
-  - Currently we&#39;re using gitlab.com for our project and inside of it we have a branch called &quot;develop&quot; where usually each sprint arrives data from different branches to have a complete application according to the different sprints (0,1,2).
+  - Currently, we're using gitlab.com for our project and inside of it we have a branch called &quot;develop&quot; where usually each sprint arrives data from different branches to have a complete application according to the different sprints (0,1,2).
 
-# 5. CI/CD
-
+# 5. CI (Continuous integration)
+    
 - CI: can be found in docs/system dossier/manuals/aws_pipeline
 
-- CD: can be found in ...
+# 6. API documentation
+
+- The latest version of our API documentation could be found in  src/backend/apidoc/index.html.
+
+# 7. Our own database
+
+-   

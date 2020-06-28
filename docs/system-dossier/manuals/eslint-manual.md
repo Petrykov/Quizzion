@@ -284,7 +284,7 @@ Four of the methods are too long. Those method are used to get or update data an
 
 It wasn't required to have max 20 lines of code in every method in the backend, but we tried to do it. However in most of the API calls we need to use few API requests, which makes every method complex. We could try to divide every method into few separate functions, but it was complicated for us to connect with Parantion's backend and providing extra functions, would break our connection.
 
-## Improvement 
+## Recommendations 
 
 ESLint is a powerful code analysis tool, which covers code quality and code styling issues. ESLint supports so many rules, which can be customized in many ways. 
 In this project we covered the most popular styling for JavaSpript. As I mention before, everyone writes code in different way,that is why the ESLint configuration should be structured according to personal styling. 

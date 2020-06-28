@@ -76,15 +76,5 @@
 
 ### Extra features
 
-1. Eslint:
-- `npm run lint` - to run eslint 
-- `npm run lint:fix` - to fix errors/warnings from eslint
-- `npm run lint:report` - to run eslint and get HTML report, which can be find in `eslint/report.html`
-
-2. Tests:
-     A) Frontend tests
-
-     B) Backend tests
-        - `npm run test` - to run all the mocha tests
     
  
