@@ -7,4 +7,3 @@
 -  Secondly, to run the Pipelines we set 2 different services on AWS: “Code Build” was the first one where we wrote our build-spec file inside which we mentioned all the commands that should be executed each time new data arrived on GitHub repository. You can also keep track of “Build history” after each build there. And the second service is the “Pipeline” itself. There, we set the base URL of the project from “GitHub” and the “Code Build” project that we did earlier. By the time the “GitHub” project retrieves any change, “Pipeline” executes automatically and there’s a possibility to see how it was complete step by step by clicking on “Details” of the Build.
  
 -  Thirdly, to explain the reason why we did it in such a hook through “GitHub” is that AWS didn’t give us access to use the “IAM user”. That was the only way to connect it directly from GitLab. After researching how it could be done differently, we found ourselves the way we explained in this document.
-

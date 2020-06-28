@@ -98,12 +98,26 @@ We have to build our application on top of the existing Parantion API. This make
   - `npm run lint:report` - to run eslint and get HTML report, which can be find in `eslint/report.html`
   
   2. Tests:
-       A) Frontend tests
-         - `npm run test` - to run all the mocha tests
+       A) Frontend tests    
+         - `npm run test` - this script will tell you to look in package.json to see more specific test scripts.
+         - `npm run test:unit` - runs unit tests with the `updateSnapshot` flag.
+         - `npm run test:coverage` - runs unit tests and generates a report on code coverage
+         - `npm run unit:watchAll` - watches files and runs test each time there is changes
+         - `npm run serve:test:coverage` - serves the coverage report
+         - `npm run concurrently:dev:jest` - runs both the dev server and jest with the `watchAll` flag at the same time.
+         - `npm run test:unit:ui` - runs the Majestic GUI for unit tests on port 4000
+         - `npm run test:e2e` - runs the cypress GUI for end to end tests
+         - `npm run test:e2e:CI` - runs the cypress end to end tests in the headless electron (command line) browser. Useful for CI.
   
        B) Backend tests
+          - `npm run start` - to run a backend 
           - `npm run test` - to run all the mocha tests
-
+          - `npm run watch` - to run a backend and each time there's a change it'll be updated 
+          - `npm run doc` - to generate a document explanation about a backend
+          - `npm run lint` - to run lint test
+          - `npm run lint:fix` - fixes all lint troubles that were found during linting 
+          - `npm run lint:report` - generates a report on a lint commands 
+           
 - Backups:
   - Currently, we're using gitlab.com for our project and inside of it we have a branch called &quot;develop&quot; where usually each sprint arrives data from different branches to have a complete application according to the different sprints (0,1,2).
 
