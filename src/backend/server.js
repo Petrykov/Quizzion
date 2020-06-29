@@ -28,6 +28,7 @@ serverSocket.on('connection', (socket) => {
     if (data.name === undefined) quizmaster = true;
 
     if (quizmaster) {
+      console.log("Quiz master created a quiz room: " + data.quizId);
       db.quizzes.push({
         quizMaster: socket.id,
         quizId: data.quizId,
@@ -39,6 +40,7 @@ serverSocket.on('connection', (socket) => {
       for (let i = 0; i < db.quizzes.length; i++) {
         if (db.quizzes[i].quizId === data.quizId) {
           if (db.quizzes[i].started) {
+            console.log('User ' + data.name + ' could not connect to quiz: ' + data.quizId + " because quiz has started");
             serverSocket.to(socket.id).emit('quiz-already-started');
             return;
           }
@@ -46,6 +48,7 @@ serverSocket.on('connection', (socket) => {
           for (let j = 0; j < db.quizzes[i].users.length; j++) {
             if (db.quizzes[i].users[j].id === socket.id) {
               db.quizzes[i].users[j].name = data.name;
+              console.log('User ' + data.name + ' is assigned to quiz: ' + data.quizId);
             }
           }
 
@@ -64,11 +67,13 @@ serverSocket.on('connection', (socket) => {
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizId === data.quizId) {
         if (db.quizzes[i].users.length >= MAX_CLIENTS) {
+          console.log('New client that maximum number of clients exceeded');
           serverSocket.to(socket.id).emit('max-clients');
           return;
         }
 
         if (db.quizzes[i].started) {
+          console.log('New client that quiz has started');
           serverSocket.to(socket.id).emit('quiz-already-started');
           return;
         }
@@ -85,6 +90,7 @@ serverSocket.on('connection', (socket) => {
       if (db.quizzes[i].quizMaster === socket.id) {
         db.quizzes[i].started = true;
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
+          console.log('Starting quiz to client: ' + db.quizzes[i].users[j].name + " quiz id : " + db.quizzes[i].quizId);
           serverSocket.to(db.quizzes[i].users[j].id).emit('start');
         }
       }
@@ -96,6 +102,7 @@ serverSocket.on('connection', (socket) => {
       if (db.quizzes[i].quizMaster === socket.id) {
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
           serverSocket.to(db.quizzes[i].users[j].id).emit('stop');
+          console.log('Stop the quiz to: ' + db.quizzes[i].users[j].name + ' with quizId: ' + db.quizzes[i].quizId)
          }
       }
       db.quizzes.splice(i, 1);
@@ -107,6 +114,7 @@ serverSocket.on('connection', (socket) => {
       if (db.quizzes[i].quizId === data.quizId) {
         for (let j = 0; j < db.quizzes[i].users.length; j++) {
           if (db.quizzes[i].users[j].id === socket.id) {
+            console.log('User ' + db.quizzes[i].users[j].name + " finished a quiz");
             serverSocket.to(db.quizzes[i].quizMaster).emit('user-done-quiz', {name: db.quizzes[i].users[j].name});
           }
         }
@@ -127,14 +135,20 @@ serverSocket.on('connection', (socket) => {
   socket.on('disconnect', function() {
     for (let i = 0; i < db.quizzes.length; i++) {
       if (db.quizzes[i].quizMaster === socket.id) {
+        console.log("Quiz master of quiz: " + db.quizzes[i].quizId + ' has disconnected. Removing the quiz room');
         db.quizzes.splice(i, 1);
         return;
       }
 
       for (let j = 0; j < db.quizzes[i].users.length; j++) {
         if (db.quizzes[i].users[j].id === socket.id) {
-          serverSocket.to(db.quizzes[i].quizMaster).emit('user-disconnected', {name: db.quizzes[i].users[j].name});
-          db.quizzes[i].users.splice(i, 1);
+          if (db.quizzes[i].users[j].name !== undefined) {
+            console.log("Client " + db.quizzes[i].users[j].name + " disconnected from room: " + db.quizzes[i].quizId);
+            serverSocket.to(db.quizzes[i].quizMaster).emit('user-disconnected', {name: db.quizzes[i].users[j].name});
+            db.quizzes[i].users.splice(j, 1);
+          } else {
+            db.quizzes[i].users.splice(j, 1);
+          }
         }
       }
     }
