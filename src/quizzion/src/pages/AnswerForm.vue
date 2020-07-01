@@ -126,16 +126,16 @@ export default {
         this.$router.replace(`/quizzes/${this.quizId}/questions/${this.nextQuestionId}`);
       }
     },
-    goToResults() {
+    async goToResults() {
       if (this.timeRemaining === 0) {
-        this.submitAnswer();
+        await this.submitAnswer();
         clearInterval(this.timer);
-        this.$router.replace('/result/respondent');
+        await this.$router.replace('/result/respondent');
       } else if (this.selectedAnswer === '') this.triggerNotification();
       else {
-        this.submitAnswer();
+        await this.submitAnswer();
         clearInterval(this.timer);
-        this.$router.replace('/result/respondent');
+        await this.$router.replace('/result/respondent');
       }
     },
     triggerNotification() {
@@ -160,7 +160,7 @@ export default {
         else this.goToNextPage();
       }, 1000);
     },
-    submitAnswer() {
+    async submitAnswer() {
       const totalTime = this.currentQuestion.time;
       const answer = {
         uid: this.$store.state.user.token,
@@ -171,7 +171,7 @@ export default {
         totalTime
       };
 
-      this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
+      await this.$store.dispatch('quizzes/submitAnswer', {quizId: this.quizId, answer});
     }
   }
 };

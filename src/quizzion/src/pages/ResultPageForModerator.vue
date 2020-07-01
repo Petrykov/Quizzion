@@ -125,8 +125,6 @@ export default {
   mounted() {
     this.$store.dispatch('quizzes/results/fetchResultsForQuiz', {quizId: this.$route.params.quizId}).then(() => {
       this.participants = this.getTotalPlayer();
-      this.getResults();
-      this.getTotal();
     });
   },
 

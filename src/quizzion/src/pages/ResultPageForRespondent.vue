@@ -8,7 +8,6 @@
       <table>
         <tr class="text-h4" style="border:  #9C27B0;color: white;height: 30px">{{$store.state.user.displayName}}</tr>
         <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Total score: {{getTotal}}</tr>
-        <tr class="text-h5" style="border:  #9C27B0;color: white;height: 30px">Ranking:</tr>
       </table>
     </div>
     <div
