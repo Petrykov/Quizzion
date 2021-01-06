@@ -30,7 +30,7 @@
     "@vue/test-utils": "^1.0.3",
     "aos": "^2.3.4",
     "apexcharts": "^3.19.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "eslint-html-reporter": "^0.7.4",
     "firebase": "^7.15.1",
     "md5": "^2.2.1",
